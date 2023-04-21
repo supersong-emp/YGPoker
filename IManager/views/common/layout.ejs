@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head> 
+        <%- include('head') %>
+    </head> 
+    
+    <% if ( type == 0 ) { %>
+    <body class="loading" data-layout="detached" data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+        <!-- Topbar Start -->
+        <div class="navbar-custom topnav-navbar topnav-navbar-dark">
+            <div class="container-fluid">
+    
+                <!-- LOGO -->
+                <a href="/" class="topnav-logo">
+                    <span class="topnav-logo-lg">
+                        <img src="./img/foot_LJ_logo.png" alt="" height="54">
+                    </span>
+                    <span class="topnav-logo-sm">
+                        <img src="./img/foot_LJ_logo.png" alt="" height="54">
+                    </span>
+                </a>
+    
+                <!---->
+                <ul class="list-unstyled topbar-right-menu mb-0 " style="display: flex; flex-direction: row-reverse;">
+                    <a id='alert_input' href='/inout/input' style="position:absolute; top:25px; left:300px; color:rgb(67, 124, 247);">충전신청</a>
+                    <a id='alert_output' href='/inout/output' style="position:absolute; top:25px; left:400px; color:rgb(248, 40, 40);">환전신청</a>
+                    <a id='alert_letter' href='/etc/letter' style="position:absolute; top:25px; left:500px; color:rgb(222, 224, 94);">1:1 문의</a>
+
+                    <!-- 우측상단 이용자 정보 -->
+                    <li class="dropdown notification-list">
+                        <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" id="topbar-userdrop"
+                           href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="account-user-avatar">
+                                <img src="./assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                            </span>
+                            <span>
+                                <span class="account-user-name"><%=user.strID%></span>
+                                <% if ( user.iClass == 0 ) { %>
+                                    <span class="account-position">본사</span>
+                                <%}else if ( user.iClass == 1 ) { %>
+                                    <span class="account-position">지사</span>
+                                <%}else if ( user.iClass == 2 ) { %>
+                                    <span class="account-position">부지사</span>
+                                <%}else if ( user.iClass == 3 ) { %>
+                                    <span class="account-position">총판</span>
+                                <%}else if ( user.iClass == 4 ) { %>
+                                    <span class="account-position">매장</span>
+                                <%}else{%>
+                                    <span class="account-position">회원</span>
+                                <%}%>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
+                             aria-labelledby="topbar-userdrop">
+    
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item" id="ChangePersonalInfo">
+                                <i class="mdi mdi-account-circle mr-1"></i>
+                                <span>계정 정보 변경</span>
+                            </a>
+                            <% if ( user.iClass == 0 ) { %>
+                            <!-- 계좌정보 변경-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item" id="ChangeAdminAccount">
+                                <i class="mdi mdi-account-circle mr-1"></i>
+                                <span>계좌정보 변경</span>
+                            </a>
+                            <%}%>
+                            <!-- item-->
+                            <a href="/account/logout" id="LogoutButton" class="dropdown-item notify-item">
+                                <i class="mdi mdi-logout mr-1"></i>
+                                <span>Logout</span>
+                            </a>
+    
+                        </div>
+                    </li>
+                    <li style="display:flex; flex-direction: column;  justify-content: center; color:rgb(255, 255, 255)">
+                        <!-- <span>보유 포인트 : <%=user.iPoint.toLocaleString()%></span> -->
+                        <span>보유 머니 : <%=user.iCash.toLocaleString()%></span>
+                        <span>보유 롤링 : <%=user.iRolling.toLocaleString()%></span>
+                    </li>
+                </ul>
+                <a class="button-menu-mobile disable-btn">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- end Topbar -->
+        <!-- Start Content-->
+        <div class="container-fluid">
+    
+            <!-- Begin page -->
+            <div class="wrapper">
+    
+                <!-- ========== Left Sidebar Start ========== -->
+                <div class="left-side-menu left-side-menu-detached">
+    
+                    <!--- Sidemenu -->
+                    <ul class="metismenu side-nav">
+    
+                        <li class="side-nav-title side-nav-item">사이트 관리</li>
+    
+                        <li class="side-nav-item">
+                            <a href="javascript: void(0);" class="side-nav-link">
+                                <i class="uil-store"></i>
+                                <span> 에이전트 관리 </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="side-nav-second-level" aria-expanded="true">
+                                <li>
+                                    <a href="/agent/agentlist">에이전트 리스트</a>
+                                    <a href="/agent/recorddailyagent">일별 에이전트 통계</a>
+                                    <a href="/agent/recordcash">에이전트 캐시 내역</a>
+                                    <a href="/agent/recordpoint">에이전트 포인트 내역</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="javascript: void(0);" class="side-nav-link">
+                                <i class="uil-store"></i>
+                                <span> 충전.출금.배송 관리 </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="side-nav-second-level" aria-expanded="true">
+                                <li>
+                                    <a href="/inout/inputcharge">충전 신청</a>
+                                    <a href="/inout/outputcharge">출금 신청</a>
+                                    <% if ( user.iClass <= 1 ) { %>
+                                    <a href="/inout/input">충전 관리</a>
+                                    <a href="/inout/output">출금 관리</a>
+                                    <%}%>
+                                    <a href="/inout/order">배송 관리</a>
+                                    <a href="/inout/monthlist">정산 관리</a>
+                                    <a href="/inout/bettinglist">베팅 관리</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="javascript: void(0);" class="side-nav-link">
+                                <i class="uil-envelope"></i>
+                                <span> 회원 관리 </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="side-nav-second-level" aria-expanded="false">
+                                <li>
+                                    <a href="/user/userlist">회원 리스트</a>
+                                    <a href="/user/onlineuserlist">회원 접속자 리스트</a>
+                                    <a href="/user/recordcash">회원 캐시 내역</a>
+                                    <a href="#">회원 포인트 내역</a>
+                                    <a href="/user/recorddailycash">일별 회원 캐시 증감</a>
+                                    <a href="/user/recordlogin">회원 접속 기록</a>
+                                    <a href="#">캐시 변동 랭킹</a>
+                                    <a href="/user/dailyonlinechart">일일 접속자 차트</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="javascript: void(0);" class="side-nav-link">
+                                <i class="uil-envelope"></i>
+                                <span> 게임 관리 </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="side-nav-second-level" aria-expanded="false">
+                                <li>
+                                    <% if ( user.iClass == 0 ) { %>
+                                    <a href="/game/roomlist">홀덤방 목록</a>
+                                    <!-- <a href="#">싯고방 목록</a>
+                                    <a href="#">K빅투방 목록</a>
+                                    <a href="#">토너먼트방 목록</a> -->
+                                    <a href="/game/jackpot">잭팟 설정</a>
+                                    <a href="/game/fee">딜비 설정</a>
+                                    <%}%>
+                                    <a href="/game/gamelog">게임 로그</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <% if ( user.iClass <= 1 ) { %>
+                        <li class="side-nav-item">
+                            <a href="javascript: void(0);" class="side-nav-link">
+                                <i class="uil-envelope"></i>
+                                <span> 기타 </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="side-nav-second-level" aria-expanded="false">
+                                <li>
+                                    <a href="/etc/letter">쪽지 관리</a>
+                                    <a href="/etc/consulting">1:1 문의</a>
+                                    <% if ( user.iClass == 0 ) { %>
+                                    <a href="/announcement">공지사항</a>
+                                    <a href="/announcement/popup">팝업 관리</a>
+                                    <!-- <a href="#">마이페이지</a> -->
+                                    <%}%>
+                                </li>
+                            </ul>
+                        </li>
+                        <%}%>
+
+                        <li class="side-nav-title side-nav-item">기타</li>
+    
+                        <li class="side-nav-item">
+                            <a href="/account/logout" class="side-nav-link">
+                                <i class="uil-rss"></i>
+                                <span> 로그 아웃 </span>
+                            </a>
+                        </li>
+    
+    
+    
+                    </ul>
+    
+                    <!-- End Sidebar -->
+    
+                    <div class="clearfix"></div>
+                    <!-- Sidebar -left -->
+    
+                </div>
+                <!-- Left Sidebar End -->
+    
+                <div class="content-page">
+                    <div class="content">
+    
+                        <%- body %>
+    
+                    </div> <!-- End Content -->
+                    <!-- Footer Start -->
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    2022 YGPoker
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-right footer-links d-none d-md-block">
+                                        <a href="javascript: void(0);">About</a>
+                                        <a href="javascript: void(0);">Support</a>
+                                        <a href="javascript: void(0);">Contact Us</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- end Footer -->
+    
+                </div> <!-- content-page -->
+    
+            </div> <!-- end wrapper-->
+        </div>
+        <div class="modal fade task-modal-content" id="AccountDialog" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="NewTaskModalLabel">계좌정보 변경</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                            <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
+                            <input type="hidden" name="id" id="uid" value="" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="birthdatepicker">예금주명</label>
+                                        <input type="text" class="form-control date" id="strAdminName" name="strAdminName" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="birthdatepicker">은행명</label>
+                                        <input type="text" class="form-control date" id="strAdminDesc" name="strAdminDesc" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label for="birthdatepicker">계좌번호</label>
+                                        <input type="text" class="form-control date" id="strAdminAccount" name="strAdminAccount" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" onclick="RequestAccountChange();">저장</button>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- END Container -->
+        <!-- bundle -->
+        <script src="./assets/js/vendor.min.js"></script>
+        <script src="./assets/js/app.min.js"></script>
+    
+        <!-- third party js -->
+        <script src="./assets/js/vendor/jquery.dataTables.min.js"></script>
+        <script src="./assets/js/vendor/dataTables.bootstrap4.js"></script>
+        <script src="./assets/js/vendor/dataTables.responsive.min.js"></script>
+        <script src="./assets/js/vendor/responsive.bootstrap4.min.js"></script>
+        <script src="./assets/js/vendor/dataTables.checkboxes.min.js"></script>
+        <!-- third party js ends -->
+        <!-- demo app -->
+        <script src="./assets/js/pages/demo.customers.js"></script>
+        <!-- end demo js-->
+        <!-- include summernote css/js -->
+        <link href="./js/summernote/summernote-bs4.css" rel="stylesheet">
+        <link href="./js/summernote/summernote.css" rel="stylesheet">
+        <script src="./js/summernote/summernote-bs4.min.js"></script>
+        <script src="./js/summernote/summernote.min.js"></script>
+        <script src="./js/summernote/lang/summernote-ko-KR.min.js"></script>
+    
+        <script type="text/javascript" src="./js/jquery.form.min.js"></script>
+        <script type="text/javascript" src="./js/select.dataTables.min.js"></script>
+    
+        <script type="text/javascript">
+
+            var user = JSON.parse('<%-JSON.stringify(user)%>');
+
+            $.fn.datepicker.dates['kr'] = {
+                days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
+                daysShort: ["일", "월", "화", "수", "목", "금", "토", "일"],
+                daysMin: ["일", "월", "화", "수", "목", "금", "토", "일"],
+                months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+            };
+
+            var socket = io('/');
+            var sAlert = new Audio('/sounds/alert.mp3'); // sound.mp3 대신 루프로 재생할 오디오 파일 경로를 입력하세요.
+            sAlert.loop = true; // 오디오를 루프로 재생합니다.
+            socket.on('SM_RequestLogin', ()=> {
+
+                console.log('SM_RequestLogin');
+                socket.emit('CM_Login', {strID:user.strID, strGroupID:user.strGroupID});
+
+            });
+
+            socket.on('SM_Alert', (objectData) => {
+
+                console.log('SM_Alert');
+                console.log(objectData);
+                //objectData.eType = 0 (input), objectData.eType = 1 (output), objectData.eType = 2 (letter)
+                if(objectData.eType == 0)
+                {
+                    $('#alert_input').show();
+                    sAlert.play();
+                }
+                if(objectData.eType == 1)
+                {
+                    $('#alert_output').show();
+                    sAlert.play();
+                }
+                if(objectData.eType == 2)
+                {
+                    $('#alert_letter').show();
+                    sAlert.play();
+                }
+            });
+            let RequestAccountChange = () => {
+        
+                const strName = $('#strAdminName').val();
+                const strDesc = $('#stAdminrDesc').val();
+                const strAccount = $('#strAdminAccount').val();
+
+                $.ajax({
+                    url:"/agent/request_accountchange",
+                    type:"POST",
+                    data: {
+                        strID:user.strID,
+                        strName :strName,
+                        strDesc:strDesc,
+                        strAccount:strAccount,
+                    },
+                    dataType: "json",
+                    success: function (obj) {
+                        console.log(obj);
+
+                        if ( obj.result == 'OK' )
+                        {
+                            alert('완료 되었습니다.');
+                            location.reload();
+                        }
+                        else
+                        {
+                            alert(obj.reason);
+                        }
+                    }, 
+                    error: function () {
+                        alert("조회 중 오류 발생");
+                    }
+                });
+            }
+            $(document).ready(function(){
+    
+                $('#alert_input').hide();
+                $('#alert_output').hide();
+                $('#alert_letter').hide();
+
+                $("#ChangePersonalInfo").click(function(e){
+                    e.preventDefault();
+    
+                    var currentPassword = prompt("현재 비밀번호를 입력해 주세요");
+                    if(currentPassword == "" || currentPassword == null)
+                        return;
+                    var newPassword = prompt("새로운 비밀번호를 입력해 주세요");
+                    if(newPassword == "" || newPassword == null)
+                        return;
+    
+                    var confirmPassword = prompt("새로운 비밀번호를 다시 입력해 주세요");
+                    if(confirmPassword == "" || confirmPassword == null)
+                        return;
+                    if(confirmPassword != newPassword){
+                        alert("새로운 비밀번호와 일치 하지 않습니다");
+                        return;
+                    }
+    
+                    $.ajax({
+                        //url : "@Url.Action("ChangeMyPassword")",
+                        url : "/agent/request_passwordchange",
+                        data : {
+                            strID:user.strID,
+                            currentPassword : currentPassword,
+                            newPassword : newPassword
+                        },
+                        dataType : "json",
+                        type : "POST",
+                        success : function(obj){
+                            if(obj.result == "OK"){
+                                alert("변경되었습니다");
+                            }else{
+                                alert(obj.reason);
+                            }
+                        },
+                        error : function(){
+                            alert("서버 오류로 처리 할 수 없습니다");
+                        }
+                    });
+                });
+                $("#ChangeAdminAccount").click(function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        //url: "@Url.Action("QueryUser")",
+                        url:"/agent/request_accountchangelist",
+                        type:"POST",
+                        data: {
+                            strID:user.strID
+                        },
+                        dataType: "json",
+                        success: function (obj) {
+                            if (obj.result == "OK") {
+
+                                console.log(obj.data);
+
+                                const data = obj.data;
+
+                                $('#strAdminDesc').val(data.strDesc);
+                                $('#strAdminName').val(data.strName);
+                                $('#strAdminAccount').val(data.strAccount);
+
+                                $('#AccountDialog').modal('show');
+                            } else {
+                                alert(obj.reason);
+                            }
+                        }, error: function () {
+                            alert("조회 중 오류 발생");
+                        }
+                    });
+                });
+            });
+    
+        </script>
+
+        <%- script %>
+    
+    </body>
+    <% } else if ( type == 1 ) { %>
+        <%- body %>
+
+        <%- script %>
+    <% } else if ( type == 2 ) { %>
+
+        <body>
+            <!-- Start Content-->
+            <div class="container-fluid">
+        
+                <!-- Begin page -->
+                <div class="wrapper">
+        
+                        <div class="content">
+        
+                            <%-body%>
+        
+                        </div> <!-- End Content -->
+                
+        
+                </div> <!-- end wrapper-->
+            </div>
+            <!-- END Container -->
+
+            <%-script%>
+        
+        </body>        
+
+
+    <% } %>
+</html>

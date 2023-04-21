@@ -1,0 +1,161 @@
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">매출관리</a></li>
+                    <li class="breadcrumb-item active">일일 요약</li>
+                </ol>
+            </div>
+            <h4 class="page-title">일일 요약</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="form-row  align-items-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">검색 날짜 범위</label>
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only">시작 날짜</label>
+                        <input type="text" class="form-control mb-2" id="startDate" data-provide="datepicker" placeholder="시작 날짜">
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only">마지막 날짜</label>
+                        <input type="text" class="form-control mb-2" id="endDate" data-provide="datepicker" placeholder="마지막 날짜(오늘)">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary mb-2" id="FindButton">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="card col-12">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-sm dt-responsive nowrap w-100">
+                    <thead>
+                        <!-- <tr>
+                            <th rowspan="2">날짜</th>
+                            <th colspan="4">충전금액 <a>1000</a></th>
+                            <th colspan="4">충전건수 <a>10</a></th>
+                        </tr> -->
+                        <tr>
+                            <th>충전 일자</th>
+                            <th>충전 총액</th>
+                            <th>충전 횟수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+<script type="text/javascript">
+    var dataTableInstance;
+    $(document).ready(function () {
+
+        $("#startDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language : 'kr'
+        });
+        $("#endDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'kr'
+        });
+
+        $("#FindButton").click(function (e) {
+            e.preventDefault();
+
+            dataTableInstance.ajax.reload();
+        });
+
+        // 리스트
+        dataTableInstance = $('#dataTable').DataTable({
+            "serverSide": true,
+            "searching": false,
+            paging : false,
+            lengthChange : false,
+            "ajax": {
+                //url: "@Url.Action("DayReport")",
+                url: "/sale/group",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "from": $("#startDate").val(),
+                        "to": $("#endDate").val()
+                    });
+                }
+            },
+            order: [[1, 'asc']],
+            columns: [
+                {data:"dates" },
+                {data:"total_amount" },
+                {data:"total_count" },
+            ],
+            // columns: [
+
+            //     { data: "createdDate" },
+
+            //     {
+            //         data: "totalAmount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "cardAmount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "vaccAmount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "hpAmount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+
+            //     {
+            //         data: "totalCount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "cardCount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "vaccCount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            //     {
+            //         data: "hpCount",
+            //         render: $.fn.dataTable.render.number(',', '.', 0, '') }
+            // ],
+            keys: true,
+            "language": {
+                "paginate": {
+                    "previous": "<i class='mdi mdi-chevron-left'>",
+                    "next": "<i class='mdi mdi-chevron-right'>"
+                },
+                "info": "총 _TOTAL_ 건",
+                "lengthMenu" : "한 페이지 길이 _MENU_",
+                "emptyTable": "조건에 맞는 데이터가 없습니다",
+                "infoEmpty" : "표시할 데이터 없음"
+            },
+            "sort": false,
+            "drawCallback": function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+            },
+            createdRow: function (row, data) {
+            }
+        });
+
+    });
+</script>

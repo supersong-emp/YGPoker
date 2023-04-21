@@ -1,0 +1,409 @@
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">게임 관리</a></li>
+                    <li class="breadcrumb-item active">게임 로그</li>
+                </ol>
+            </div>
+            <h4 class="page-title">게임 로그</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="card col-12">
+        <div class="card-body">
+            <!-- 기준 시각 <label id="lastRefreshTime">00:00</label> <a href="#" id="RefreshButton" alt="새로고침"><i class="fas fa-sync-alt"></i></a> -->
+
+            <form>
+                <div class="form-row  align-items-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">검색 날짜 범위</label>
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only">시작 날짜</label>
+                        <input type="text" class="form-control mb-2" id="startDate" data-provide="datepicker" placeholder="">
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only">마지막 날짜</label>
+                        <input type="text" class="form-control mb-2" id="endDate" data-provide="datepicker" placeholder="">
+                    </div>
+                </div>
+            
+                <div class="mt-1 form-group form-inline">
+                    <label for="accountId" class="col-form-label font-weight-bold mr-2">회원ID</label>
+                    <input type="text" class="col-auto form-control" id="accountId" name="accountId" value="<%= accountId=''%>" required/>
+                </div>
+                <div class="mt-1 text-center">
+                    <button type="button" id="FindButton" class="btn btn-primary font-weight-bold">검색</button>
+                </div>
+        </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card col-12">
+        <div class="card-body">
+            <h5 class="card-title mb-0">
+                게임 결과
+            </h5>
+            <div class="collapse pt-3 show">
+                <table id="dataTable" class="table table-sm dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>고유 번호</th>
+                            <th>방번호</th>
+                            <th>판돈</th>
+                            <th>회원ID</th>
+                            <th>닉네임</th>
+                            <th>결과</th>
+                            <th>머니변동</th>
+                            <th>남은 보유머니</th>
+                            <th>게임 딜비</th>
+                            <th>잭팟 딜비</th>
+                            <th>잭팟 여부</th>
+                            <th>상세 내역</th>
+                        </tr>
+                    <tbody>
+                    </tbody>
+                </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="gameResultModal" tabindex="-1" role="dialog" aria-labelledby="gameResultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="gameResultModalLabel">게임 결과 상세내역</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6">
+                <h6>플레이어 수</h6>
+                <h5 id="playerCount"></h5>
+              </div>
+              <div class="col-md-6">
+                <h6>판돈</h6>
+                <h5 id="betAmount"></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h6>회원 ID</h6>
+                <h5 id="memberId"></h5>
+              </div>
+              <div class="col-md-6">
+                <h6>보유 머니</h6>
+                <h5 id="balance"></h5>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <img id="cardImage1" src="">
+              </div>
+              <div class="col-md-6">
+                <img id="cardImage2" src="">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <img id="cardImage3" src="">
+                <img id="cardImage4" src="">
+                <img id="cardImage5" src="">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <table id="gameResultTable" class="table table-sm dt-responsive nowrap w-100">
+                  <thead>
+                    <tr>
+                      <th>회원 ID</th>
+                      <th>머니 변동</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- 데이터 행들이 여기에 추가됩니다 -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+
+// $(document).on('click', '#FindButton', (e) => {
+//         e.preventDefault();
+
+//         $.ajax({
+//         url:"/game/gamelogresult",
+//         type:"POST",
+//         data: {
+//             accountId:$('#accountId').val(),
+//             startDate:$('#startDate').val(),
+//             endDate:$('#endDate').val()
+//         },
+//         dataType: "json",
+//         success: function (obj) {
+//             if (obj.result == "OK") {
+//                 dataTableInstance.ajax.reload();
+//             } else {
+//                 alert(obj.reason);
+//             }
+//         }, error: function () {
+//             alert("조회 중 오류 발생");
+//         }
+//         });
+//     })
+function showDetail(gameID) 
+{
+    console.log(gameID);
+    
+    $('#gameResultModal').modal('show');
+}
+    var dataTableInstance;
+
+    $(document).ready(function () {
+
+        var counter = 0;
+        var REFRESH_INTERVAL = 2000;
+        var timerId;
+
+        // $("#startDate").datepicker({
+        //     format: 'yyyy-mm',
+        //     language: 'kr',
+        //     minViewMode: "months",
+        //     startView: "months",
+        //     autoclose : true
+        // });
+        // $("#endDate").datepicker({
+        //     format: 'yyyy-mm',
+        //     language: 'kr',
+        //     minViewMode: "months",
+        //     startView: "months",
+        //     autoclose: true
+        // });
+
+        $("#startDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language : 'kr'
+        });
+        $("#endDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'kr'
+        });
+
+        $("#FindButton").click(function (e) {
+            e.preventDefault();
+            console.log(e);
+            dataTableInstance.ajax.reload();
+        });
+
+        function leadingZeros(n, digits){
+            var zero = '';
+            n = n.toString();
+
+            if (n.length < digits) {
+                for (var i = 0; i < digits - n.length; i++)
+                    zero += '0';
+            }
+            return zero + n;
+        }
+        let getTimeStartStamp = ()=> {
+            var now = new Date();
+
+            var d = new Date(now.setDate(now.getDate()));
+            var s =
+                leadingZeros(d.getFullYear(), 4) + '-' +
+                leadingZeros(d.getMonth() + 1, 2) + '-' +
+                leadingZeros(d.getDate(), 2);
+
+            return s;
+        }
+        let getTimeEndStamp = ()=> {
+            var now = new Date();
+
+            var d = new Date(now.setDate(now.getDate() - 1));
+            var s =
+                leadingZeros(d.getFullYear(), 4) + '-' +
+                leadingZeros(d.getMonth() + 1, 2) + '-' +
+                leadingZeros(d.getDate(), 2);
+
+            return s;
+        }
+        let today = getTimeStartStamp();
+        let yesterday = getTimeEndStamp();
+        $('#startDate').val(yesterday);
+        $('#endDate').val(today);
+
+        function refreshData() {
+            dataTableInstance.ajax.reload();
+        }
+        //리스트
+            dataTableInstance = $('#dataTable').DataTable({
+            "serverSide": true,
+            "searching": false,
+            paging : true,
+            processing:true,
+            lengthChange : false,
+            "ajax": {
+                url:"/game/gamelogresult",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        accountId:$('#accountId').val(),
+                        startDate:$('#startDate').val(),
+                        endDate:$('#endDate').val(),
+                        // extra data
+                    });
+                }
+            },
+            columns: [
+                {
+                    data: "createdAt", render: function (d) {
+                        let date = moment(d).format('YYYY-MM-DD HH:mm:ss');
+                        return date;
+                    }
+                }, 
+                {
+                    data: "roomId"
+                },
+                {
+                    data: "lUnique"
+                },
+                {
+                    data: "ibet"
+                }, 
+                {
+                    data: "strID"
+                }, 
+                {
+                    data: "strNickname"
+                }, 
+                {
+                    data: "strResult"
+                },
+                {
+                    data: "iBettingCoin", render: function (d) {
+                        let c = parseInt(d);
+                        return c.toLocaleString();
+                    }
+                },
+                {
+                    data: "iResultCoin", render: function (d) {
+                        let c = parseInt(d);
+                        return c.toLocaleString();
+                    }
+                },
+                {
+                    data: "gameDealcoin", render: function (d) {
+                        let c = parseInt(d);
+                        return c.toLocaleString();
+                    }
+                },
+                {
+                    data: "gameDealcoin", render: function (d) {
+                        let c = parseInt(d);
+                        return c.toLocaleString();
+                    }
+                }, 
+                {
+                    data: "bJackpot"
+                }
+            ],
+            columnDefs: [{
+                // '상세내역' 버튼이 들어갈 열 번호
+                targets: 11,
+                // 해당 열의 값이 바뀔때마다 호출되는 함수
+                render: function(data, type, row, meta) {
+                    return '<button class="btn btn-sm btn-outline-primary" onclick="showDetail(' + row.roomId + ')">상세내역</button>';
+                },
+                // 해당 열의 검색 기능을 비활성화
+                searchable: false
+            }],
+            order: [[0, "desc"]],
+            keys: true,
+            "language": {
+                "paginate": {
+                    "previous": "<i class='mdi mdi-chevron-left'>",
+                    "next": "<i class='mdi mdi-chevron-right'>"
+                },
+                "info": "현재 페이지 _PAGE_/_PAGES_, 총 _TOTAL_ 건",
+                "lengthMenu" : "한 페이지 길이 _MENU_",
+                "emptyTable": "조건에 맞는 데이터가 없습니다",
+                "infoEmpty" : "표시할 데이터 없음"
+            },
+            "sort": false,
+            "drawCallback": function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+            },
+            createdRow: function (row, data) {
+                $(row).attr("data-id", data.id);
+            }
+        });
+
+        
+        // $('#dataTable tbody').on('click', 'button', function() {
+        //     let data = dataTableInstance.row($(this).closest('tr')).data();
+        //     let gameID = data.gameID;
+        //     console.log(gameID);
+        //     $('#gameResultModal').modal('show');
+        //     // let data = dataTable.row($(this).parents('tr')).data();
+
+        //     // // 모달 창 열기
+        //     // $('#modal-title').text('게임 상세내역'); // 모달 타이틀 설정
+        //     // $('#modal-game-id').text(data[0]); // 게임 ID 설정
+        //     // $('#modal-player-count').text(data[1]); // 플레이어 수 설정
+        //     // $('#modal-bet').text(data[2]); // 판돈 설정
+        //     // $('#modal-game-result').empty(); // 게임 결과 영역 초기화
+
+        //     // // 플레이어 정보 표시
+        //     // for (let i = 0; i < data[1]; i++) {
+        //     //     let playerId = data[3 + 2*i];
+        //     //     let playerMoney = data[4 + 2*i];
+        //     //     let playerCards = [data[13 + 5*i], data[14 + 5*i]];
+        //     //     let $playerRow = $('<tr>').append(
+        //     //     $('<td>').text(playerId),
+        //     //     $('<td>').text(playerMoney),
+        //     //     $('<td>').append(
+        //     //         $('<img>').attr('src', playerCards[0]),
+        //     //         $('<img>').attr('src', playerCards[1])
+        //     //     )
+        //     //     );
+        //     //     $('#modal-player-info tbody').append($playerRow);
+        //     // }
+
+        //     // 게임 결과 표시
+        //     // for (let i = 0; i < data[1]; i++) {
+        //     //     let playerId = data[3 + 2*i];
+        //     //     let result = data[13 + 5*data[1] + i];
+        //     //     let $resultRow = $('<tr>').append(
+        //     //     $('<td>').text(playerId),
+        //     //     $('<td>').text(result === 'WIN' ? '이김' : '짐'),
+        //     //     $('<td>').text(result === 'WIN' ? data[2]/data[1] : 0)
+        //     //     );
+        //     //     $('#modal-game-result tbody').append($resultRow);
+        // });
+        $("#RefreshButton").click(function (e) {
+            e.preventDefault();
+            refreshData();
+        });
+    });
+</script>

@@ -1,0 +1,1149 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/img/favicon.ico">
+    <!-- ios홈화면추가시 상단 주소창 제거 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+    <link href="css/common.css" rel="stylesheet" />
+    <link href="css/top.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollToPlugin.min.js" integrity="sha512-tQFq+nb/TSS648SDzWbSj0A67t4I1PFzR0U6Oi/yEYFyUbAIwg74SOCbr7t2X1Rn+iln7sYwfh8y+z7p0gddOw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.js"></script>
+    <script src="js/youtube.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="js/main.js"></script>
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.css" />
+    <link rel="icon" href="./favicon.png">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>yg poker</title>
+</head>
+
+<body style="background-image:url('images/background2.jpg');">
+    
+    <div class="wrap">
+            <div class="header-wrap">
+                <div class="head-top">
+                    <ul class="menu">
+                        <li class="menu-starter">
+                            <a>
+                                <div>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="logo"><img src="images/logo_main.png"></div>
+                    <div class="top-title">WELCOME YG POKER</div>
+                    <div class="mem-profile">
+                        <span class="mem-img"><img id="iMainAvatar" src="images/avatars/avatar00.png"></span>
+                        <span class="mem-info">
+                            <ul><%=user.strID%></ul>
+                            <button onclick="pointChange();">포인트전환</button>
+                            <ul>point<span>
+                                    <num id="MainCash"><%=user.iPoint.toLocaleString()%></num>P
+                                </span></ul>
+                        </span>
+                        <span class="user-nav">
+                            <!-- <ul>
+                                <li><a href="javascript:OnClickRequestInput();"><img src="images/full_size.svg"></a></li>
+                                <li>충전 신청</li>
+                            </ul>
+                            <ul>
+                                <li><a href="javascript:OnClickRequestOutput();"><img src="images/full_size.svg"></a></li>
+                                <li>환전 신청</li>
+                            </ul> -->
+                            <ul class="openFullscreen">
+                                <li><img src="images/full_size.svg"></li>
+                                <li>전체화면</li>
+                            </ul>
+                            <ul>
+                                <li><a href="javascript:OnClickMyPage();"><img src="images/mypage_icon.svg"></a></li>
+                                <li>내정보</li>
+                            </ul>
+                            <ul>
+                                <li><a href="javascript:OnClickSetting();"><img src="images/setting_icon.svg"></a></li>
+                                <li>설정</li>
+                            </ul>
+                            <ul>
+                                <li><a href="javascript:OnClickWindowClose();"><img src="images/close_menu.svg"></a></li>
+                                <li>나가기</li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+                <div class="notice">
+                    <span>오늘의 잭팟</span>
+                </div>
+                <div class="main-gnb">
+                    <ul>
+                        <li id="eGameType" value="HOLDEM">홀덤</li>
+                        <li id="eGameType" value="SITANDGO">싯고</li>
+                        <li id="eGameType" value="TOURNAMENT">토너먼트</li>
+                        <li id="eGameType" value="BIG2">빅2</li>
+                    </ul>
+                </div>
+                <div class="sub-gnb">
+                    <ul>
+                        <li onclick="OnClickRequestRoomList(1000);">1,000</li>
+                        <li onclick="OnClickRequestRoomList(2000);">2,000</li>
+                        <li onclick="OnClickRequestRoomList(3000);">3,000</li>
+                        <li onclick="OnClickRequestRoomList(4000);">4,000</li>
+                        <li onclick="OnClickRequestRoomList(5000);">5,000</li>
+                    </ul>
+                </div>
+            </div>
+        <div class="container">
+            <div class="left-nav">
+                <ul>
+                    <li><a href="javascript:OnClickMakeRoom();"><img src="images/room_make.svg">방만들기</a></li>
+                    <li><a href="javascript:OnClickQuickJoin();"><img src="images/room_in.svg">바로입장</a></li>
+                    <li><a href="javascript:OnClickRefresh();"><img src="images/reload.svg">새로고침</a></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="right-nav">
+                <ul>   
+                <li class="list-one">
+                        <span>공지사항</span>
+                        <ul>
+                            <a href="/announcement/">
+                                <li>공지사항입니다.</li>
+                            </a> 
+                            <a href="/announcement/">
+                                <li>공지사항입니다.</li>
+                            </a>
+                            <a href="/announcement/">
+                                <li>공지사항입니다.</li>
+                            </a>    
+                            <a href="/announcement/">
+                                <li>공지사항입니다.</li>
+                            </a>
+                            <a href="/announcement/">
+                                <li>공지사항입니다.</li>
+                            </a>
+                            <a href="/announcement/"><p>더보기</p></a>
+                        </ul>
+                    </li>
+                    <li class="list-two">
+                        <span>잭팟 </span>
+                        
+                    </li>
+                    <li class="list-three">
+                        <span>상담 문의</span>
+                        <ul>
+                            <a href="/announcement/customer">
+                                <li>문의 게시판<div class = "material-icons">arrow_forward_ios</div></li>
+                            </a>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="room-wrap">
+                <table class="tg-head">
+                    <thead>
+                        <tr>
+                            <td class="tg-0pky">번호</td>
+                            <td class="tg-1pky">방 제목</td>
+                            <td class="tg-2pky">블라인드</td>
+                            <!-- <td class="tg-3pky">바이인</td> -->
+                            <td class="tg-4pky">인원수/최대인원수</td>
+                            <td class="tg-5pky"></td>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="tg-room">
+                    <tbody id="tbodyRoomList">
+                        <% for ( let i in rooms ) { %>
+                        <tr>
+                            <td class="tg-0pky"><%=parseInt(i)+1%></td>
+                            <td class="tg-1pky"><%=rooms[i].strGameName%> 
+                                <% if ( rooms[i].strPassword != '') { %>
+                                    🔒
+                                <%}%>
+                            </td>
+                            <td class="tg-2pky"><%=parseInt(rooms[i].iDefaultCoin).toLocaleString()%> / <%=(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()%></td>
+                            <!-- <td class="tg-3pky"><%=parseInt(rooms[i].iBuyIn).toLocaleString()%></td> -->
+                            <td class="tg-4pky"><%=rooms[i].iNumPlayer%> / <%=rooms[i].iMaxPlayer%></td>
+                            <!-- <td class="tg-5pky"><button onclick="OnClickJoin('<%=rooms[i].lUnique%>');">입장</button></td> -->
+                            <td class="tg-5pky"><button onclick="CheckJoin('<%=rooms[i].lUnique%>', '<%=rooms[i].strPassword%>');">입장</button></td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup_mypage" class="myinfo-wrap" style="position: absolute; top:35%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index: 99;">
+        <div class="close"><a href="javascript:OnClickMyPageClose();"><img src="images/close_menu.svg"></a></div>
+        <div class="myinfo-form">
+            <div class="title">내정보</div>
+            <div class="my-info">
+                <span class="profile-img">
+                    <ul><img id="iMyPageAvatar" src="images/avatars/avatar00.png"></ul>
+                    <ul><button onclick="javascript:OnClickAvatar();">아바타설정</button></ul>
+                </span>
+                <span class="info">
+                    <ul>
+                        <li>아이디</li>
+                        <li><%=user.strID%></li>
+                    </ul>
+                     <ul>
+                        <li>보유머니</li>
+                        <li><%=user.iCash.toLocaleString()%><span>원</span></li>
+                    </ul>
+                    <ul>
+                        <li>포인트</li>
+                        <li><%=user.iPoint.toLocaleString()%><span>원</span></li>
+                    </ul>
+                     <ul>
+                        <li>닉네임</li>
+                        <li><input type="text" name="strCheckNickname" value="<%=user.strNickname%>"><button type="button" onclick="OnClickCheckNickname()">중복확인</button></li>
+                    </ul>
+                </span>
+            </div>
+
+            <div id='popup_avatar' class="avatar-wrap">
+                <div class="avatar-contents">
+                   <span class="avatar-img">
+                       <ul>
+                           <li><img id='iSelectAvatar' src="images/avatars/avatar00.png"></li>
+                           <li><button onclick="OnClickAvatarClose();">확인</button></li>
+                       </ul>
+                   </span>
+                   <span class="avatar-list">
+                       <ul id="avatar_list">
+                           <!-- <li><img class="avatar_index" value='0' src="images/avatars/avatar00.png"></li>
+                           <li><img class="avatar_index" value='1' src="images/avatars/avatar01.png"></li>
+                           <li><img class="avatar_index" value='2' src="images/avatars/avatar02.png"></li>
+                           <li><img class="avatar_index" value='3' src="images/avatars/avatar03.png"></li>
+                           <li><img class="avatar_index" value='4' src="images/avatars/avatar04.png"></li>
+                           <li><img class="avatar_index" value='5' src="images/avatars/avatar05.png"></li>
+                           <li><img class="avatar_index" value='6' src="images/avatars/avatar06.png"></li>
+                           <li><img class="avatar_index" value='7' src="images/avatars/avatar07.png"></li>
+                           <li><img class="avatar_index" value='8' src="images/avatars/avatar08.png"></li>
+                           <li><img class="avatar_index" value='9' src="images/avatars/avatar09.png"></li>
+                           <li><img class="avatar_index" value='10' src="images/avatars/avatar10.png"></li>
+                           <li><img class="avatar_index" value='11' src="images/avatars/avatar11.png"></li>
+                           <li><img class="avatar_index" value='12' src="images/avatars/avatar12.png"></li>
+                           <li><img class="avatar_index" value='13' src="images/avatars/avatar13.png"></li>
+                           <li><img class="avatar_index" value='14' src="images/avatars/avatar14.png"></li>
+                           <li><img class="avatar_index" value='15' src="images/avatars/avatar15.png"></li>
+                           <li><img class="avatar_index" value='16' src="images/avatars/avatar16.png"></li>
+                           <li><img class="avatar_index" value='17' src="images/avatars/avatar17.png"></li>
+                           <li><img class="avatar_index" value='18' src="images/avatars/avatar18.png"></li>
+                           <li><img class="avatar_index" value='19' src="images/avatars/avatar19.png"></li>
+                           <li><img class="avatar_index" value='20' src="images/avatars/avatar20.png"></li> -->
+                       </ul>
+                   </span> 
+                </div>
+            </div>
+
+            <button class="verify-btn" onclick="OnClickModifyMyPage();">수정</button>
+        </div>
+    </div>
+
+    <div id="popup_makeroom" class="room-make-wrap" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
+        <div class="close"><a href="javascript:OnClickMakeRoomClose();"><img src="images/close_menu.svg"></a></div>
+        <div class="r-make-form">
+            <div class="title">방만들기</div>
+            <div class="form">
+                <ul>
+                    <li>방제목</li>
+                    <li><input id="room_name" type="text" value="YG포커 홀덤~!!!"></li>
+                </ul>
+                <ul>
+                    <li>블라인드</li>
+                    <li>
+                        <select id="room_blind">
+                            <option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>
+                        </select>
+                    </li>
+                </ul>
+                <ul>
+                    <li>베팅시간</li>
+                    <li>
+                        <select id="room_bettingtime">
+                            <option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>
+                        </select>
+                    </li>
+                </ul>
+                <!-- <ul>
+                    <li>바이인</li>
+                    <li>
+                        <select id="room_buyin">
+                            <option value="100">100%</option>
+                            <option value="200">200%</option>
+                            <option value="300">300%</option>
+                        </select>
+                    </li>
+                </ul> -->
+                <ul>
+                    <li>최대인원</li>
+                    <li>
+                        <select id="room_numplayer">
+                        </select>
+                    </li>
+                </ul>
+                <ul>
+                    <li>비밀번호</li>
+                    <li><input id="room_password" type="text"></li>
+                </ul>
+            </div>
+            <button class="button_makeroom">방 만들기</button>
+        </div>
+    </div>
+
+    <div id="popup_enterpassword" class="room-make-wrap" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
+        <div class="r-make-form">
+            <div class="title">입장 비밀번호</div>
+            <div class="form">
+                <ul>
+                    <li>비밀번호</li>
+                    <li><input id="room_enterpassword" type="text"></li>
+                </ul>
+                <input id="room_enterunique" type="hidden">
+                <input id="room_originpassword" type="hidden">
+            </div>
+            <button class="button_enterpassword">입장하기</button>
+        </div>
+    </div>
+
+    <div id="popup_alert" class="room-make-wrap" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
+        <div class="r-make-form">
+            <div class="title">알림</div>
+            <div class="form">
+                <ul>
+                    <li style='width:300px;' id="popup_alerttext1"></li>
+                </ul>
+            </div>
+            <button class="button_hidealert">확인</button>
+        </div>
+    </div>
+
+
+    <div id="popup_setting" class="setting-wrap" style="position: absolute; top:35%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index: 99;">
+        <div class="close"><a href="javascript:OnClickSettingClose();"><img src="images/close_menu.svg"></a></div>
+        <div class="setting-form">
+            <div class="title">설정</div>
+            <div class="form">
+                <ul>
+                    <li>리바인</li>
+                    <li>
+                        <span><input type="radio" id="radioRebuyInOn" name="radioRebuyin"><font>on</font></span>
+                        <span><input type="radio" id="radioRebuyInOff" name="radioRebuyin"><font>off</font></span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>리바인 설정</li>
+                    <li>
+                        <select id="selectRebuyIn">
+                            <option value="100">100%</option>
+                            <option value="200">200%</option>
+                            <option value="300">300%</option>
+                        </select>
+                    </li>
+                </ul>
+                <ul>
+                    <li>배경 선택</li>
+                    <li>
+                        <select id="selectBg">
+                            <option value="1">블루</option>
+                            <option value="2">레드</option>
+                        </select>
+                    </li>
+                </ul>
+                <ul>
+                    <li>카드덱 선택</li>
+                    <li>
+                        <select id="selectDeck">
+                            <option value="1">블루</option>
+                            <option value="2">레드</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <button onclick="OnClickModifySetting();">수정</button>
+        </div>
+    </div>
+
+    <!-- <div id="popup_requestinput" class="room-make-wrap" style="position: absolute; top:25%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index : 99;">
+        <div class="close"><a href="javascript:OnClickRequestInputClose();"><img src="images/close_menu.svg"></a></div>
+        <div class="r-make-form">
+            <div class="title">충전신청</div>
+
+            <div class="form">
+                <ul>
+                    <li>입금자명</li>
+                    <li style="text-align: center; font-size: 23px; border: 1px; color:white"><%=user.strName%></li>
+                </ul>
+                <ul>
+                    <li>충전금액</li>
+                    <li><input id="requestinput_amount" type="text"></li>
+                </ul>
+            </div>
+            <button class="button_requestinput">충전 신청</button>
+        </div>
+    </div>
+
+    <div id="popup_requestoutput" class="room-make-wrap" style="position: absolute; top:25%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index : 99;">
+        <div class="close"><a href="javascript:OnClickRequestOutputClose();"><img src="images/close_menu.svg"></a></div>
+        <div class="r-make-form">
+            <div class="title">출금신청</div>
+            <div class="form">
+                <ul>
+                    <li>출금자명</li>
+                    <li style="text-align: center; font-size: 23px; border: 1px; color:white"><%=user.strName%></li>
+                </ul>
+                <ul>
+                    <li>출금금액</li>
+                    <li><input id="requestoutput_amount" type="text"></li>
+                </ul>
+            </div>
+            <button class="button_requestoutput">환전 신청</button>
+        </div>
+    </div>-->
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+
+        var socket = io('/');
+
+        var account = JSON.parse('<%-JSON.stringify(account)%>');
+        let targetName = window.name;
+        console.log("-----------------------------account : " + account);
+
+        //  HOLDEM, SITANDGO, TOURNAMENT, BIG2
+        let eGameType = '';
+        let reiBlind = parseInt($('#room_blind').val())*2;
+
+        $(document).on('click', '#eGameType', (e) => {
+            // 기존에 클릭된 메뉴의 배경색을 회색으로 변경
+            $('.main-gnb ul li.active').removeClass('active');
+
+            // 현재 클릭된 메뉴의 배경색을 빨간색으로 변경
+            $(e.currentTarget).addClass('active');
+
+            const value = $(e.currentTarget).attr('value');
+            console.log(value);
+
+            eGameType = value;
+            socket.emit('CM_RoomGameList', {eGameType:value});
+            $('#room_numplayer').empty();
+            if(eGameType == 'HOLDEM')
+            {
+                $('[value="HOLDEM"]').addClass('active');
+                eGameType = "HOLDEM";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(eGameType == 'TOURNAMENT')
+            {
+                $('[value="TOURNAMENT"]').addClass('active');
+                eGameType = "TOURNAMENT";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(eGameType == 'SITANDGO')
+            {
+                $('[value="SITANDGO"]').addClass('active');
+                eGameType = "SITANDGO";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(eGameType == 'BIG2')
+            {
+                $('[value="BIG2"]').addClass('active');
+                eGameType = "BIG2";
+                let tag = `<option value="4">4명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+        })
+
+        let iAvatarIndex = account.iAvatar;
+
+        // 	####################################################################################################
+        //	# Socket
+
+        let leadingZeros = (n, digits) => {
+            //console.log(`${n}`);
+            let zero = '';
+            n = n.toString();
+
+            if (n.length < digits) {
+                for (let i = 0; i < digits - n.length; i++)
+                    zero += '0';
+            }
+            return zero + n;
+        }
+
+        //
+        for ( let i = 0; i < 33; ++ i )
+        {
+            let strSource = `images/avatars/avatar${leadingZeros(i, 2)}.png`;
+            let tagAvatar = `<li><img class="avatar_index" value='${i}' src=${strSource}></li>`;
+            //console.log(strSource);
+
+            $('#avatar_list').append(tagAvatar);
+        }
+        //
+        const headerEl = document.querySelector('.wrap');
+        const menuStarterEl = document.querySelector('.wrap .menu-starter');
+
+        menuStarterEl.addEventListener('click', function(){
+            if(headerEl.classList.contains('menuing')){
+                headerEl.classList.remove('menuing');
+            }
+            else
+            {
+                headerEl.classList.add('menuing');
+            }
+        })
+
+        $(document).on('ready', ()=> {
+            
+            socket.emit('CM_Login', account.strID, account.strPassword, account.iPoint);
+            if(targetName == 'IHoldemLobby')
+            {
+                $('[value="HOLDEM"]').addClass('active');
+                eGameType = "HOLDEM";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(targetName == 'ITournamentLobby')
+            {
+                $('[value="TOURNAMENT"]').addClass('active');
+                eGameType = "TOURNAMENT";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(targetName == 'ISitgoLobby')
+            {
+                $('[value="SITANDGO"]').addClass('active');
+                eGameType = "SITANDGO";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            else if(targetName == 'IBig2Lobby')
+            {
+                $('[value="BIG2"]').addClass('active');
+                eGameType = "BIG2";
+                let tag = `<option value="4">4명</option>`;
+                $('#room_numplayer').append(tag);
+            }
+            socket.emit('CM_RoomGameList', {eGameType:eGameType});
+            $('#popup_mypage').hide();
+            $('#popup_makeroom').hide();
+            $('#popup_setting').hide();
+            $('#popup_enterpassword').hide();
+            $('#popup_alert').hide();
+            $('#popup_requestinput').hide();
+            $('#popup_requestoutput').hide();
+            
+
+            let strSourceFilename = `images/avatars/avatar${leadingZeros(parseInt(iAvatarIndex), 2)}.png`;
+
+            $('#iSelectAvatar').attr('src', strSourceFilename);
+            $('#iMyPageAvatar').attr('src', strSourceFilename);
+            $('#iMainAvatar').attr('src', strSourceFilename);
+
+            let iRebuyIn = account.strOptionCode[0];
+            let iRebuyInLevel = account.strOptionCode[1];
+            let iBgLevel = account.strOptionCode[2];
+            let iCardDeck = account.strOptionCode[3];
+
+            if ( iRebuyIn == 0 )
+            {
+                $('#radioRebuyInOff').prop('checked', true);
+                $('#radioRebuyInOn').prop('checked', false);
+            }
+            else
+            {
+                $('#radioRebuyInOff').prop('checked', false);
+                $('#radioRebuyInOn').prop('checked', true);                
+            }
+            
+            $('#selectRebuyIn').val(parseInt(iRebuyInLevel)*100);
+            $('#selectBg').val(parseInt(iBgLevel));
+            $('#selectDeck').val(parseInt(iCardDeck));
+        })
+
+        socket.on('SM_RequestLogin', (data) => {
+
+            console.log(`RequestLogin`);
+
+            socket.emit('CM_Login', account.strID, account.strPassword);
+
+        });
+
+        socket.on('SM_Error', (objectData) => {
+
+            console.log(`SM_Error`);
+            console.log(objectData);
+
+            if ( objectData.error == 'NotExistRoom' )
+            {
+                alert('There is no Room to join');
+            }
+            else if ( objectData.error == 'AlreadyPlaying' )
+            {
+                alert('Already playing in the game');
+            }
+            //location.reload();
+        });
+
+        socket.on('SM_RoomList', (rooms) => {
+
+            console.log(`SM_RoomList`);
+            console.log(rooms);
+
+            $('#tbodyRoomList').empty();
+            for ( let i in rooms )
+            {
+                let tag = `<tr>
+                            <td class="tg-0pky">${parseInt(i)+1}</td>
+                            <td class="tg-1pky">${rooms[i].strGameName}</td>
+                            <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
+                            <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                            <td class="tg-5pky"><button onclick="OnClickJoin(${rooms[i].lUnique});">입장</button></td>
+                        </tr>`;
+                $('#tbodyRoomList').append(tag);
+            }
+        });
+
+        socket.on('SM_RoomGameList', (rooms) => {
+
+            console.log(`SM_RoomGameList`);
+            console.log(rooms);
+
+            $('#tbodyRoomList').empty();
+            for ( let i in rooms )
+            {
+                let tag = `<tr>
+                            <td class="tg-0pky">${parseInt(i)+1}</td>
+                            <td class="tg-1pky">${rooms[i].strGameName}</td>
+                            <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
+                            <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                            <td class="tg-5pky"><button onclick="OnClickJoin(${rooms[i].lUnique});">입장</button></td>
+                        </tr>`;
+                $('#tbodyRoomList').append(tag);
+            }
+        });
+
+        function IsMobile()
+        {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        socket.on('SM_OpenGame', (objectData) => {
+
+            console.log(`SM_OpenGame`);
+            console.log(objectData);
+
+            if ( objectData.result == 'OK' )
+            {
+                
+                if ( IsMobile() == false ){
+                    window.open('', 'game', 'width=1280, height=720, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes,resizable=no, location=no, scrollbar=no');
+                }
+                else
+                    window.open('', 'game', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' + window.innerWidth + ',height=' + window.innerWidth + ',top=0,left=0, fullscreen=yes');
+                    
+                var $form = $('<form></form>');
+                //$form.attr('action', '/game');
+
+                $form.attr('action', objectData.strAddress);
+
+                $form.attr('method', 'post');
+                $form.attr('target', 'game');
+                $form.appendTo('body');
+                
+                var eGameType = $(`<input type="hidden" value="${objectData.eGameType}" name="eGameType">`);
+                var strID = $(`<input type="hidden" value="${account.strID}" name="strID">`);
+                var strPassword = $(`<input type="hidden" value="${account.strPassword}" name="strPassword">`);
+                var lUnique = $(`<input type="hidden" value="${objectData.lUnique}" name="lUnique">`);
+                //var iCoin = $(`<input type="hidden" value='${100000}' name="iCoin">`);
+                var iCoin = $(`<input type="hidden" value='${account.iPoint}' name="iCoin">`);
+                var iAvatar = $(`<input type="hidden" value='${iAvatarIndex}' name="iAvatar">`);
+                var strOptionCode = $(`<input type="hidden" value='${account.strOptionCode}' name="strOptionCode">`);
+                var strGroupID = $(`<input type="hidden" value='${account.strGroupID}' name="strGroupID">`);
+                var iClass = $(`<input type="hidden" value='${account.iClass}' name="iClass">`);
+                var iMaxPlayer = $(`<input type="hidden" value='${objectData.iMaxPlayer}' name="iMaxPlayer">`);
+
+                $form.append(eGameType).append(strID).append(lUnique).append(iCoin).append(iAvatar).append(strOptionCode).append(strGroupID).append(iClass).append(iMaxPlayer);
+                $form.submit();
+            }
+        });
+
+        socket.on('SM_LeaveGame', () => {
+
+            alert('Leave');
+
+        });
+
+        //socket.emit('CM_RoomList');
+
+        let OnClickRefresh = () => {
+
+            socket.emit('CM_RoomList', {eGameType:eGameType, reiBlind:reiBlind});
+            //location.reload();
+        }
+
+        let OnClickMakeRoom = () => {
+
+            let strDefaultRoomName = ['YG포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
+
+            let index = Math.floor(Math.random()*3);
+            $('#room_name').val(strDefaultRoomName[index]);
+            
+            $('#popup_makeroom').show();
+        }
+
+        let OnClickMakeRoomClose = () => {
+
+            $('#popup_makeroom').hide();
+        }
+
+        let OnClickRequestInputClose = () => {
+
+            $('#popup_requestinput').hide();
+        }
+
+        let OnClickRequestOutputClose = () => {
+
+            $('#popup_requestoutput').hide();
+        }
+
+        let OnClickQuickJoin = () => {
+
+            let iBuyIn = parseInt(account.strOptionCode[1])*100;
+            let data = {
+                eGameType:eGameType,
+                strID:account.strID, 
+                strGroupID:account.strGroupID,
+                iClass:account.iClass,
+                iDefaultCoin:1000, 
+                strRoomName:'', 
+                strPassword:'', 
+                iBuyIn:iBuyIn,
+                iBettingTime:0,
+                iNumPlayers:0,
+            };
+
+            console.log(data);
+
+            socket.emit('CM_QuickJoinRoom', data);
+        }
+
+        let CheckJoin = (lUnique, strPassword) => {
+            
+            console.log(lUnique);
+            console.log(strPassword);
+
+            if ( strPassword == '' )
+            {
+                OnClickJoin(lUnique);
+            }
+            else
+            {
+                $('#room_enterunique').val(lUnique);
+                $('#room_originpassword').val(strPassword);
+                $('#popup_enterpassword').show();
+            }
+        }
+
+        let OnClickJoin = (lUnique) => {
+
+            let data = {
+                eGameType:eGameType,
+                strID:account.strID,
+                strGroupID:account.strGroupID,
+                iClass:account.iClass,
+                iCoin:account.iPoint, 
+                lUnique:lUnique,
+                strOptionCode:account.strOptionCode
+            };
+
+            console.log(data);
+
+            socket.emit('CM_JoinRoom', data);
+        }
+
+        $(document).on('click', '.avatar_index', (e) => {
+
+            let value = $(e.currentTarget).attr('src');
+            let index = $(e.currentTarget).attr('value');
+            console.log(`value = ${value}, index = ${index}`);
+
+            iAvatarIndex = index;
+
+            $('#iSelectAvatar').attr('src', value);
+            $('#iMyPageAvatar').attr('src', value);
+        })
+
+        $(document).on('click', '.button_hidealert', (e) => {
+            $('#popup_alert').hide();
+        });
+
+        $(document).on('click', '.button_enterpassword', (e) => {
+
+            $('#popup_enterpassword').hide();
+
+            let strEnterPassword = $('#room_enterpassword').val();
+            let lUnique = $('#room_enterunique').val();
+            let strOriginPassword = $('#room_originpassword').val();
+
+            console.log(`EnterPassword : ${strEnterPassword}, lUnique : ${lUnique}, strOriginPassword : ${strOriginPassword}`);
+
+            if ( strEnterPassword == strOriginPassword )
+            {
+                OnClickJoin(lUnique);
+            }
+            else
+            {
+                $('#popup_alerttext1').text('비밀번호가 틀립니다.');
+                $('#popup_alert').show();
+            }
+        });
+
+        $(document).on('click', '.button_makeroom', (e) => {
+
+            //var listVar = $('input:radio[name=contact]').is(":checked");
+            // let iNumPlayers = $('input[name=makeroom_numplayers]:checked').val();
+            // let iBettingTime = $('input[name=makeroom_bettingtime]:checked').val();
+            // let iBuyIn = $('input[name=makeroom_buyin]:checked').val();
+            // let iBlind = $('input[name=makeroom_blind]:checked').val();
+            // let strRoomName = $('#makeroom_roomname').val();
+            // let strPassword = $('#makeroom_password').val();
+            let iRebuyInLevel = account.strOptionCode[1];
+            let iNumPlayers = $('#room_numplayer').val();
+            let iBettingTime = $('#room_bettingtime').val();
+            let iBuyIn = parseInt(iRebuyInLevel)*100;
+            let iBlind = $('#room_blind').val();
+            iBuyIn = parseInt(iBlind) * parseInt(iBuyIn);
+            let strRoomName = $('#room_name').val();
+            let strPassword = $('#room_password').val();
+
+
+            console.log(`R-Name : ${strRoomName}, Pass : ${strPassword}, NumPlayers : ${iNumPlayers}, BettingTime : ${iBettingTime}, iBuyIn : ${iBuyIn}, iBlind : ${iBlind}`);
+
+            if ( account.iPoint < iBuyIn )
+            {
+                alert('보유포인트가 바이인 보다 적습니다.');
+                return;
+            }
+
+            if ( strRoomName == '' || iNumPlayers == undefined || iBettingTime == undefined || iBuyIn == undefined || iBlind == undefined )
+            {
+                alert('입력 값이 올바르지 않습니다.');
+                return;
+            }
+
+            //alert(account.iCash);
+
+            //GameMain.Test();
+
+            let data = {
+                //eGameType:0,
+                eGameType:eGameType,
+                strID:account.strID,
+                strGroupID:0,
+                iClass:5,
+                iDefaultCoin:iBlind, 
+                strRoomName:strRoomName, 
+                strPassword:strPassword, 
+                //iBuyIn:iBuyIn,
+                iBettingTime:iBettingTime,
+                iMaxPlayer:iNumPlayers,
+                iNumPlayer:1,
+            };
+
+            console.log(data);
+
+            socket.emit('CM_CreateRoom', data);
+
+            $('#popup_makeroom').hide();
+        });
+
+        $(document).on('click', '.button_requestinput', (e) => {
+
+            let iAmount = $('#requestinput_amount').val();
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_input",
+                data: {
+                    iAmount:iAmount,
+                },
+                success:function(ret) {
+                    
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        location.reload();
+                    }
+                }
+            });
+
+            $('#popup_requestinput').hide();
+        });
+
+        $(document).on('click', '.button_requestoutput', (e) => {
+
+            let iAmount = $('#requestoutput_amount').val();
+
+            console.log(`*******************iAmount : ${iAmount} - account.iCash : ${account.iCash}`);
+
+            if ( parseInt(iAmount) > parseInt(account.iCash) )
+            {
+                alert('출금금액이 보유금액보다 큽니다.');
+                return;
+            }
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_output",
+                data: {
+                    iAmount:iAmount,
+                },
+                success:function(ret) {
+                    
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        location.reload();
+                    }
+                }
+            });
+
+            $('#popup_requestinput').hide();
+        });
+
+        let OnClickMyPage = () => {
+
+            $('#popup_mypage').show();
+            $('#popup_avatar').hide();
+        }
+
+        let OnClickMyPageClose = () => {
+
+            $('#popup_mypage').hide();
+        }
+
+        let OnClickAvatar = () => {
+
+            $('#popup_avatar').show();
+        }
+
+        let OnClickAvatarClose = () => {
+
+        //     $.ajax({
+        //     type:'post',
+        //     url: "/request_avatarindex",
+        //     data: {index:iAvatarIndex},
+        //     success:function(ret) {
+        //         console.log(ret);
+        //     }
+        // });
+
+            $('#popup_avatar').hide();
+        }
+
+        let OnClickSetting = () => {
+
+            $('#popup_setting').show();
+        }
+        let OnClickWindowClose = () => {
+
+            window.close();
+        }
+
+        let OnClickSettingClose = () => {
+
+            $('#popup_setting').hide();
+        }
+
+        let pointChange = () =>{
+            $.ajax({
+                type:'post',
+                url: "/account/request_pointchange",
+                data: {},
+                success:function(ret) {
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        alert('포인트로 전환 완료 되었습니다.');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('보유머니를 확인해주세요.');
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+
+        let OnClickCheckNickname = () => {
+
+            let strCheckNickname = $('input[name=strCheckNickname]').val();
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_checknickname",
+                data: {strCheckNickname:strCheckNickname},
+                success:function(ret) {
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        alert('사용 가능한 닉네임 입니다.');
+                    }
+                    else
+                    {
+                        alert('이미 사용중인 닉네임 입니다.');
+                    }
+                }
+            });
+        }
+
+        let OnClickModifyMyPage = () => {
+            
+            let strCheckNickname = $('input[name=strCheckNickname]').val();
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_modifymypage",
+                data: {
+                    strID:account.strID,
+                    strCheckNickname:strCheckNickname,
+                    iAvatarIndex:iAvatarIndex
+                },
+                success:function(ret) {
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        location.reload();                        
+                    }
+                    else
+                    {
+                        alert('수정을 완료 하지 못했습니다.');
+                    }
+                }
+            });
+        }
+
+        let OnClickModifySetting = () => {
+            
+            let bOff = $('#radioRebuyInOff').prop('checked');
+            let bOn = $('#radioRebuyInOn').prop('checked');
+            let iBuyIn = $('#selectRebuyIn').val();
+            let iBg = $('#selectBg').val();
+            let iDeck = $('#selectDeck').val();
+
+            let strOptionCode = account.strOptionCode;
+
+            let strOption = '';
+            if ( bOff == true )
+            {
+                strOption = '0';
+            }
+            else
+                strOption = '1';
+
+            strOption += (parseInt(iBuyIn) / 100).toString();
+
+            strOption += (parseInt(iBg)).toString();
+
+            strOption += (parseInt(iDeck)).toString();
+
+            strOptionCode = strOptionCode.substring(4, 8);
+
+            strOptionCode = strOption + strOptionCode;
+
+            console.log(`Off : ${bOff}, On : ${bOn}, iBuyIn : ${iBuyIn}, iBg : ${iBg},strOptionCode : ${strOptionCode}`);
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_modifysetting",
+                data: {
+                    strID:account.strID,
+                    strOptionCode:strOptionCode
+                },
+                success:function(ret) {
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+                        location.reload();                        
+                    }
+                    else
+                    {
+                        alert('수정을 완료 하지 못했습니다.');
+                    }
+                }
+            });
+        }
+
+        let OnClickRequestRoomList = (iBlind) => {
+
+            socket.emit('CM_RoomList', {eGameType:eGameType, iBlind:iBlind});
+        }
+
+        let OnClickRequestInput = () => {
+
+            $('#popup_requestinput').show();
+        }
+
+        let OnClickRequestOutput = () => {
+
+            $('#popup_requestoutput').show();
+        }
+        $(document).on('click', '.openFullscreen', (e) => {
+            var elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

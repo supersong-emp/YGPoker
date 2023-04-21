@@ -1,0 +1,200 @@
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">매출관리</a></li>
+                    <li class="breadcrumb-item active">실시간 충전 현황</li>
+                </ol>
+            </div>
+            <h4 class="page-title">실시간 충전 현황</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="card col-12">
+        <div class="card-body">
+            기준 시각 <label id="lastRefreshTime">00:00</label> <a href="#" id="RefreshButton" alt="새로고침"><i class="fas fa-sync-alt"></i></a>
+        </div>
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="card col-12">
+        <div class="card-body">
+            <h5 class="card-title mb-0">
+                충전 요약
+            </h5>
+            <div class="collapse pt-3 show">
+                <div class="table-responsive">
+                    <table id="dataTable" class="table table-sm dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>매체</th>
+                                <th>당일 충전 금액</th>
+                                <th>당일 충전 건수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>핸드폰</td>
+                                <td>100</td>
+                                <td>300</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="row">
+    <div class="card col-12">
+        <div class="card-body">
+            <h5 class="card-title mb-0">
+                충전 상세 내역(당일 최근 100건)
+            </h5>
+            <div class="collapse pt-3 show">
+                <table id="dataTable2" class="table table-sm dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>시각</th>
+                            <th>계정</th>
+                            <th>충전금액</th>
+                            <th>충전수단</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var dataTableInstance;
+    var dataTableInstance2;
+
+    $(document).ready(function () {
+
+        var counter = 0;
+        var REFRESH_INTERVAL = 2000;
+        var timerId;
+
+        function refreshData() {
+            dataTableInstance.ajax.reload();
+            dataTableInstance2.ajax.reload();
+        }
+        // 리스트
+        dataTableInstance = $('#dataTable').DataTable({
+            "serverSide": true,
+            "searching": false,
+            paging : false,
+            lengthChange : false,
+            "ajax": {
+                //url: "@Url.Action("InstantReport")",
+                url:"/sale/",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        // extra data
+                    });
+                }
+            },
+            order: [[1, 'asc']],
+            columns: [
+
+                { data: "payTypeName" },
+
+                {
+                    data: "chargeAmount",
+                    render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                {
+                    data: "chargeCount",
+                    render: $.fn.dataTable.render.number(',', '.', 0, '') }
+            ],
+            keys: true,
+            "language": {
+                "paginate": {
+                    "previous": "<i class='mdi mdi-chevron-left'>",
+                    "next": "<i class='mdi mdi-chevron-right'>"
+                },
+                "info": "현재 페이지 _PAGE_/_PAGES_, 총 _TOTAL_ 건",
+                "lengthMenu" : "한 페이지 길이 _MENU_",
+                "emptyTable": "조건에 맞는 데이터가 없습니다",
+                "infoEmpty" : "표시할 데이터 없음"
+            },
+            "sort": false,
+            "drawCallback": function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+            },
+            drawCallback: function (data) {
+                $("#lastRefreshTime").text(data.json.data[0].currentTime);
+
+                if (timerId !== undefined)
+                    clearTimeout(timerId);
+                timerId = setTimeout(refreshData, REFRESH_INTERVAL);
+            }
+        });
+
+        dataTableInstance2 = $('#dataTable2').DataTable({
+            "serverSide": true,
+            "searching": false,
+            paging : false,
+            lengthChange : false,
+            "ajax": {
+                //url: "@Url.Action("TodayRecentReport")",
+                url:"/sale/recent100",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        // extra data
+                    });
+                }
+            },
+            order: [[1, 'asc']],
+            columns: [
+
+                { data: "currentTime" },
+                {
+                    data: "loginId",
+                    render: function (d, t, a) {
+                        //return d + "(" + a.nickname + ")";
+                        return d;// + "(" + a.nickname + ")";
+                    }
+                },
+                {
+                    data: "chargeAmount",
+                    render: $.fn.dataTable.render.number(',', '.', 0, '')
+                }, {
+                    data : "payTypeName"
+                }
+            ],
+            keys: true,
+            "language": {
+                "paginate": {
+                    "previous": "<i class='mdi mdi-chevron-left'>",
+                    "next": "<i class='mdi mdi-chevron-right'>"
+                },
+                "info": "현재 페이지 _PAGE_/_PAGES_, 총 _TOTAL_ 건",
+                "lengthMenu" : "한 페이지 길이 _MENU_",
+                "emptyTable": "조건에 맞는 데이터가 없습니다",
+                "infoEmpty" : "표시할 데이터 없음"
+            },
+            "sort": false,
+            "drawCallback": function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+            }
+        });
+
+        $("#RefreshButton").click(function (e) {
+            e.preventDefault();
+            refreshData();
+        });
+    });
+</script>

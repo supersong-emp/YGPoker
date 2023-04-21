@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="css/common.css" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollToPlugin.min.js" integrity="sha512-tQFq+nb/TSS648SDzWbSj0A67t4I1PFzR0U6Oi/yEYFyUbAIwg74SOCbr7t2X1Rn+iln7sYwfh8y+z7p0gddOw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.js"></script>
+        <script src="js/youtube.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link rel="stylesheet" href="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.css" />
+        <link rel="icon" href="./favicon.png">
+    
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <title>회원가입</title>
+</head>
+
+<body style="background-image: url(images/back_bg.jpg)">
+    <!-- NEW MEMBERSHIP -->
+    <section class="mx-auto main-box">
+        <div class="w-11/12 mx-auto">
+            <a href="/" class="w-5/12">
+                <img src="images/logo_main.png" alt="logo" class="mx-auto pt-4">
+            </a>
+        </div>
+        <div class=" my-5 p-3 w-11/12 mx-auto bg-[#1e1e1e]">
+            <h1 class="text-white text-center font-semibold text-2xl text">회원가입</h1>
+            <p class="text-white my-3 text-center text-sm text-p">
+                가입을 위해 올바른 정보를 입력해 주세요
+            </p>
+            <form action="/account/register" method="post" id="form_register" class="w-11/12 mx-auto">
+                <div class="flex">
+                    <input type="text" placeholder="아이디 (영문/숫자 조합 6자 이상)" class="flex-input w-5/6 py-2 mr-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text input-group" name = "strID" autocomplete="off">
+                    <button class="flex-button form-control bg-white rounded-sm text-sm w-1/6 h-[40px]" onclick="RequestCheckID();">중복확인</button>
+                </div>
+                <div class="flex">
+                    <input type="text" placeholder="닉네임(영문/한글/숫자 조합 2자 이상)" class="w-5/6 py-2 mr-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text"  name = "strNickname" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off"> 
+                    <button class="form-control bg-white rounded-sm text-sm w-1/6 h-[40px;]" onclick="RequestCheckNickname();">중복확인</button>
+                </div>
+                <input type="password" placeholder="비밀번호" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text pass" name = "strPassword" autocomplete="off">
+                <input type="password" placeholder="비밀번호 확인" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text pass" name = "strPasswordConfirm">
+                <input type="text" placeholder="은행명" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strDesc">
+                <input type="text" placeholder="계좌번호" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strAccount">
+                <input type="text" placeholder="예금주명" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strName">
+                <input type="text" placeholder="연락처(숫자만 입력)" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strMobileNo">
+                <input type="text" placeholder="추천인 아이디" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strRecommend">
+                <button type='button' class="end-button w-full py-2 rounded-sm outline-none px-2 mb-2 text-center rounded-sm text-black bg-[#00ef89] px-2 font-semibold text-sm " onclick="RequestRegister();">회원가입</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+
+        $(document).on('ready', () => {
+
+            $('input[name=strID]').val('');
+            $('input[name=strNickname]').val('');
+            $('input[name=strPassword]').val('');
+            $('input[name=strPasswordConfirm]').val('');           
+            $('input[name=strDesc]').val('');
+            $('input[name=strAccount]').val('');
+            $('input[name=strName]').val('');
+            $('input[name=strMobileNo]').val('');
+            $('input[name=strRecommend]').val('');
+        });
+
+        let RequestRegister = () => {
+
+            let strID = $('input[name=strID]').val();
+            let strNickname = $('input[name=strNickname]').val();
+            let strPassword = $('input[name=strPassword]').val();
+            let strPasswordConfirm = $('input[name=strPasswordConfirm]').val();
+            let strDesc = $('input[name=strDesc]').val();
+            let strAccount = $('input[name=strAccount]').val();
+            let strName = $('input[name=strName]').val();
+            let strMobileNo = $('input[name=strMobileNo]').val();
+            let strRecommend = $('input[name=strRecommend]').val();
+
+            if ( strPassword != strPasswordConfirm )
+            {
+                alert('비밀번호와 비밀번호 확인이 틀립니다.');
+                return;
+            }
+
+            $.ajax({
+                type:'post',
+                url: "/account/request_register",
+                data: {
+                    strID:strID,
+                    strNickname:strNickname,
+                    strPassword:strPassword,
+                    strDesc:strDesc,
+                    strAccount:strAccount,
+                    strName:strName,
+                    strMobileNo:strMobileNo,
+                    strRecommend:strRecommend
+                },
+                success:function(ret) {
+                
+                    console.log(ret);
+                    if ( ret.result == 'OK' )
+                    {
+                        $('#form_register').submit();
+                        alert('회원가입이 정상적으로 되었습니다.');
+                        window.location.href = "/"; // 메인 페이지로 이동
+                    }
+                    else
+                    {
+                        alert(ret.reason);
+                    }
+                }
+            });
+        }
+        let RequestCheckID = () => {
+        event.preventDefault();
+        const strID = $('input[name=strID]').val();
+        console.log(strID);
+        if(strID == '')
+        {
+            alert('아이디를 적어주세요.');
+            return;
+        }
+        $.ajax({
+            url:"/account/request_checkid",
+            type:"POST",
+            data: {
+                strID :strID
+            },
+            dataType: "json",
+            success: function (obj) {
+                if ( obj.result == 'OK' )
+                {
+                    alert('사용 가능한 아이디 입니다.');
+                }
+                else
+                {
+                    alert('이미 사용중인 아이디 입니다.');
+                }
+            }, 
+            error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
+        }
+
+        let RequestCheckNickname = () => {
+        event.preventDefault();
+        const strNickname = $('input[name=strNickname]').val();
+        if(strNickname == '')
+        {
+            alert('닉네임을 적어주세요.');
+            return;
+        }
+        $.ajax({
+            url:"/account/request_checknickname",
+            type:"POST",
+            data: {
+                strNickname :strNickname
+            },
+            dataType: "json",
+            success: function (obj) {
+                if ( obj.result == 'OK' )
+                {
+                    alert('사용 가능한 닉네임 입니다.');
+                }
+                else
+                {
+                    alert('이미 사용중인 닉네임 입니다.');
+                }
+            }, 
+            error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
+        }
+    </script>
+
+</body>
+</html>
