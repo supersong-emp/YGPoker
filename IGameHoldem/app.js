@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
     res.send('welcome');
 })
 
+app.get('/robot', (req, res) => {
+    res.render('robot');
+})
+
 app.post('/game', (req, res) => {
 
     console.log(`/game`);
