@@ -143,6 +143,18 @@ class IGameManager
         return null;        
     }
 
+    GetRoomInfo(lUnique)
+    {
+        const cIndex = this.FindGameIndex(lUnique);
+        if ( cIndex != -1 )
+        {
+            let instanceGame = this.listGames[cIndex];
+
+            return instanceGame;
+        }
+        return null;
+    }
+
     Leave(socket)
     {
         console.log(`IGameManager::Leave : ${socket.lUnique},  ${socket.eStage}, SocketID : ${socket.id}, strID : ${socket.strID}`);

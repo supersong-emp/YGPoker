@@ -17,6 +17,16 @@
         this.listDesktopLocationsV = [];
         this.listMobileLocationH = [];
         this.listMobileLocationV = [];
+        this.landscape = false;
+        this.vertical = false;
+        if(height > width)
+        {
+            this.vertical = true;
+        }
+        else
+        {
+            this.landscape = true;
+        }
     }
 
     OnSize(width, height)
@@ -37,6 +47,17 @@
         this.m_fWidthRate = this.m_iCurrentWidth / this.m_iDefaultWidth;
         //this.m_fHeightRate = this.m_iCurrentWidth / this.m_iDefaultWidth;
         this.m_fHeightRate = this.m_iCurrentHeight / this.m_iDefaultHeight;
+
+        if(height > width)
+        {
+            this.vertical = true;
+            this.landscape = false;
+        }
+        else
+        {
+            this.landscape = true;
+            this.vertical = false;
+        }
     }
 
     IsMobile()
@@ -48,10 +69,13 @@
     {
         if ( this.IsMobile() )
         {
-            return this.listMobileLocationH[index];
+            return this.listMobileLocationV[index];
         }
         else
         {
+            //test
+            //return this.listDesktopLocationsV[index];
+            
             return this.listDesktopLocationsH[index];
         }
     }

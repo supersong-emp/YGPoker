@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="/img/favicon.ico"> 
     <link href="css/common.css" rel="stylesheet" />
-    <link href="css/top.css" rel="stylesheet" />
+    <!-- <link href="css/top.css" rel="stylesheet" /> -->
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -17,9 +17,7 @@
     <script src="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.js"></script>
     <script src="js/youtube.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script defer src="js/main.js"></script>
     
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,8 +51,10 @@
                     <div class="mem-profile">
                         <span class="mem-img"><img id="iMainAvatar" src="images/avatars/avatar00.png"></span>
                         <span class="mem-info">
-                            <ul><%=user.strID%></ul>
-                            <button onclick="pointChange();">포인트전환</button>
+                            <ul><%=user.strID%>
+                                <button onclick="pointChange();">포인트전환</button>
+                            </ul>
+                            
                             <ul>point<span>
                                     <num id="MainCash"><%=user.iPoint.toLocaleString()%></num>P
                                 </span></ul>
@@ -92,6 +92,7 @@
                 </div>
                 <div class="main-gnb">
                     <ul>
+                    	<li id="eGameType" value="ALL">전체</li>
                         <li id="eGameType" value="HOLDEM">홀덤</li>
                         <li id="eGameType" value="SITANDGO">싯고</li>
                         <li id="eGameType" value="TOURNAMENT">토너먼트</li>
@@ -100,57 +101,37 @@
                 </div>
                 <div class="sub-gnb">
                     <ul>
-                        <li onclick="OnClickRequestRoomList(1000);">1,000</li>
-                        <li onclick="OnClickRequestRoomList(2000);">2,000</li>
-                        <li onclick="OnClickRequestRoomList(3000);">3,000</li>
-                        <li onclick="OnClickRequestRoomList(4000);">4,000</li>
-                        <li onclick="OnClickRequestRoomList(5000);">5,000</li>
+                    <li><a href="javascript:OnClickMakeRoom();"><img src="images/room_make.svg">방만들기</a></li>
+                    <li><a href="javascript:OnClickQuickJoin();"><img src="images/room_in.svg">바로입장</a></li>
+                    <li><a href="javascript:OnClickRefresh();"><img src="images/reload.svg">새로고침</a></li>
                     </ul>
                 </div>
             </div>
         <div class="container">
-            <div class="left-nav">
-                <ul>
-                    <li><a href="javascript:OnClickMakeRoom();"><img src="images/room_make.svg">방만들기</a></li>
-                    <li><a href="javascript:OnClickQuickJoin();"><img src="images/room_in.svg">바로입장</a></li>
-                    <li><a href="javascript:OnClickRefresh();"><img src="images/reload.svg">새로고침</a></li>
-                    <li></li>
-                </ul>
-            </div>
             <div class="right-nav">
                 <ul>   
-                <li class="list-one">
-                        <span>공지사항</span>
-                        <ul>
-                            <a href="/announcement/">
-                                <li>공지사항입니다.</li>
-                            </a> 
-                            <a href="/announcement/">
-                                <li>공지사항입니다.</li>
-                            </a>
-                            <a href="/announcement/">
-                                <li>공지사항입니다.</li>
-                            </a>    
-                            <a href="/announcement/">
-                                <li>공지사항입니다.</li>
-                            </a>
-                            <a href="/announcement/">
-                                <li>공지사항입니다.</li>
-                            </a>
-                            <a href="/announcement/"><p>더보기</p></a>
-                        </ul>
+                    <li class="list-one">
+                        <table class="right-cont">
+                            <tr>
+                                <th>이름</th>
+                                <th>보유머니</th>
+                            </tr>
+                            <tbody id="playerlist">
+                            </tbody>
+                        </table>
                     </li>
                     <li class="list-two">
-                        <span>잭팟 </span>
-                        
-                    </li>
-                    <li class="list-three">
-                        <span>상담 문의</span>
-                        <ul>
-                            <a href="/announcement/customer">
-                                <li>문의 게시판<div class = "material-icons">arrow_forward_ios</div></li>
-                            </a>
-                        </ul>
+                        <img src="images/mini-table.png" alt="mini" class="mini">
+                        <p class="table-txt"></p>
+                        <img src="" alt="" class="one">
+                        <img src="" alt="" class="two">
+                        <img src="" alt="" class="thr">
+                        <img src="" alt="" class="four">
+                        <img src="" alt="" class="five">
+                        <img src="" alt="" class="six">
+                        <img src="" alt="" class="seven">
+                        <img src="" alt="" class="eig">
+                        <img src="" alt="" class="nine">
                     </li>
                 </ul>
             </div>
@@ -161,6 +142,7 @@
                             <td class="tg-0pky">번호</td>
                             <td class="tg-1pky">방 제목</td>
                             <td class="tg-2pky">블라인드</td>
+							<td class="tg-3pky">게임</td>
                             <!-- <td class="tg-3pky">바이인</td> -->
                             <td class="tg-4pky">인원수/최대인원수</td>
                             <td class="tg-5pky"></td>
@@ -170,18 +152,25 @@
                 <table class="tg-room">
                     <tbody id="tbodyRoomList">
                         <% for ( let i in rooms ) { %>
-                        <tr>
+                        <tr id="roominfo" onclick="OnClickRoomInfo('<%=rooms[i].lUnique%>', '<%=rooms[i].eGameType%>');">
                             <td class="tg-0pky"><%=parseInt(i)+1%></td>
                             <td class="tg-1pky"><%=rooms[i].strGameName%> 
                                 <% if ( rooms[i].strPassword != '') { %>
                                     🔒
                                 <%}%>
                             </td>
-                            <td class="tg-2pky"><%=parseInt(rooms[i].iDefaultCoin).toLocaleString()%> / <%=(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()%></td>
+                            <td class="tg-2pky">
+                                <% if ( rooms[i].eGameType == 'BIG2') { %>
+                                    <%=parseInt(rooms[i].iDefaultCoin).toLocaleString()%>
+                                <%} else {%>
+                                    <%=parseInt(rooms[i].iDefaultCoin).toLocaleString()%> / <%=(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()%>
+                                <%}%>
+                            </td>
                             <!-- <td class="tg-3pky"><%=parseInt(rooms[i].iBuyIn).toLocaleString()%></td> -->
+                            <td class="tg-3pky"><%=rooms[i].eGameType%></td>
                             <td class="tg-4pky"><%=rooms[i].iNumPlayer%> / <%=rooms[i].iMaxPlayer%></td>
                             <!-- <td class="tg-5pky"><button onclick="OnClickJoin('<%=rooms[i].lUnique%>');">입장</button></td> -->
-                            <td class="tg-5pky"><button onclick="CheckJoin('<%=rooms[i].lUnique%>', '<%=rooms[i].strPassword%>');">입장</button></td>
+                            <td class="tg-5pky"><button onclick="CheckJoin('<%=rooms[i].lUnique%>', '<%=rooms[i].strPassword%>', '<%=rooms[i].eGameType%>');">Play</button></td>
                         </tr>
                         <%}%>
                     </tbody>
@@ -259,24 +248,25 @@
         </div>
     </div>
 
-    <div id="popup_makeroom" class="room-make-wrap" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
+    <div id="popup_makeroom" class="room-make-wrap" style="position: absolute; top:50%; left:50%; border-radius: 20px; transform:translate(-50%, -50%); text-align: center;">
         <div class="close"><a href="javascript:OnClickMakeRoomClose();"><img src="images/close_menu.svg"></a></div>
         <div class="r-make-form">
             <div class="title">방만들기</div>
             <div class="form">
                 <ul>
-                    <li>방제목</li>
+                    <li>게임</li>
+                    <li>
+                        <input id="room_game" type="text" value="" disabled>
+                    </li>
+                </ul>
+                <ul>
+                    <li>방 제목</li>
                     <li><input id="room_name" type="text" value="YG포커 홀덤~!!!"></li>
                 </ul>
                 <ul>
                     <li>블라인드</li>
                     <li>
                         <select id="room_blind">
-                            <option value="500">500 / 1,000</option>
-                            <option value="1000">1,000 / 2,000</option>
-                            <option value="2000">2,000 / 4,000</option>
-                            <option value="5000">5,000 / 10,000</option>
-                            <option value="10000">10,000 / 20,000</option>
                         </select>
                     </li>
                 </ul>
@@ -284,9 +274,6 @@
                     <li>베팅시간</li>
                     <li>
                         <select id="room_bettingtime">
-                            <option value="10">10초</option>
-                            <option value="20">20초</option>
-                            <option value="30">30초</option>
                         </select>
                     </li>
                 </ul>
@@ -312,7 +299,7 @@
                     <li><input id="room_password" type="text"></li>
                 </ul>
             </div>
-            <button class="button_makeroom">방 만들기</button>
+            <button style="border-radius: 20px;"class="button_makeroom">방 만들기</button>
         </div>
     </div>
 
@@ -326,6 +313,7 @@
                 </ul>
                 <input id="room_enterunique" type="hidden">
                 <input id="room_originpassword" type="hidden">
+                <input id="room_egametype" type="hidden">
             </div>
             <button class="button_enterpassword">입장하기</button>
         </div>
@@ -344,7 +332,7 @@
     </div>
 
 
-    <div id="popup_setting" class="setting-wrap" style="position: absolute; top:35%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index: 99;">
+    <div id="popup_setting" class="setting-wrap" style="position: absolute; border-radius: 20px; top:35%; left:50%; transform:translate(-50%, -50%); text-align: center; z-index: 99;">
         <div class="close"><a href="javascript:OnClickSettingClose();"><img src="images/close_menu.svg"></a></div>
         <div class="setting-form">
             <div class="title">설정</div>
@@ -385,7 +373,7 @@
                     </li>
                 </ul>
             </div>
-            <button onclick="OnClickModifySetting();">수정</button>
+            <button style="border-radius: 20px;" onclick="OnClickModifySetting();">수정</button>
         </div>
     </div>
 
@@ -436,7 +424,7 @@
         console.log("-----------------------------account : " + account);
 
         //  HOLDEM, SITANDGO, TOURNAMENT, BIG2
-        let eGameType = '';
+        let eGameType = 'ALL';
         let reiBlind = parseInt($('#room_blind').val())*2;
 
         $(document).on('click', '#eGameType', (e) => {
@@ -452,13 +440,43 @@
             eGameType = value;
             socket.emit('CM_RoomGameList', {eGameType:value});
             $('#room_numplayer').empty();
-            if(eGameType == 'HOLDEM')
+            $('#room_bettingtime').empty();
+            $('#room_blind').empty();
+            if(eGameType == 'ALL')
+            {
+                $('[value="ALL"]').addClass('active');
+                eGameType = "ALL";
+                let tag = `<option value="6">6명</option>
+                            <option value="9">9명</option>`;
+                let tag2 = `<option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>`;
+                let tag3 = `<option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>`;        
+                $('#room_numplayer').append(tag);
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
+            }
+            else if(eGameType == 'HOLDEM')
             {
                 $('[value="HOLDEM"]').addClass('active');
                 eGameType = "HOLDEM";
                 let tag = `<option value="6">6명</option>
                             <option value="9">9명</option>`;
+                let tag2 = `<option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>`;
+                let tag3 = `<option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>`;
                 $('#room_numplayer').append(tag);
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
             }
             else if(eGameType == 'TOURNAMENT')
             {
@@ -466,7 +484,17 @@
                 eGameType = "TOURNAMENT";
                 let tag = `<option value="6">6명</option>
                             <option value="9">9명</option>`;
+                let tag2 = `<option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>`;
+                let tag3 = `<option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>`;
                 $('#room_numplayer').append(tag);
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
             }
             else if(eGameType == 'SITANDGO')
             {
@@ -474,14 +502,34 @@
                 eGameType = "SITANDGO";
                 let tag = `<option value="6">6명</option>
                             <option value="9">9명</option>`;
+                let tag2 = `<option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>`;
+                let tag3 = `<option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>`;
                 $('#room_numplayer').append(tag);
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
             }
             else if(eGameType == 'BIG2')
             {
                 $('[value="BIG2"]').addClass('active');
                 eGameType = "BIG2";
                 let tag = `<option value="4">4명</option>`;
+                let tag2 = `<option value="25">25초</option>
+                            <option value="30">30초</option>
+                            <option value="40">40초</option>`;
+                let tag3 = `<option value="1000">1,000</option>
+                            <option value="3000">3,000</option>
+                            <option value="5000">5,000</option>
+                            <option value="10000">10,000</option>
+                            <option value="20000">20,000</option>`;             
                 $('#room_numplayer').append(tag);
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
             }
         })
 
@@ -526,39 +574,32 @@
         })
 
         $(document).on('ready', ()=> {
-            
+            $('.one').hide();
+            $('.two').hide();
+            $('.thr').hide();
+            $('.four').hide();
+            $('.five').hide();
+            $('.six').hide();
+            $('.seven').hide();
+            $('.eig').hide();
+            $('.nine').hide();
             socket.emit('CM_Login', account.strID, account.strPassword, account.iPoint);
-            if(targetName == 'IHoldemLobby')
-            {
-                $('[value="HOLDEM"]').addClass('active');
-                eGameType = "HOLDEM";
-                let tag = `<option value="6">6명</option>
+            eGameType = "ALL";
+            $('[value="ALL"]').addClass('active');
+            let tag = `<option value="6">6명</option>
                             <option value="9">9명</option>`;
+                let tag2 = `<option value="10">10초</option>
+                            <option value="20">20초</option>
+                            <option value="30">30초</option>`;
+                let tag3 = `<option value="500">500 / 1,000</option>
+                            <option value="1000">1,000 / 2,000</option>
+                            <option value="2000">2,000 / 4,000</option>
+                            <option value="5000">5,000 / 10,000</option>
+                            <option value="10000">10,000 / 20,000</option>`;
                 $('#room_numplayer').append(tag);
-            }
-            else if(targetName == 'ITournamentLobby')
-            {
-                $('[value="TOURNAMENT"]').addClass('active');
-                eGameType = "TOURNAMENT";
-                let tag = `<option value="6">6명</option>
-                            <option value="9">9명</option>`;
-                $('#room_numplayer').append(tag);
-            }
-            else if(targetName == 'ISitgoLobby')
-            {
-                $('[value="SITANDGO"]').addClass('active');
-                eGameType = "SITANDGO";
-                let tag = `<option value="6">6명</option>
-                            <option value="9">9명</option>`;
-                $('#room_numplayer').append(tag);
-            }
-            else if(targetName == 'IBig2Lobby')
-            {
-                $('[value="BIG2"]').addClass('active');
-                eGameType = "BIG2";
-                let tag = `<option value="4">4명</option>`;
-                $('#room_numplayer').append(tag);
-            }
+                $('#room_bettingtime').append(tag2);
+                $('#room_blind').append(tag3);
+
             socket.emit('CM_RoomGameList', {eGameType:eGameType});
             $('#popup_mypage').hide();
             $('#popup_makeroom').hide();
@@ -628,13 +669,29 @@
             $('#tbodyRoomList').empty();
             for ( let i in rooms )
             {
-                let tag = `<tr>
-                            <td class="tg-0pky">${parseInt(i)+1}</td>
-                            <td class="tg-1pky">${rooms[i].strGameName}</td>
-                            <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
-                            <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
-                            <td class="tg-5pky"><button onclick="OnClickJoin(${rooms[i].lUnique});">입장</button></td>
-                        </tr>`;
+                let tag = '';
+                if(rooms[i].eGameType == 'BIG2')
+                {
+                    tag = `<tr id='roominfo' onclick="OnClickRoomInfo(${rooms[i].lUnique},'${rooms[i].eGameType}');">
+                                <td class="tg-0pky">${parseInt(i)+1}</td>
+                                <td class="tg-1pky">${rooms[i].strGameName}</td>
+                                <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()}</td>
+                                <td class="tg-3pky">${rooms[i].eGameType}</td>
+                                <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                                <td class="tg-5pky"><button onclick="CheckJoin(${rooms[i].lUnique},'${rooms[i].strPassword}','${rooms[i].eGameType}');">Play</button></td>
+                            </tr>`;
+                }
+                else
+                {
+                    tag = `<tr id='roominfo' onclick="OnClickRoomInfo(${rooms[i].lUnique},'${rooms[i].eGameType}');">
+                                <td class="tg-0pky">${parseInt(i)+1}</td>
+                                <td class="tg-1pky">${rooms[i].strGameName}</td>
+                                <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
+                                <td class="tg-3pky">${rooms[i].eGameType}</td>
+                                <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                                <td class="tg-5pky"><button onclick="CheckJoin(${rooms[i].lUnique},'${rooms[i].strPassword}','${rooms[i].eGameType}');">Play</button></td>
+                            </tr>`;
+                }
                 $('#tbodyRoomList').append(tag);
             }
         });
@@ -647,13 +704,29 @@
             $('#tbodyRoomList').empty();
             for ( let i in rooms )
             {
-                let tag = `<tr>
-                            <td class="tg-0pky">${parseInt(i)+1}</td>
-                            <td class="tg-1pky">${rooms[i].strGameName}</td>
-                            <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
-                            <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
-                            <td class="tg-5pky"><button onclick="OnClickJoin(${rooms[i].lUnique});">입장</button></td>
-                        </tr>`;
+                let tag = '';
+                if(rooms[i].eGameType == 'BIG2')
+                {
+                    tag = `<tr id='roominfo' onclick="OnClickRoomInfo(${rooms[i].lUnique},'${rooms[i].eGameType}');">
+                                <td class="tg-0pky">${parseInt(i)+1}</td>
+                                <td class="tg-1pky">${rooms[i].strGameName}</td>
+                                <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()}</td>
+                                <td class="tg-3pky">${rooms[i].eGameType}</td>
+                                <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                                <td class="tg-5pky"><button onclick="CheckJoin(${rooms[i].lUnique},'${rooms[i].strPassword}','${rooms[i].eGameType}');">Play</button></td>
+                            </tr>`;
+                }
+                else
+                {
+                    tag = `<tr id='roominfo' onclick="OnClickRoomInfo(${rooms[i].lUnique},'${rooms[i].eGameType}');">
+                                <td class="tg-0pky">${parseInt(i)+1}</td>
+                                <td class="tg-1pky">${rooms[i].strGameName}</td>
+                                <td class="tg-2pky">${parseInt(rooms[i].iDefaultCoin).toLocaleString()} / ${(parseInt(rooms[i].iDefaultCoin)*2).toLocaleString()}</td>
+                                <td class="tg-3pky">${rooms[i].eGameType}</td>
+                                <td class="tg-4pky">${rooms[i].iNumPlayer} / ${rooms[i].iMaxPlayer}</td>
+                                <td class="tg-5pky"><button onclick="CheckJoin(${rooms[i].lUnique},'${rooms[i].strPassword}','${rooms[i].eGameType}');">Play</button></td>
+                            </tr>`;
+                }
                 $('#tbodyRoomList').append(tag);
             }
         });
@@ -663,34 +736,132 @@
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
 
-        socket.on('SM_OpenGame', (objectData) => {
+        socket.on('SM_RoomInfo', (objectData) => {
 
+            console.log(`SM_RoomInfo`);
+            console.log(objectData.data.data);
+
+            $('.one').hide();
+            $('.two').hide();
+            $('.thr').hide();
+            $('.four').hide();
+            $('.five').hide();
+            $('.six').hide();
+            $('.seven').hide();
+            $('.eig').hide();
+            $('.nine').hide();
+            $('#playerlist').empty();
+            for (let i = 0; i < objectData.data.data.listPlayer.length; i++) {
+                let player = objectData.data.data.listPlayer[i];
+                let tagAvatar = player.iAvatar;
+                let strSource = `images/avatars/avatar${leadingZeros(tagAvatar, 2)}.png`;
+                let row = $('<tr></tr>');
+                row.append(`<td>${player.strID}</td><td>${player.iCoin.toLocaleString()}</td>`);
+                $('#playerlist').append(row);
+                console.log(strSource);
+                switch(player.iLocation)
+                {
+                    case 0:
+                        {
+                            $('.one').show();
+                            $('.one').attr('src', strSource);
+                        }
+                        break;
+                    case 1:
+                        {
+                            $('.two').show();
+                            $('.two').attr('src', strSource);
+                        }
+                        break;
+                    case 2:
+                        {
+                            $('.thr').show();
+                            $('.thr').attr('src', strSource);
+                        }
+                        break;
+                    case 3:
+                        {
+                            $('.four').show();
+                            $('.four').attr('src', strSource);
+                        }
+                        break;
+                    case 4:
+                        {
+                            $('.five').show();
+                            $('.five').attr('src', strSource);
+                        }
+                        break;
+                    case 5:
+                        {
+                            $('.six').show();
+                            $('.six').attr('src', strSource);
+                        }
+                        break;
+                    case 6:
+                        {
+                            $('.seven').show();
+                            $('.seven').attr('src', strSource);
+                        }
+                        break;
+                    case 7:
+                        {
+                            $('.eig').show();
+                            $('.eig').attr('src', strSource);
+                        }
+                        break;
+                    case 8:
+                        {
+                            $('.nine').show();
+                            $('.nine').attr('src', strSource);
+                        }
+                        break;
+                }
+            }   
+            let tag = `${objectData.data.data.iDefaultCoin}-${objectData.data.data.iDefaultCoin*2}`;
+            
+            $('.table-txt').text(tag);
+
+            
+        })
+
+        socket.on('SM_OpenGame', (objectData) => {
             console.log(`SM_OpenGame`);
             console.log(objectData);
 
-            if ( objectData.result == 'OK' )
-            {
-                
-                if ( IsMobile() == false ){
-                    window.open('', 'game', 'width=1280, height=720, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes,resizable=no, location=no, scrollbar=no');
-                }
-                else
-                    window.open('', 'game', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' + window.innerWidth + ',height=' + window.innerWidth + ',top=0,left=0, fullscreen=yes');
-                    
+            if ( objectData.result == 'OK' ) {
+                const openWindowAndSubmitForm = () => {
+                    var gameWindow;
+                    if (IsMobile() == false) {
+                        gameWindow = window.open('', 'game', 'width=1280, height=768, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes,resizable=no, location=no, scrollbar=no');
+                    } else {
+                        gameWindow = window.open('', 'game', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=' + window.innerWidth + ',height=' + window.innerHeight + ',top=0,left=0, fullscreen=yes');
+                    }
+                    $form.submit();
+                    return gameWindow;
+                };
+
+                const showCookiePermission = () => {
+                    if (typeof Notification !== 'undefined' && Notification.permission === 'default' && IsMobile() == true) {
+                        Notification.requestPermission().then((permission) => {
+                            if (permission === 'granted') {
+                                openWindowAndSubmitForm();
+                            }
+                        });
+                    } else {
+                        openWindowAndSubmitForm();
+                    }
+                };
+
                 var $form = $('<form></form>');
-                //$form.attr('action', '/game');
-
                 $form.attr('action', objectData.strAddress);
-
                 $form.attr('method', 'post');
                 $form.attr('target', 'game');
                 $form.appendTo('body');
-                
+
                 var eGameType = $(`<input type="hidden" value="${objectData.eGameType}" name="eGameType">`);
                 var strID = $(`<input type="hidden" value="${account.strID}" name="strID">`);
                 var strPassword = $(`<input type="hidden" value="${account.strPassword}" name="strPassword">`);
                 var lUnique = $(`<input type="hidden" value="${objectData.lUnique}" name="lUnique">`);
-                //var iCoin = $(`<input type="hidden" value='${100000}' name="iCoin">`);
                 var iCoin = $(`<input type="hidden" value='${account.iPoint}' name="iCoin">`);
                 var iAvatar = $(`<input type="hidden" value='${iAvatarIndex}' name="iAvatar">`);
                 var strOptionCode = $(`<input type="hidden" value='${account.strOptionCode}' name="strOptionCode">`);
@@ -699,7 +870,7 @@
                 var iMaxPlayer = $(`<input type="hidden" value='${objectData.iMaxPlayer}' name="iMaxPlayer">`);
 
                 $form.append(eGameType).append(strID).append(lUnique).append(iCoin).append(iAvatar).append(strOptionCode).append(strGroupID).append(iClass).append(iMaxPlayer);
-                $form.submit();
+                showCookiePermission();
             }
         });
 
@@ -719,12 +890,35 @@
 
         let OnClickMakeRoom = () => {
 
-            let strDefaultRoomName = ['YG포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
+            if(eGameType != 'ALL')
+            {
 
-            let index = Math.floor(Math.random()*3);
-            $('#room_name').val(strDefaultRoomName[index]);
-            
-            $('#popup_makeroom').show();
+                let strDefaultRoomName = [];
+
+                let index = 0;
+
+                if(eGameType == 'HOLDEM')
+                {
+                    strDefaultRoomName = ['YG포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
+                    index = Math.floor(Math.random()*3);
+                    $('#room_name').val(strDefaultRoomName[index]);
+                }
+                else if(eGameType == 'BIG2')
+                {
+                    strDefaultRoomName = ['YG포커 빅투~!', '스피드 진행!!!', '매너게임 부탁!'];
+                    index = Math.floor(Math.random()*3);
+                    $('#room_name').val(strDefaultRoomName[index]);
+                }
+                else
+                {
+                    strDefaultRoomName = ['YG포커~!', '스피드 진행!!!', '매너게임 부탁!'];
+                    index = Math.floor(Math.random()*3);
+                    $('#room_name').val(strDefaultRoomName[index]);
+                }
+                $('#room_game').val(eGameType);
+                
+                $('#popup_makeroom').show();
+            }
         }
 
         let OnClickMakeRoomClose = () => {
@@ -763,27 +957,29 @@
             socket.emit('CM_QuickJoinRoom', data);
         }
 
-        let CheckJoin = (lUnique, strPassword) => {
+        let CheckJoin = (lUnique, strPassword, gameType) => {
             
             console.log(lUnique);
             console.log(strPassword);
+            console.log(gameType);
 
-            if ( strPassword == '' )
+            if ( strPassword == '' || strPassword == undefined)
             {
-                OnClickJoin(lUnique);
+                OnClickJoin(lUnique, gameType);
             }
             else
             {
                 $('#room_enterunique').val(lUnique);
                 $('#room_originpassword').val(strPassword);
+                $('#room_egametype').val(gameType);
                 $('#popup_enterpassword').show();
             }
         }
 
-        let OnClickJoin = (lUnique) => {
+        let OnClickJoin = (lUnique, gameType) => {
 
             let data = {
-                eGameType:eGameType,
+                eGameType:gameType,
                 strID:account.strID,
                 strGroupID:account.strGroupID,
                 iClass:account.iClass,
@@ -795,6 +991,27 @@
             console.log(data);
 
             socket.emit('CM_JoinRoom', data);
+        }
+
+        let OnClickRoomInfo = (lUnique, aGameType) => {
+
+            console.log(`lUnique : ${lUnique}, aGameType : ${aGameType}`);
+
+
+            let data = {
+                //eGameType:eGameType,
+                eGameType:aGameType,
+                strID:account.strID,
+                strGroupID:account.strGroupID,
+                iClass:account.iClass,
+                iCoin:account.iPoint, 
+                lUnique:lUnique,
+                strOptionCode:account.strOptionCode
+            };
+
+            console.log(data);
+
+            socket.emit('CM_RoomInfo', data);
         }
 
         $(document).on('click', '.avatar_index', (e) => {
@@ -819,13 +1036,14 @@
 
             let strEnterPassword = $('#room_enterpassword').val();
             let lUnique = $('#room_enterunique').val();
+            let eGameType =$('#room_egametype').val();
             let strOriginPassword = $('#room_originpassword').val();
 
             console.log(`EnterPassword : ${strEnterPassword}, lUnique : ${lUnique}, strOriginPassword : ${strOriginPassword}`);
 
             if ( strEnterPassword == strOriginPassword )
             {
-                OnClickJoin(lUnique);
+                OnClickJoin(lUnique,eGameType);
             }
             else
             {
@@ -852,7 +1070,7 @@
             let strRoomName = $('#room_name').val();
             let strPassword = $('#room_password').val();
 
-
+			console.log(strPassword);
             console.log(`R-Name : ${strRoomName}, Pass : ${strPassword}, NumPlayers : ${iNumPlayers}, BettingTime : ${iBettingTime}, iBuyIn : ${iBuyIn}, iBlind : ${iBlind}`);
 
             if ( account.iPoint < iBuyIn )

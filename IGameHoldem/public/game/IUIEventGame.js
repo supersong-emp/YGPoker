@@ -5,7 +5,7 @@ function IsMobile()
 
 let OnClickLeave = (game) => {
 
-    game.socket.emit('CM_LeaveGame');
+    // game.socket.emit('CM_LeaveGame');
 
     soundClick.play();
 }
@@ -17,6 +17,28 @@ let OnClickGameStart = (game) => {
     game.socket.emit('CM_StartGame');
 
     soundClick.play();
+}
+
+let OnClickGameChat = (game) => {
+
+    if (game.bEnableChat == false) {
+        $('#chatting').show();
+        $('#game_log').hide();
+        game.bEnableChat = true;
+
+        soundClick.play();
+    }
+}
+
+let OnClickGamelog = (game) => {
+
+    if (game.bEnableChat == false) {
+        $('#chatting').hide();
+        $('#game_log').show();
+        game.bEnableChat = true;
+
+        soundClick.play();
+    }
 }
 
 let OnClickSettingOnGame = (game) => {

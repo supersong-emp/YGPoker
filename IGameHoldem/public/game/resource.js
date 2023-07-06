@@ -69,7 +69,7 @@ imageLobbyBG.src = "img/lobby/bg.png";
 
 //  BG
 var imageGameBG = [];
-for ( var i = 0; i < 3; ++i)
+for ( var i = 0; i < 5; ++i)
 {
     imageGameBG.push(new Image());
     imageGameBG[i].src = `img/game/bg0${i.toString()}.png`;
@@ -356,7 +356,15 @@ for ( var i = 0; i < 33; ++i)
     imageAvatar.push(new Image());
     imageAvatar[i].src = `img/avatars/avatar${zeroPad(i, 10)}.png`;  //  452 x 74
 }
+var imageChat = new Image();
+imageChat.onload = ()=> {
+}
+imageChat.src = "img/chat.png";
 
+var imageGamelog = new Image();
+imageGamelog.onload = ()=> {
+}
+imageGamelog.src = "img/gamelog.png";
 var landscapeImg = new Image();
 landscapeImg.onload = ()=> {
 }

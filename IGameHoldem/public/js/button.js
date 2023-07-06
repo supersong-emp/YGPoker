@@ -250,4 +250,13 @@ export default class IUIButton{
         //ctx.drawImage(sprite, 0, 0, 100, 100, this.Icons[i].x, this.Icons[i].y, 100, 100);
 
     }
+    
+    SetLocation(x, y)
+    {
+        this.x = x;
+        this.y = y;
+
+        this.iCurrentX = x;
+        this.iCurrentY = y;
+    }
 }

@@ -72,6 +72,8 @@ class IGameInstance
 
             console.log(`#---------------------------------- Socket Connection : ${socket.id}`);
             socket.eStage = 'STANDBY';
+            socket.bConnection = true;
+            //console.log(socket);
             this.AddUser(socket);
             if ( socket.strID == undefined )
             {
@@ -84,6 +86,7 @@ class IGameInstance
                 let lUnique = socket.lUnique;
                 console.log(`#---------------------------------- Socket Disconnection : ${socket.id}, ${socket.strID}, ${socket.eStage}, ${socket.lUnique}`);
 
+                socket.bConnection = false;
 
                 if ( true == this.GameManager.Leave(socket) )
                 {
@@ -164,9 +167,13 @@ class IGameInstance
                 }
                 else
                 {
-                    socket.iCoin = (parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
-                    socket.iPoint = iPoint;
-                    socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iPoint:iPoint, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
+                    console.log(`##### bRejoin : ${socket.bRejoin}`);
+                    if ( socket.bRejoin == false )
+                    {
+                        socket.iCoin = (parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
+                        socket.iPoint = iPoint;
+                        socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iPoint:iPoint, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
+                    }
                 }
             }
                 //socket.emit('SM_EnterGame', {result:'OK'});
@@ -211,18 +218,16 @@ class IGameInstance
 
             // socket.on('CM_LeaveGame', async () => {
 
-            //     console.log(`CM_LeaveGame strID : ${socket.strID}, lUnique : ${socket.lUnique}`);
-
-            //     let lUnique = socket.lUnique;
-                
             //     if ( true == this.GameManager.Leave(socket) )
             //     {
-            //         //this.AddUser(socket);
+            //         this.RemoveUser(socket);
             //         await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
             //     }
-            //     await this.RequestAxios(`${global.strLobbyAddress}/quitroom`, {strID:socket.strID});
-
-            //     socket.emit('SM_LeaveGame', {result:'OK'});
+            //     else
+            //     {
+            //         this.RemoveUser(socket);
+            //         await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
+            //     }
             // });
 
             // socket.on('CM_QuickJoin', (data) => {
@@ -314,6 +319,30 @@ class IGameInstance
                 {
                     this.listUsers.GetSocket(i).emit('SM_StartGame', {eResult:ret, listUser:list});
                 }
+            });
+
+            socket.on('CM_Exit', () => {
+                socket.emit('SM_Exit');
+            });
+
+            socket.on('CM_ChatSend', (tag) => {
+
+                console.log(`CM_ChatSend :`);
+                console.log(tag);
+                
+                //socket.bClick = true;
+                for (let i = 0; i < this.listUsers.GetLength(); ++i) {
+                    //socket.emit('SM_ChatSend', {tag:tag, strID:this.listUsers.GetSocket(i).strID});
+                    this.listUsers.GetSocket(i).emit('SM_ChatSend', {tag:tag});
+                }
+            });
+
+            socket.on('CM_ChatClose', () => {
+                socket.emit('SM_ChatClose');
+            });
+
+            socket.on('CM_ChatOpen', () => {
+                socket.emit('SM_ChatOpen');
             });
 
             socket.on('CM_ManualRebuyin', () => {

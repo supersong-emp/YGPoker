@@ -7,7 +7,7 @@ import IChipDealer from "../game/IChipDealer.js";
 
 export default class IUser{
 
-    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, kTimer, kSC)
+    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, kTimer, kSC, listHandCard, isMobile)
     {
         console.log(`IUser::constructor : ${strID}, Coin ${iGameCoin}, iLocation:${iLocation}, iFxLocation :${iFxLocation}, iAvatar : ${iAvatar}`);
 
@@ -23,6 +23,15 @@ export default class IUser{
         this.iBettingType = -1;
         this.iBettingTypeRenderCounter = 0;
         this.listHandCard = [];
+        //this.listHandCard = listHandCard;
+        if ( listHandCard.length )
+        {
+            for ( let i in listHandCard )
+            {
+                //this.listHandCard.push(listHandCard[i]);
+                this.listHandCard.push(listHandCard[i]);
+            }
+        }
         this.strHand = '';
         this.bFocus = false;
         this.bWinner = false;
@@ -45,13 +54,13 @@ export default class IUser{
         this.iAutoFoldCounter = 0;
 
         this.kSC = kSC;
+        this.isMobile = isMobile;
 
         // this.x = cPlayerLocations[iFxLocation].x;
         // this.y = cPlayerLocations[iFxLocation].y;
 
         this.x = kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).x;
         this.y = kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).y;
-
 
         // this.x = this.ptLocations[iFxLocation].x;
         // this.y = this.ptLocations[iFxLocation].y;
@@ -148,6 +157,8 @@ export default class IUser{
         this.bFold = false;
         this.bTrunFinish = false;
         this.ibettingCallCoin = 0;
+
+        this.bReserveExit = false;
     }
 
     Initialize()
@@ -511,8 +522,8 @@ export default class IUser{
 
         // this.x = this.ptLocations[iFxLocation].x;
         // this.y = this.ptLocations[iFxLocation].y;
-        this.x = cPlayerLocations[iFxLocation].x;
-        this.y = cPlayerLocations[iFxLocation].y;
+        this.x = this.kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).x;
+        this.y = this.kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).y;
 
         this.iCurrentX = this.x;
         this.iCurrentY = this.y;
@@ -526,11 +537,27 @@ export default class IUser{
         this.listImages[5].SetLocation(this.iCurrentX-70, this.iCurrentY+140);
         this.listImages[6].SetLocation(this.iCurrentX-120, this.iCurrentY-40);
 
+        // this.listImages[0].SetLocation(this.iCurrentX, this.iCurrentY);
+        // this.listImages[1].SetLocation(this.iCurrentX-6, this.iCurrentY-6);
+        // this.listImages[2].SetLocation(this.iCurrentX-6, this.iCurrentY-6);
+        // //this.listImages[2].SetLocation(this.iCurrentX-19, this.iCurrentY+120-24);
+        // this.listImages[3].SetLocation(this.iCurrentX-19, this.iCurrentY+120-35);
+        // this.listImages[4].SetLocation(this.iCurrentX, this.iCurrentY+120);
+        // this.listImages[5].SetLocation(this.iCurrentX-70, this.iCurrentY+140);
+        // this.listImages[6].SetLocation(this.iCurrentX-120, this.iCurrentY-40);
+
         for ( let i in this.listImagesPlayerType )
         {
             
             //this.listImagesPlayerType[i].SetLocation(this.iCurrentX+160, this.iCurrentY+150);
-            this.listImagesPlayerType[i].SetLocation(cPlayerTypeLocations[iFxLocation].x, cPlayerTypeLocations[iFxLocation].y);
+            if(this.isMobile == true)
+            {
+                this.listImagesPlayerType[i].SetLocation(cPlayerTypeVerticalLocations[iFxLocation].x, cPlayerTypeVerticalLocations[iFxLocation].y);
+            }
+            else 
+            {
+                this.listImagesPlayerType[i].SetLocation(cPlayerTypeLocations[iFxLocation].x, cPlayerTypeLocations[iFxLocation].y);
+            }
         }
 
         for ( let i in this.listImagesBettingType )
@@ -559,7 +586,15 @@ export default class IUser{
         //this.textName.SetLocation(this.iCurrentX + -80, this.iCurrentY + 200);
         this.textName.SetLocation(this.iCurrentX+80, this.iCurrentY + 200);
         this.textHand.SetLocation(this.iCurrentX+80, this.iCurrentY + 250);
-        this.textCallCoin.SetLocation(cChipCallTexts[iFxLocation].x, cChipCallTexts[iFxLocation].y);
+        if(this.isMobile == true)
+        {
+            this.textCallCoin.SetLocation(cChipCallVerticalTexts[iFxLocation].x, cChipCallVerticalTexts[iFxLocation].y);
+        }
+        else
+        {
+            this.textCallCoin.SetLocation(cChipCallTexts[iFxLocation].x, cChipCallTexts[iFxLocation].y);
+        }
+        
         this.OnSize(this.m_fHR, this.m_fVR);
     }
 
@@ -690,7 +725,16 @@ export default class IUser{
 
         //let dealer = new ICardDealer(x, y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 70, 110, iCard, fAngle);
         //console.log("this.m_fHRthis.m_fHR : " + this.m_fHR + " this.m_fVR.m_fVR : " + this.m_fVR);
-        let dealer = new ICardDealer(cDealerLocation.x, cDealerLocation.y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 115, 150, iCard, strdeckcode, fAngle);
+        let dealer = '';
+        if(this.isMobile == true)
+        {
+            dealer = new ICardDealer(cDealerVerticalLocation.x,cDealerVerticalLocation.y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 115, 150, iCard, strdeckcode, fAngle);
+        }
+        else
+        {
+            dealer = new ICardDealer(cDealerLocation.x, cDealerLocation.y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 115, 150, iCard, strdeckcode, fAngle);
+        }
+        
         //let dealer = new ICardDealer(cDealerLocation.x, cDealerLocation.y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 115, 150, iCard, strdeckcode);
         this.listCardDealer.push(dealer);
 

@@ -121,25 +121,6 @@ class ILobby
                 }
             });
 
-            socket.on('CM_RoomInfo', async (objectData) => {
-
-                console.log(`CM_RoomInfo`);
-                console.log(objectData);
-
-                const strAddress = `${this.GetChannelAddress(objectData.eGameType)}/roominfo`;
-                let request = await this.RequestAxios(strAddress, objectData);
-                console.log(request);
-
-                if ( request.result == 'OK' )
-                {
-                    socket.emit('SM_RoomInfo', {result:'OK', data:request});
-                }
-                else
-                {
-                    socket.emit('SM_Error', {error:request.error});
-                }
-            })
-
             socket.on('CM_JoinRoom', async (objectData) => {
 
                 console.log(`CM_JoinRoom`);
@@ -348,11 +329,7 @@ class ILobby
         for ( let i in this.listRooms )
         {
             console.log(this.listRooms[i].eGameType);
-            if(eGameType == "ALL")
-            {
-                listRooms.push(this.listRooms[i]);
-            }
-            else if ( this.listRooms[i].eGameType == eGameType )
+            if ( this.listRooms[i].eGameType == eGameType )
             {
                 listRooms.push(this.listRooms[i]);
             }
@@ -363,7 +340,6 @@ class ILobby
     GetChannelAddress(eGameType)
     {
         let strAddress = '';
-        console.log(eGameType);
         if ( eGameType == 'HOLDEM' )
         {
             strAddress = global.strGameAddress;
@@ -374,7 +350,7 @@ class ILobby
         {
             strAddress = global.strBig2Address;
         }
-        console.log(strAddress);
+        
         return `${strAddress}`;
     }
 

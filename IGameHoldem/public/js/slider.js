@@ -221,72 +221,75 @@ export default class IUISlider{
     }
     Touch(touch)
     {
-        this.button.Touch(touch);
+        if(this.In(touch) == true)
+        {
+            this.button.Touch(touch);
 
-        // if ( this.bFocus == true )
-        // {
-            //this.iOriginClickX = mouse.x;
-            //this.iDelta = mouse.x - this.iOriginClickX;
-            //this.button.iCurrentX += this.iDelta;
+            // if ( this.bFocus == true )
+            // {
+                //this.iOriginClickX = mouse.x;
+                //this.iDelta = mouse.x - this.iOriginClickX;
+                //this.button.iCurrentX += this.iDelta;
 
-            //let current = Math.floor(this.GetLocation() * (mouse.x - this.iOriginClickX));
-            //console.log(current);
+                //let current = Math.floor(this.GetLocation() * (mouse.x - this.iOriginClickX));
+                //console.log(current);
 
-            //this.iCurrentLocation += this.GetLocation(Math.floor((mouse.x - this.iOriginClickX) * this.GetFxDelta()));
-            let current = 0;
-            if(this.irotate == 0){
-                current = touch.x - this.iOriginClickX;
-                this.iCurrentLocation += current;
-                this.iOriginClickX = touch.x;
-                this.SetOriginLocation();
-                if ( this.iCurrentLocation < this.iCurrentLocationMin )
-                {
-                    this.iCurrentLocation = this.iCurrentLocationMin;
-                    this.UpdateCurrentLocation();
-                    
+                //this.iCurrentLocation += this.GetLocation(Math.floor((mouse.x - this.iOriginClickX) * this.GetFxDelta()));
+                let current = 0;
+                if(this.irotate == 0){
+                    current = touch.x - this.iOriginClickX;
+                    this.iCurrentLocation += current;
+                    this.iOriginClickX = touch.x;
+                    this.SetOriginLocation();
+                    if ( this.iCurrentLocation < this.iCurrentLocationMin )
+                    {
+                        this.iCurrentLocation = this.iCurrentLocationMin;
+                        this.UpdateCurrentLocation();
+                        
+                    }
+                    else if ( this.iCurrentLocation > this.iCurrentLocationMax )
+                    {
+                        this.iCurrentLocation = this.iCurrentLocationMax;
+                        this.UpdateCurrentLocation();
+                        
+                    }
+                    else 
+                    {
+                        this.UpdateCurrentLocation();
+                    }
+                    return true;
                 }
-                else if ( this.iCurrentLocation > this.iCurrentLocationMax )
+                else if(this.irotate == 1) 
                 {
-                    this.iCurrentLocation = this.iCurrentLocationMax;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else 
-                {
-                    this.UpdateCurrentLocation();
-                }
-                return true;
-            }
-            else if(this.irotate == 1) 
-            {
-                //alert('모바일 레이즈바 터치');
-                console.log(`touch.y : ${touch.y}, this.iOriginClickY : ${this.iOriginClickY}`);
-                current = touch.y - this.iOriginClickY;
-                this.iCurrentLocation -= current;
-                this.iOriginClickY = touch.y;
-                this.SetOriginLocation();
-                if ( this.iCurrentLocation < this.iCurrentLocationMin )
-                {
-                    this.iCurrentLocation = this.iCurrentLocationMin;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else if ( this.iCurrentLocation > this.iCurrentLocationMax )
-                {
-                    this.iCurrentLocation = this.iCurrentLocationMax;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else 
-                {
-                    this.UpdateCurrentLocation();
-                }
-                return true;
-            } 
-            //return true;
-        //}
+                    //alert('모바일 레이즈바 터치');
+                    console.log(`touch.y : ${touch.y}, this.iOriginClickY : ${this.iOriginClickY}`);
+                    current = touch.y - this.iOriginClickY;
+                    this.iCurrentLocation -= current;
+                    this.iOriginClickY = touch.y;
+                    this.SetOriginLocation();
+                    if ( this.iCurrentLocation < this.iCurrentLocationMin )
+                    {
+                        this.iCurrentLocation = this.iCurrentLocationMin;
+                        this.UpdateCurrentLocation();
+                        
+                    }
+                    else if ( this.iCurrentLocation > this.iCurrentLocationMax )
+                    {
+                        this.iCurrentLocation = this.iCurrentLocationMax;
+                        this.UpdateCurrentLocation();
+                        
+                    }
+                    else 
+                    {
+                        this.UpdateCurrentLocation();
+                    }
+                    return true;
+                } 
+                //return true;
+            //}
 
-        return false;
+            return false;
+        }
     }
 
     Down(mouse)
@@ -328,11 +331,14 @@ export default class IUISlider{
   
     Up(mouse)
     {
-        console.log(`MouseUp : Slider`);
+        if ( this.In(mouse) == true )
+        {
+            console.log(`MouseUp : Slider`);
 
-        this.bFocus = false;
+            this.bFocus = false;
 
-        this.button.Up(mouse);
+            this.button.Up(mouse);
+        }
     }
 
     Disable()
@@ -342,6 +348,15 @@ export default class IUISlider{
     Click(mouse, args) 
     {
         return false;
+    }
+
+    SetLocation(x, y)
+    {
+        this.x = x;
+        this.y = y;
+
+        this.iCurrentX = x;
+        this.iCurrentY = y;
     }
 
     Render(ctx) 

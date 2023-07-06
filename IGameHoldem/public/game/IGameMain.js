@@ -213,18 +213,18 @@ export default class IGameMain{
             this.Game.UpdatePoint(parseInt(data.iCoin));
         });
 
-        this.socket.on('SM_LeaveGame', (data) => {
+        // this.socket.on('SM_LeaveGame', (data) => {
 
-            console.log('SM_LeaveGame');
-            console.log(data);
+        //     console.log('SM_LeaveGame');
+        //     console.log(data);
 
-            if ( data.result == 'OK' )
-            {
-                this.Game.Initialize();
-                window.close();
-                window.opener.reload();
-            }
-        });
+        //     if ( data.result == 'OK' )
+        //     {
+        //         this.Game.Initialize();
+        //         window.close();
+        //         window.opener.reload();
+        //     }
+        // });
 
         this.socket.on('SM_JoinUser', (user) => {
 
@@ -248,10 +248,30 @@ export default class IGameMain{
 
             if ( true == objectData.eResult )
             {
-                this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar);
+                this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, []);
                 this.Game.UpdatePoint(parseInt(objectData.iPoint));
             }
         });
+
+        this.socket.on('SM_Rejoin', (listPlayers, iMaxPlayer, objectData) => {
+
+
+            console.log(`SM_Rejoin`);
+            console.log(objectData);
+
+            this.socket.strID = objectData.strID;
+            this.socket.iCoin = objectData.iCoin;
+            this.socket.iPoint = objectData.iPoint;
+
+            this.Game.UpdateGameInfo(objectData.strGameName, objectData.iBlind);
+            //this.Game.UpdatePoint(parseInt(objectData.iCoin));
+
+            this.Game.SetMaxPlayer(iMaxPlayer);
+            this.Game.ProcessLocation(listPlayers);
+            this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, objectData.listHandCard);
+            this.Game.UpdatePoint(parseInt(objectData.iPoint));
+            this.Game.SetTableCard(objectData.listTableCard);
+        })
 
         this.socket.on('SM_BroadcastJoinUser', (objectPlayer) => {
 
@@ -296,6 +316,36 @@ export default class IGameMain{
             this.Game.listButtons[0].bEnable = true;
 
             soundEnableStartGame.play();
+        });
+
+        this.socket.on('SM_Exit', () => {
+            console.log(`SM_ChatClose`);
+            this.Game.SetPlayerExit(this.socket.strID);
+        });
+
+        this.socket.on('SM_ChatSend', (tag) => {
+
+            console.log(`SM_ChatSend`);
+            console.log(tag.tag.tag);
+
+            var chatElement = $('#chat');
+            chatElement.append(tag.tag.tag);
+            soundClick.play();
+
+            // 채팅 요소의 스크롤 위치를 가장 아래로 설정
+            chatElement.scrollTop(chatElement.prop("scrollHeight"));
+        });
+
+        this.socket.on('SM_ChatClose', () => {
+
+            console.log(`SM_ChatClose`);
+            this.Game.bEnableChat = false;
+        });
+        
+        this.socket.on('SM_ChatOpen', () => {
+                    
+            console.log(`SM_ChatOpen`);
+            this.Game.bEnableChat = true;
         });
 
         this.socket.on('SM_StartGame', (objectData) => {
@@ -458,7 +508,33 @@ export default class IGameMain{
             console.log(listResult);
             console.log(listWinCards);
             console.log(strWinnerHand);
+            console.log(strWinnerDescr);
+            console.log(cPlayingUser);
+            console.log(listPots);
 
+            let tag =``;
+            var logElement = $('#output_log');
+            if(cPlayingUser == 1)
+            {
+                tag = `<p>${listResult[0].strID} has won by default. win coin : ${listResult[0].iWinCoin}</p>`;
+                logElement.append(tag);
+            }
+            else
+            {
+                for(let i in listResult)
+                {
+                    if(listResult[i].iRank == 1)
+                    {
+                        tag = `<p style="display: flex; white-space: nowrap;">${listResult[i].strID} has won. win coin : ${listResult[i].iWinCoin}, hand card : <img src = "img/cards/${"card"+String(listResult[i].iCard1).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listResult[i].iCard2).padStart(2, '0')}.png" width = "35" height = "70">, table card : <img src = "img/cards/${"card"+String(listWinCards[0]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[1]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[2]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[3]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[4]).padStart(2, '0')}.png" width = "35" height = "70"></p>`;
+                        logElement.append(tag);
+                    }
+                }
+            }
+            //logElement.append(tag.tag.tag);
+
+            // 게임로그 요소의 스크롤 위치를 가장 아래로 설정
+            logElement.scrollTop(logElement.prop("scrollHeight"));
+            
             this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);
             this.Game.UpdatePot(listPots);
 

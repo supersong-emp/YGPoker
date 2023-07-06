@@ -105,6 +105,46 @@ app.post('/create', (req, res) => {
     }
 });
 
+app.post('/roominfo', (req, res) => {
+
+    console.log(`/roominfo`);
+    console.log(req.body);
+    console.log(req.body.strID);
+
+    let data = req.body;
+
+    let result = kGameManager.GetRoomInfo(data.lUnique);
+    if ( result != null )
+    {
+        let listPlayer = [];
+        for ( let i = 0; i < result.listUsers.GetLength(); ++ i )
+        {
+            const player = result.listUsers.GetSocket(i);
+
+            listPlayer.push({strID:player.strID, iCoin:player.iPoint, iLocation:player.iLocation, iAvatar:player.iAvatar});
+        }
+
+        res.send(
+            {
+                result:'OK', 
+                lUnique:result.lUnique,
+                strGameName:result.strGameName,
+                eGameType:result.eGameType,
+                strPassword:result.strPassword,
+                iDefaultCoin:result.iDefaultCoin,
+                iBettingTime:result.iBettingTime,
+                iMaxPlayer:result.cMaxPlayer,
+                listPlayer:listPlayer
+            }
+        );
+    }
+    else
+    {
+        res.send({result:'Error', error:'NotExistRoom'});
+    }
+});
+
+
 app.post('/join', (req, res) => {
 
     console.log(`/join`);
