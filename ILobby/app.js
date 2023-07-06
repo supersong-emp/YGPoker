@@ -65,9 +65,9 @@ app.use('/account', require('./routes/account'));
 app.use('/announcement', require('./routes/announcement'));
 
 
-global.strGameAddress = 'http://localhost:5555'
+//global.strGameAddress = 'http://localhost:5555'
 //global.strGameAddress = 'http://157.230.38.106:5555';
-//global.strGameAddress = 'https://ygpo888.net';
+global.strGameAddress = 'https://ygpo888.net';
 
 //global.strBig2Address = 'http://localhost:5556';
 global.strBig2Address = 'https://ygpokerbig2.net';
