@@ -26,10 +26,10 @@ router.get('/agentlist', async(req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //  #agent
 
-let GetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd) => {
+let GetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd, strID) => {
 
     //console.log(`##### GetChildren strGroupID (${strGroupID}), iClass (${iTargetClass})`);
-
+    let idCondition = strID ? `AND t2.strID = '${strID}'` : '';
     const [list] = await db.sequelize.query(`
         SELECT
         t2.id as id,
@@ -50,54 +50,57 @@ let GetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd) => {
         IFNULL((SELECT SUM(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t1.strGroupID,'%')),0) as iTotalBets
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-        WHERE t2.iClass = '${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+        WHERE t2.iClass = '${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%') ${idCondition};`
     );
 
     return list;
 }
 
-let RecursiveGetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd, list) =>
+let RecursiveGetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd, strID, list) =>
 {
-    if ( parseInt(iTargetClass) >= 4 )
+    if ( parseInt(iTargetClass) >= 5 )
+    //if ( iTargetClass > 0 )
         return;
     
-    let children = await GetChildren(strGroupID, parseInt(iTargetClass)+1, dateStart, dateEnd);
+    let children = await GetChildren(strGroupID, parseInt(iTargetClass), dateStart, dateEnd, strID);
     for ( let i in children )
     {
         list.push(children[i]);
         //console.log(`==========> Pushed ${children[i].strID}`);
-        await RecursiveGetChildren(children[i].strGroupID, parseInt(children[i].iClass), dateStart, dateEnd, list);
+        //await RecursiveGetChildren(children[i].strGroupID, parseInt(children[i].iClass), dateStart, dateEnd, list);
     }
 }
 
 router.post('/request_agentlist', async(req, res) => {
 
     console.log('/list');
-    //console.log(req.body);
+    console.log(req.body);
 
     //console.log(`strID : ${req.user.strID}, iClass : ${req.user.iClass}, strGroupID : ${req.user.strGroupID}`);
-
+    console.log(req.body.search);
     var data = [];
-    var list_count = req.body.length;
-    var full_count = 0;
 
     let listAgents = [];
 
-    await RecursiveGetChildren(req.user.strGroupID, req.user.iClass, req.body.dateStart, req.body.dateEnd, listAgents);
+    await RecursiveGetChildren(req.user.strGroupID, req.body.iClass, req.body.dateStart, req.body.dateEnd, req.body.search, listAgents);
 
-    full_count = listAgents.length;
+    // 이 부분에서 start와 length를 사용해야 합니다.
+    let start = req.body.start; // Ajax 요청에서 시작 인덱스를 가져옵니다.
+    let length = req.body.length; // Ajax 요청에서 가져올 데이터의 수를 가져옵니다.
 
-    for (var i in listAgents )
-    {
-        data.push(
-            listAgents[i]
-        );
+    // 잘라낸 배열을 사용해 data를 채웁니다.
+    for (let i = start; i < start + length && i < listAgents.length; i++) {
+        data.push(listAgents[i]);
     }
+
+    let totalRecords = await db.Users.count();  // 전체 레코드 수를 얻는 쿼리
+
+    let filteredRecords = listAgents.length;
 
     var object = {};
     object.draw = req.body.draw;
-    object.recordsTotal = full_count;
-    object.recordsFiltered = list_count;
+    object.recordsTotal = totalRecords;
+    object.recordsFiltered = filteredRecords;
     object.data = data;
 
     res.send(JSON.stringify(object));
@@ -132,7 +135,7 @@ router.post('/request_agentdetail', async (req, res)=> {
             fSettle:user.fSettle,
             iPoint:user.iPoint,
             iCash:user.iCash,
-            strDesc:user.strDesc,
+            strBank:user.strBank,
             strNaem:user.strName,
             strAccount:user.strAccount,
         };
@@ -298,6 +301,8 @@ router.post('/request_register', async(req, res) => {
     console.log('/request_register');
     console.log(req.body);
 
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
     var object = {};
     object.result = "OK";
 
@@ -430,8 +435,8 @@ router.post('/request_register', async(req, res) => {
                 fSitgoR:req.body.fSitgoR,
                 fOmahaR:req.body.fOmahaR,
                 fBaccaratR:req.body.fBaccaratR,
-                iPoint:req.body.iPoint,
-                iCash:req.body.iCash,
+                iPoint:0,
+                iCash:0,
                 strName:req.body.strName,
                 eUserType:'AGENT',
                 strEMail:'',
@@ -441,10 +446,15 @@ router.post('/request_register', async(req, res) => {
                 iAvatar:0,
                 iLevel:0,
                 iExp:0,
-                strDesc:req.body.strDesc,
+                strBank:req.body.strBank,
                 strAccount:req.body.strAccount,
                 strMobileNo:req.body.strMobileNo,
-                strOptionCode:'11110000'
+                strOptionCode:'11110000',
+                iRolling:0,
+                iPointBase:0,
+                iCashBase:0,
+                strDesc:'',
+                strIP:ip
             });
             
             res.send(object);
@@ -461,7 +471,7 @@ router.post('/request_register', async(req, res) => {
                 fBaccaratR:req.body.fBaccaratR,
                 iPoint:req.body.iPoint,
                 iCash:req.body.iCash,
-                strDesc:req.body.strDesc,
+                strBank:req.body.strBank,
                 strName:req.body.strName,
                 strAccount:req.body.strAccount,
             });
@@ -486,7 +496,7 @@ router.post('/request_accountchange', async(req, res) => {
 
     await user.update({
         strName:req.body.strName,
-        strDesc:req.body.strDesc,
+        strBank:req.body.strBank,
         strAccount:req.body.strAccount,
     });
     object.result = "OK";
@@ -596,7 +606,7 @@ router.post('/request_accountchangelist', async (req, res)=> {
     var user = await db.Users.findOne({where:{strID:req.body.strID}});
     let objectData = {
         strName:user.strName,
-        strDesc:user.strDesc,
+        strBank:user.strBank,
         strAccount:user.strAccount,
     };
     object.data = objectData;
@@ -613,7 +623,7 @@ router.post('/request_admininfo', async (req, res)=> {
     var user = await db.Users.findOne({where:{strID:req.body.strID}});
     let objectData = {
         strName:user.strName,
-        strDesc:user.strDesc,
+        strBank:user.strBank,
         strAccount:user.strAccount,
     };
     object.data = objectData;

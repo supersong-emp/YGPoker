@@ -20,13 +20,13 @@
 </div>
 <!-- end page title -->
 
-<div class="row">
+<div class="row" id="userlist">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="row mb-2">
                     <div class="col-sm-2">
-                        <a href="javascript:void(0);" class="btn btn-danger mb-2 CreateUserButton"><i class="mdi mdi-plus-circle mr-2"></i> 회원 등록</a>
+                        <a href="javascript:void(0);" class="btn btn-danger mb-2 CreateUserButton" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 회원 등록</a>
                     </div>
                     <div class="col-sm-3">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -74,9 +74,9 @@
                                 <th>색인</th>
                                 <th>아이디</th>
                                 <th>닉네임</th>
-                                <th>매장 ID</th>
+                                <!-- <th>매장 ID</th>
                                 <th>총판 ID</th>
-                                <th>부지사 ID</th>
+                                <th>부지사 ID</th> -->
                                 <th>지사 ID</th>
                                 <th>본사 ID</th>
                                 <th>이름</th>
@@ -85,7 +85,8 @@
                                 <th>상태</th>
                                 <th>포인트</th>
                                 <th>캐시</th>
-                                <th>모바일</th>
+                                <th>계좌번호</th>
+                                <th>전화번호</th>
                                 <th>등록일</th>
                                 <th>동작</th>
                             </tr>
@@ -96,178 +97,524 @@
         </div> <!-- end card-->
     </div> <!-- end col -->
 
-    <div class="modal fade task-modal-content" id="BuildUserDialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="NewTaskModalLabel">회원 생성 / 수정</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <!-- Modal -->
+    <div class="modal fade" id="UserDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog custom-modal-width custom-modal-main">
+          <div class="modal-content custom-modal-width">
+            <div class="modal-header">
+              <h4 class="name-text">회원 등록</h1>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body container-fluid mainfluid px-2">
+                <div id="layoutSidenav_content" >
+                    <main>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                회원 등록
+                            </div>
+                            <input type="hidden" name="id" id="uid" value="" />
+                                    <table class="table card-body" style="margin-bottom:0;">
+                                        <tbody>
+                                          <tr style="text-align:center;">
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">지사 아이디</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text" id="strPAdminID" name="strPAdminID">
+                                                <!-- <input type="text" disabled value="아이디">  -->
+                                            </td>
+                                          </tr>
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">ID</th>
+                                            <td style="border:1px solid #ccc;">
+                                              <div style="display: flex;">
+                                                <input type="text" id="strID" name="strID" maxlength="20"/>
+                                                <button style="height: fit-content; margin-left: 5px;" onclick="RequestCheckID();">check</button>
+                                              </div>
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">Nickname</th>
+                                            <td style="border:1px solid #ccc;">
+                                              <div style="display: flex;">
+                                                <input type="text" id="strNickname" name="strNickname" maxlength="20"/>
+                                                <button style="margin-left: 5px;" onclick="RequestCheckNickname();">check</button>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">PASSWORD</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="password" id="strPassword" name="strPassword" placeholder="password">
+                                            </td>
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">비밀번호 변경</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="password" id="strPasswordCheck" name="strPasswordCheck" placeholder="password Check">
+                                            </td>
+                                          </tr>
+                                        
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">예금주명</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="strName" name="strName" placeholder="">
+                                            </td>
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">은행명</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;"> <input type="text" id="strBank" name="strBank" placeholder="">
+                                            </td>
+                                          </tr>
+    
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">계좌번호</th>
+                                            <td colspan="3" style="border:1px solid #ccc;">
+                                                <input style="width:90%" type="text" id="strAccount" name="strAccount" placeholder="">
+                                            </td>
+                                          </tr>
+
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">전화번호</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="strMobileNo" name="strMobileNo" placeholder="">
+                                            </td>
+                                          </tr>
+
+                                          <!-- <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 기능</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="checkbox" style="vertical-align: middle;">
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 비밀번호</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text">
+                                            </td>
+                                          </tr> -->
+                                        </tbody>
+                                    </table>
+                                
+                            </div>
+                            <div style="text-align:center">
+                                <button type="button" class="btn btn-warning btn-sm" onclick="RequestRegister();">저장</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
+                            </div>
+                    </main>
                 </div>
-                <div class="modal-body">
-                        <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
-                        <input type="hidden" name="id" id="uid" value="" />
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">매장 아이디</label>
-                                    <input type="text" class="form-control date" id="strShopID" name="strShopID">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>배송 유형</label>
-                                    <select class="form-control form-control-light" name="eInoutType" id="eInoutType">
-                                        <option value="GIVE">지급</option>
-                                        <option value="TAKE">차감</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">배송 금액</label>
-                                    <div class="input-group mb-6">
-                                        <input type="text" id="iInputAmount" name="iInputAmount" maxlength="20" class="form-control" value="0"/>
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestInout();">배송</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                                <div class="form-group">
-                                    <label for="task-priority2">배송 금액 설정</label>
-                                        <div class="text-right" style="text-align:center;">
-                                            <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(10000);">+10,000</button>
-                                            <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(30000);">+30,000</button>
-                                            <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(50000);">+50,000</button>
-                                            <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(100000);">+100,000</button>
-                                            <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(500000);">+500,000</button>
-                                            <button type="button" style="width:100px;" class="btn btn-light" onclick="AddInput(0);">정정</button>
-                                        </div>
-                                </div>
-
-                        <div class="form-group">
-                            <label>회원 상태</label>
-                            <select class="form-control form-control-light" name="eStatus" id="eStatus">
-                                <option value="NORMAL" selected>정상</option>
-                                <option value="BLOCK">차단</option>
-                                <option value="QUIT">탈퇴</option>
-                            </select>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">아이디</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="strID" name="strID" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestCheckID();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">로그인 비밀번호</label>
-                                    <input type="password" class="form-control form-control-light" id="strPassword" name="strPassword" placeholder="로그인 비밀번호">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">닉네임</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="strNickname" name="strNickname" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestCheckNickname();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">예금주명</label>
-                                    <input type="text" class="form-control date" id="strName" name="strName" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">은행명</label>
-                                    <input type="text" class="form-control date" id="strDesc" name="strDesc" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">계좌번호</label>
-                                    <input type="text" class="form-control date" id="strAccount" name="strAccount" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">포인트</label>
-                                    <input type="text" class="form-control date" id="iPoint" name="iPoint" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">캐쉬</label>
-                                    <input type="text" class="form-control date" id="iCash" name="iCash" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="RequestRegister();">저장</button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
-                        </div>
-                    <!-- </form> -->
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
+            </div>
+          </div>
+        </div>
+     </div>
+     <!-- Modal End-->
 </div>
 <!-- end row -->
+<!-- userinfo -->
+<div id="userinfo">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">회원정보</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">User Info</li>
+            </ol>
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Basic radio toggle button group ">
+                <label class="btn btn-primary btn-outline-primary text-white userinfolog" for="userinfolog">회원정보</label>
+              
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">게임로그</label> -->
+              
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio3">활동로그</label> -->
 
+                <label class="btn btn-outline-primary userbetlog" for="userbetlog">배팅로그</label>
+
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio5">머니변동로그</label> -->
+            </div>
+            <div class="card mb-4" id="userinfotab">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    기본 정보
+                </div>
+                <!-- <input type="hidden" name="id" id="uid_info" value="" /> -->
+                    <table class="table card-body" style="margin-bottom:0;">
+                        <tbody>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">아이디</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;" class="gameinfo">
+                                <span style="vertical-align: middle;" id="strID_info"></span>
+                                <!-- <button type="button" class="btn btn-secondary btn-sm">중복IPx</button>
+                                <button type="button" class="btn btn-secondary btn-sm">중복매장x</button>
+                                <button type="button" class="btn btn-danger btn-sm">접속끊기</button> -->
+                            </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">닉네임</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strNickname_info"></span> </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">게임머니</th>
+                            <td style="border:1px solid #ccc;"> <span id="iCash_info"></span>원 </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">마일리지</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="iRolling_info"></span>원 </td>
+                          </tr>
+                        
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">메모</th>
+                            <td style="border:1px solid #ccc;"> <span id="strDesc_info"></span> </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">추천인</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strParentID_info"></span> </td>
+                          </tr>
+
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">은행명</th>
+                            <td style="border:1px solid #ccc;"> <span id="strBank_info"></span> </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">입금자명</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strName_info"></span> </td>
+                          </tr>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">계좌번호</th>
+                            <td style="border:1px solid #ccc;"> <span id="strAccount_info"></span> </td>
+                          </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    계정 정보
+                </div>
+                    <table class="table card-body" style="margin-bottom:0;">
+                        <tbody>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">가입날짜</th>
+                            <td style="border:1px solid #ccc;" class="gameinfo"> <span id="createdAt_info"></span></td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">가입IP</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strIP_info"></span> </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">최근 접속날짜</th>
+                            <td style="border:1px solid #ccc;"> <span id="loginedAt_info"></span></td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">최근 접속IP</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strIPlogin_info"></span> </td>
+                          </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <!-- <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    게임 정보
+                </div>
+                    <table class="table card-body" style="margin-bottom:0;">
+                        <tbody>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">맞고 승패</th>
+                            <td style="border:1px solid #ccc;" class="gameinfo"> <span>0</span>승 <span>0</span>패 </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 맞고 승패</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span>승 <span>0</span>패 </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">일일 맞고 변동머니</th>
+                            <td style="border:1px solid #ccc;"> <span>0</span> 원</td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 맞고 배팅머니</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span> 원</td>
+                          </tr>
+                        
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">맞고 바둑이</th>
+                            <td style="border:1px solid #ccc;" class="gameinfo"> <span>0</span>승 <span>0</span>패 </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 바둑이 승패</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span>승 <span>0</span>패 </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">일일 바둑이 변동머니</th>
+                            <td style="border:1px solid #ccc;"> <span>0</span> 원</td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 바둑이 배팅머니</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span> 원</td>
+                          </tr>
+
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">홀덤 승패</th>
+                            <td style="border:1px solid #ccc;" class="gameinfo"> <span>0</span>승 <span>0</span>패 </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 홀덤 승패</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span>승 <span>0</span>패 </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">일일 홀덤 변동머니</th>
+                            <td style="border:1px solid #ccc;"> <span>0</span> 원</td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 홀덤 배팅머니</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span> 원</td>
+                          </tr>
+
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">일일 총 변동머니</th>
+                            <td style="border:1px solid #ccc;"> <span>0</span> 원</td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">일일 총 배팅머니</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span>0</span> 원</td>
+                          </tr>
+
+                        </tbody>
+                    </table>
+            </div> -->
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    추천인 정보
+                </div>
+                    <table class="table card-body" style="margin-bottom:0;">
+                        <tbody>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">추천인</th>
+                            <td style="border:1px solid #ccc;" class="gameinfo"> <span id="strParentID_info2"></span> </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">지사</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="agentID_info"></span> </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">딜비-바카라</th>
+                            <td style="border:1px solid #ccc;"> <span id="fBaccaratR_info"></span>% </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">딜비-빅투</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="fBig2R_info"></span>% </td>
+                          </tr>
+
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">딜비-싯고</th>
+                            <td style="border:1px solid #ccc;"> <span id="fSitgoR_info"></span>% </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">딜비-오마하</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="fOmahaR_info"></span>% </td>
+                          </tr>
+
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">딜비-홀덤</th>
+                            <td style="border:1px solid #ccc;"> <span id="fHoldemR_info"></span>% </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">죽장</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="fSettle_info"></span>% </td>
+                          </tr>
+                        
+                        </tbody>
+                    </table>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-success btn-sm me-md-2" type="button" onclick="UserChangePassword();">계정비밀번호 변경</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="UserinfoClose();" type="button">닫기</button>
+                <!-- <button class="btn btn-danger btn-sm" type="button">차단</button> -->
+            </div>
+
+        </div>
+    </main>
+    <!-- modal start -->
+    <div class="modal fade" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="passwordChangeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="passwordChangeModalLabel">비밀번호 변경</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="newstrPassword">새 비밀번호</label>
+                  <input type="password" class="form-control" id="newstrPassword" placeholder="새 비밀번호를 입력하세요">
+                </div>
+                <div class="form-group">
+                  <label for="newstrPasswordCheck">비밀번호 확인</label>
+                  <input type="password" class="form-control" id="newstrPasswordCheck" placeholder="비밀번호를 다시 한 번 입력하세요">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="RequestPasswordChange()">변경 저장</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- modal end -->
+</div>
+<!-- userinfo end-->
+
+<!-- userbetting start -->
+<div id="userbetting">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">베팅로그</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Bet Info</li>
+            </ol>
+            
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Basic radio toggle button group ">
+                <label class="btn btn-outline-primary userinfolog" for="userinfolog2">회원정보</label>
+              
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">게임로그</label> -->
+              
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio3">활동로그</label> -->
+
+                <label class="btn btn-primary btn-outline-primary text-white userbetlog" for="userbetlog2">배팅로그</label>
+
+                <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio5">머니변동로그</label> -->
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    기본 정보
+                </div>
+                    <table class="table card-body" style="margin-bottom:0;">
+                        <tbody>
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">아이디</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;" class="gameinfo">
+                                <span style="vertical-align: middle;" id="strID_bet"></span>
+                                <!-- <button type="button" class="btn btn-secondary btn-sm">중복IPx</button>
+                                <button type="button" class="btn btn-secondary btn-sm">중복매장x</button>
+                                <button type="button" class="btn btn-danger btn-sm">접속끊기</button> -->
+                            </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">닉네임</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strNickanme_bet"></span> </td>
+                          </tr>
+                          
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">게임머니</th>
+                            <td style="border:1px solid #ccc;"> <span id="iCash_bet"></span>원 </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">마일리지</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="iRolling_bet"></span>원 </td>
+                          </tr>
+                        
+                          <tr style="text-align:center;">
+                            <th style="vertical-align: middle; border:1px solid #ccc;">메모</th>
+                            <td style="border:1px solid #ccc;"> <span id="strDesc_bet"></span> </td>
+                            <th style="border:1px solid #ccc; vertical-align: middle;">추천인</th>
+                            <td style="border:1px solid #ccc; vertical-align: middle;"> <span id="strAgentID_bet">거니</span> </td>
+                          </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <div id= "bettinglist" class="row">
+                <div class="card col-12">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0">
+                            베팅 내역
+                        </h5>
+                        <div class="form-row  align-items-center">
+                            <div class="col-auto ml-auto">
+                                <label class="col-form-label">검색 날짜 범위</label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="sr-only">시작 날짜</label>
+                                <input type="text" class="form-control mb-2" id="startDate" data-provide="datepicker" placeholder="">
+                            </div>
+                            <div class="col-auto">
+                                <label class="sr-only">마지막 날짜</label>
+                                <input type="text" class="form-control mb-2" id="endDate" data-provide="datepicker" placeholder="">
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" id="FindButton">검색</button>
+                            </div>
+                        </div>
+                        <div class="collapse pt-3 show">
+                            <table id="dataTable" class="table table-sm dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th>게임</th>
+                                        <th>베팅 타입</th>
+                                        <th>베팅 금액</th>
+                                        <!-- <th>지급 금액</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody id="listObjects">
+                                    
+                                </tbody>
+                            </table>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-danger btn-sm" onclick="UserinfoClose();" type="button">닫기</button>
+            <!-- <button class="btn btn-danger btn-sm" type="button">차단</button> -->
+        </div>
+    </main>
+</div>
+<!-- modal end-->
 <script type="text/javascript">
 
     var dataTableInstance;
 
     $(document).ready(function(){
 
+        // userinfo 가리기
+        $("#userinfo").hide();
+        $("#userbetting").hide();
+        //$("#SettlementDialog").hide();
+
         $("#birthdate").datepicker({
             format: 'yyyy-mm-dd',
             language: 'kr'
         });
 
+        $("#startDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language : 'kr'
+        });
+        $("#endDate").datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'kr'
+        });
+
+        var leadingZeros = (n, digits) => {
+            var zero = '';
+            n = n.toString();
+
+            if (n.length < digits) {
+                for (var i = 0; i < digits - n.length; i++)
+                    zero += '0';
+            }
+            return zero + n;
+        }
+        let getTimeStartStamp = ()=> {
+            var now = new Date();
+
+            var d = new Date(now.setDate(now.getDate()));
+            var s =
+                leadingZeros(d.getFullYear(), 4) + '-' +
+                leadingZeros(d.getMonth() + 1, 2) + '-' +
+                leadingZeros(d.getDate(), 2);
+
+            return s;
+        }
+        let getTimeEndStamp = ()=> {
+            var now = new Date();
+
+            var d = new Date(now.setDate(now.getDate() - 1));
+            var s =
+                leadingZeros(d.getFullYear(), 4) + '-' +
+                leadingZeros(d.getMonth() + 1, 2) + '-' +
+                leadingZeros(d.getDate(), 2);
+
+            return s;
+        }
+        let today = getTimeStartStamp();
+        let yesterday = getTimeEndStamp();
+        $('#startDate').val(yesterday);
+        $('#endDate').val(today);
+
         // 새 계정 생성
         $(".CreateUserButton").click(function (e) {
             e.preventDefault();
-
+            console.log("CreateUserButton");
             $('#iInputAmount').val(0);
-            $("#BuildUserDialog").modal("show");
+            $("#UserDialog").modal("show");
         });
 
         // 테이블의 login id 컬럼 클릭 처리
         $(document).on("click", ".UserIdPopup", function (e) {
             e.preventDefault();
-
+            
             $.ajax({
                 //url: "@Url.Action("QueryUser")",
                 url:"/user/request_userdetail",
@@ -281,19 +628,46 @@
 
                         console.log(obj.data);
 
-                        $("#uid").val(obj.data.id);
-                        $("#strShopID").val(obj.data.strShopID);
-                        $("#strID").val(obj.data.strID);
-                        $("#strPassword").val(obj.data.strPassword);
-                        $("#strNickname").val(obj.data.strNickname);
-                        $("#eState").val(obj.data.eStatus);
-                        $("#strDesc").val(obj.data.strDesc);
-                        $("#strName").val(obj.data.strName);
-                        $("#strAccount").val(obj.data.strAccount);
-                        $("#iPoint").val(obj.data.iPoint);
-                        $("#iCash").val(obj.data.iCash);
+                        //회원 정보 팝업
+                        //$("#uid_info").val(obj.data.id);
+                        $("#strParentID_info").text(obj.data.strShopID);
+                        $("#strID_info").text(obj.data.strID);
+                        //$("#strPassword").val(obj.data.strPassword);
+                        $("#strNickname_info").text(obj.data.strNickname);
+                        //$("#eState").val(obj.data.eStatus);
+                        $("#strBank_info").text(obj.data.strBank);
+                        $("#strName_info").text(obj.data.strName);
+                        $("#strAccount_info").text(obj.data.strAccount);
+                        $("#iRolling_info").text(obj.data.iRolling.toLocaleString());
+                        $("#iCash_info").text(obj.data.iCash.toLocaleString());
+                        $("#strDesc_info").text(obj.data.strDesc);
                         
-                        $("#BuildUserDialog").modal("show");
+                        $("#createdAt_info").text(moment(obj.data.createdAt).format('YYYY-MM-DD HH:mm:ss'));
+                        $("#strIP_info").text(obj.data.strIP);
+                        $("#loginedAt_info").text(moment(obj.data.loginedAt).format('YYYY-MM-DD HH:mm:ss'));
+                        $("#strIPlogin_info").text(obj.data.strIPlogin);
+
+                        $("#strParentID_info2").text(obj.data.strShopID);
+                        $("#agentID_info").text(obj.data.strAgentID);
+                        $("#fBaccaratR_info").text(obj.data.fBaccaratR);
+                        $("#fBig2R_info").text(obj.data.fBig2R);
+                        $("#fSitgoR_info").text(obj.data.fSitgoR);
+                        $("#fHoldemR_info").text(obj.data.fHoldemR);
+                        $("#fOmahaR_info").text(obj.data.fOmahaR);
+                        $("#fSettle_info").text(obj.data.fSettle);
+
+                        //베팅 정보 팝업
+                        $("#strID_bet").text(obj.data.strID);
+                        $("#strNickname_bet").text(obj.data.strNickname);
+                        $("#iCash_bet").text(obj.data.iCash.toLocaleString());
+                        $("#iRolling_bet").text(obj.data.iRolling.toLocaleString());
+                        $("#strDesc_bet").text(obj.data.strDesc);
+                        $("#strAgentID_bet").text(obj.data.strShopID);
+                        //아이디 userlist 숨기기
+                        $("#userlist").hide();
+                        //아이디 userinfo 보이기
+                        $('#userbetting').hide();
+                        $("#userinfo").show();
                     } else {
                         alert(obj.reason);
                     }
@@ -408,31 +782,6 @@
             dataTableInstance.ajax.reload();
         });
 
-        // 정보 수정 완료
-        $("#UserFormSubmitButton").click(function (e) {
-            e.preventDefault();
-
-            $("#UserForm").ajaxSubmit({
-                //url:"/account/user",
-                dataType: "json",
-                type : "POST",
-                beforeSubmit: function () {
-
-                },
-                success: function (obj) {
-                    if (obj.result == "OK") {
-                        $("#BuildUserDialog").modal("hide");
-                        dataTableInstance.ajax.reload();
-                        return;
-                    }
-                    alert(obj.reason);
-                },
-                error: function () {
-                    alert("서버 오류");
-                }
-            });
-        });
-
         dataTableInstance = $('#user-datatable').DataTable({
             "serverSide": true,
             "searching": false,
@@ -474,9 +823,9 @@
                         return label;
                     }
                 },
-                { data:"lev5" },
-                { data:"lev4" },
-                { data:"lev3" },
+                // { data:"lev5" },
+                // { data:"lev4" },
+                // { data:"lev3" },
                 { data:"lev2" },
                 { data:"lev1" },
                 { data: "strName" },
@@ -519,6 +868,7 @@
                         return i.toLocaleString();
                     }
                 },
+                { data: "strAccount" },
                 { data: "strMobileNo" },
                 {
                     data: "createdAt", render: function (d) {
@@ -562,7 +912,78 @@
             }
         });
     });
+    $('.userinfolog').click(function () {
+        $('#userinfo').show();
+        $('#userbetting').hide();
+    });
+    $('.userbetlog').click(function(){
+        $('#userinfo').hide();
+        $('#userbetting').show();
 
+        $.ajax({
+                type:'post',
+                url: "/inout/bettinglog",
+                data:{
+                    strID:$('#strID_bet').text(),
+                    startDate:$('#startDate').val(),
+                    endDate:$('#endDate').val()
+                },
+                success:function(ret) {
+                    console.log(ret);
+
+                    $('#listObjects').empty();
+                    for ( let i in ret )
+                    {
+                        console.log(ret[i]);
+
+                        //console.log(ret[i].datas[j]);
+                        tag = `
+                        <tr>
+                            <td>${ret[i].iGame}</td>
+                            <td>${ret[i].strBet}</td>
+                            <td>${ret[i].iBetting.toLocaleString()}</td>
+                        </tr>
+                        `;
+                        $('#listObjects').append(tag);
+                    }
+                }
+            });
+    });
+
+    $('#FindButton').click(function(){
+        $('#userinfo').hide();
+        $('#userbetting').show();
+
+        $.ajax({
+                type:'post',
+                url: "/inout/bettinglog",
+                data:{
+                    strID:$('#strID_bet').text(),
+                    startDate:$('#startDate').val(),
+                    endDate:$('#endDate').val()
+                },
+                success:function(ret) {
+                    console.log(ret);
+
+                    $('#listObjects').empty();
+                    for ( let i in ret )
+                    {
+                        console.log(ret[i]);
+
+                        //console.log(ret[i].datas[j]);
+                        tag = `
+                        <tr>
+                            <td>${ret[i].iGame}</td>
+                            <td>${ret[i].strBet}</td>
+                            <td>${ret[i].iBetting.toLocaleString()}</td>
+                        </tr>
+                        `;
+                        $('#listObjects').append(tag);
+                    }
+                }
+            });
+    });
+    
     let RequestRegister = () => {
 
         const strPAdminID = $('#strPAdminID').val();
@@ -570,13 +991,17 @@
         const strID = $('#strID').val();
         const strNickname = $('#strNickname').val();
         const strPassword = $('#strPassword').val();
-        const iPoint = $('#iPoint').val();
-        const iCash = $('#iCash').val();
-        const strDesc = $('#strDesc').val();
+        const strPasswordCheck = $('#strPasswordCheck').val();
+        const strBank = $('#strBank').val();
         const strName = $('#strName').val();
         const strAccount = $('#strAccount').val();
-        const eStatus = $('#eStatus').val();
-        const strShopID = $('#strShopID').val();
+        const strMobileNo = $('strMobileNo').val();
+
+        if(strPassword != strPasswordCheck)
+        {
+            alert('비밀번호가 일치하지 않습니다.');
+            return; 
+        }
 
         $.ajax({
             url:"/user/request_register",
@@ -584,14 +1009,12 @@
             data: {
                 strID:strID,
                 strNickname :strNickname,
-                strShopID:strShopID,
-                eStatus:eStatus,
                 strPassword:strPassword,
-                strDesc:strDesc,
+                strBank:strBank,
                 strName:strName,
                 strAccount:strAccount,
-                iPoint:iPoint,
-                iCash:iCash,
+                strMobileNo:strMobileNo,
+                strPAdminID:strPAdminID,
             },
             dataType: "json",
             success: function (obj) {
@@ -625,7 +1048,7 @@
         const strID = $('#strID').val();
 
         $.ajax({
-            url:"/agent/request_checkid",
+            url:"/user/request_checkid",
             type:"POST",
             data: {
                 strID :strID
@@ -652,7 +1075,7 @@
         const strNickname = $('#strNickname').val();
 
         $.ajax({
-            url:"/agent/request_checknickname",
+            url:"/user/request_checknickname",
             type:"POST",
             data: {
                 strNickname :strNickname
@@ -728,9 +1151,62 @@
                 alert("조회 중 오류 발생");
             }
         });
-
+    }
+    
+    let UserChangePassword = () => {
+        console.log("UserChangePassword");
+        $("#passwordChangeModal").modal('show');
     }
 
+    let UserinfoClose = () => {
+        $('#userinfo').hide();
+        $('#userbetting').hide();
+        $("#userlist").show();
+    }
+    let RequestPasswordChange = () => {
+        const strPassword = $('#newstrPassword').val();
+        const strPasswordCheck = $('#newstrPasswordCheck').val();
+        const strID = $('#strID_info').text();
 
+        //console.log(strID);
+    
+        if(strPassword != strPasswordCheck)
+        {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+        $.ajax({
+            url:"/user/request_password_change",
+            type:"POST",
+            data: {
+                strID:strID,
+                strPassword:strPassword
+            },
+            dataType: "json",
+            success: function (obj) {
+                console.log(obj);
+
+                if ( obj.result == 'OK' )
+                {
+                    alert('완료 되었습니다.');
+                    location.reload();
+                }
+                else
+                {
+                    if ( obj.error == 'NotExistUser' )
+                    {
+                        alert('해당 아이디가 존재 하지 않습니다.');
+                    }
+                    else
+                    {
+                        alert('오류가 발생 하였습니다.');
+                    }
+                }
+            }, 
+            error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
+    }
 
 </script>

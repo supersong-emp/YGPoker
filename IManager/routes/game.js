@@ -175,65 +175,52 @@ router.post('/gameloglist', async (req, res) => {
 });
 
 router.post('/gamelogresult', async (req, res) => {
-
     console.log('/gamelogresult');
     console.log(req.body);
 
-    var data = [];
-    //var list_count = 0;
-    var full_count = 0;
-    
-    var strTimeStart = req.body.startDate;
-    var strTimeEnd = req.body.endDate;
-    var accountId = req.body.accountId;
-    //let strId = await db.Users.findAll({where:{strID:accountId}});
-    
-    if(accountId == '')
-    {
-        res.send({result:'NOID', reason:'ID를 적고 검색해주세요.'});
-        return;
-    }
-    // if(!strId)
-    // {
-    //     res.send({result:'NOID', reason:'ID를 적고 검색해주세요.'});
-    //     return;
-    // }
-    //console.log("start : " + req.body.start);
-    //console.log("startDate : "+ moment(strTimeStart).format('YYYY-MM-DD hh:mm:ss') + " endDate : "+ moment(strTimeEnd).format('YYYY-MM-DD hh:mm:ss'));
-    var querydatas = await db.ResultHoldems.findAll({
-        order: [['createdAt', 'DESC']],
-         where:{
-            [Op.and]:[{
-                 createdAt:{[Op.between]:[ moment(strTimeStart).format('YYYY-MM-DD hh:mm:ss'), moment(strTimeEnd).format('YYYY-MM-DD hh:mm:ss')]},
-                 strDesc:{[Op.like]:`%${accountId}%`},
-            }]
-        }
-    });
+    const { accountId, startDate, endDate } = req.body;
+    const start = parseInt(req.body.start);
+    const length = parseInt(req.body.length);
     let listGamelog = [];
-    //console.log(querydatas);
-    //full_count = querydatas.length;
-    await getGamelog(querydatas,accountId,listGamelog);
-    console.log(listGamelog);
-    full_count = listGamelog.length;
 
-    for (var i in listGamelog )
-    {
-        data.push(
-            listGamelog[i]
-        );
+    if (accountId == '' || accountId == null || accountId == undefined) {
+        return res.send({ result: 'NOID', reason: 'ID를 검색해주세요.' });
     }
-    //console.log(querydatas);
-    var object = {};
-    object.draw = req.body.draw;
-    object.recordsTotal = full_count;
-    //object.recordsFiltered = list_count;
-    object.recordsFiltered = full_count;
-    object.data = data;
 
-    //console.log(object);
+    const filteredRecords = await db.ResultHoldems.count({
+        where: {
+            createdAt: {
+                [Op.between]: [moment(startDate).format('YYYY-MM-DD hh:mm:ss'), moment(endDate).format('YYYY-MM-DD hh:mm:ss')],
+            },
+            strDesc: {
+                [Op.like]: `%${accountId}%`,
+            },
+        },
+    });
 
-    //res.send({data:list});
-    //res.send(object);
+    const querydatas = await db.ResultHoldems.findAll({
+        order: [['createdAt', 'DESC']],
+        where: {
+            createdAt: {
+                [Op.between]: [moment(startDate).format('YYYY-MM-DD hh:mm:ss'), moment(endDate).format('YYYY-MM-DD hh:mm:ss')],
+            },
+            strDesc: {
+                [Op.like]: `%${accountId}%`,
+            },
+        },
+        offset: start,
+        limit: length,
+    });
+
+    await getGamelog(querydatas, accountId, listGamelog);
+
+    const object = {
+        draw: req.body.draw,
+        recordsTotal: filteredRecords,
+        recordsFiltered: filteredRecords,
+        data: listGamelog,
+    };
+
     res.send(JSON.stringify(object));
 });
 
@@ -352,6 +339,15 @@ router.post('/request_roomlist', async (req,res) => {
         })
         .catch((error)=> {
     });
+})
+
+router.post('/gamedetail', async ( req, res ) => {
+
+    let data = await db.ResultHoldems.findOne({where:{id:req.body.gameID}});
+
+    console.log(`/gamedetail`);
+
+    res.send({result:'OK', data:data});
 })
 
 module.exports = router;

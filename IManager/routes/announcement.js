@@ -55,6 +55,18 @@ router.post('/request_announcementlist', async (req, res) => {
     res.send(JSON.stringify(object));
 });
 
+router.post('/request_main_announcementlist', async (req, res) => {
+
+    let list = await db.Announcements.findAll({
+        where: { eType: 'ANN' },
+        order: [
+            ['id', 'DESC']
+        ]
+    });
+
+    res.send({result:'OK', data:list});
+});
+
 router.post('/request_announcementdetail', async (req, res) => {
 
     console.log(`/announcement/request_announcementdetail`);

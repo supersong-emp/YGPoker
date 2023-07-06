@@ -65,6 +65,9 @@ module.exports = function (sequelize, Sequelize) {
         strDesc: {
             type: Sequelize.STRING,
         },
+        strBank: {
+            type: Sequelize.STRING,
+        },
         strAccount: {
             type: Sequelize.STRING,
         },
@@ -98,10 +101,28 @@ module.exports = function (sequelize, Sequelize) {
         iClass:{
             type:Sequelize.INTEGER,
         },
+        strIP:{
+            type:Sequelize.STRING,
+        },
+        strIPlogin:{
+            type:Sequelize.STRING,
+        },
         createdAt:{
             type:Sequelize.DATE,
             get() {
                 return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD');
+            }
+        },
+        updatedAt:{
+            type:Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        loginedAt:{
+            type:Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('loginedAt')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
     });

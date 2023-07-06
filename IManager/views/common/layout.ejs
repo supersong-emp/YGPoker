@@ -5,297 +5,248 @@
     </head> 
     
     <% if ( type == 0 ) { %>
-    <body class="loading" data-layout="detached" data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'>
-        <!-- Topbar Start -->
-        <div class="navbar-custom topnav-navbar topnav-navbar-dark">
-            <div class="container-fluid">
-    
-                <!-- LOGO -->
-                <a href="/" class="topnav-logo">
-                    <span class="topnav-logo-lg">
-                        <img src="./img/foot_LJ_logo.png" alt="" height="54">
-                    </span>
-                    <span class="topnav-logo-sm">
-                        <img src="./img/foot_LJ_logo.png" alt="" height="54">
-                    </span>
-                </a>
-    
-                <!---->
-                <ul class="list-unstyled topbar-right-menu mb-0 " style="display: flex; flex-direction: row-reverse;">
-                    <a id='alert_input' href='/inout/input' style="position:absolute; top:25px; left:300px; color:rgb(67, 124, 247);">충전신청</a>
-                    <a id='alert_output' href='/inout/output' style="position:absolute; top:25px; left:400px; color:rgb(248, 40, 40);">환전신청</a>
-                    <a id='alert_letter' href='/etc/letter' style="position:absolute; top:25px; left:500px; color:rgb(222, 224, 94);">1:1 문의</a>
-
-                    <!-- 우측상단 이용자 정보 -->
-                    <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" id="topbar-userdrop"
-                           href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="account-user-avatar">
-                                <img src="./assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
-                            </span>
-                            <span>
-                                <span class="account-user-name"><%=user.strID%></span>
-                                <% if ( user.iClass == 0 ) { %>
-                                    <span class="account-position">본사</span>
-                                <%}else if ( user.iClass == 1 ) { %>
-                                    <span class="account-position">지사</span>
-                                <%}else if ( user.iClass == 2 ) { %>
-                                    <span class="account-position">부지사</span>
-                                <%}else if ( user.iClass == 3 ) { %>
-                                    <span class="account-position">총판</span>
-                                <%}else if ( user.iClass == 4 ) { %>
-                                    <span class="account-position">매장</span>
-                                <%}else{%>
-                                    <span class="account-position">회원</span>
-                                <%}%>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
-                             aria-labelledby="topbar-userdrop">
-    
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item" id="ChangePersonalInfo">
-                                <i class="mdi mdi-account-circle mr-1"></i>
-                                <span>계정 정보 변경</span>
-                            </a>
-                            <% if ( user.iClass == 0 ) { %>
-                            <!-- 계좌정보 변경-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item" id="ChangeAdminAccount">
-                                <i class="mdi mdi-account-circle mr-1"></i>
-                                <span>계좌정보 변경</span>
-                            </a>
-                            <%}%>
-                            <!-- item-->
-                            <a href="/account/logout" id="LogoutButton" class="dropdown-item notify-item">
-                                <i class="mdi mdi-logout mr-1"></i>
-                                <span>Logout</span>
-                            </a>
-    
+        <body class="sb-nav-fixed">
+            <!-- 상단 헤더 메뉴 -->
+                <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+                    <!-- Navbar Brand-->
+                    <a class="navbar-brand ps-3" href="/">Admin</a>
+                        <a id='alert_input' href='/inout/input' style="position:absolute; top:25px; left:300px; color:rgb(67, 124, 247);">충전신청</a>
+                        <a id='alert_output' href='/inout/output' style="position:absolute; top:25px; left:400px; color:rgb(248, 40, 40);">환전신청</a>
+                        <a id='alert_letter' href='/etc/letter' style="position:absolute; top:25px; left:500px; color:rgb(222, 224, 94);">1:1 문의</a>
+                    <!-- Sidebar Toggle-->
+                    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="javascript:void(0);"><i class="fas fa-bars"></i></button>
+                    <!-- Navbar Search-->
+                    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                        <div class="input-group mem_info">
+                            <p>Cash : <span><%=user.iCash.toLocaleString()%></span> </p>
+                            <p>Mileage : <span><%=user.iRolling.toLocaleString()%></span> </p>
+                            <!-- <p>합계 : <span>0</span> </p> -->
                         </div>
-                    </li>
-                    <li style="display:flex; flex-direction: column;  justify-content: center; color:rgb(255, 255, 255)">
-                        <!-- <span>보유 포인트 : <%=user.iPoint.toLocaleString()%></span> -->
-                        <span>보유 머니 : <%=user.iCash.toLocaleString()%></span>
-                        <span>보유 롤링 : <%=user.iRolling.toLocaleString()%></span>
-                    </li>
-                </ul>
-                <a class="button-menu-mobile disable-btn">
-                    <div class="lines">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- end Topbar -->
-        <!-- Start Content-->
-        <div class="container-fluid">
-    
-            <!-- Begin page -->
-            <div class="wrapper">
-    
-                <!-- ========== Left Sidebar Start ========== -->
-                <div class="left-side-menu left-side-menu-detached">
-    
-                    <!--- Sidemenu -->
-                    <ul class="metismenu side-nav">
-    
-                        <li class="side-nav-title side-nav-item">사이트 관리</li>
-    
-                        <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="uil-store"></i>
-                                <span> 에이전트 관리 </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="side-nav-second-level" aria-expanded="true">
-                                <li>
-                                    <a href="/agent/agentlist">에이전트 리스트</a>
-                                    <a href="/agent/recorddailyagent">일별 에이전트 통계</a>
-                                    <a href="/agent/recordcash">에이전트 캐시 내역</a>
-                                    <a href="/agent/recordpoint">에이전트 포인트 내역</a>
-                                </li>
+                    </form>
+                    <!-- Navbar-->
+                    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-link-users dropdown-toggle" id="navbarDropdown" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-expanded="false" style="font-size:16px;"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style = "transform: translateX(-50px);">
+                                <li><a class="dropdown-item" id="ChangePersonalInfo" href="javascript:void(0);">Settings</a></li>
+                                <% if ( user.iClass == 0 ) { %>
+                                <li><a class="dropdown-item" id="ChangeAdminAccount" href="javascript:void(0);">BankAcount</a></li>
+                                <%}%>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="/account/logout">Logout</a></li>
                             </ul>
                         </li>
-
-                        <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="uil-store"></i>
-                                <span> 충전.출금.배송 관리 </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="side-nav-second-level" aria-expanded="true">
-                                <li>
-                                    <a href="/inout/inputcharge">충전 신청</a>
-                                    <a href="/inout/outputcharge">출금 신청</a>
-                                    <% if ( user.iClass <= 1 ) { %>
-                                    <a href="/inout/input">충전 관리</a>
-                                    <a href="/inout/output">출금 관리</a>
-                                    <%}%>
-                                    <a href="/inout/order">배송 관리</a>
-                                    <a href="/inout/monthlist">정산 관리</a>
-                                    <a href="/inout/bettinglist">베팅 관리</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="uil-envelope"></i>
-                                <span> 회원 관리 </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="/user/userlist">회원 리스트</a>
-                                    <a href="/user/onlineuserlist">회원 접속자 리스트</a>
-                                    <a href="/user/recordcash">회원 캐시 내역</a>
-                                    <a href="#">회원 포인트 내역</a>
-                                    <a href="/user/recorddailycash">일별 회원 캐시 증감</a>
-                                    <a href="/user/recordlogin">회원 접속 기록</a>
-                                    <a href="#">캐시 변동 랭킹</a>
-                                    <a href="/user/dailyonlinechart">일일 접속자 차트</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="uil-envelope"></i>
-                                <span> 게임 관리 </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <% if ( user.iClass == 0 ) { %>
-                                    <a href="/game/roomlist">홀덤방 목록</a>
-                                    <!-- <a href="#">싯고방 목록</a>
-                                    <a href="#">K빅투방 목록</a>
-                                    <a href="#">토너먼트방 목록</a> -->
-                                    <a href="/game/jackpot">잭팟 설정</a>
-                                    <a href="/game/fee">딜비 설정</a>
-                                    <%}%>
-                                    <a href="/game/gamelog">게임 로그</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <% if ( user.iClass <= 1 ) { %>
-                        <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="uil-envelope"></i>
-                                <span> 기타 </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="/etc/letter">쪽지 관리</a>
-                                    <a href="/etc/consulting">1:1 문의</a>
-                                    <% if ( user.iClass == 0 ) { %>
-                                    <a href="/announcement">공지사항</a>
-                                    <a href="/announcement/popup">팝업 관리</a>
-                                    <!-- <a href="#">마이페이지</a> -->
-                                    <%}%>
-                                </li>
-                            </ul>
-                        </li>
-                        <%}%>
-
-                        <li class="side-nav-title side-nav-item">기타</li>
-    
-                        <li class="side-nav-item">
-                            <a href="/account/logout" class="side-nav-link">
-                                <i class="uil-rss"></i>
-                                <span> 로그 아웃 </span>
-                            </a>
-                        </li>
-    
-    
-    
                     </ul>
-    
-                    <!-- End Sidebar -->
-    
-                    <div class="clearfix"></div>
-                    <!-- Sidebar -left -->
-    
+                </nav>
+        <!-- 상단 헤더 메뉴끝 -->
+        
+        
+        
+                <div id="layoutSidenav">
+                <!-- 왼쪽 사이드 메뉴 -->
+                    <div id="layoutSidenav_nav">
+                        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                            <div class="sb-sidenav-menu">
+                                <div class="nav">
+                                    <div class="sb-sidenav-menu-heading">회원/접속 관리툴</div>
+                                    <a class="nav-link" href="/user/userlist">
+                                        회원 목록
+                                    </a>
+                                    <a class="nav-link" href="/user/onlineuserlist">
+                                        접속자 목록
+                                    </a>
+                                    <div class="sb-sidenav-menu-heading">주문배송기록 관리툴</div>
+                                    <a class="nav-link collapsed" href="/inout/order" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                        에이전트 주문배송 기록
+                                    </a> 
+                                    <a class="nav-link collapsed" href="/inout/order" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                        회원 주문배송 기록
+                                    </a>
+        
+                                    <div class="sb-sidenav-menu-heading">에이전트 관리툴</div>
+                                    <a class="nav-link" href="/agent/agentlist?iclass=1">
+                                        지사 목록
+                                    </a>
+                                    <a class="nav-link" href="/agent/agentlist?iclass=2">
+                                        부지사 목록
+                                    </a>
+                                    <a class="nav-link" href="/agent/agentlist?iclass=3">
+                                        총판 목록
+                                    </a>
+                                    <a class="nav-link" href="/agent/agentlist?iclass=4">
+                                        매장 목록
+                                    </a>
+        
+                                    <!-- <div class="sb-sidenav-menu-heading">충전/환전기록 관리툴</div>
+                                    <a class="nav-link" href="/inout/monthlist">
+                                        지사 충전환전 기록
+                                    </a> -->
+                                    <!-- <a class="nav-link" href="#">
+                                        CS 충전환전 기록
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        스페이드 충전환전 기록
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        다이아 충전환전 기록
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        하트 충전환전 기록
+                                    </a> -->
+                                    <!-- <a class="nav-link" href="/inout/monthlist">
+                                        회원 충전환전 기록
+                                    </a> -->
+                                    
+                                    <div class="sb-sidenav-menu-heading">매출 관리툴</div>
+                                    <!-- <a class="nav-link" href="/inout/bettinglist">
+                                        마일리지 전환
+                                    </a> -->
+                                    <!-- <a class="nav-link" href="#">
+                                        정산결과(전체) -->
+                                    <!-- </a>
+                                    <a class="nav-link" href="#">
+                                        정산결과(바둑이)
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        정산결과(맞고)
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        정산결과(홀덤)
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        일일 마일리지 정산
+                                    </a> -->
+                                    <a class="nav-link" href="/inout/bettinglist">
+                                        베팅 상세 내역
+                                    </a>
+                                    <a class="nav-link" href="/inout/monthlist">
+                                        관리자 정산
+                                    </a>
+                                    <% if ( user.iClass <= 1 ) { %>
+                                    <div class="sb-sidenav-menu-heading">온라인주문배송 관리툴</div>
+                                    <a class="nav-link" href="/inout/inputcharge">
+                                        충전 신청
+                                    </a>
+                                    <a class="nav-link" href="/inout/outputcharge">
+                                        출금 신청
+                                    </a>
+                                    <a class="nav-link" href="/inout/input">
+                                        온라인 충전관리
+                                    </a>
+                                    <a class="nav-link" href="/inout/output">
+                                        온라인 환전관리
+                                    </a>
+                                    <%}%>
+                                    <!-- <div class="sb-sidenav-menu-heading">쿠폰 관리툴</div>
+                                    <a class="nav-link" href="#">
+                                        쿠폰등록 신청
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        쿠폰 목록
+                                    </a>
+                                    <a class="nav-link" href="#">
+                                        쿠폰 통계
+                                    </a> -->
+        
+                                    <div class="sb-sidenav-menu-heading">게임 관리</div>
+                                    <a class="nav-link" href="/game/gamelog">
+                                        게임로그 목록
+                                    </a>
+                                    <a class="nav-link" href="/etc/consulting">
+                                        1:1 문의
+                                    </a>
+                                    <% if ( user.iClass == 0 ) { %>
+                                    <a class="nav-link" href="/announcement">
+                                        공지사항
+                                    </a>
+                                    <a class="nav-link" href="/game/roomlist">
+                                        게임 방목록
+                                    </a>
+                                    <a class="nav-link" href="/game/jackpot">
+                                        잭팟 설정
+                                    </a>
+                                    <a class="nav-link" href="/game/fee">
+                                        딜비 설정
+                                    </a>
+                                    <%}%>
+                                </div>
+                            </div>
+                            
+                        </nav>
+                    </div>
+                <!-- 왼쪽 사이드 메뉴 끝 -->
                 </div>
-                <!-- Left Sidebar End -->
-    
                 <div class="content-page">
                     <div class="content">
     
                         <%- body %>
     
                     </div> <!-- End Content -->
-                    <!-- Footer Start -->
-                    <footer class="footer">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    2022 YGPoker
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-right footer-links d-none d-md-block">
-                                        <a href="javascript: void(0);">About</a>
-                                        <a href="javascript: void(0);">Support</a>
-                                        <a href="javascript: void(0);">Contact Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- end Footer -->
     
                 </div> <!-- content-page -->
-    
-            </div> <!-- end wrapper-->
-        </div>
-        <div class="modal fade task-modal-content" id="AccountDialog" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="NewTaskModalLabel">계좌정보 변경</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <!-- Footer Start -->
+                <!-- <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                2023 MCPoker
+                            </div> -->
+                            <!-- <div class="col-md-6">
+                                <div class="text-md-right footer-links d-none d-md-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div> -->
+                        <!-- </div>
                     </div>
-                    <div class="modal-body">
-                            <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
-                            <input type="hidden" name="id" id="uid" value="" />
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="birthdatepicker">예금주명</label>
-                                        <input type="text" class="form-control date" id="strAdminName" name="strAdminName" placeholder="">
+                </footer> -->
+                <!-- end Footer -->
+            <!-- </body> -->
+            <!-- bankcount change -->
+            <div class="modal fade task-modal-content" id="AccountDialog" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="NewTaskModalLabel">계좌정보 변경</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                                <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
+                                <input type="hidden" name="id" id="uid" value="" />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="birthdatepicker">예금주명</label>
+                                            <input type="text" class="form-control date" id="strAdminName" name="strAdminName" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="birthdatepicker">은행명</label>
+                                            <input type="text" class="form-control date" id="strAdminBank" name="strAdminBank" placeholder="">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="birthdatepicker">은행명</label>
-                                        <input type="text" class="form-control date" id="strAdminDesc" name="strAdminDesc" placeholder="">
+        
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label for="birthdatepicker">계좌번호</label>
+                                            <input type="text" class="form-control date" id="strAdminAccount" name="strAdminAccount" placeholder="">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-    
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <label for="birthdatepicker">계좌번호</label>
-                                        <input type="text" class="form-control date" id="strAdminAccount" name="strAdminAccount" placeholder="">
-                                    </div>
+        
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-primary" onclick="RequestAccountChange();">저장</button>
+                                    <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
                                 </div>
-                            </div>
-    
-                            <div class="text-right">
-                                <button type="button" class="btn btn-primary" onclick="RequestAccountChange();">저장</button>
-                                <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
-                            </div>
-                        <!-- </form> -->
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <!-- END Container -->
+                            <!-- </form> -->
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         <!-- bundle -->
         <script src="./assets/js/vendor.min.js"></script>
         <script src="./assets/js/app.min.js"></script>
@@ -366,7 +317,7 @@
             let RequestAccountChange = () => {
         
                 const strName = $('#strAdminName').val();
-                const strDesc = $('#stAdminrDesc').val();
+                const strBank = $('#strAdminBank').val();
                 const strAccount = $('#strAdminAccount').val();
 
                 $.ajax({
@@ -375,7 +326,7 @@
                     data: {
                         strID:user.strID,
                         strName :strName,
-                        strDesc:strDesc,
+                        strBank:strBank,
                         strAccount:strAccount,
                     },
                     dataType: "json",
@@ -444,6 +395,7 @@
                     });
                 });
                 $("#ChangeAdminAccount").click(function(e){
+                    console.log("ChangeAdminAccount");
                     e.preventDefault();
                     $.ajax({
                         //url: "@Url.Action("QueryUser")",
@@ -460,7 +412,7 @@
 
                                 const data = obj.data;
 
-                                $('#strAdminDesc').val(data.strDesc);
+                                $('#strAdminBank').val(data.strBank);
                                 $('#strAdminName').val(data.strName);
                                 $('#strAdminAccount').val(data.strAccount);
 
@@ -473,41 +425,30 @@
                         }
                     });
                 });
+
+                const sidebarToggle = document.body.querySelector('#sidebarToggle');
+                if (sidebarToggle) {
+                    sidebarToggle.addEventListener('click', event => {
+                        event.preventDefault();
+                        document.body.classList.toggle('sb-sidenav-toggled');
+                        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                    });
+                }
             });
     
-        </script>
-
+        </script>    
+        
         <%- script %>
     
-    </body>
     <% } else if ( type == 1 ) { %>
         <%- body %>
 
         <%- script %>
     <% } else if ( type == 2 ) { %>
 
-        <body>
-            <!-- Start Content-->
-            <div class="container-fluid">
-        
-                <!-- Begin page -->
-                <div class="wrapper">
-        
-                        <div class="content">
-        
-                            <%-body%>
-        
-                        </div> <!-- End Content -->
-                
-        
-                </div> <!-- end wrapper-->
-            </div>
-            <!-- END Container -->
+        <%- body %>
 
-            <%-script%>
-        
-        </body>        
-
-
+        <%- script %> 
     <% } %>
+</body>
 </html>

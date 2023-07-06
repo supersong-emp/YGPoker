@@ -25,24 +25,24 @@
         <div class="card">
             <div class="card-body">
                 <div class="row mb-2">
-                    <div class="col-sm-5">
+                    <div class="col-sm-12">
                         <% if ( user.iClass == 0 ) { %>
-                            <a href="javascript:BuildAgent(1);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 지사 등록</a>
-                            <a href="javascript:BuildAgent(2);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 부지사 등록</a>
-                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
-                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
+                            <a href="javascript:BuildAgent(1);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 지사 등록</a>
+                            <a href="javascript:BuildAgent(2);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 부지사 등록</a>
+                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
+                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
                         <% } else if( user.iClass == 1 ) { %>
-                            <a href="javascript:BuildAgent(2);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 부지사 등록</a>
-                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
-                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
+                            <a href="javascript:BuildAgent(2);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 부지사 등록</a>
+                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
+                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
                         <% } else if( user.iClass == 2 ) { %>
-                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
-                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
+                            <a href="javascript:BuildAgent(3);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 총판 등록</a>
+                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
                         <% } else if( user.iClass == 3 ) { %>
-                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
+                            <a href="javascript:BuildAgent(4);" class="btn btn-danger mb-2" style="color: white;"><i class="mdi mdi-plus-circle mr-2"></i> 매장 등록</a>
                         <% } %>
                     </div>
-                    <br/>
+                    <!-- <br/> -->
                     <!-- <div class="col-sm-3">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active">
@@ -59,47 +59,51 @@
                             </label>
                         </div>
                     </div> -->
-                    <div class="col-sm-3">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" for="searchText">
-                                    ID/이름
-                                </span>
-                            </div>
-                            <input type="text" id="searchText" name="searchText" maxlength="20" class="form-control" />
-                            <div class="input-group-append">
-                                <button class="form-control" id="SearchTextFindButton">검색</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3">
                         <div class="input-group mb-3">
                             <input type="text" id="iRolling" name="iRolling" maxlength="20" class="form-control" />
                             <div class="input-group-append">
                                 <button class="form-control btn-primary" id="rollingChange">롤링 전환</button>
                             </div>
                         </div>
-                    </div>
-
-                    <form>
-                        <div class="form-row  align-items-center">
-                            <div class="col-auto">
-                                <label class="col-form-label">검색일자</label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="sr-only">시작</label>
-                                <input type="text" class="form-control mb-2" id="dateStart" data-provide="datepicker" placeholder="시작일">
-                            </div>
-                            <div class="col-auto">
-                                <label class="sr-only">종료</label>
-                                <input type="text" class="form-control mb-2" id="dateEnd" data-provide="datepicker" placeholder="종료일">
-                            </div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-primary mb-2" id="FindButton">검색</button>
+                    </div> -->
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-sm-2">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" for="searchText">
+                                        ID/이름
+                                    </span>
+                                </div>
+                                <input type="text" id="searchText" name="searchText" maxlength="20" class="form-control" />
+                                <div class="input-group-append">
+                                    <button class="form-control" id="SearchTextFindButton">검색</button>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        
+                        <div class="col-sm-8">
+                            <form>
+                                <div class="form-row  align-items-center justify-content-end">
+                                    <div class="col-auto">
+                                        <label class="col-form-label" style="font-size:1.1rem;">검색일자</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label class="sr-only">시작</label>
+                                        <input type="text" class="form-control mb-2" id="dateStart" data-provide="datepicker" placeholder="시작일">
+                                    </div>
+                                    <div class="col-auto">
+                                        <label class="sr-only">종료</label>
+                                        <input type="text" class="form-control mb-2" id="dateEnd" data-provide="datepicker" placeholder="종료일">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary mb-2" id="FindButton">검색</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   
                     <div class="col-sm-7">
                         <div class="text-sm-right">
                             <!--
@@ -136,349 +140,301 @@
             </div> <!-- end card-body-->
         </div> <!-- end card-->
     </div> <!-- end col -->
-
-    <div class="modal fade task-modal-content" id="BuildAgentDialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="NewTaskModalLabel">에이전트 생성</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                        <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
+      <!-- Modal -->
+  <div class="modal fade" id="BuildAgentDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-width custom-modal-main">
+      <div class="modal-content custom-modal-width">
+        <div class="modal-header">
+          <h4 class="name-text">에이전트 생성</h1>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body container-fluid mainfluid px-2">
+            <div id="layoutSidenav_content" >
+                <main>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            에이전트 생성
+                        </div>
                         <input type="hidden" name="id" id="uid" value="" />
-                        <div class="form-group">
-                            <label>에이전트 등급</label>
-                            <select class="form-control form-control-light" name="BiClass" id="BiClass">
-                                <option value="1" selected>지사</option>
-                                <option value="2">부지사</option>
-                                <option value="3">총판</option>
-                                <option value="4">매장</option>
-                            </select>
-                        </div>
+                                <table class="table card-body" style="margin-bottom:0;">
+                                    <tbody>
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">에이전트 등급</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;" class="gameinfo">
+                                            <span style="vertical-align: middle;" name="BiClass" id="BiClass">지사</span>
+                                        </td>
+                                        <th style="border:1px solid #ccc; vertical-align: middle;">상위 에이전트</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;">
+                                            <input type="text" id="BstrParentID" name="BstrParentID">
+                                            <!-- <input type="text" disabled value="아이디">  -->
+                                        </td>
+                                      </tr>
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">ID</th>
+                                        <td style="border:1px solid #ccc;">
+                                          <div style="display: flex;">
+                                            <input type="text" id="BstrID" name="BstrID" maxlength="20"/>
+                                            <button style="height: fit-content; margin-left: 5px;" onclick="RequestAgentCheckID();">check</button>
+                                          </div>
+                                        </td>
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">Nickname</th>
+                                        <td style="border:1px solid #ccc;">
+                                          <div style="display: flex;">
+                                            <input type="text" id="BstrNickname" name="BstrNickname" maxlength="20"/>
+                                            <button style="margin-left: 5px;" onclick="RequestAgentCheckNickname();">check</button>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">PASSWORD</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="password" id="BstrPassword" name="BstrPassword" placeholder="password">
+                                        </td>
+                                        <th style="border:1px solid #ccc; vertical-align: middle;">비밀번호 재입력</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;">
+                                            <input type="password" id="BstrPasswordCheck" name="BstrPasswordCheck" placeholder="password Check">
+                                        </td>
+                                      </tr>
+                                    
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">예금주명</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BstrName" name="BstrName" placeholder="">
+                                        </td>
+                                        <th style="border:1px solid #ccc; vertical-align: middle;">은행명</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;"> <input type="text" id="BstrBank" name="BstrBank" placeholder="">
+                                        </td>
+                                      </tr>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">상위 에이전트 아이디</label>
-                                    <input type="text" class="form-control date" id="BstrParentID" name="BstrParentID">
-                                </div>
-                            </div>
-                        </div>
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">계좌번호</th>
+                                        <td colspan="3" style="border:1px solid #ccc;">
+                                            <input style="width:90%" type="text" id="BstrAccount" name="BstrAccount" placeholder="">
+                                        </td>
+                                      </tr>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">아이디</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="BstrID" name="BstrID" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestAgentCheckID();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                      <tr>
+                                        <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-홀덤</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BfHoldemR" name="BfHoldemR" placeholder="">
+                                            <small class="form-text text-muted" id = "Bholdemdeal"></small>
+                                        </td>
+                                        <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-빅투</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BfBig2R" name="BfBig2R" placeholder="">
+                                            <small class="form-text text-muted" id = "Bbig2deal"></small>
+                                        </td>
+                                      </tr>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">로그인 비밀번호</label>
-                                    <input type="password" class="form-control form-control-light" id="BstrPassword" name="BstrPassword" placeholder="로그인 비밀번호">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">닉네임</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="BstrNickname" name="BstrNickname" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestAgentCheckNickname();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">예금주명</label>
-                                    <input type="text" class="form-control date" id="BstrName" name="BstrName" placeholder="">
-                                </div>
-                            </div>
-                        </div>
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-싯고</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BfSitgoR" name="BfSitgoR" placeholder="">
+                                            <small class="form-text text-muted" id = "Bsitgodeal"></small>
+                                        </td>
+                                        <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-바카라</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BfBaccaratR" name="BfBaccaratR" placeholder="">
+                                            <small class="form-text text-muted" id = "Bbaccaratdeal"></small>
+                                        </td>
+                                      </tr>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">은행명</label>
-                                    <input type="text" class="form-control date" id="BstrDesc" name="BstrDesc" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">계좌번호</label>
-                                    <input type="text" class="form-control date" id="BstrAccount" name="BstrAccount" placeholder="">
-                                </div>
-                            </div>
-                        </div>
+                                      <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-오마하</th>
+                                        <td style="border:1px solid #ccc;">
+                                            <input type="text" id="BfOmahaR" name="BfOmahaR" placeholder="">
+                                            <small class="form-text text-muted" id = "Bomahadeal"></small>
+                                        </td>
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">죽장</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;">
+                                            <input type="text" id="BfSettle" name="BfSettle" placeholder="">
+                                            <!-- <small class="form-text text-muted" id = "Bsettledeal"></small> -->
+                                        </td>
+                                      </tr>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">죽장 % </label>
-                                    <input type="text" class="form-control date" id="BfSettle" name="BfSettle" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">홀덤 딜비 %</label>
-                                    <input type="text" class="form-control date" id="BfHoldemR" name="BfHoldemR" placeholder="">
-                                    <small class="form-text text-muted" id = "Bholdemdeal"></small>
-                                </div>
-                            </div>
+                                      <!-- <tr style="text-align:center;">
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 기능</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;">
+                                            <input type="checkbox" style="vertical-align: middle;">
+                                        </td>
+                                        <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 비밀번호</th>
+                                        <td style="border:1px solid #ccc; vertical-align: middle;">
+                                            <input type="text">
+                                        </td>
+                                      </tr> -->
+                                    </tbody>
+                                </table>
+                            
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">빅투 딜비 %</label>
-                                    <input type="text" class="form-control date" id="BfBig2R" name="BfBig2R" placeholder="">
-                                    <small class="form-text text-muted" id = "Bbig2deal"></small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">싯고 딜비 %</label>
-                                    <input type="text" class="form-control date" id="BfSitgoR" name="BfSitgoR" placeholder="">
-                                    <small class="form-text text-muted" id = "Bsitgodeal"></small>
-                                </div>
-                            </div>
+                        <div style="text-align:center">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="RequestAgentRegister();">수정</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">바카라 딜비 %</label>
-                                    <input type="text" class="form-control date" id="BfBaccaratR" name="BfBaccaratR" placeholder="">
-                                    <small class="form-text text-muted" id = "Bbaccaratdeal"></small>
-                                </div>
+                </main>
+            </div>
+        </div>
+      </div>
+    </div>
+ </div>
+ <!-- Modal End-->
+    <!-- Modal -->
+    <div class="modal fade" id="AgentDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog custom-modal-width custom-modal-main">
+          <div class="modal-content custom-modal-width">
+            <div class="modal-header">
+              <h4 class="name-text">에이전트 정보</h1>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body container-fluid mainfluid px-2">
+                <div id="layoutSidenav_content" >
+                    <main>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                에이전트 정보
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">오마하 딜비 %</label>
-                                    <input type="text" class="form-control date" id="BfOmahaR" name="BfOmahaR" placeholder="">
-                                    <small class="form-text text-muted" id = "Bomahadeal"></small>
-                                </div>
+                            <input type="hidden" name="id" id="uid" value="" />
+                                    <table class="table card-body" style="margin-bottom:0;">
+                                        <tbody>
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">에이전트 등급</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;" class="gameinfo">
+                                                <span style="vertical-align: middle;" name="iClass" id="iClass">지사</span>
+                                            </td>
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">상위 에이전트</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text" id="strParentID" name="strParentID">
+                                                <!-- <input type="text" disabled value="아이디">  -->
+                                            </td>
+                                          </tr>
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">ID</th>
+                                            <td style="border:1px solid #ccc;">
+                                              <div style="display: flex;">
+                                                <input type="text" id="strID" name="strID" maxlength="20"/>
+                                                <button style="height: fit-content; margin-left: 5px;" onclick="RequestAgentCheckID();">check</button>
+                                              </div>
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">Nickname</th>
+                                            <td style="border:1px solid #ccc;">
+                                              <div style="display: flex;">
+                                                <input type="text" id="strNickname" name="strNickname" maxlength="20"/>
+                                                <button style="margin-left: 5px;" onclick="RequestAgentCheckNickname();">check</button>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">PASSWORD</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="password" id="strPassword" name="strPassword" placeholder="password">
+                                            </td>
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">비밀번호 변경</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="password" id="strPasswordCheck" name="strPasswordCheck" placeholder="password Check">
+                                            </td>
+                                          </tr>
+                                        
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">예금주명</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="strName" name="strName" placeholder="">
+                                            </td>
+                                            <th style="border:1px solid #ccc; vertical-align: middle;">은행명</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;"> <input type="text" id="strBank" name="strBank" placeholder="">
+                                            </td>
+                                          </tr>
+    
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">계좌번호</th>
+                                            <td colspan="3" style="border:1px solid #ccc;">
+                                                <input style="width:90%" type="text" id="strAccount" name="strAccount" placeholder="">
+                                            </td>
+                                          </tr>
+    
+                                          <tr>
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-홀덤</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="fHoldemR" name="fHoldemR" placeholder="">
+                                                <small class="form-text text-muted" id = "holdemdeal"></small>
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-빅투</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="fBig2R" name="fBig2R" placeholder="">
+                                                <small class="form-text text-muted" id = "big2deal"></small>
+                                            </td>
+                                          </tr>
+    
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-싯고</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="fSitgoR" name="fSitgoR" placeholder="">
+                                                <small class="form-text text-muted" id = "sitgodeal"></small>
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-바카라</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="fBaccaratR" name="fBaccaratR" placeholder="">
+                                                <small class="form-text text-muted" id = "baccaratdeal"></small>
+                                            </td>
+                                          </tr>
+    
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">딜비-오마하</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="fOmahaR" name="fOmahaR" placeholder="">
+                                                <small class="form-text text-muted" id = "omahadeal"></small>
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">죽장</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text" id="fSettle" name="fSettle" placeholder="">
+                                                <!-- <small class="form-text text-muted" id = "Bsettledeal"></small> -->
+                                            </td>
+                                          </tr>
+    
+                                          <!-- <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 기능</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="checkbox" style="vertical-align: middle;">
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 비밀번호</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text">
+                                            </td>
+                                          </tr> -->
+                                        </tbody>
+                                    </table>
+                                
                             </div>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="RequestAgentRegister();">저장</button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
-                        </div>
-                    <!-- </form> -->
+                            <div style="text-align:center">
+                                <button type="button" class="btn btn-warning btn-sm" onclick="RequestRegister();">수정</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
+                            </div>
+                    </main>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <div class="modal fade task-modal-content" id="AgentDialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="NewTaskModalLabel">에이전트 정보</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                        <!-- <form class="p-2" id="UserForm" method="POST" action="/agent/register"> -->
-                        <input type="hidden" name="id" id="uid" value="" />
-                        <div class="form-group">
-                            <label>에이전트 등급</label>
-                            <select class="form-control form-control-light" name="iClass" id="iClass">
-                                <option value="1" selected>지사</option>
-                                <option value="2">부지사</option>
-                                <option value="3">총판</option>
-                                <option value="4">매장</option>
-                            </select>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">상위 에이전트 아이디</label>
-                                    <input type="text" class="form-control date" id="strParentID" name="strParentID">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id = "cashSend">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>배송 유형</label>
-                                    <select class="form-control form-control-light" name="eInoutType" id="eInoutType">
-                                        <option value="GIVE">지급</option>
-                                        <option value="TAKE">차감</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">배송 금액</label>
-                                    <div class="input-group mb-6">
-                                        <input type="text" id="iInputAmount" name="iInputAmount" maxlength="20" class="form-control" value="0"/>
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestInout();">배송</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="task-priority2">배송 금액 설정</label>
-                                <div class="text-right" style="text-align:center;">
-                                    <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(10000);">+10,000</button>
-                                    <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(30000);">+30,000</button>
-                                    <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(50000);">+50,000</button>
-                                    <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(100000);">+100,000</button>
-                                    <button type="button" style="width:100px;" class="btn btn-primary" onclick="AddInput(500000);">+500,000</button>
-                                    <button type="button" style="width:100px;" class="btn btn-light" onclick="AddInput(0);">정정</button>
-                                </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">아이디</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="strID" name="strID" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestCheckID();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">로그인 비밀번호</label>
-                                    <input type="password" class="form-control form-control-light" id="strPassword" name="strPassword" placeholder="로그인 비밀번호">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="task-priority2">닉네임</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="strNickname" name="strNickname" maxlength="20" class="form-control" />
-                                        <div class="input-group-append">
-                                            <button class="form-control" onclick="RequestCheckNickname();">중복확인</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">예금주명</label>
-                                    <input type="text" class="form-control date" id="strName" name="strName" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">은행명</label>
-                                    <input type="text" class="form-control date" id="strDesc" name="strDesc" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">계좌번호</label>
-                                    <input type="text" class="form-control date" id="strAccount" name="strAccount" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">포인트</label>
-                                    <input type="text" class="form-control date" id="iPoint" name="iPoint" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">캐쉬</label>
-                                    <input type="text" class="form-control date" id="iCash" name="iCash" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">죽장 % </label>
-                                    <input type="text" class="form-control date" id="fSettle" name="fSettle" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">홀덤 딜비 %</label>
-                                    <input type="text" class="form-control date" id="fHoldemR" name="fHoldemR" placeholder="">
-                                    <small class="form-text text-muted" id = "holdemdeal"></small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">빅투 딜비 %</label>
-                                    <input type="text" class="form-control date" id="fBig2R" name="fBig2R" placeholder="">
-                                    <small class="form-text text-muted" id = "big2deal"></small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">싯고 딜비 %</label>
-                                    <input type="text" class="form-control date" id="fSitgoR" name="fSitgoR" placeholder="">
-                                    <small class="form-text text-muted" id = "sitgodeal"></small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">바카라 딜비 %</label>
-                                    <input type="text" class="form-control date" id="fBaccaratR" name="fBaccaratR" placeholder="">
-                                    <small class="form-text text-muted" id = "baccaratdeal"></small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="birthdatepicker">오마하 딜비 %</label>
-                                    <input type="text" class="form-control date" id="fOmahaR" name="fOmahaR" placeholder="">
-                                    <small class="form-text text-muted" id = "omahadeal"></small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="RequestRegister();">저장</button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal">취소</button>
-                        </div>
-                    <!-- </form> -->
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+          </div>
+        </div>
+     </div>
+     <!-- Modal End-->
 </div>
 <!-- end row -->
 <script type="text/javascript" src="js/time.js"></script>
 <script type="text/javascript">
+
+    // URL의 쿼리 매개변수를 읽는 함수
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    // URL에서 'iclass' 매개변수를 가져옴
+    var iclass = getParameterByName('iclass');
 
     function clearForm() {
         $('#BstrParentID').val("");
@@ -487,7 +443,7 @@
         $('#BstrNickname').val("");
         $('#BfHoldemR').val("");
         $('#BfSettle').val("");
-        $('#BstrDesc').val("");
+        $('#BstrBank').val("");
         $('#BstrName').val("");
         $('#BstrAccount').val("");
     }
@@ -548,7 +504,7 @@
                         $('#fSettle').val(data.fSettle);
                         $('#iCash').val(data.iCash);
                         $('#iPoint').val(data.iPoint);
-                        $('#strDesc').val(data.strDesc);
+                        $('#strBank').val(data.strBank);
                         $('#strName').val(data.strName);
                         $('#strAccount').val(data.strAccount);
                         
@@ -701,6 +657,12 @@
 
             dataTableInstance.ajax.reload();
         });
+        // 날짜 검색
+        $("#FindButton").click(function (e) {
+            e.preventDefault();
+
+            dataTableInstance.ajax.reload();
+        });
 
         // 정보 수정 완료
         $("#UserFormSubmitButton").click(function (e) {
@@ -736,9 +698,9 @@
                 "type": "POST",
                 "data": function (d) {
                     return $.extend({}, d, {
-                        "userTypeFilter": $("input[name='UserTypeFilter']:checked").val(),
+                        //"userTypeFilter": $("input[name='UserTypeFilter']:checked").val(),
                         "search" : $("#searchText").val(),
-                        //"iClass" : 1,
+                        "iClass" : iclass,
                         dateStart:$('#dateStart').val(),
                         dateEnd:$('#dateEnd').val()
                     });
@@ -973,6 +935,12 @@
     let RequestCheckID = () => {
 
         const strID = $('#strID').val();
+        var re = /^[a-zA-Z0-9]{5,12}$/;  // 정규 표현식: 5자 이상의 알파벳 대소문자와 숫자만 허용
+        if (!re.test(strID)) {  // 입력된 값이 정규 표현식에 맞지 않으면
+            alert('5~12 자리로 설정해주시고 특수문자는 사용할 수 없습니다.');
+            $('#strID').val('');
+            return;
+        }
 
         $.ajax({
             url:"/agent/request_checkid",
@@ -1000,6 +968,12 @@
     let RequestAgentCheckID = () => {
 
     const strID = $('#BstrID').val();
+    var re = /^[a-zA-Z0-9]{5,12}$/;  // 정규 표현식: 5자 이상의 알파벳 대소문자와 숫자만 허용
+        if (!re.test(strID)) {  // 입력된 값이 정규 표현식에 맞지 않으면
+            alert('5~12 자리로 설정해주시고 특수문자는 사용할 수 없습니다.');
+            $('#BstrID').val('');
+            return;
+        }
 
     $.ajax({
         url:"/agent/request_checkid",
@@ -1097,6 +1071,13 @@
 
         const strNickname = $('#strNickname').val();
 
+        var re = /^[A-Za-z0-9가-힣]{2,10}$/;  // 정규 표현식: 2자 이상~10자 이하 알파벳 대소문자,한글,숫자만 허용
+        if (!re.test(strNickname)) {  // 입력된 값이 정규 표현식에 맞지 않으면
+            alert('2~10자리수로 설정해주시고 특수문자는 사용할 수 없습니다.');
+            $('#strNickname').val('');
+            return;
+        }
+
         $.ajax({
             url:"/agent/request_checknickname",
             type:"POST",
@@ -1123,6 +1104,13 @@
     let RequestAgentCheckNickname = () => {
 
     const strNickname = $('#BstrNickname').val();
+
+    var re = /^[A-Za-z0-9가-힣]{2,10}$/;  // 정규 표현식: 2자 이상~10자 이하 알파벳 대소문자,한글,숫자만 허용
+        if (!re.test(strNickname)) {  // 입력된 값이 정규 표현식에 맞지 않으면
+            alert('2~10자리수로 설정해주시고 특수문자는 사용할 수 없습니다.');
+            $('#BstrNickname').val('');
+            return;
+        }
 
     $.ajax({
         url:"/agent/request_checknickname",
@@ -1154,6 +1142,7 @@
         const iClass = $('#iClass').val();
         const strParentID = $('#strParentID').val();
         const strPassword = $('#strPassword').val();
+        const strPasswordCheck = $('#strPasswordCheck').val();
         const fSettle = $('#fSettle').val();
         const fHoldemR = $('#fHoldemR').val();
         const fBig2R = $('#fBig2R').val();
@@ -1162,9 +1151,30 @@
         const fBaccaratR = $('#fBaccaratR').val();
         const iPoint = $('#iPoint').val();
         const iCash = $('#iCash').val();
-        const strDesc = $('#strDesc').val();
+        const strBank = $('#strBank').val();
         const strName = $('#strName').val();
         const strAccount = $('#strAccount').val();
+
+        if ( strID == '' )
+        {
+            alert('아이디를 입력해주세요.');
+            return;
+        }
+        if ( strNickname == '' )
+        {
+            alert('닉네임을 입력해주세요.');
+            return;
+        }
+        if(strPassword == '' || strPasswordCheck == '')
+        {
+            alert('비밀번호를 입력해주세요.');
+            return;
+        }
+        if(strPassword != strPasswordCheck)
+        {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
 
         $.ajax({
             url:"/agent/request_register",
@@ -1183,7 +1193,7 @@
                 fBaccaratR:fBaccaratR,
                 iPoint:iPoint,
                 iCash:iCash,
-                strDesc:strDesc,
+                strBank:strBank,
                 strName:strName,
                 strAccount:strAccount,
             },
@@ -1247,7 +1257,7 @@
         const fSitgoR = $('#BfSitgoR').val();
         const fOmahaR = $('#BfOmahaR').val();
         const fBaccaratR = $('#BfBaccaratR').val();
-        const strDesc = $('#BstrDesc').val();
+        const strBank = $('#BstrBank').val();
         const strName = $('#BstrName').val();
         const strAccount = $('#BstrAccount').val();
 
@@ -1266,7 +1276,7 @@
                 fSitgoR:fSitgoR,
                 fOmahaR:fOmahaR,
                 fBaccaratR:fBaccaratR,
-                strDesc:strDesc,
+                strBank:strBank,
                 strName:strName,
                 strAccount:strAccount,
             },

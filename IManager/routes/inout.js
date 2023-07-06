@@ -846,48 +846,60 @@ let GetRollingChildren = async (strGroupID, iMyClass, dateStart, dateEnd) => {
     }
     else if(iMyClass == 1)
     {
+        iTargetClass = 5;
         var [list] = await db.sequelize.query(`
         SELECT  t2.*,
         IFNULL((SELECT sum(iRollingVAdmin) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-        FROM Users AS t1
-        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-        );
-    }
-    else if(iMyClass == 2)
-    {
-        var [list] = await db.sequelize.query(`
-        SELECT  t2.*,
-        IFNULL((SELECT sum(iRollingAgent) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-        FROM Users AS t1
-        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-        );
-    }
-    else if(iMyClass == 3)
-    {
-        var [list] = await db.sequelize.query(`
-        SELECT  t2.*,
-        IFNULL((SELECT sum(iRollingShop) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-        FROM Users AS t1
-        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-        );
-    }
-    else if(iMyClass == 4)
-    {
-        var [list] = await db.sequelize.query(`
-        SELECT  t2.*,
-        0 as total_RollingMoney,
         IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strID LIKE t2.strID AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
         WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
         );
     }
+    // else if(iMyClass == 1)
+    // {
+    //     var [list] = await db.sequelize.query(`
+    //     SELECT  t2.*,
+    //     IFNULL((SELECT sum(iRollingVAdmin) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+    //     FROM Users AS t1
+    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+    //     );
+    // }
+    // else if(iMyClass == 2)
+    // {
+    //     var [list] = await db.sequelize.query(`
+    //     SELECT  t2.*,
+    //     IFNULL((SELECT sum(iRollingAgent) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+    //     FROM Users AS t1
+    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+    //     );
+    // }
+    // else if(iMyClass == 3)
+    // {
+    //     var [list] = await db.sequelize.query(`
+    //     SELECT  t2.*,
+    //     IFNULL((SELECT sum(iRollingShop) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+    //     FROM Users AS t1
+    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+    //     );
+    // }
+    // else if(iMyClass == 4)
+    // {
+    //     var [list] = await db.sequelize.query(`
+    //     SELECT  t2.*,
+    //     0 as total_RollingMoney,
+    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strID LIKE t2.strID AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+    //     FROM Users AS t1
+    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+    //     );
+    // }
     return list;
 }
 
@@ -940,6 +952,53 @@ router.post('/findbettinglist', async (req, res) => {
     //res.send(object);
     res.send(listObject);
 });
+
+router.post('/bettinglog', async (req, res) => {
+    console.log(req.body);
+
+    var data = [];
+    var strID = req.body.strID;
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+
+    var querydatas = await db.RecordBets.findAll({
+        order: [['id', 'DESC']],
+        where: {
+            strID: {
+                [Op.like]:[strID]
+            },
+            createdAt: {
+                [Op.between]: [startDate, endDate]
+            }
+        }
+    });
+
+    let count = 0;
+
+for (var i in querydatas)
+    {
+        // iAmount가 0인 경우 skip
+        if (querydatas[i].iAmount == 0) {
+            continue;
+        }
+        data.push({
+            iGame:0,
+            iBetting:querydatas[i].iAmount,
+            strBet:querydatas[i].strBet,
+        });
+
+        count++;
+        if (count >= 200) {  // Maximum 200 items
+            break;
+        }
+    }
+    console.log(querydatas);
+
+    //res.send({data:list});
+    //res.send(object);
+    res.send(data);
+});
+
 router.post('/bettingdetail', async (req, res) => {
 
     // let children = await db.Users.findAll({where:{iParentID:req.body.id}});
@@ -1299,7 +1358,7 @@ router.post('/request_autoAccount', async (req, res) => {
             strFrom:req.user.strID,
             strFromNickname:req.user.strNickname,
             strContents:'계좌 문의',
-            strAnswer:`입금자명 : ${admin.strName}, 계좌번호 : ${admin.strAccount}, 은행명 : ${admin.strDesc} 로 입금 부탁드립니다.`,
+            strAnswer:`입금자명 : ${admin.strName}, 계좌번호 : ${admin.strAccount}, 은행명 : ${admin.strBank} 로 입금 부탁드립니다.`,
             eState:'UNREAD',
             eType:'CONSULTING',
         }

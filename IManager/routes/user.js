@@ -45,24 +45,17 @@ router.post('/request_userlist', async(req, res) => {
     let tagSearch = ``;
     if ( req.body.search != '' )
     {
-        tagSearch = `AND t6.strID = '${req.body.search}'`;
+        tagSearch = `AND t3.strID = '${req.body.search}'`;
     }
     const [list] = await db.sequelize.query(`
         SELECT 
         t1.strID AS lev1, 
         t2.strID as lev2, 
-        t3.strID as lev3, 
-        t4.strID as lev4, 
-        t5.strID as lev5, 
-        t6.strID as lev6, 
-        t6.*
+        t3.*
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
         LEFT JOIN Users AS t3 ON t3.iParentID = t2.id
-        LEFT JOIN Users AS t4 ON t4.iParentID = t3.id
-        LEFT JOIN Users AS t5 ON t5.iParentID = t4.id
-        LEFT JOIN Users AS t6 ON t6.iParentID = t5.id
-        WHERE t6.iClass='5' AND t6.strGroupID LIKE CONCAT('${req.user.strGroupID}', '%') AND t6.eStatus IN ${tagState} ${tagSearch};`
+        WHERE t3.iClass='5' AND t3.strGroupID LIKE CONCAT('${req.user.strGroupID}', '%') AND t3.eStatus IN ${tagState} ${tagSearch};`
     );
             
     full_count = list.length;
@@ -91,9 +84,11 @@ router.post('/request_userdetail', async (req, res)=> {
     }
     else
     {
-        //object.data = user;
+        //object.data = user; 
         let shop = await db.Users.findOne({where:{id:user.iParentID}});
-        //object.data.strShopID = shop.strID;
+        //지사 디비 가져오기.
+        let agentID = user.strGroupID.substring(0, 3);
+        let agent = await db.Users.findOne({where:{strGroupID:agentID}});
 
         let data = {
             id:user.id,
@@ -103,10 +98,23 @@ router.post('/request_userdetail', async (req, res)=> {
             iPoint:user.iPoint,
             iCash:user.iCash,
             eStatus:user.eStatus,
-            strShopID:shop.strID,
-            strDesc:user.strDesc,
+            strShopID:shop.strNickname,
+            strBank:user.strBank,
             strName:user.strName,
-            strAccount:user.strAccount
+            strAccount:user.strAccount,
+            strDesc:user.strDesc,
+            strAgentID:agent.strNickname,
+            iRolling:user.iRolling,
+            strIP:user.strIP,
+            strIPlogin:user.strIPlogin,
+            createdAt:user.createdAt,
+            loginedAt:user.loginedAt,
+            fBaccaratR:shop.fBaccaratR,
+            fBig2R:shop.fBig2R,
+            fSitgoR:shop.fSitgoR,
+            fHoldemR:shop.fHoldemR,
+            fOmahaR:shop.fOmahaR,
+            fSettle:shop.fSettle
         };
         object.data = data;
     }
@@ -155,46 +163,42 @@ router.post('/request_checknickname', async (req, res) => {
         res.send({result:'OK'});
 });
 
-// let GetCode = (n, digits) => {
+router.post( '/request_password_change', async (req, res) => {
+    console.log('/request_password_change');
+    console.log(req.body);
 
-//     let zero = '';
-//     n = n.toString();
+    var object = {};
+    object.result = "OK";
 
-//     if (n.length < digits) {
-//         for (let i = 0; i < digits - n.length; i++)
-//             zero += '0';
-//     }
-//     return zero + n;
-// }
-
-// let GetGroupID = async (strParentGroupID) => {
-
-//     let iCurrent = 0;
-//     while ( 1 )
-//     {
-//         const strGroupID = strParentGroupID + GetCode(iCurrent, 2);
-//         console.log(`Check GroupID : ${strGroupID}`);
-
-//         let user = await db.Users.findOne({where:{strGroupID:strGroupID}});
-//         if ( user == null )
-//             return strGroupID;
-
-//         ++ iCurrent;
-//     }
-
-//     return null;
-// }
+    var user = await db.Users.findOne({where:{strID:req.body.strID}});
+        if ( null != user )
+        {
+            await user.update({
+                strPassword:req.body.strPassword,
+            });
+            res.send(object);
+        }
+        else
+        {
+            object.result = 'Error';
+            object.error = 'NotExistUser';
+            res.send(object);
+        }
+});
 
 router.post('/request_register', async(req, res) => {
 
     console.log('/request_register');
     console.log(req.body);
 
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
     var object = {};
     object.result = "OK";
 
-    let parent = await db.Users.findOne({where:{strID:req.body.strShopID, iClass:4}});
+    let parent = await db.Users.findOne({where:{strID:req.body.strPAdminID, iClass:1}});
 
+    console.log(parent);
     if ( parent == null )
     {
         object.result = 'Error';
@@ -204,6 +208,7 @@ router.post('/request_register', async(req, res) => {
     else
     {
         var user = await db.Users.findOne({where:{strID:req.body.strID}});
+        console.log(user);
         if ( null == user )
         {
             let nick = await db.Users.findOne({where:{strNickname:req.body.strNickname}});
@@ -226,8 +231,8 @@ router.post('/request_register', async(req, res) => {
                 iParentID:parent.id,
                 fSettle:0,
                 fHoldemR:0,
-                iPoint:req.body.iPoint,
-                iCash:req.body.iCash,
+                iPoint:0,
+                iCash:0,
                 strName:req.body.strName,
                 eUserType:'NORMAL',
                 strEMail:'',
@@ -237,22 +242,23 @@ router.post('/request_register', async(req, res) => {
                 iAvatar:0,
                 iLevel:0,
                 iExp:0,
-                strDesc:req.body.strDesc,
-                strMobileNo:req.body.strAccount,
-                strOptionCode:'11110000'
+                strDesc:'',
+                strBank:req.body.strBank,
+                strMobileNo:req.body.strMobileNo,
+                strAccount:req.body.strAccount,
+                strOptionCode:'11110000',
+                iRolling:0,
+                iCashBase:0,
+                iPointBase:0,
+                strIP:ip,
             });
             
             res.send(object);
         }
         else
         {
-            await user.update({
-                strPassword:req.body.strPassword,
-                iPoint:req.body.iPoint,
-                iCash:req.body.iCash,
-                strDesc:req.body.strDesc,
-                strMobileNo:req.body.strAccount
-            });
+            object.result = 'Error';
+            object.error = 'ExistUser';
             res.send(object);
         }
     }

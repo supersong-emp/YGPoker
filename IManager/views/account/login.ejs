@@ -1,65 +1,62 @@
 <head>
-    
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>로그인</title>
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="loading authentication-bg" data-layout-config='{"darkMode":false}'>
-    <div class="account-pages mt-5 mb-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-5">
-                    <div class="card">
-
-                        <!-- Logo -->
-                        <div class="card-header pt-4 pb-4 text-center bg-primary">
-                            <span><img src="./img/foot_LJ_logo.png" alt="" height="54"></span>
-                        </div>
-
-                        <div class="card-body p-4">
-
-                            <div class="text-center w-75 m-auto">
-                                <h4 class="text-dark-50 text-center mt-0 font-weight-bold">로그인</h4>
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
+                                <div class="card-body">
+                                    <form action="/account/login" method="POST">
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="strID" name="strID" required="" type="text" placeholder="ID" />
+                                            <label for="strID">ID</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="strPassword" name="strPassword" placeholder="Password" required="" type="password" />
+                                            <label for="strPassword">Password</label>
+                                        </div>
+                                        <% if ( messages ) { %>
+                                            <p style="color:red;"><%= messages %></p>
+                                            <% } %>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <button class="btn btn-primary ml-auto" type="submit" id="LoginButton"> Login </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-
-                            <form action="/account/login" method="POST">
-
-                                <div class="form-group">
-                                    <label for="strID">Login ID</label>
-                                    <input class="form-control" type="text" id="strID" name="strID" required="" placeholder="로그인 ID">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="strPassword">Password</label>
-                                    <input class="form-control" type="password" required="" id="strPassword" name="strPassword" placeholder="계정 비밀번호">
-                                </div>
-
-                                <% if ( messages ) { %>
-                                    <p style="color:red;"><%= messages %></p>
-                                    <% } %>
-                                <br>
-
-                                <div class="form-group mb-0 text-center">
-                                    <button class="btn btn-primary" type="submit" id="LoginButton"> 로그인 </button>
-                                </div>
-
-                            </form>
-                        </div> <!-- end card-body -->
+                        </div>
                     </div>
-                    <!-- end card -->
-
-                    <!-- end row -->
-
-                </div> <!-- end col -->
-            </div>
-            <!-- end row -->
+                </div>
+            </main>
         </div>
-        <!-- end container -->
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; MCPokers 2023</div>
+                        <div>
+                            <a href="javascript:void(0);">Privacy Policy</a>
+                            &middot;
+                            <a href="javascript:void(0);">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
-    <!-- end page -->
-
-    <footer class="footer footer-alt">
-        2022 @ YGPoker
-    </footer>
-
     <!-- bundle -->
     <script src="./assets/js/vendor.min.js"></script>
     <script src="./assets/js/app.min.js"></script>
