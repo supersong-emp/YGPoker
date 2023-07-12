@@ -397,6 +397,7 @@ class IGame
                                 break;
                             }
                     }
+                    break;
 
             case E.EDBType.RecodrdGames:
                 switch ( element.iSubDB )
