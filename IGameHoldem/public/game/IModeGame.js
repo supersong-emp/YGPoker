@@ -795,14 +795,11 @@ export default class IModeGame {
             {
                 this.listLabels[2].Render(ctx);
             }
-            // else
-            // {
-            //     this.listLabels[i].Render(ctx);
-            // }
+            else
+            {
+                this.listLabels[i].Render(ctx);
+            }
         }
-        // ctx.font = "30px consolas";
-        // ctx.fillStyle = "white";
-        // ctx.fillText(`ModeGame AFC : ${this.kMainUser.iAutoFoldCounter}`, 110, 110);
     }
 
     Update() {
