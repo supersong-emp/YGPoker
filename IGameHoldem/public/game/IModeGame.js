@@ -773,35 +773,32 @@ export default class IModeGame {
                 }
             }
         }
-        
+        // this.mobileSliderBG.Render(ctx);
         // for (let i in this.slider) {
         //   this.slider[i].Render(ctx);
         // }
+        
         if (true == this.bEnableBetting) {
-            if (this.isMobile == true && this.bMobileRaiseButton == true) {
+            if (this.bMobileRaiseButton == true) {
                 this.mobileSliderBG.Render(ctx);
                 for (let i in this.slider) {
                     this.slider[i].Render(ctx);
                 }
             }
-            else if (this.isMobile == false) {
-                this.slider[0].Render(ctx);
-            }
-
             for (let i in this.listBettingButtons) {
                 this.listBettingButtons[i].Render(ctx);
             }
         }
         for (let i in this.listLabels) {
             if (i == 2 && this.bEnableBetting == false) continue;
-            if(this.isMobile == true && this.bMobileRaiseButton == true)
+            if(this.bMobileRaiseButton == true && this.bEnableBetting == true)
             {
                 this.listLabels[2].Render(ctx);
             }
-            else
-            {
-                this.listLabels[i].Render(ctx);
-            }
+            // else
+            // {
+            //     this.listLabels[i].Render(ctx);
+            // }
         }
         // ctx.font = "30px consolas";
         // ctx.fillStyle = "white";
@@ -1260,10 +1257,11 @@ export default class IModeGame {
     }
     SetRaiseButton() {
         this.bRaiseButton = true;
+        this.bMobileRaiseButton = true;
     }
     SetMobileRaiseButton() {
         this.bMobileRaiseButton = true;
-        //this.bRaiseButton = true;
+        this.bRaiseButton = true;
     }
 
     EnableBetting(objectData) {
@@ -1608,7 +1606,7 @@ export default class IModeGame {
             }
             if (true == this.slider[0].Over(mouse)) {
                 //console.log(this.slider.iCurrentBar);
-                //console.log(this.slider.iCurrentLocation);
+                console.log(this.slider.iCurrentLocation);
 
                 let player = this.FindUser(this.socket.strID);
                 if (player != null) {
@@ -1633,20 +1631,6 @@ export default class IModeGame {
                         console.log(`iCoin : ${iCurrentCoin}`);
                         this.listLabels[2].UpdateCaption(iCurrentCoin.toString());
                     }
-                    // let term = player.iGameCoin - this.iCallCoin;
-                    // if ( term > 0 )
-                    // {
-                    //     let fDelta = term / 100;
-
-                    //     let iCurrentCoin = this.iCallCoin + Math.floor(fDelta*this.slider.iCurrentBar);
-
-                    //     iCurrentCoin = Math.floor(iCurrentCoin / 100);
-                    //     iCurrentCoin = Math.floor(iCurrentCoin * 100)
-
-                    //     console.log(`iCoin : ${iCurrentCoin}`);
-
-                    //     this.listLabels[2].UpdateCaption(iCurrentCoin.toString());
-                    // }
                 }
             }
         }
@@ -1655,12 +1639,10 @@ export default class IModeGame {
         if (this.isMobile == true) {
             if (true == this.slider[0].Touch(touch)) {
                 //console.log(this.slider.iCurrentBar);
-                //console.log(this.slider.iCurrentLocation);
+                console.log(this.slider.iCurrentLocation);
                 //this.slider[0].UpdateCurrentLocation();
                 let player = this.FindUser(this.socket.strID);
                 if (player != null) {
-
-
                     let term = player.iGameCoin - this.iCallCoin;
                     console.log(`player coin : ${player.iGameCoin}, this.iGameCoin : ${this.iCallCoin}, term : ${term}`);
                     if (term > 0) {
@@ -1681,20 +1663,6 @@ export default class IModeGame {
                         console.log(`iCoin : ${iCurrentCoin}`);
                         this.listLabels[2].UpdateCaption(iCurrentCoin.toString());
                     }
-                    // let term = player.iGameCoin - this.iCallCoin;
-                    // if ( term > 0 )
-                    // {
-                    //     let fDelta = term / 100;
-
-                    //     let iCurrentCoin = this.iCallCoin + Math.floor(fDelta*this.slider.iCurrentBar);
-
-                    //     iCurrentCoin = Math.floor(iCurrentCoin / 100);
-                    //     iCurrentCoin = Math.floor(iCurrentCoin * 100)
-
-                    //     console.log(`iCoin : ${iCurrentCoin}`);
-
-                    //     this.listLabels[2].UpdateCaption(iCurrentCoin.toString());
-                    // }
                 }
             }
         }
@@ -1717,6 +1685,7 @@ export default class IModeGame {
         }
         //this.slider.Down(mouse);
         if (true == this.slider[0].Down(mouse) && this.bRaiseButton == false) {
+            //if (true == this.slider[0].Down(mouse)) {
             //console.log(this.slider.iCurrentBar);
             //console.log(this.slider.iCurrentLocation);
 

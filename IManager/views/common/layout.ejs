@@ -145,7 +145,13 @@
                                     <a class="nav-link" href="#">
                                         쿠폰 통계
                                     </a> -->
-        
+                                    <% if ( user.iClass == 0 ) { %>
+                                    <div class="sb-sidenav-menu-heading">랭킹</div>
+                                    <a class="nav-link" href="/rank/ranklist">
+                                        게임머니 변동 랭킹
+                                    </a>
+                                    <%}%>
+
                                     <div class="sb-sidenav-menu-heading">게임 관리</div>
                                     <a class="nav-link" href="/game/gamelog">
                                         게임로그 목록

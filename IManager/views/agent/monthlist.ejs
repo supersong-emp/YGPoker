@@ -53,9 +53,12 @@
                             <th>보낸배송</th>
                             <th>합</th>
                             <th>적립포인트</th>
+                            <th>베팅금액</th>
+                            <% if ( user.iClass == 0 ) { %>
                             <th>AI수익</th>
                             <th>잭팟</th>
                             <th>합</th>
+                            <%} %>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,25 +114,9 @@
         function refreshData() {
             dataTableInstance.ajax.reload();
         }
-        dataTableInstance = $('#dataTable').DataTable({
-            "serverSide": true,
-            "searching": false,
-            paging : false,
-            //lengthChange : false,
-		    //processing: true,
-            "ajax": {
-                url: "/inout/findmonthlist",
-                "type": "POST",
-                "data": function (d) {
-                    return $.extend({}, d, {
-                        strMonth: $('#startMonth').val()
-                        // 데이타 넘겨주기
-                    });
-                }
-            },
-            columns: [
 
-                {
+        let columns = [
+        {
                     data: "date", render: function (d) {
                         let date = moment(d).format('YYYY-MM-DD');
                         return date;
@@ -170,29 +157,54 @@
                         let c = 0;
                         return c.toLocaleString();
                     }   
-                }
-                ,
+                },
+                {
+                    data: "total_bet", render: function (d) {
+                        let c = parseInt(d);
+                        return c.toLocaleString();
+                    } 
+                },
+                {
+                    data: "total_amount", render: function (d) {
+                        let c = 0;
+                        return c.toLocaleString();
+                    } 
+                },
+                {
+                    data: "total_amount", render: function (d) {
+                        let c = 0;
+                        return c.toLocaleString();
+                    } 
+                },
                 {
                     data: "total_amount", render: function (d) {
                         let c = 0;
                         return c.toLocaleString();
                     } 
                 }
-                ,
-                {
-                    data: "total_amount", render: function (d) {
-                        let c = 0;
-                        return c.toLocaleString();
-                    } 
+        ];
+        // user.iClass가 0이 아닐 경우
+        if(user.iClass != 0) {
+            // 마지막 세 컬럼을 제거
+            columns = columns.slice(0, columns.length - 3);
+        }
+        dataTableInstance = $('#dataTable').DataTable({
+            "serverSide": true,
+            "searching": false,
+            paging : false,
+            //lengthChange : false,
+		    //processing: true,
+            "ajax": {
+                url: "/inout/findmonthlist",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        strMonth: $('#startMonth').val()
+                        // 데이타 넘겨주기
+                    });
                 }
-                ,
-                {
-                    data: "total_amount", render: function (d) {
-                        let c = 0;
-                        return c.toLocaleString();
-                    } 
-                }
-            ],
+            },
+            columns: columns,
             order: [[0, "desc"]],
             keys: true,
             "language": {

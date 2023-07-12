@@ -59,7 +59,7 @@ module.exports = () => {
                 let ip = requestIp.getClientIp(req);
                 console.log(`Parameter : ${username}, ${password}, DB User : ${user.strNickname}, ip : ${ip}`);
                 
-                //await db.Users.update({loginedAt : db.sequelize.literal('CURRENT_TIMESTAMP'),strIP:ip}, { where: { strID: username } });
+                await db.Users.update({loginedAt : db.sequelize.literal('CURRENT_TIMESTAMP'),strIPlogin:ip}, { where: { strID: username } });
 
                 return done(null, user);
             } 

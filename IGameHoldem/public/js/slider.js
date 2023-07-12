@@ -27,23 +27,17 @@ export default class IUISlider{
         this.iOriginClickX = 0;
         this.iOriginClickY = 0;
         this.iDelta = 0;
-        //console.log(this);
 
         this.iCurrentLocation = 0;
         this.iCurrentLocationMin = 0;
-        // if(irotate == 0) // 0 : 가로, 1 : 세로
-        // {
-        //     this.iCurrentLocationMax = this.iCurrentWidth;
-        // }
-        // else
-        // {
-        //     this.iCurrentLocationMax = this.iCurrentHeight;
-        // }
+
         this.iCurrentLocationMax = 0;
         this.iOriginLocation = 0;
         this.iCurrentBar = 0;
 
         this.irotate = irotate;
+
+        this.locationRatio = 0;
 
         this.UpdateCurrentLocation();
         this.fHR = 1;
@@ -56,42 +50,25 @@ export default class IUISlider{
         this.UpdateCurrentLocation();
     }
 
-    // SetBar(iCurrentCoin, iMinCoin, iMaxCoin)
-    // {
-    //     let fDelta = iMinCoin / iMaxCoin;
-    //     if ( fDelta > 1 )
-    //         fDelta = 1;
-    //     let iCurrent = Math.floor(fDelta*iCurrentCoin);
-
-    //     this.iCurrentBar = iCurrent;
-    //     this.iCurrentLcation = Math.floor(this.iCurrentLocationMax * fDelta);
-
-    //     this.button.iCurrentX = this.iCurrentX + this.iCurrentLocation - Math.floor(this.button.iCurrentWidth / 2);
-    //     this.button.iCurrentY = this.iCurrentY - Math.floor(this.button.iCurrentHeight / 2) + Math.floor(this.iCurrentHeight/2);
-    //     // this.button.iCurrentX = this.iCurrentX + this.iCurrentLocation - Math.floor(this.button.iCurrentWidth / 2);
-    //     // this.button.iCurrentY = this.iCurrentY - Math.floor(this.button.iCurrentHeight / 2) + Math.floor(this.iCurrentHeight/2);
-
-    //     // console.log(this.iCurrentLocationMax);
-    //     // let value = 100 / this.iCurrentLocationMax;
-    //     // let delta = Math.floor(this.iCurrentLocation*value);
-
-    //     // this.iCurrentBar = Math.floor(delta);   
-    // }
-
     UpdateCurrentLocation()
     {
-        //let cFxLocation = this.GetFxDelta();
-        //cFxLocation *= this.iCurrentLocation;
-        if(this.irotate == 0)
-        {
-            this.button.iCurrentX = this.iCurrentX + this.iCurrentLocation - Math.floor(this.button.iCurrentWidth / 2);
-            this.button.iCurrentY = this.iCurrentY - Math.floor(this.button.iCurrentHeight / 2) + Math.floor(this.iCurrentHeight/2);
+        if(this.button && this.button !== ''){ // Button exists and is not an empty string
+            if(this.irotate == 0)
+            {
+                this.button.iCurrentX = this.iCurrentX + this.iCurrentLocation - Math.floor(this.button.iCurrentWidth / 2);
+                this.button.iCurrentY = this.iCurrentY - Math.floor(this.button.iCurrentHeight / 2) + Math.floor(this.iCurrentHeight/2);
+            }
+            else if(this.irotate == 1)
+            {
+                this.button.iCurrentX = this.iCurrentX - Math.floor(this.button.iCurrentWidth / 2) + Math.floor(this.iCurrentWidth/2);
+                this.button.iCurrentY = this.iCurrentY + (this.iCurrentLocationMax - this.iCurrentLocation) - Math.floor(this.button.iCurrentHeight / 2);
+                //this.button.iCurrentY = this.iCurrentY + this.iCurrentLocation - Math.floor(this.button.iCurrentHeight / 2);
+            }
         }
-        else if(this.irotate == 1)
-        {
-            this.button.iCurrentX = this.iCurrentX - Math.floor(this.button.iCurrentWidth / 2) + Math.floor(this.iCurrentWidth/2);
-            this.button.iCurrentY = this.iCurrentY + (this.iCurrentLocationMax - this.iCurrentLocation) - Math.floor(this.button.iCurrentHeight / 2);
-            //this.button.iCurrentY = this.iCurrentY + this.iCurrentLocation - Math.floor(this.button.iCurrentHeight / 2);
+        else { // No button or button is an empty string
+            // Here we'll calculate the proportion of the current location to the maximum location
+            // and store it in a new instance variable.
+            this.locationRatio = this.iCurrentLocation / this.iCurrentLocationMax;
         }
         console.log(`this.iCurrentLocationMax : ${this.iCurrentLocationMax}, this.iCurrentLocation : ${this.iCurrentLocation}`);
         let value = 100 / this.iCurrentLocationMax;
@@ -137,7 +114,9 @@ export default class IUISlider{
         }
         //this.iCurrentBar = this.iCurrentBar * fHR;
 
-        this.button.OnSize(fHR, fVR);
+        if(this.button && this.button !== ''){
+            this.button.OnSize(fHR, fVR);
+        }
 
         this.UpdateCurrentLocation();
 
@@ -155,139 +134,175 @@ export default class IUISlider{
 
     Over(mouse)
     {
-        this.button.Over(mouse);
-
-        if ( this.bFocus == true )
-        {
-            //this.iOriginClickX = mouse.x;
-            //this.iDelta = mouse.x - this.iOriginClickX;
-            //this.button.iCurrentX += this.iDelta;
-
-            //let current = Math.floor(this.GetLocation() * (mouse.x - this.iOriginClickX));
-            //console.log(current);
-
-            //this.iCurrentLocation += this.GetLocation(Math.floor((mouse.x - this.iOriginClickX) * this.GetFxDelta()));
-            let current = 0;
-            if(this.irotate == 0){
-                current = mouse.x - this.iOriginClickX;
-                this.iCurrentLocation += current;
-                this.iOriginClickX = mouse.x;
-                this.SetOriginLocation();
-                if ( this.iCurrentLocation < this.iCurrentLocationMin )
+        if (this.In(mouse) == true) {
+            if(this.button && this.button !== ''){
+                this.button.Over(mouse);
+                if ( this.bFocus == true )
                 {
+                    console.log(`MouseOver : Slider`);
+                    let current = 0;
+                    if(this.irotate == 0){
+                        current = mouse.x - this.iOriginClickX;
+                        this.iCurrentLocation += current;
+                        this.iOriginClickX = mouse.x;
+                        this.SetOriginLocation();
+                        if ( this.iCurrentLocation < this.iCurrentLocationMin )
+                        {
+                            this.iCurrentLocation = this.iCurrentLocationMin;
+                            this.UpdateCurrentLocation();
+                            
+                        }
+                        else if ( this.iCurrentLocation > this.iCurrentLocationMax )
+                        {
+                            this.iCurrentLocation = this.iCurrentLocationMax;
+                            this.UpdateCurrentLocation();
+                            
+                        }
+                        else 
+                        {
+                            this.UpdateCurrentLocation();
+                        }
+                    }
+                    else if(this.irotate == 1) 
+                    {
+                        //alert('모바일 레이즈바 터치');
+                        console.log(`touch.y : ${mouse.y}, this.iOriginClickY : ${this.iOriginClickY}`);
+                        current = mouse.y - this.iOriginClickY;
+                        this.iCurrentLocation -= current;
+                        this.iOriginClickY = mouse.y;
+                        this.SetOriginLocation();
+                        if ( this.iCurrentLocation < this.iCurrentLocationMin )
+                        {
+                            this.iCurrentLocation = this.iCurrentLocationMin;
+                            this.UpdateCurrentLocation();
+                            this.bFocus = false;
+                        }
+                        else if ( this.iCurrentLocation > this.iCurrentLocationMax )
+                        {
+                            this.iCurrentLocation = this.iCurrentLocationMax;
+                            this.UpdateCurrentLocation();
+                            this.bFocus = false;
+                        }
+                        else 
+                        {
+                            this.UpdateCurrentLocation();
+                        }
+                    } 
+                    return true;
+                }
+                else
+                {
+                    this.bFocus = false;
+                }
+                return false;
+            }
+            else {
+                if ( this.bFocus == true )
+                {               
+                    let mouseY = mouse.y - this.iCurrentY; // Adjust mouse Y position relative to the slider
+        
+                    let delta = (this.iCurrentLocationMax - this.iCurrentLocationMin) / this.iCurrentHeight; // Calculate the change in location per pixel
+                    
+                    let newLocation = this.iCurrentLocationMax - Math.round(mouseY * delta); // Calculate the new location based on the mouse Y position
+                    
+                    if (newLocation < this.iCurrentLocationMin) {
                     this.iCurrentLocation = this.iCurrentLocationMin;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else if ( this.iCurrentLocation > this.iCurrentLocationMax )
-                {
+                    this.bFocus = false;
+                    } else if (newLocation > this.iCurrentLocationMax) {
                     this.iCurrentLocation = this.iCurrentLocationMax;
+                    this.bFocus = false;
+                    } else {
+                    this.iCurrentLocation = newLocation;
+                    }
+                    
+                    this.SetOriginLocation();
                     this.UpdateCurrentLocation();
                     
+                    return true;
                 }
-                else 
+                else
                 {
-                    this.UpdateCurrentLocation();
+                    this.bFocus = false;
                 }
             }
-            else if(this.irotate == 1) 
-            {
-                //alert('모바일 레이즈바 터치');
-                current = mouse.y - this.iOriginClickY;
-                this.iCurrentLocation -= current;
-                this.iOriginClickY = mouse.y;
-                this.SetOriginLocation();
-                if ( this.iCurrentLocation < this.iCurrentLocationMin )
-                {
-                    this.iCurrentLocation = this.iCurrentLocationMin;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else if ( this.iCurrentLocation > this.iCurrentLocationMax )
-                {
-                    this.iCurrentLocation = this.iCurrentLocationMax;
-                    this.UpdateCurrentLocation();
-                    
-                }
-                else 
-                {
-                    this.UpdateCurrentLocation();
-                }
-            } 
-            return true;
+            return false;
         }
-
-        return false;
     }
-    Touch(touch)
-    {
-        if(this.In(touch) == true)
-        {
-            this.button.Touch(touch);
-
-            // if ( this.bFocus == true )
-            // {
-                //this.iOriginClickX = mouse.x;
-                //this.iDelta = mouse.x - this.iOriginClickX;
-                //this.button.iCurrentX += this.iDelta;
-
-                //let current = Math.floor(this.GetLocation() * (mouse.x - this.iOriginClickX));
-                //console.log(current);
-
-                //this.iCurrentLocation += this.GetLocation(Math.floor((mouse.x - this.iOriginClickX) * this.GetFxDelta()));
+    Touch(touch) {
+        if (this.In(touch) == true) {
+            console.log(`MouseTouch : Slider`);
+            if (this.button && this.button !== '') {
+                this.button.Touch(touch);
                 let current = 0;
-                if(this.irotate == 0){
+                if (this.irotate == 0) {
                     current = touch.x - this.iOriginClickX;
                     this.iCurrentLocation += current;
                     this.iOriginClickX = touch.x;
                     this.SetOriginLocation();
-                    if ( this.iCurrentLocation < this.iCurrentLocationMin )
-                    {
+                    if (this.iCurrentLocation < this.iCurrentLocationMin) {
                         this.iCurrentLocation = this.iCurrentLocationMin;
                         this.UpdateCurrentLocation();
-                        
+
                     }
-                    else if ( this.iCurrentLocation > this.iCurrentLocationMax )
-                    {
+                    else if (this.iCurrentLocation > this.iCurrentLocationMax) {
                         this.iCurrentLocation = this.iCurrentLocationMax;
                         this.UpdateCurrentLocation();
-                        
+
                     }
-                    else 
-                    {
+                    else {
                         this.UpdateCurrentLocation();
                     }
-                    return true;
                 }
-                else if(this.irotate == 1) 
-                {
+                else if (this.irotate == 1) {
                     //alert('모바일 레이즈바 터치');
                     console.log(`touch.y : ${touch.y}, this.iOriginClickY : ${this.iOriginClickY}`);
                     current = touch.y - this.iOriginClickY;
                     this.iCurrentLocation -= current;
                     this.iOriginClickY = touch.y;
                     this.SetOriginLocation();
-                    if ( this.iCurrentLocation < this.iCurrentLocationMin )
-                    {
+                    if (this.iCurrentLocation < this.iCurrentLocationMin) {
                         this.iCurrentLocation = this.iCurrentLocationMin;
                         this.UpdateCurrentLocation();
-                        
+
                     }
-                    else if ( this.iCurrentLocation > this.iCurrentLocationMax )
-                    {
+                    else if (this.iCurrentLocation > this.iCurrentLocationMax) {
                         this.iCurrentLocation = this.iCurrentLocationMax;
                         this.UpdateCurrentLocation();
-                        
+
                     }
-                    else 
-                    {
+                    else {
                         this.UpdateCurrentLocation();
                     }
-                    return true;
-                } 
-                //return true;
-            //}
+                }
+                return true;
+            }
+            else {
+                if (this.bFocus == true) {
+                    let touchY = touch.y - this.iCurrentY; // Adjust mouse Y position relative to the slider
 
+                    let delta = (this.iCurrentLocationMax - this.iCurrentLocationMin) / this.iCurrentHeight; // Calculate the change in location per pixel
+
+                    let newLocation = this.iCurrentLocationMax - Math.round(touchY * delta); // Calculate the new location based on the mouse Y position
+
+                    if (newLocation < this.iCurrentLocationMin) {
+                        this.iCurrentLocation = this.iCurrentLocationMin;
+                        this.bFocus = false;
+                    } else if (newLocation > this.iCurrentLocationMax) {
+                        this.iCurrentLocation = this.iCurrentLocationMax;
+                        this.bFocus = false;
+                    } else {
+                        this.iCurrentLocation = newLocation;
+                    }
+
+                    this.SetOriginLocation();
+                    this.UpdateCurrentLocation();
+
+                    return true;
+                }
+                else {
+                    this.bFocus = false;
+                }
+            }
             return false;
         }
     }
@@ -296,9 +311,7 @@ export default class IUISlider{
     {
         if ( this.In(mouse) == true )
         {
-            //this.button.iCurrentX = mouse.x;
-            //alert(`this.iCurrentLocation : ${this.iCurrentLocation}, this.iCurrentY : ${this.iCurrentY}, mouse.y : ${mouse.y}, this.height : ${this.height}`);
-            //console.log(`this.iCurrentY : ${this.iCurrentY}, this.iCurrentHeight : ${this.iCurrentHeight}, mouse.y : ${mouse.y}, this.height : ${window.innerHeight}`);
+            console.log(`MouseDown : Slider`);
             if(this.irotate == 0)
             {
                 this.iCurrentLocation = mouse.x - this.iCurrentX;
@@ -310,21 +323,29 @@ export default class IUISlider{
             
             this.SetOriginLocation();
             this.UpdateCurrentLocation();
+            this.iOriginClickX = mouse.x;
+            this.iOriginClickY = mouse.y;
+            this.bFocus = true;
+        }
+        else
+        {
+            this.bFocus = false;
         }
 
-        this.button.Down(mouse);
-        if ( this.button.eButtonState == 2 )
-        {
-            this.bFocus = true;
-            if(this.irotate == 0)
+        if(this.button && this.button !== ''){
+            this.button.Down(mouse);
+            if ( this.button.eButtonState == 2 )
             {
-                this.iOriginClickX  = mouse.x;
+                this.bFocus = true;
+                if(this.irotate == 0)
+                {
+                    this.iOriginClickX  = mouse.x;
+                }
+                else if(this.irotate == 1)
+                {
+                    this.iOriginClickY  = mouse.y;
+                }
             }
-            else if(this.irotate == 1)
-            {
-                this.iOriginClickY  = mouse.y;
-            }
-            
         }
         return true;
     }
@@ -337,7 +358,13 @@ export default class IUISlider{
 
             this.bFocus = false;
 
-            this.button.Up(mouse);
+            if(this.button && this.button !== ''){
+                this.button.Up(mouse);
+            }
+        }
+        else
+        {
+            this.bFocus = false;
         }
     }
 
@@ -361,13 +388,29 @@ export default class IUISlider{
 
     Render(ctx) 
     {
-        ctx.drawImage(this.sprite, 0, 0, this.iSpriteWidth, this.iSpriteHeight, this.iCurrentX, this.iCurrentY, this.iCurrentWidth, this.iCurrentHeight);
-        // ctx.fillStyle = "white";
-        // ctx.font = '20px Spoqa Han Sans Neo';
-        // ctx.textAlign = "center";
-
-        this.button.Render(ctx);
-
-        // ctx.fillText(this.iCurrentBar.toString(), this.iCurrentX+this.iCurrentWidth/2, this.iCurrentY+this.iCurrentHeight/2+(this.iCurrentHeight/6));
+        if(this.button && this.button !== ''){
+            ctx.drawImage(this.sprite, 0, 0, this.iSpriteWidth, this.iSpriteHeight, this.iCurrentX, this.iCurrentY, this.iCurrentWidth, this.iCurrentHeight);
+            this.button.Render(ctx);
+        }
+        else
+        {
+            // No button or button is an empty string
+            // We'll use locationRatio to only draw a portion of the sprite from the bottom up.
+            let srcHeight = this.iSpriteHeight * this.locationRatio;
+            let tgtHeight = this.iCurrentHeight * this.locationRatio;
+            let tgtY = this.iCurrentY + this.iCurrentHeight - tgtHeight;
+            
+            ctx.drawImage(
+                this.sprite,                 // image source
+                0,                           // source x
+                this.iSpriteHeight - srcHeight, // source y
+                this.iSpriteWidth,           // source width
+                srcHeight,                   // source height
+                this.iCurrentX,              // target x
+                tgtY,                        // target y
+                this.iCurrentWidth,          // target width
+                tgtHeight                    // target height
+            );
+        }
     }
 }

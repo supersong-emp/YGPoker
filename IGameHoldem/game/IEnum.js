@@ -59,6 +59,7 @@ module.exports.EUserDBType = EnumUserDBType;
 
 const EnumRecordBetDBType = Object.freeze({
     "Create":0, 
+    "Update":1
 });
 module.exports.ERecordBetDBType = EnumRecordBetDBType;
 

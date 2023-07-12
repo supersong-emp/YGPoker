@@ -390,6 +390,11 @@ mobileRaiseBar.onload = ()=> {
 }
 mobileRaiseBar.src = "img/game/raisebar.png";
 
+var RaiseSlider = new Image();
+RaiseSlider.onload = ()=> {
+}
+RaiseSlider.src = "img/game/raiseslider.png";
+
 let soundPlaceCard = new Audio('sounds/placecard.mp3');
 
 let soundBettingType = [];

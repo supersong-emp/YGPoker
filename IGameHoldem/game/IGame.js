@@ -360,58 +360,44 @@ class IGame
                     break;
                 }
                 break;
-            case E.EDBType.RecordBets:
-                switch ( element.iSubDB )
-                {
-                case E.ERecordBetDBType.Create:
-                    {
-                        let odds = await this.GetOdds(element.strID);
+                case E.EDBType.RecordBets:
+                    switch (element.iSubDB) {
+                        case E.ERecordBetDBType.Create:
+                            {
+                                let odds = await this.GetOdds(element.strID);
 
-                        const cRollingPAdmin = parseInt(odds.fPAdmin*element.iAmount*0.01);
-                        const cRollingVAdmin = parseInt(odds.fVAdmin*element.iAmount*0.01);
-                        const cRollingAgent = parseInt(odds.fAgent*element.iAmount*0.01);
-                        const cRollingShop = parseInt(odds.fShop*element.iAmount*0.01);
+                                const cRollingPAdmin = parseInt(odds.fPAdmin * element.iAmount * 0.01);
+                                const cRollingVAdmin = parseInt(odds.fVAdmin * element.iAmount * 0.01);
+                                const cRollingAgent = parseInt(odds.fAgent * element.iAmount * 0.01);
+                                const cRollingShop = parseInt(odds.fShop * element.iAmount * 0.01);
 
-                        // await db.RecordBets.create({
-                        //     strID:element.strID,
-                        //     iClass:element.iClass,
-                        //     strGroupID:element.strGroupID,
-                        //     iAmount:element.iAmount,
-                        //     strBet:element.strBetting,
-                        //     iRollingAdmin:parseInt(odds.fAdmin*element.iAmount*0.01),
-                        //     iRollingPAdmin:parseInt(odds.fPAdmin*element.iAmount*0.01),
-                        //     iRollingVAdmin:parseInt(odds.fVAdmin*element.iAmount*0.01),
-                        //     iRollingAgent:parseInt(odds.fAgent*element.iAmount*0.01),
-                        //     iRollingShop:parseInt(odds.fShop*element.iAmount*0.01),
-                        // });
+                                await db.RecordBets.create({
+                                    strID: element.strID,
+                                    iClass: element.iClass,
+                                    strGroupID: element.strGroupID,
+                                    iAmount: element.iAmount,
+                                    strBet: element.strBetting,
+                                    iRollingAdmin: parseInt(odds.fAdmin * element.iAmount * 0.01),
+                                    iRollingPAdmin: cRollingShop,
+                                    iRollingVAdmin: cRollingVAdmin,
+                                    iRollingAgent: cRollingAgent,
+                                    iRollingShop: cRollingShop,
+                                });
 
-                        await db.RecordBets.create({
-                            strID:element.strID,
-                            iClass:element.iClass,
-                            strGroupID:element.strGroupID,
-                            iAmount:element.iAmount,
-                            strBet:element.strBetting,
-                            iRollingAdmin:parseInt(odds.fAdmin*element.iAmount*0.01),
-                            iRollingPAdmin:cRollingShop,
-                            iRollingVAdmin:cRollingVAdmin,
-                            iRollingAgent:cRollingAgent,
-                            iRollingShop:cRollingShop,
-                        });
+                                console.log(`########## Calculate Rolling`);
+                                console.log(odds);
 
-                        console.log(`########## Calculate Rolling`);
-                        console.log(odds);
+                                await db.Users.increment({ iRolling: cRollingPAdmin }, { where: { strID: odds.strPAdminID } });
+                                await db.Users.increment({ iRolling: cRollingVAdmin }, { where: { strID: odds.strVAdminID } });
+                                await db.Users.increment({ iRolling: cRollingAgent }, { where: { strID: odds.strAgentID } });
+                                await db.Users.increment({ iRolling: cRollingShop }, { where: { strID: odds.strShopID } });
 
-                        await db.Users.increment({iRolling:cRollingPAdmin}, {where:{strID:odds.strPAdminID}});
-                        await db.Users.increment({iRolling:cRollingVAdmin}, {where:{strID:odds.strVAdminID}});
-                        await db.Users.increment({iRolling:cRollingAgent}, {where:{strID:odds.strAgentID}});
-                        await db.Users.increment({iRolling:cRollingShop}, {where:{strID:odds.strShopID}});
-
-
-                        this.listDBUpdate.splice(i, 1);
-                        -- i;
+                                this.listDBUpdate.splice(i, 1);
+                                --i;
+                                break;
+                            }
                     }
-                }
-                break;
+
             case E.EDBType.RecodrdGames:
                 switch ( element.iSubDB )
                 {
@@ -2282,92 +2268,12 @@ class IGame
 
         this.CalculatePot();
 
-        // let listWinner = [];
-        // for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
-        // {
-        //     if ( this.listUsers.GetSocket(i).iRank == 1 )
-        //     {
-        //         listWinner.push(this.listUsers.GetSocket(i).strID);
-        //     }
-        // }
-
-        // this.CalculatePot();
-
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             let player = this.listUsers.GetSocket(i);
             console.log(`ProcessWinner : ${player.strID}, #Rank : ${player.iRank}, $Win : ${player.iWinCoin}, $Coin : ${player.iCoin}`);
         }
-
-
-        // //  Process Coin
-        // let iWinCoin = 0;
-        // if ( listWinner.length > 0 )
-        // {
-        //     iWinCoin = Math.floor(this.iTotalBettingCoin/listWinner.length);
-        // }
-        // for ( let i in listWinner )
-        // {
-        //     let winner = this.FindPlayer(listWinner[i]);
-        //     if ( winner != null )
-        //     {
-        //         winner.iWinCoin = iWinCoin;
-        //         winner.iRank = 1;
-        //         winner.iCoin += iWinCoin;
-        //     }
-        // }
-        // //  Process Coin
-        // console.log(`Winner Length : ${listWinner.length}`);
-        // console.log(listWinner);
     }
-
-    // CalculateRank()
-    // {
-    //     let list = [];
-    //     for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
-    //     {
-    //         const player = this.listUsers.GetSocket(i);
-
-    //         if ( player.strLastBettingAction == 'Fold' || player.iLocation == -1 || player.bEnable == false )
-    //             continue;
-
-    //         if ( this.listUsers)
-
-    //         list.push(this.listUsers.GetSocket(i).objectHand);
-    //     }
-
-    //     let iRank = 0;
-    //     while (1)
-    //     {
-    //         let winner = poker.winners(list);
-    //         if ( winner.length > 0 )
-    //         {
-    //             ++ iRank;
-
-    //             this.RemoveWinnerList(list, winner[0].name);
-
-    //             for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
-    //             {
-    //                 const player = this.listUsers.GetSocket(i);
-
-    //                 if ( player.iLocation == -1 || player.bEnable == false || player.strLastBettingAction == 'Fold' )
-    //                     continue;
-
-    //                 if ( this.listUsers.GetSocket(i).strHand == winner[0].name )
-    //                     this.listUsers.GetSocket(i).iRank = iRank;
-
-    //                 console.log(`####################################################################################################`);
-    //                 console.log(this.listUsers.GetSocket(i).objectHand);
-
-    //                 if ( iRank == 1 )
-    //                     this.ProcessWinCards(this.listUsers.GetSocket(i).objectHand.cards, winner[0].name);
-    //             }
-    //         }
-
-    //         if ( list.length == 0 )
-    //             break;
-    //     }
-    // }
 
     CalculateRank()
     {
@@ -2406,17 +2312,9 @@ class IGame
                         if ( player.iLocation == -1 || player.bEnable == false || player.strLastBettingAction == 'Fold' )
                             continue;
     
-                        //if ( player.objectHand.descr == winner[j].descr )
-                        // if ( player.objectHand.cards[0].value == winner[j].cards[0].value && 
-                        //     player.objectHand.cards[1].value == winner[j].cards[1].value && 
-                        //     player.objectHand.cards[2].value == winner[j].cards[2].value &&
-                        //     player.objectHand.cards[3].value == winner[j].cards[3].value &&
-                        //     player.objectHand.cards[4].value == winner[j].cards[4].value )
-                        //console.log(`plyer.descr : ${player.objectHand.descr}, plyer.cards[0] : ${player.objectHand.cards[0].value}, plyer.cards[1] : ${player.objectHand.cards[1].value}, plyer.cards[2] : ${player.objectHand.cards[2].value}, plyer.cards[3] : ${player.objectHand.cards[3].value}, plyer.cards[4] : ${player.objectHand.cards[4].value}`);
                         if ( true == this.IsSameCard(player.objectHand.cards, winner[j].cards) )
                             player.iRank = iRank;
     
-                        //if ( iRank == 1 ) {
                         if ( player.iRank == 1 ) {
                             this.ProcessWinCards(player.objectHand.cards, winner[j].name);
                         }                            
@@ -2784,10 +2682,10 @@ class IGame
                 strWincard = 'not';
             }
         }
+        
         console.log(`strHand : ${strHand} iStartcoin : ${iStartCoin} strTablecard : ${strTablecard} strWincard : ${strWincard}`);
         console.log(`#######@@############################################################################################## updatedb caculatepot`);
         this.listDBUpdate.push({iDB:E.EDBType.RecodrdGames, iSubDB:0, lUnique:this.lUnique, strWinner:strWinner, strDesc:strDesc, iStartCoin:iStartCoin, strHand:strHand, strTablecard:strTablecard, iJackpot:'0'});
-        
     }
 
     CalculatePotWinner(kPot)

@@ -17,6 +17,8 @@ const db = require('../db');
 
 const {isLoggedIn, isNotLoggedIn} = require('./middleware');
 const { type } = require('os');
+
+var requestIp = require('request-ip');
 //
 router.get('/login', async(req, res) => {
 
@@ -81,8 +83,8 @@ router.post('/request_register', async(req, res) => {
     console.log('/request_register');
     console.log(req.body);
 
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
+    const ip = requestIp.getClientIp(req);
+    console.log(ip);
     var object = {};
     object.result = "OK";
 

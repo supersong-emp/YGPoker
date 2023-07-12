@@ -42,6 +42,7 @@ app.use('/agent', require('./routes/agent'));
 
 app.use('/inout', require('./routes/inout'));
 app.use('/game', require('./routes/game'));
+app.use('/rank', require('./routes/rank'));
 app.use('/user', require('./routes/user'));
 app.use('/announcement', require('./routes/announcement'));
 app.use('/etc', require('./routes/etc'));

@@ -759,12 +759,16 @@ router.post('/findmonthlist', async (req, res) => {
         from(	
 	        select 
                 date_format(t1.startAt , '%Y-%m-%d') as date,
-                SUM(CASE WHEN t2.eType = 'INPUT' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END) as "total_input",
-                SUM(CASE WHEN t2.eType = 'OUTPUT' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END) as "total_output",
-                SUM(CASE WHEN t2.eType = 'TAKE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END) as "total_take",
-                SUM(CASE WHEN t2.eType = 'GIVE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END) as "total_give",
-                SUM(CASE t2.eState  WHEN 'COMPLETE' THEN t2.iAmount ELSE 0 END) as "total_amount"
-            from Calendar as t1 left join Inouts as t2 on t1.startAt = date_format(t2.completedAt,'%Y-%m-%d')
+                COALESCE(SUM(CASE WHEN t2.eType = 'INPUT' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_input",
+                COALESCE(SUM(CASE WHEN t2.eType = 'OUTPUT' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_output",
+                COALESCE(SUM(CASE WHEN t2.eType = 'TAKE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_take",
+                COALESCE(SUM(CASE WHEN t2.eType = 'GIVE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_give",
+                COALESCE(SUM(CASE t2.eState  WHEN 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_amount",
+                COALESCE(SUM(t3.iAmount), 0) as "total_bet"
+            from 
+                Calendar as t1 
+                left join Inouts as t2 on t1.startAt = date_format(t2.completedAt,'%Y-%m-%d')
+                left join RecordBets as t3 on t1.startAt = date_format(t3.updatedAt,'%Y-%m-%d')
             where t1.startAt like CONCAT('${strMonth}', '%')
             group by date
         )as t`
@@ -783,11 +787,12 @@ router.post('/findmonthlist', async (req, res) => {
                 COALESCE(SUM(CASE WHEN t2.eType = 'OUTPUT' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_output",
                 COALESCE(SUM(CASE WHEN t2.eType = 'TAKE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_take",
                 COALESCE(SUM(CASE WHEN t2.eType = 'GIVE' AND t2.eState = 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_give",
-                COALESCE(SUM(CASE t2.eState  WHEN 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_amount"
+                COALESCE(SUM(CASE t2.eState  WHEN 'COMPLETE' THEN t2.iAmount ELSE 0 END), 0) as "total_amount",
+                COALESCE(SUM(t3.iAmount), 0) as "total_bet"
             FROM 
                 Calendar AS t1 
-                LEFT JOIN Inouts AS t2 ON t1.startAt = DATE_FORMAT(t2.completedAt,'%Y-%m-%d') 
-                    AND t2.strGroupID LIKE '%${strGroupID}'
+                LEFT JOIN Inouts AS t2 ON t1.startAt = DATE_FORMAT(t2.completedAt,'%Y-%m-%d') AND t2.strGroupID LIKE '%${strGroupID}'
+                LEFT JOIN RecordBets AS t3 ON t1.startAt = DATE_FORMAT(t3.updatedAt,'%Y-%m-%d') AND t3.strGroupID LIKE '%${strGroupID}'
             WHERE 
                 t1.startAt LIKE CONCAT('${strMonth}', '%')
             GROUP BY date
@@ -801,6 +806,7 @@ router.post('/findmonthlist', async (req, res) => {
     object.recordsTotal = full_count;
     object.recordsFiltered = list_count;
 
+    //console.log(object);
     res.send(JSON.stringify(object));
 });
 
@@ -846,60 +852,48 @@ let GetRollingChildren = async (strGroupID, iMyClass, dateStart, dateEnd) => {
     }
     else if(iMyClass == 1)
     {
-        iTargetClass = 5;
         var [list] = await db.sequelize.query(`
         SELECT  t2.*,
         IFNULL((SELECT sum(iRollingVAdmin) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+        FROM Users AS t1
+        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+        );
+    }
+    else if(iMyClass == 2)
+    {
+        var [list] = await db.sequelize.query(`
+        SELECT  t2.*,
+        IFNULL((SELECT sum(iRollingAgent) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+        FROM Users AS t1
+        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+        );
+    }
+    else if(iMyClass == 3)
+    {
+        var [list] = await db.sequelize.query(`
+        SELECT  t2.*,
+        IFNULL((SELECT sum(iRollingShop) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
+        IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
+        FROM Users AS t1
+        LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
+        WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
+        );
+    }
+    else if(iMyClass == 4)
+    {
+        var [list] = await db.sequelize.query(`
+        SELECT  t2.*,
+        0 as total_RollingMoney,
         IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strID LIKE t2.strID AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
         WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
         );
     }
-    // else if(iMyClass == 1)
-    // {
-    //     var [list] = await db.sequelize.query(`
-    //     SELECT  t2.*,
-    //     IFNULL((SELECT sum(iRollingVAdmin) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-    //     FROM Users AS t1
-    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-    //     );
-    // }
-    // else if(iMyClass == 2)
-    // {
-    //     var [list] = await db.sequelize.query(`
-    //     SELECT  t2.*,
-    //     IFNULL((SELECT sum(iRollingAgent) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-    //     FROM Users AS t1
-    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-    //     );
-    // }
-    // else if(iMyClass == 3)
-    // {
-    //     var [list] = await db.sequelize.query(`
-    //     SELECT  t2.*,
-    //     IFNULL((SELECT sum(iRollingShop) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_RollingMoney,
-    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-    //     FROM Users AS t1
-    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-    //     );
-    // }
-    // else if(iMyClass == 4)
-    // {
-    //     var [list] = await db.sequelize.query(`
-    //     SELECT  t2.*,
-    //     0 as total_RollingMoney,
-    //     IFNULL((SELECT sum(iAmount) FROM RecordBets WHERE strID LIKE t2.strID AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as total_iAmount
-    //     FROM Users AS t1
-    //     LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
-    //     WHERE t2.iClass='${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%');`
-    //     );
-    // }
     return list;
 }
 

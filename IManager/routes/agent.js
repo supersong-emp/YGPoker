@@ -77,7 +77,7 @@ router.post('/request_agentlist', async(req, res) => {
     console.log(req.body);
 
     //console.log(`strID : ${req.user.strID}, iClass : ${req.user.iClass}, strGroupID : ${req.user.strGroupID}`);
-    console.log(req.body.search);
+    //console.log(req.body.search);
     var data = [];
 
     let listAgents = [];
@@ -102,6 +102,60 @@ router.post('/request_agentlist', async(req, res) => {
     object.recordsTotal = totalRecords;
     object.recordsFiltered = filteredRecords;
     object.data = data;
+
+    res.send(JSON.stringify(object));
+});
+
+router.post('/request_agentlistchild', async(req, res) => {
+
+    console.log('/request_agentlistchild');
+    console.log(req.body);
+
+    //console.log(`strID : ${req.user.strID}, iClass : ${req.user.iClass}, strGroupID : ${req.user.strGroupID}`);
+    var user = await db.Users.findOne({where:{id:req.body.id}});
+    let iTargetClass = 0;
+    let message = '';
+    let result = '';
+
+    if (user.iClass == 4) {
+        // Send a message if user.iClass is 4.
+        //res.send({result:'NotChild', reason:'더 이상의 하부는 없습니다.'});
+
+        iTargetClass = parseInt(user.iClass);
+        message = '더 이상의 하부는 없습니다.';
+        result = 'NotChild';
+    }
+    else
+    {
+        iTargetClass = parseInt(user.iClass) + 1;
+        result = 'OK';
+    }
+
+    var data = [];
+    let listAgents = [];
+    
+    await RecursiveGetChildren(user.strGroupID, iTargetClass, req.body.dateStart, req.body.dateEnd, req.body.search, listAgents);
+
+    // 이 부분에서 start와 length를 사용해야 합니다.
+    let start = req.body.start; // Ajax 요청에서 시작 인덱스를 가져옵니다.
+    let length = req.body.length; // Ajax 요청에서 가져올 데이터의 수를 가져옵니다.
+
+    // 잘라낸 배열을 사용해 data를 채웁니다.
+    for (let i = start; i < start + length && i < listAgents.length; i++) {
+        data.push(listAgents[i]);
+    }
+
+    let totalRecords = await db.Users.count();  // 전체 레코드 수를 얻는 쿼리
+
+    let filteredRecords = listAgents.length;
+
+    var object = {};
+    object.draw = req.body.draw;
+    object.recordsTotal = totalRecords;
+    object.recordsFiltered = filteredRecords;
+    object.data = data;
+    object.message = message;
+    object.result = result;
 
     res.send(JSON.stringify(object));
 });

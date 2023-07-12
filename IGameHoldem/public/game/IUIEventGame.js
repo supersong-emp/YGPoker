@@ -343,6 +343,7 @@ let OnClickRaise = (game) => {
     let iAmount =  game.listLabels[2].strCaption;
     console.log(`raise click : ${iAmount}`);
     game.bRaiseButton = false;
+    game.bMobileRaiseButton = false;
     if ( iAmount == 0 )
         return;
     
@@ -535,6 +536,7 @@ let OnClickMobileCall = (game) => {
 
     game.bEnableBetting = false;
     game.bMobileRaiseButton = false;
+    game.bRaiseButton = false;
 
     soundClick.play();
 
@@ -549,6 +551,7 @@ let OnClickMobileFold = (game) => {
 
     game.bEnableBetting = false;
     game.bMobileRaiseButton = false;
+    game.bRaiseButton = false;
 
     soundClick.play();
 
@@ -563,6 +566,7 @@ let OnClickMobileCheck = (game) => {
 
     game.bEnableBetting = false;
     game.bMobileRaiseButton = false;
+    game.bRaiseButton = false;
 
     soundClick.play();
 

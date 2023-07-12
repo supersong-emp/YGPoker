@@ -169,9 +169,9 @@ configScreen.listDesktopLocationsH.push({x:1630, y:860}); // sliderbar
 configScreen.listMobileLocationH.push({x:1410, y:650});
 configScreen.listMobileLocationH.push({x:1410, y:750});// plus, minus button
 configScreen.listMobileLocationH.push({x:1630, y:860}); // sliderbar
-configScreen.listDesktopLocationsH.push({x:1700, y:300}); //mobile sliderbar
+configScreen.listDesktopLocationsH.push({x:1600, y:260}); //mobile sliderbar
 configScreen.listDesktopLocationsH.push({x:1400, y:200}); // MobileRaiseBar
-configScreen.listMobileLocationH.push({x:1700, y:300});// mobile sliderbar
+configScreen.listMobileLocationH.push({x:1400, y:200});// mobile sliderbar
 configScreen.listMobileLocationH.push({x:1400, y:200}); // MobileRaiseBar
 
 configScreen.listDesktopLocationsV.push({x:1410, y:650});
@@ -229,7 +229,7 @@ let buttonsGameBetting =
     new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 180, 100, OnClickCall, imageBetButtons[1], 278, 148, "콜"),
     new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 180, 100, OnClickFold, imageBetButtons[1], 278, 148, "폴드"),
     new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 180, 100, OnClickCheck, imageBetButtons[1], 278, 148, "체크"),
-    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnClickRaise, imageBetButtons[1], 278, 148, "레이스"),
+    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnclickMobileRaise, imageBetButtons[1], 278, 148, "레이스"),
 
     // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
     // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
@@ -251,15 +251,15 @@ let mobilebuttonsGameBetting =
 
 let buttonsGameLocation =
 [
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P1Table).x, configScreen.GetLocation(ELocationIndex.P1Table).y, 150, 150, OnClickLocation1, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P2Table).x, configScreen.GetLocation(ELocationIndex.P2Table).y, 150, 150, OnClickLocation2, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P3Table).x, configScreen.GetLocation(ELocationIndex.P3Table).y, 150, 150, OnClickLocation3, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P4Table).x, configScreen.GetLocation(ELocationIndex.P4Table).y, 150, 150, OnClickLocation4, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P5Table).x, configScreen.GetLocation(ELocationIndex.P5Table).y, 150, 150, OnClickLocation5, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P6Table).x, configScreen.GetLocation(ELocationIndex.P6Table).y, 150, 150, OnClickLocation6, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P7Table).x, configScreen.GetLocation(ELocationIndex.P7Table).y, 150, 150, OnClickLocation7, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P8Table).x, configScreen.GetLocation(ELocationIndex.P8Table).y, 150, 150, OnClickLocation8, imageButtons[5], 169.5, 181, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.P9Table).x, configScreen.GetLocation(ELocationIndex.P9Table).y, 150, 150, OnClickLocation9, imageButtons[5], 169.5, 181, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P1Table).x, configScreen.GetLocation(ELocationIndex.P1Table).y, 150, 150, OnClickLocation1, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P2Table).x, configScreen.GetLocation(ELocationIndex.P2Table).y, 150, 150, OnClickLocation2, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P3Table).x, configScreen.GetLocation(ELocationIndex.P3Table).y, 150, 150, OnClickLocation3, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P4Table).x, configScreen.GetLocation(ELocationIndex.P4Table).y+20, 150, 150, OnClickLocation4, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P5Table).x, configScreen.GetLocation(ELocationIndex.P5Table).y, 150, 150, OnClickLocation5, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P6Table).x, configScreen.GetLocation(ELocationIndex.P6Table).y, 150, 150, OnClickLocation6, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P7Table).x, configScreen.GetLocation(ELocationIndex.P7Table).y+20, 150, 150, OnClickLocation7, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P8Table).x, configScreen.GetLocation(ELocationIndex.P8Table).y, 150, 150, OnClickLocation8, imageButtons[5], 180, 184, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.P9Table).x, configScreen.GetLocation(ELocationIndex.P9Table).y, 150, 150, OnClickLocation9, imageButtons[5], 180, 184, ""),
     // pink
     // new IUIButton(configScreen.GetLocation(ELocationIndex.P1Table).x, configScreen.GetLocation(ELocationIndex.P1Table).y, 150, 150, OnClickLocation1, imageButtons[13], 169.5, 181, ""),
     // new IUIButton(configScreen.GetLocation(ELocationIndex.P2Table).x, configScreen.GetLocation(ELocationIndex.P2Table).y, 150, 150, OnClickLocation2, imageButtons[13], 169.5, 181, ""),
@@ -336,7 +336,7 @@ let sliderBar =
 
 let moblieSliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 610, '',1),
     new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
     new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
 ];
@@ -350,14 +350,13 @@ let GameMain = new IGameMain(Game, socket, configScreen, Timer);
 
 Game.SetBg(account.strOptionCode[2]);
 Game.SetDeck(account.strOptionCode[3], imagesGameDeck);
+Game.SetSliderBar(moblieSliderBar);
 if(IsMobile()){
     Game.SetBettingButtons(mobilebuttonsGameBetting, true);
-    Game.SetSliderBar(moblieSliderBar);
 }
 else 
 {
     Game.SetBettingButtons(buttonsGameBetting, false);
-    Game.SetSliderBar(sliderBar);
 }
 Game.SetLocationButtons(buttonsGameLocation);
 
