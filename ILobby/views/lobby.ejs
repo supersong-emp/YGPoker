@@ -738,11 +738,15 @@
 
             if ( objectData.error == 'NotExistRoom' )
             {
-                alert('There is no Room to join');
+                alert('There is no Room to join.');
             }
             else if ( objectData.error == 'AlreadyPlaying' )
             {
-                alert('Already playing in the game');
+                alert('Already playing in the game.');
+            }
+            else if ( objectData.error == 'NotEnoughCoin' )
+            {
+                alert('Game Coin is not enough.');
             }
             //location.reload();
         });

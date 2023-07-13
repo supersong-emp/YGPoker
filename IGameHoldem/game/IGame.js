@@ -1139,45 +1139,66 @@ class IGame
 
             let bQuit = false;
 
-            //if ( player.iCoin <= 0 )
-            if ( iEnableRebuyIn == 1 || player.bMenualRebuyin == true)
+            if ( player.iCoin <= 0 )
+            {
+                if ( iEnableRebuyIn == 1)
+                {
+                    const iRebuyInOdds = iBuyIn;
+                    const cRebuyInAmount = parseInt(this.iDefaultCoin)*iRebuyInOdds;
+
+                    console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
+
+                    // 리바인 사용하거나 수동 리바인 눌렀을떄.
+                    if ( player.iPoint >= (cRebuyInAmount-parseInt(player.iCoin)))
+                    {
+                        // player.iCoin = 100000;
+                        // player.iCash -= 100000;
+                        player.iPoint -= (cRebuyInAmount-parseInt(player.iCoin));
+                        player.iCoin = cRebuyInAmount;
+                    }
+                    else
+                    {
+                        console.log(`Auto Quit : Not Enough Cash On RebuyIn`);
+                        //player.emit('SM_Quit', {code:'NotEnoughCash'});
+                        bQuit = true;
+                    }
+                    // console.log(`Auto Quit`);
+                    // player.emit('SM_Quit', {code:'NotEnoughCoin'})   
+                }
+                else if(iEnableRebuyIn == 0 && player.iCoin <= 0)//  리바인 사용 안함
+                {
+                    bQuit = true;
+                }
+            }
+            else if(player.bMenualRebuyin == true)
             {
                 const iRebuyInOdds = iBuyIn;
-                const cRebuyInAmount = parseInt(this.iDefaultCoin)*iRebuyInOdds;
+                const cRebuyInAmount = parseInt(this.iDefaultCoin) * iRebuyInOdds;
 
                 console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
 
                 // 리바인 사용하거나 수동 리바인 눌렀을떄.
-                if ( player.iPoint >= (cRebuyInAmount-parseInt(player.iCoin)))
-                {
+                if (player.iPoint >= (cRebuyInAmount - parseInt(player.iCoin))) {
                     // player.iCoin = 100000;
                     // player.iCash -= 100000;
-                    player.iPoint -= (cRebuyInAmount-parseInt(player.iCoin));
+                    player.iPoint -= (cRebuyInAmount - parseInt(player.iCoin));
                     player.iCoin = cRebuyInAmount;
                 }
-                else
-                {
+                else {
                     console.log(`Auto Quit : Not Enough Cash On RebuyIn`);
                     //player.emit('SM_Quit', {code:'NotEnoughCash'});
                     bQuit = true;
                 }
-                // console.log(`Auto Quit`);
-                // player.emit('SM_Quit', {code:'NotEnoughCoin'})   
             }
-            else if(iEnableRebuyIn == 0 && player.iCoin <= 0)//  리바인 사용 안함
-            {
-                bQuit = true;
-            }
-            player.bMenualRebuyin = false;
-            let objectData = 
-            { 
-                strID:player.strID,
-                iCoin:player.iCoin,
-                iPoint:player.iPoint,
-                bQuit:bQuit,
-            };
-            listObject.push(objectData);
-        }
+        player.bMenualRebuyin = false;
+        let objectData = 
+        { 
+            strID:player.strID,
+            iCoin:player.iCoin,
+            iPoint:player.iPoint,
+            bQuit:bQuit,
+        };
+        listObject.push(objectData);
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
