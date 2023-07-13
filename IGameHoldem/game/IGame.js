@@ -1190,15 +1190,16 @@ class IGame
                     bQuit = true;
                 }
             }
-        player.bMenualRebuyin = false;
-        let objectData = 
-        { 
-            strID:player.strID,
-            iCoin:player.iCoin,
-            iPoint:player.iPoint,
-            bQuit:bQuit,
-        };
-        listObject.push(objectData);
+            player.bMenualRebuyin = false;
+            let objectData = 
+            { 
+                strID:player.strID,
+                iCoin:player.iCoin,
+                iPoint:player.iPoint,
+                bQuit:bQuit,
+            };
+            listObject.push(objectData);
+        }
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {

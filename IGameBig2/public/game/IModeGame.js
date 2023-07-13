@@ -1345,7 +1345,7 @@ export default class IModeGame {
                 if (listObject[i].strID == this.socket.strID) {
                     if (listObject[i].bQuit == true) {
                         //this.socket.emit('CM_LeaveGame');
-                        this.RemoveUser(listObject[i])
+                        this.RemoveUser(listObject[i]);
                         if (window.confirm("리바인 금액이나 리바인 설정을 확인해주세요")) {
                             window.close();
                         }
