@@ -91,14 +91,14 @@ let getRelocationGamelog = async (data,list) => {
       {
         strCoin = winnerData[1];
       }
-      console.log(descObj);
       //let tablecardObject= row.strTablecard.split(',');
       gameDealcoin = iTotalMoney - winnerData[1];
+
       let newData = {
         roomId:row.id,
         createdAt: row.createdAt,
         lUnique: row.lUnique,
-        ibet: '5000',
+        ibet: '1000',
         strID: strID,
         strNickname : strNickname,
         strResult: strResult,

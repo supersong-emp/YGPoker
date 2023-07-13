@@ -590,7 +590,10 @@ class IGame
         {
             const player = this.listUsers.GetSocket(i);
             if ( player.iLocation != -1 && player.bEnable == true && player.strLastBettingAction != 'Fold' )
+            {
+                player.bSpectator = false;
                 list.push(player.strID);
+            }
         }
         return list;
     }
@@ -1139,8 +1142,7 @@ class IGame
 
             let bQuit = false;
 
-            if ( player.iCoin <= 0 )
-            {
+            if(player.iCoin <= 0){
                 if ( iEnableRebuyIn == 1)
                 {
                     const iRebuyInOdds = iBuyIn;
@@ -1164,14 +1166,14 @@ class IGame
                     }
                     // console.log(`Auto Quit`);
                     // player.emit('SM_Quit', {code:'NotEnoughCoin'})   
+                    player.bMenualRebuyin = false;
                 }
-                else if(iEnableRebuyIn == 0 && player.iCoin <= 0)//  리바인 사용 안함
+                else if(iEnableRebuyIn == 0)//  리바인 사용 안함
                 {
                     bQuit = true;
                 }
             }
-            else if(player.bMenualRebuyin == true)
-            {
+            else if (player.bMenualRebuyin == true) {
                 const iRebuyInOdds = iBuyIn;
                 const cRebuyInAmount = parseInt(this.iDefaultCoin) * iRebuyInOdds;
 
@@ -1190,7 +1192,6 @@ class IGame
                     bQuit = true;
                 }
             }
-            player.bMenualRebuyin = false;
             let objectData = 
             { 
                 strID:player.strID,
@@ -1263,6 +1264,7 @@ class IGame
 
     FindPlayer(strID)
     {
+        console.log("FindPlayer!!!!!!!!!!!!");
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             if ( strID == this.listUsers.GetSocket(i).strID )
@@ -1437,11 +1439,11 @@ class IGame
         //  Location of the User on the Table
         let listLocations = [];
 
-        //  Initialize All Players Type to null and spectator false
+        //  Initialize All Players Type to null
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             this.listUsers.GetSocket(i).strPlayerType = '';
-            this.listUsers.GetSocket(i).bSpectator = false;
+            //this.listUsers.GetSocket(i).bSpectator = false;
         }
         
         //  Build Location List
@@ -2668,7 +2670,7 @@ class IGame
             const player = this.listUsers.GetSocket(i);
 
             //if ( player.iLocation != -1 )
-            if ( player.iLocation != -1 && player.bEnable == true )
+            if ( player.iLocation != -1 && player.bEnable == true  && player.bSpectator == false)
             {
                 let clone = {strID:player.strID, iCoin:player.iCoin, iTotalBettingCoin:player.iTotalBettingCoin, strLastBettingAction:player.strLastBettingAction};
                 listClone.push(clone);
@@ -2735,29 +2737,40 @@ class IGame
             console.log(`listWinner length : ${listWinner.length}, PotAmount ${this.listPots[i].iPotAmount}`);
 
             let iWinCoin = Math.floor(this.listPots[i].iPotAmount / listWinner.length);
-            //
-            iWinCoin = iWinCoin - parseInt(iWinCoin * global.fHoldemFee * 0.01);
 
-            //
+            //iWinCoin = iWinCoin - parseInt(iWinCoin * global.fHoldemFee * 0.01);
+
             for ( let j in listWinner )
             {
-                if ( strWinner != '' )
-                {
-                    strWinner += ',';
-                }
+                // if ( strWinner != '' )
+                // {
+                //     strWinner += ',';
+                // }
 
                 let winner = this.FindPlayer(listWinner[j]);
                 if ( winner != null )
                 {
                     console.log(`winner coin update : Win : ${iWinCoin}, winner.iWinCoin : ${winner.iWinCoin}`);
+                    if(winner.iRank == 1)
+                    {
+                        iWinCoin = iWinCoin - parseInt(iWinCoin * global.fHoldemFee * 0.01);
+                        if (strWinner.includes(winner.strID))
+                        {
+                            let previousCoins = Number(strWinner.split(":")[1]);
+                            iWinCoin += previousCoins;
+                            strWinner = `${winner.strID}:${iWinCoin}`;
+                        }
+                        else
+                        {
+                            strWinner += `${winner.strID}:${iWinCoin}`;
+                        }
+                    }
                     winner.iWinCoin += iWinCoin;
                     winner.iCoin += iWinCoin;
-                }
-                strWinner += `${winner.strID}:${iWinCoin}`;
+                }                
             }
         }
-
-        //
+        
         let strDesc = '';
         let strHand = '';
         let strTablecard = '';
