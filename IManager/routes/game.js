@@ -350,4 +350,59 @@ router.post('/gamedetail', async ( req, res ) => {
     res.send({result:'OK', data:data});
 })
 
+router.get('/inspection', async (req, res) => {
+
+    console.log("/game/inspection");
+    console.log(req.body);
+    if ( req.user == undefined )
+        res.redirect('/account/login');
+    else
+        res.render('game/inspection', {type:0, user:req.user});
+});
+
+router.post('/request_inspectiondetail', async (req, res) => {
+
+    console.log(`/game/request_inspectiondetail`);
+    console.log(req.body);
+
+    let data = await db.Settings.findOne({where:{id:req.body.id}});
+
+    res.send({result:'OK', data:data});
+});
+
+router.post('/request_inspectionlist', async (req, res) => {
+
+    let list = await db.Settings.findAll();
+
+    var object = {};
+    object.draw = req.body.draw;
+    object.recordsTotal = list.length;
+    object.recordsFiltered = list.length;
+    object.data = list;
+
+    console.log(object.data);
+    res.send(JSON.stringify(object));
+});
+
+
+router.post('/inspectionregister', async (req, res) => {
+
+    console.log(`/game/inspectionregister`);
+    console.log(req.body);
+
+    let data = await db.Settings.findOne({where:{id:req.body.id}});
+
+    if ( data == null )
+    {
+        res.send({result:'Error', reason:"No Data. Check it please."});
+        return;
+    }
+    else
+    {
+        await data.update({strContents:req.body.strContents, iOnOff:req.body.iOnOff});
+    }
+
+    res.send({result:'OK'});
+});
+
 module.exports = router;

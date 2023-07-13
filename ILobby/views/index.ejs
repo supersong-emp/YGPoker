@@ -1667,7 +1667,7 @@
             </div> -->
         </div>
     </section>
-    <div id="popup_alert" class="room-make-wrap" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
+    <div id="popup_alert" class="room-make-wrap" style="position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center;">
         <div class="r-make-form">
             <div class="title">알림</div>
             <div class="form">
@@ -1695,17 +1695,10 @@
     {
         var user = JSON.parse('<%-JSON.stringify(user)%>');
     }
+    let iInspection = 0;
+    let strContents = '';
     const popupall = document.querySelector('.popup_all');
-    // const popupCloseBtn = document.querySelector('.popup_close');
-
-    // // 팝업 닫기 버튼 클릭 시 이벤트 리스너
-    // popupCloseBtn.addEventListener('click', function(event) {
-    //     // 부모 요소인 popupAll에서 가장 가까운 팝업 요소를 찾음
-    //     const popup = event.target.closest('.fixed');
-    //     popup.style.display = 'none';
-
-    //     event.stopPropagation();
-    // });
+    
     const closeBtns = document.querySelectorAll('.popup_close');
         closeBtns.forEach(btn => {
         btn.addEventListener('click', function(event) {
@@ -1912,31 +1905,31 @@
 
     $(document).on('click', '#sendoutput', (e) => {
 
-    let iAmount = $('#outputAmount').val();
-    console.log(`iAmount : ${iAmount} iCash : ${user.iCash}`);
+        let iAmount = $('#outputAmount').val();
+        console.log(`iAmount : ${iAmount} iCash : ${user.iCash}`);
 
-    if ( parseInt(iAmount) > parseInt(user.iCash) )
-    {
-        alert('출금금액이 보유금액보다 큽니다.');
-        return;
-    }
-
-    $.ajax({
-        type:'post',
-        url: "/account/request_output",
-        data: {
-            iAmount:iAmount,
-        },
-        success:function(ret) {
-            
-            console.log(ret);
-
-            if ( ret.result == 'OK' )
-            {
-                location.reload();
-            }
+        if ( parseInt(iAmount) > parseInt(user.iCash) )
+        {
+            alert('출금금액이 보유금액보다 큽니다.');
+            return;
         }
-    });
+
+        $.ajax({
+            type:'post',
+            url: "/account/request_output",
+            data: {
+                iAmount:iAmount,
+            },
+            success:function(ret) {
+                
+                console.log(ret);
+
+                if ( ret.result == 'OK' )
+                {
+                    location.reload();
+                }
+            }
+        });
     });
     
     $(document).on('click', '#promotion', (e) => {
@@ -2098,11 +2091,38 @@
             this.announcementlist();
             this.enventlist();
         }
+
+        $.ajax({
+        url:"/account/request_inspection",
+            type:"POST",
+            data: {},
+            dataType: "json",
+            success: function (ret) {
+                if (ret.result == "OK") {
+                    iInspection = ret.data.iOnOff;
+                    strContents = ret.data.strContents;
+                }
+                else
+                {
+                    alert(ret.reason);
+                }
+            }, error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
     });
 
     function openLobby(lobbyName) {
         // 로그인 상태를 확인
         console.log(iLogin);
+
+        if(iInspection == 1)
+        {
+            $('#popup_alerttext1').text(strContents);
+            $('.button_cancelalert').hide();
+            $('#popup_alert').show();
+            return;
+        }
 
         if(lobbyName != 'IHoldemLobby')
         {

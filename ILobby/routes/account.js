@@ -448,4 +448,21 @@ router.post('/request_pointchange', async (req, res) => {
     }
 });
 
+router.post('/request_inspection', async (req, res) => {
+
+    console.log(`/request_inspection`);
+    //console.log(req.user);
+
+    const setting = await db.Settings.findOne({where:{id:1}});
+    
+    if ( setting != null )
+    {
+        res.send({result:'OK', data:setting});
+    }
+    else
+    {
+        res.send({result:'ERROR', reason:'No Data'});
+    }
+});
+
 module.exports = router;
