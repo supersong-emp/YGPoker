@@ -295,6 +295,9 @@ class IGame
         this.iDelayTime = 0;
 
         this.iCurrentBettingID = '';
+
+        // For Rolling
+        this.listBet    = [];
     }
 
     
@@ -366,10 +369,10 @@ class IGame
                             {
                                 let odds = await this.GetOdds(element.strID);
 
-                                const cRollingPAdmin = parseInt(odds.fPAdmin * element.iAmount * 0.01);
-                                const cRollingVAdmin = parseInt(odds.fVAdmin * element.iAmount * 0.01);
-                                const cRollingAgent = parseInt(odds.fAgent * element.iAmount * 0.01);
-                                const cRollingShop = parseInt(odds.fShop * element.iAmount * 0.01);
+                                const cRollingPAdmin = parseInt(odds.fPAdmin * element.iValidAmount * 0.01);
+                                const cRollingVAdmin = parseInt(odds.fVAdmin * element.iValidAmount * 0.01);
+                                const cRollingAgent = parseInt(odds.fAgent * element.iValidAmount * 0.01);
+                                const cRollingShop = parseInt(odds.fShop * element.iValidAmount * 0.01);
 
                                 await db.RecordBets.create({
                                     strID: element.strID,
@@ -377,7 +380,7 @@ class IGame
                                     strGroupID: element.strGroupID,
                                     iAmount: element.iAmount,
                                     strBet: element.strBetting,
-                                    iRollingAdmin: parseInt(odds.fAdmin * element.iAmount * 0.01),
+                                    iRollingAdmin: parseInt(odds.fAdmin * element.iValidAmount * 0.01),
                                     iRollingPAdmin: cRollingShop,
                                     iRollingVAdmin: cRollingVAdmin,
                                     iRollingAgent: cRollingAgent,
@@ -428,6 +431,8 @@ class IGame
         this.bShowdown = false;
         this.listReservationMode = [];
         this.iDelayTime = 0;
+
+        this.listBet = [];
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
@@ -1739,6 +1744,110 @@ class IGame
     //     }
     //     return true;
     // }
+
+    FindUserAtBettingList(listAlign, strID)
+    {
+        for ( let i in listAlign )
+        {
+            if ( listAlign[i].strID == strID )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    ComputeEachBetting()
+    {
+        let listPlayerAlign = [];
+        for ( let i in this.listBet )
+        {
+            const index = this.FindUserAtBettingList(listPlayerAlign, this.listBet[i].strID);
+            if ( -1 == index )
+            {
+                listPlayerAlign.push({strID:this.listBet[i].strID, iBet:parseInt(this.listBet[i].iAmount)});
+            }
+            else
+            {
+                listPlayerAlign[index].iBet += parseInt(this.listBet[i].iAmount);
+            }
+        }
+
+        if ( listPlayerAlign.length > 0 )
+        {
+            let iLowest = listPlayerAlign[0].iBet;
+            for ( let i = 1; i < listPlayerAlign.length; ++ i )
+            {
+                if ( iLowest > listPlayerAlign[i].iBet )
+                    iLowest = listPlayerAlign[i].iBet;
+            }
+
+            for ( let i in listPlayerAlign )
+            {
+                listPlayerAlign[i].iBet = iLowest;
+            }
+        }
+
+        return listPlayerAlign;
+    }
+
+    CalculateValidAmount(listAlign, strID, iAmount)
+    {
+        const index = this.FindUserAtBettingList(listAlign, strID);
+        if ( index == -1 )
+        {
+            console.log(`Error`);
+            return 0;
+        }
+        else
+        {
+            if ( listAlign[index].iBet <= 0 )
+                return 0;
+            else if ( listAlign[index].iBet >= iAmount )
+            {
+                listAlign[index].iBet -= iAmount;
+                return iAmount;
+            }
+            else if ( listAlign[index].iBet < iAmount )
+            {
+                const cAmount = listAlign[index].iBet;
+                listAlign[index].iBet = 0;
+                return cAmount;
+            }
+        }
+        return 0;
+    }
+
+    UpdateCompletedBetting()
+    {
+        console.log(`IGame::UpdateComputedBetting`);
+        console.log(this.listBet);
+
+        const listData = this.ComputeEachBetting();
+
+        console.log(`Align`);
+        console.log(listData);
+
+        for ( let i in this.listBet )
+        {
+            const iValidAmount = this.CalculateValidAmount(listData, this.listBet[i].strID, this.listBet[i].iAmount);
+
+            console.log(`strID : ${this.listBet[i].strID}, iAmount : ${this.listBet[i].iAmount}, iValidAmount : ${iValidAmount}`);
+
+            this.listDBUpdate.push({
+                iDB:E.EDBType.RecordBets, 
+                iSubDB:0, 
+                strID:this.listBet[i].strID, 
+                iAmount:this.listBet[i].iAmount, 
+                iValidAmount:iValidAmount, 
+                strBetting:this.listBet[i].strBetting, 
+                strGroupID:this.listBet[i].strGroupID, 
+                iClass:this.listBet[i].iClass});
+        }
+
+        this.listBet = [];
+    }
+
     IsBettingComplete()
     {
         let listCheck = [];
@@ -1865,9 +1974,10 @@ class IGame
 
         console.log(`##### Betting : ${socket.strID}, Bet : ${iAmount}, TotalBet : ${socket.iTotalBettingCoin}, TableTotal : ${this.iTotalBettingCoin}`);
 
-        //
-        this.listDBUpdate.push({iDB:E.EDBType.RecordBets, iSubDB:0, strID:socket.strID, iAmount:iAmount, strBetting:strBetting, strGroupID:socket.strGroupID, iClass:socket.iClass});
-        //
+        //  Origin
+        //this.listDBUpdate.push({iDB:E.EDBType.RecordBets, iSubDB:0, strID:socket.strID, iAmount:iAmount, strBetting:strBetting, strGroupID:socket.strGroupID, iClass:socket.iClass});
+        //  Change
+        this.listBet.push({iDB:E.EDBType.RecordBets, iSubDB:0, strID:socket.strID, iAmount:iAmount, strBetting:strBetting, strGroupID:socket.strGroupID, iClass:socket.iClass});
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++i )
         {
@@ -1897,6 +2007,10 @@ class IGame
         }
         else if ( this.IsBettingComplete() )
         {
+            //  For Rolling 
+            this.UpdateCompletedBetting();
+            //  end of For Rolling
+
             //  Checking Showdown
             this.bShowdown = this.IsShowdown();
 
