@@ -188,6 +188,29 @@ router.post( '/request_password_change', async (req, res) => {
         }
 });
 
+router.post( '/request_moneysend', async (req, res) => {
+    console.log('/request_moneysend');
+    console.log(req.body);
+
+    var object = {};
+    object.result = "OK";
+
+    var user = await db.Users.findOne({where:{strID:req.body.strID}});
+    var admin = await db.Users.findOne({where:{strID:req.user.strID}});
+        if ( null != user )
+        {
+            await admin.decrement({iCash:req.body.iCash,iPoint:req.body.iPoint});
+            await user.increment({iCash:req.body.iCash,iPoint:req.body.iPoint});
+            res.send(object);
+        }
+        else
+        {
+            object.result = 'Error';
+            object.error = 'NotExistUser';
+            res.send(object);
+        }
+});
+
 router.post('/request_register', async(req, res) => {
 
     console.log('/request_register');
@@ -198,7 +221,7 @@ router.post('/request_register', async(req, res) => {
     var object = {};
     object.result = "OK";
 
-    let parent = await db.Users.findOne({where:{strID:req.body.strPAdminID, iClass:1}});
+    let parent = await db.Users.findOne({where:{strID:req.body.strShopID, iClass:4}});
 
     console.log(parent);
     if ( parent == null )
