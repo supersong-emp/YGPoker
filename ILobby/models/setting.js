@@ -6,42 +6,20 @@ let moment = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
 
-    const RecordBets = sequelize.define("RecordBets", {
+    const Fees = sequelize.define("Setting", {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
         },
-        strID: {
+        strName: {
             type:DataTypes.STRING,
-            allowNull: false,
+            // allowNull: false,
         },
-        iClass: {
+        iOnOff: {
             type:DataTypes.INTEGER,
-            allowNull: false,
-        },
-        strGroupID: {
-            type:DataTypes.STRING,
-            allowNull: false,
-        },
-        iAmount: {
-            type:DataTypes.INTEGER,
-        },
-        iRollingPAdmin: {
-            type:DataTypes.INTEGER,
-        },
-        iRollingVAdmin: {
-            type:DataTypes.INTEGER,
-        },
-        iRollingAgent: {
-            type:DataTypes.INTEGER,
-        },
-        iRollingShop: {
-            type:DataTypes.INTEGER,
-        },
-        strBet: {
-            type:DataTypes.STRING,
+            // allowNull: false,
         },
         createdAt:{
             type:DataTypes.DATE,
@@ -57,5 +35,5 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    return RecordBets;
+    return Fees;
 };
