@@ -41,4 +41,7 @@ db.Letters = Letters;
 const Rollings = require('./models/Rolling')(sequelize, Sequelize);
 db.Rollings = Rollings;
 
+const Settings = require('./models/setting')(sequelize, Sequelize);
+db.Settings = Settings;
+
 module.exports = db;

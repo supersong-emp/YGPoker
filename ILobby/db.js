@@ -30,4 +30,7 @@ db.Announcements = Announcements;
 const Letters = require('./models/letter')(sequelize, Sequelize);
 db.Letters = Letters;
 
+const Settings = require('./models/setting')(sequelize, Sequelize);
+db.Settings = Settings;
+
 module.exports = db;
