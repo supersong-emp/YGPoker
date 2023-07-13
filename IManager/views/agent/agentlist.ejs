@@ -269,7 +269,7 @@
                             
                         </div>
                         <div style="text-align:center">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="RequestAgentRegister();">수정</button>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="RequestAgentRegister();">생성</button>
                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
                         </div>
                 </main>
@@ -392,7 +392,17 @@
                                                 <!-- <small class="form-text text-muted" id = "Bsettledeal"></small> -->
                                             </td>
                                           </tr>
-    
+
+                                          <tr style="text-align:center;">
+                                            <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">보유머니</th>
+                                            <td style="border:1px solid #ccc;">
+                                                <input type="text" id="iCash" name="iCash" placeholder="">
+                                            </td>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">보유마일리지</th>
+                                            <td style="border:1px solid #ccc; vertical-align: middle;">
+                                                <input type="text" id="iPoint" name="iPoint" placeholder="">
+                                            </td>
+                                          </tr>
                                           <!-- <tr style="text-align:center;">
                                             <th style="vertical-align: middle; border:1px solid #ccc;">뷰어 기능</th>
                                             <td style="border:1px solid #ccc; vertical-align: middle;">
@@ -1299,8 +1309,8 @@
         const fSitgoR = $('#fSitgoR').val();
         const fOmahaR = $('#fOmahaR').val();
         const fBaccaratR = $('#fBaccaratR').val();
-        const iPoint = $('#iPoint').val();
         const iCash = $('#iCash').val();
+        const iPoint = $('#iPoint').val();
         const strBank = $('#strBank').val();
         const strName = $('#strName').val();
         const strAccount = $('#strAccount').val();
@@ -1341,8 +1351,8 @@
                 fSitgoR:fSitgoR,
                 fOmahaR:fOmahaR,
                 fBaccaratR:fBaccaratR,
-                iPoint:iPoint,
                 iCash:iCash,
+                iPoint:iPoint,
                 strBank:strBank,
                 strName:strName,
                 strAccount:strAccount,
@@ -1385,6 +1395,14 @@
                     else if ( obj.error == 'ExistBaccaratR' )
                     {
                         alert(`바카라 딜비를 최대 ${obj.fBaccaratRMax} ~ 최소 ${obj.fBaccaratRMin} 사이에서 입력해주세요.`);
+                    }
+                    else if ( obj.error == 'Over Cash' )
+                    {
+                        alert(`해당 에이전트에 캐쉬가 부족합니다.`);
+                    }
+                    else if ( obj.error == 'Over Point' )
+                    {
+                        alert(`해당 에이전트에 마일리지가 부족합니다.`);
                     }
                 }
             }, 

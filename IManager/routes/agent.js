@@ -14,6 +14,8 @@ const db = require('../db');
 const ITime = require('../utils/time');
 const {Op}= require('sequelize');
 
+var requestIp = require('request-ip');
+
 router.get('/agentlist', async(req, res) => {
 
     if ( req.user == undefined )
@@ -190,7 +192,7 @@ router.post('/request_agentdetail', async (req, res)=> {
             iPoint:user.iPoint,
             iCash:user.iCash,
             strBank:user.strBank,
-            strNaem:user.strName,
+            strName:user.strName,
             strAccount:user.strAccount,
         };
 
@@ -355,7 +357,7 @@ router.post('/request_register', async(req, res) => {
     console.log('/request_register');
     console.log(req.body);
 
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const ip = requestIp.getClientIp(req);
 
     var object = {};
     object.result = "OK";
@@ -388,7 +390,7 @@ router.post('/request_register', async(req, res) => {
     }
     else
     {
-        parent = await db.Users.findOne({where:{strID:'admin'}});
+        parent = await db.Users.findOne({where:{strID:req.body.strParentID}});
     }
 
 
@@ -515,6 +517,22 @@ router.post('/request_register', async(req, res) => {
         }
         else
         {
+            let admin = await db.Users.findOne({where:{strID:req.user.strID}});
+            if ( admin.iCash < req.body.iCash )
+            {
+                object.result = 'Error';
+                object.error = 'Over Cash';
+                res.send(object);
+                return;
+            }
+            else if( admin.iPoint < req.body.iPoint )
+            {
+                object.result = 'Error';
+                object.error = 'Over Point';
+                res.send(object);
+                return;
+            }
+            await parent.decrement({iPoint:req.body.iPoint,iCash:req.body.iCash});
             await user.update({
                 strPassword:req.body.strPassword,
                 fSettle:req.body.fSettle,

@@ -14,6 +14,8 @@ const db = require('../db');
 const ITime = require('../utils/time');
 const {Op}= require('sequelize');
 
+var requestIp = require('request-ip');
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //  #user
 router.get('/userlist', async(req, res) => {
@@ -191,7 +193,7 @@ router.post('/request_register', async(req, res) => {
     console.log('/request_register');
     console.log(req.body);
 
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const ip = requestIp.getClientIp(req);
 
     var object = {};
     object.result = "OK";
