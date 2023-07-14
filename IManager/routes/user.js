@@ -201,6 +201,34 @@ router.post( '/request_moneysend', async (req, res) => {
         {
             await admin.decrement({iCash:req.body.iCash,iPoint:req.body.iPoint});
             await user.increment({iCash:req.body.iCash,iPoint:req.body.iPoint});
+            if(req.body.iCash > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iCash,
+                    strGivename:req.user.strNickname,
+                    eType:'GIVE',
+                    eState:'COMPLETE',
+                });
+            }
+            if(req.body.iPoint > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iPoint,
+                    strGivename:req.user.strNickname,
+                    eType:'PGIVE',
+                    eState:'COMPLETE',
+                });
+            }
             res.send(object);
         }
         else

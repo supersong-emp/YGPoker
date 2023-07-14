@@ -1312,13 +1312,15 @@ router.post('/request_recordgt', async (req, res) => {
     console.log('/request_recordgt');
     console.log(req.body);
 
+    let eType = req.body['eType[]'];
+
     var gives = await db.Inouts.findAll({
         where:{
             createdAt:{
                 [Op.between]:[ req.body.startDate, require('moment')(req.body.endDate).add(1, 'days').format('YYYY-MM-DD')],
             },
             strGroupID:{[Op.like]:req.user.strGroupID+'%'},
-            eType:req.body.eType
+            eType: { [Op.in]: eType }
         }
     });
 

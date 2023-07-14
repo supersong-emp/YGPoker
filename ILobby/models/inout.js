@@ -35,8 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         iAmount: {
             type:DataTypes.INTEGER,
         },
+        strGivename: {
+            type:DataTypes.STRING,
+        },
         eType: {
-            type:DataTypes.ENUM('INPUT', 'OUTPUT', 'BONUS', 'ROLLING', 'SETTLE'),
+            type:DataTypes.ENUM('INPUT', 'OUTPUT', 'BONUS', 'ROLLING', 'SETTLE', 'GIVE', 'TAKE', 'PGIVE', 'PTAKE'),
         },
         eState: {
             type:DataTypes.ENUM('REQUEST', 'STANDBY', 'COMPLETE', 'CANCEL'),

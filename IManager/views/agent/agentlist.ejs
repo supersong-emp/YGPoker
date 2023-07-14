@@ -418,6 +418,7 @@
                                 
                             </div>
                             <div style="text-align:center">
+                                <button type="button" class="btn btn-warning btn-sm" onclick="UserChangeMoney();">머니 보내기</button>
                                 <button type="button" class="btn btn-warning btn-sm" onclick="RequestRegister();">수정</button>
                                 <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
                             </div>
@@ -428,12 +429,36 @@
         </div>
      </div>
      <!-- Modal End-->
+     <!-- modal start -->
+     <div class="modal fade" id="MoneySend" tabindex="-1" role="dialog" aria-labelledby="MoneySendModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="MoneySendModalLabel">보유머니 전달</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="CashSend">보유 머니</label>
+                  <input type="number" class="form-control" id="CashSend" placeholder="전달할 머니를 적어주세요.">
+                </div>
+                <div class="form-group">
+                  <label for="PointSend">보유 마일리지</label>
+                  <input type="number" class="form-control" id="PointSend" placeholder="전달할 마일리지를 적어주세요.">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="RequestMoneySend()">변경 저장</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- modal end -->
 </div>
 <!-- end row -->
 
 <script type="text/javascript" src="js/time.js"></script>
-<script type="text/javascript">
-
+<script type="text/javascript">    
     // URL의 쿼리 매개변수를 읽는 함수
     function getParameterByName(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -1261,6 +1286,11 @@
         });
     }
 
+    let UserChangeMoney = () => {
+        console.log("UserChangeMoney");
+        $("#MoneySend").modal('show');
+    }
+
     let RequestAgentCheckNickname = () => {
 
     const strNickname = $('#BstrNickname').val();
@@ -1309,8 +1339,6 @@
         const fSitgoR = $('#fSitgoR').val();
         const fOmahaR = $('#fOmahaR').val();
         const fBaccaratR = $('#fBaccaratR').val();
-        const iCash = $('#iCash').val();
-        const iPoint = $('#iPoint').val();
         const strBank = $('#strBank').val();
         const strName = $('#strName').val();
         const strAccount = $('#strAccount').val();
@@ -1351,8 +1379,6 @@
                 fSitgoR:fSitgoR,
                 fOmahaR:fOmahaR,
                 fBaccaratR:fBaccaratR,
-                iCash:iCash,
-                iPoint:iPoint,
                 strBank:strBank,
                 strName:strName,
                 strAccount:strAccount,
@@ -1395,6 +1421,52 @@
                     else if ( obj.error == 'ExistBaccaratR' )
                     {
                         alert(`바카라 딜비를 최대 ${obj.fBaccaratRMax} ~ 최소 ${obj.fBaccaratRMin} 사이에서 입력해주세요.`);
+                    }
+                }
+            }, 
+            error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
+    }
+
+    let RequestMoneySend = () => {
+        const iCash = $('#CashSend').val();
+        const iPoint = $('#PointSend').val();
+        const strID = $('#strID').val();
+
+        if(iCash > user.iCash)
+        {
+            alert('보유 머니가 부족 합니다.');
+            return;
+        }
+        else if(iPoint > user.iPoint)
+        {
+            alert('보유 마일리지가 부족 합니다.');
+            return;
+        }
+        $.ajax({
+            url:"/agent/request_moneysend",
+            type:"POST",
+            data: {
+                strID:strID,
+                iCash:iCash,
+                iPoint:iPoint,
+            },
+            dataType: "json",
+            success: function (obj) {
+                console.log(obj);
+
+                if ( obj.result == 'OK' )
+                {
+                    alert('완료 되었습니다.');
+                    location.reload();
+                }
+                else
+                {
+                    if ( obj.error == 'NotExistParent' )
+                    {
+                        alert('상위 에이전트가 존재 하지 않습니다.');
                     }
                     else if ( obj.error == 'Over Cash' )
                     {
@@ -1494,4 +1566,12 @@
             }
         });
     }
+    // 페이지가 새로 고침된 후에, 로컬 스토리지에서 URL을 가져와 페이지를 다시 로드
+    window.onload = function() {
+        let previousUrl = localStorage.getItem('previousUrl');
+        if (previousUrl) {
+            window.location.href = previousUrl;
+            localStorage.removeItem('previousUrl'); // 필요에 따라 사용했던 정보를 지웁니다.
+        }
+    };
 </script>

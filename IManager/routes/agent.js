@@ -541,15 +541,94 @@ router.post('/request_register', async(req, res) => {
                 fSitgoR:req.body.fSitgoR,
                 fOmahaR:req.body.fOmahaR,
                 fBaccaratR:req.body.fBaccaratR,
-                iPoint:req.body.iPoint,
-                iCash:req.body.iCash,
+                //iPoint:req.body.iPoint,
+                //iCash:req.body.iCash,
                 strBank:req.body.strBank,
                 strName:req.body.strName,
                 strAccount:req.body.strAccount,
             });
+            if(req.body.iCash > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iCash,
+                    strGivename:req.user.strNickname,
+                    eType:'GIVE',
+                    eState:'COMPLETE',
+                });
+            }
+            if(req.body.iPoint > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iPoint,
+                    strGivename:req.user.strNickname,
+                    eType:'PGIVE',
+                    eState:'COMPLETE',
+                });
+            }
             res.send(object);
         }
     }
+});
+
+router.post( '/request_moneysend', async (req, res) => {
+    console.log('/request_moneysend');
+    console.log(req.body);
+
+    var object = {};
+    object.result = "OK";
+
+    var user = await db.Users.findOne({where:{strID:req.body.strID}});
+    var admin = await db.Users.findOne({where:{strID:req.user.strID}});
+        if ( null != user )
+        {
+            await admin.decrement({iCash:req.body.iCash,iPoint:req.body.iPoint});
+            await user.increment({iCash:req.body.iCash,iPoint:req.body.iPoint});
+            if(req.body.iCash > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iCash,
+                    strGivename:req.user.strNickname,
+                    eType:'GIVE',
+                    eState:'COMPLETE',
+                });
+            }
+            if(req.body.iPoint > 0)
+            {
+                await db.Inouts.create({
+                    strID:user.strID,
+                    strNickname:user.strNickname,
+                    iClass:user.iClass,
+                    strGroupID:user.strGroupID,
+                    strDepositor:user.strName,
+                    iAmount:req.body.iPoint,
+                    strGivename:req.user.strNickname,
+                    eType:'PGIVE',
+                    eState:'COMPLETE',
+                });
+            }
+            res.send(object);
+        }
+        else
+        {
+            object.result = 'Error';
+            object.error = 'NotExistUser';
+            res.send(object);
+        }
 });
 
 router.post('/request_accountchange', async(req, res) => {

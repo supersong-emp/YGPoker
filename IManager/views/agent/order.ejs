@@ -207,7 +207,7 @@
                     return $.extend({}, d, {
                         startDate: $('#startDate').val(),
                         endDate: $('#endDate').val(),
-                        eType:'GIVE'
+                        eType:['GIVE','PGIVE']
                         // 데이타 넘겨주기
                     });
                 }
@@ -240,9 +240,13 @@
                     render: function (d, t, s, m) {
                         var text = "";
                         if (d == 'GIVE')
-                            text = "지급";
+                            text = "머니지급";
                         else if(d == 'TAKE')
-                            text = "차감";
+                            text = "머니차감";
+                        else if(d == 'PGIVE')
+                            text = "마일리지지급";
+                        else if(d == 'PTAKE')
+                            text = "마일리지차감";
                         else
                             text = "지급";
                         return text;
@@ -296,7 +300,7 @@
                     return $.extend({}, d, {
                         startDate: $('#startDate2').val(),
                         endDate: $('#endDate2').val(),
-                        eType:'TAKE'
+                        eType:['TAKE','PTAKE']
                         // 데이타 넘겨주기
                     });
                 }
@@ -329,9 +333,13 @@
                     render: function (d, t, s, m) {
                         var text = "";
                         if (d == 'GIVE')
-                            text = "지급";
+                            text = "머니지급";
                         else if(d == 'TAKE')
-                            text = "차감";
+                            text = "머니차감";
+                        else if(d == 'PGIVE')
+                            text = "마일리지지급";
+                        else if(d == 'PTAKE')
+                            text = "마일리지차감";
                         else
                             text = "지급";
                         return text;
