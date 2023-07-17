@@ -331,10 +331,10 @@
                                             <td style="border:1px solid #ccc;">
                                                 <input type="password" id="strPassword" name="strPassword" placeholder="password">
                                             </td>
-                                            <th style="border:1px solid #ccc; vertical-align: middle;">비밀번호 변경</th>
+                                            <!-- <th style="border:1px solid #ccc; vertical-align: middle;">비밀번호 변경</th>
                                             <td style="border:1px solid #ccc; vertical-align: middle;">
                                                 <input type="password" id="strPasswordCheck" name="strPasswordCheck" placeholder="password Check">
-                                            </td>
+                                            </td> -->
                                           </tr>
                                         
                                           <tr style="text-align:center;">
@@ -398,7 +398,7 @@
                                             <td style="border:1px solid #ccc;">
                                                 <input type="number" id="iCash" name="iCash" placeholder="" readonly>
                                             </td>
-                                            <th style="vertical-align: middle; border:1px solid #ccc;">보유마일리지</th>
+                                            <th style="vertical-align: middle; border:1px solid #ccc;">보유포인트</th>
                                             <td style="border:1px solid #ccc; vertical-align: middle;">
                                                 <input type="number" id="iPoint" name="iPoint" placeholder="" readonly>
                                             </td>
@@ -419,7 +419,7 @@
                             </div>
                             <div style="text-align:center">
                                 <button type="button" class="btn btn-warning btn-sm" onclick="UserChangeMoney();">머니 보내기</button>
-                                <button type="button" class="btn btn-warning btn-sm" onclick="RequestRegister();">수정</button>
+                                <button type="button" class="btn btn-warning btn-sm" onclick="RequestModify();">수정</button>
                                 <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소</button>
                             </div>
                     </main>
@@ -445,8 +445,8 @@
                   <input type="number" class="form-control" id="CashSend" placeholder="전달할 머니를 적어주세요.">
                 </div>
                 <div class="form-group">
-                  <label for="PointSend">보유 마일리지</label>
-                  <input type="number" class="form-control" id="PointSend" placeholder="전달할 마일리지를 적어주세요.">
+                  <label for="PointSend">보유 포인트</label>
+                  <input type="number" class="form-control" id="PointSend" placeholder="전달할 포인트를 적어주세요.">
                 </div>
                 <button type="submit" class="btn btn-primary" onclick="RequestMoneySend()">변경 저장</button>
             </div>
@@ -649,11 +649,11 @@
                         render: function (d, t, s, m) {
                             var text = "";
                             if (d == 0)
-                                text = "본사";
+                                text = "대본사";
                             else if (d == 1)
-                                text = "지사";
+                                text = "본사";
                             else if (d == 2)
-                                text = "부지사";
+                                text = "지사";
                             else if (d == 3)
                                 text = "총판";
                             else if (d == 4)
@@ -937,11 +937,11 @@
                     render: function (d, t, s, m) {
                         var text = "";
                         if (d == 0)
-                            text = "본사";
+                            text = "대본사";
                         else if (d == 1)
-                            text = "지사";
+                            text = "본사";
                         else if (d == 2)
-                            text = "부지사";
+                            text = "지사";
                         else if (d == 3)
                             text = "총판";
                         else if (d == 4)
@@ -1430,6 +1430,101 @@
         });
     }
 
+    let RequestModify = () => {
+        
+        const strID = $('#strID').val();
+        const strNickname = $('#strNickname').val();
+        const iClass = $('#iClass').val();
+        const strParentID = $('#strParentID').val();
+        const strPassword = $('#strPassword').val();
+        //const strPasswordCheck = $('#strPasswordCheck').val();
+        const fSettle = $('#fSettle').val();
+        const fHoldemR = $('#fHoldemR').val();
+        const fBig2R = $('#fBig2R').val();
+        const fSitgoR = $('#fSitgoR').val();
+        const fOmahaR = $('#fOmahaR').val();
+        const fBaccaratR = $('#fBaccaratR').val();
+        const strBank = $('#strBank').val();
+        const strName = $('#strName').val();
+        const strAccount = $('#strAccount').val();
+
+        if ( strID == '' )
+        {
+            alert('아이디를 입력해주세요.');
+            return;
+        }
+        if ( strNickname == '' )
+        {
+            alert('닉네임을 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url:"/agent/request_register",
+            type:"POST",
+            data: {
+                strID:strID,
+                iClass:iClass,
+                strNickname :strNickname,
+                strParentID:strParentID,
+                strPassword:strPassword,
+                fSettle:fSettle,
+                fHoldemR:fHoldemR,
+                fBig2R:fBig2R,
+                fSitgoR:fSitgoR,
+                fOmahaR:fOmahaR,
+                fBaccaratR:fBaccaratR,
+                strBank:strBank,
+                strName:strName,
+                strAccount:strAccount,
+            },
+            dataType: "json",
+            success: function (obj) {
+                console.log(obj);
+
+                if ( obj.result == 'OK' )
+                {
+                    alert('완료 되었습니다.');
+                    location.reload();
+                }
+                else
+                {
+                    if ( obj.error == 'NotExistParent' )
+                    {
+                        alert('상위 에이전트가 존재 하지 않습니다.');
+                    }
+                    else if ( obj.error == 'ExistNickname' )
+                    {
+                        alert('이미 사용중인 닉네임 입니다.');
+                    }
+                    else if ( obj.error == 'ExistHoldemR' )
+                    {
+                        alert(`홀덤 딜비를 최대 ${obj.fHoldemRMax} ~ 최소 ${obj.fHoldemRMin} 사이에서 입력해주세요.`);
+                    }
+                    else if ( obj.error == 'ExistBig2R' )
+                    {
+                        alert(`빅투 딜비를 최대 ${obj.fBig2RMax} ~ 최소 ${obj.fBig2RMin} 사이에서 입력해주세요.`);
+                    }
+                    else if ( obj.error == 'ExistSitgoR' )
+                    {
+                        alert(`싯고 딜비를 최대 ${obj.fSitgoRMax} ~ 최소 ${obj.fSitgoRMin} 사이에서 입력해주세요.`);
+                    }
+                    else if ( obj.error == 'ExistOmahaR' )
+                    {
+                        alert(`오마하 딜비를 최대 ${obj.fOmahaRMax} ~ 최소 ${obj.fOmahaRMin} 사이에서 입력해주세요.`);
+                    }
+                    else if ( obj.error == 'ExistBaccaratR' )
+                    {
+                        alert(`바카라 딜비를 최대 ${obj.fBaccaratRMax} ~ 최소 ${obj.fBaccaratRMin} 사이에서 입력해주세요.`);
+                    }
+                }
+            }, 
+            error: function () {
+                alert("조회 중 오류 발생");
+            }
+        });
+    }
+
     let RequestMoneySend = () => {
         const iCash = $('#CashSend').val();
         const iPoint = $('#PointSend').val();
@@ -1442,7 +1537,7 @@
         }
         else if(iPoint > user.iPoint)
         {
-            alert('보유 마일리지가 부족 합니다.');
+            alert('보유 포인트가 부족 합니다.');
             return;
         }
         $.ajax({
@@ -1474,7 +1569,7 @@
                     }
                     else if ( obj.error == 'Over Point' )
                     {
-                        alert(`해당 에이전트에 마일리지가 부족합니다.`);
+                        alert(`해당 에이전트에 포인트가 부족합니다.`);
                     }
                 }
             }, 

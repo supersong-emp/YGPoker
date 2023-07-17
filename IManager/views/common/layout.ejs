@@ -19,7 +19,7 @@
                     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                         <div class="input-group mem_info">
                             <p>보유머니 : <span><%=user.iCash.toLocaleString()%></span> </p>
-                            <p>마일리지 : <span><%=user.iRolling.toLocaleString()%></span> </p>
+                            <p>포인트 : <span><%=user.iRolling.toLocaleString()%></span> </p>
                             <!-- <p>합계 : <span>0</span> </p> -->
                         </div>
                     </form>
@@ -120,7 +120,7 @@
                                     <a class="nav-link" href="/inout/monthlist">
                                         관리자 정산
                                     </a>
-                                    <% if ( user.iClass <= 1 ) { %>
+                                    <% if ( user.iClass == 1 ) { %>
                                     <div class="sb-sidenav-menu-heading">온라인주문배송 관리툴</div>
                                     <a class="nav-link" href="/inout/inputcharge">
                                         충전 신청

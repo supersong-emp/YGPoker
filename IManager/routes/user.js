@@ -47,17 +47,24 @@ router.post('/request_userlist', async(req, res) => {
     let tagSearch = ``;
     if ( req.body.search != '' )
     {
-        tagSearch = `AND t3.strID = '${req.body.search}'`;
+        tagSearch = `AND t6.strID = '${req.body.search}'`;
     }
     const [list] = await db.sequelize.query(`
         SELECT 
-        t1.strID AS lev1, 
-        t2.strID as lev2, 
-        t3.*
+        t1.strNickname AS lev1, 
+        t2.strNickname as lev2, 
+        t3.strNickname as lev3, 
+        t4.strNickname as lev4, 
+        t5.strNickname as lev5, 
+        t6.strNickname as lev6, 
+        t6.*
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
         LEFT JOIN Users AS t3 ON t3.iParentID = t2.id
-        WHERE t3.iClass='5' AND t3.strGroupID LIKE CONCAT('${req.user.strGroupID}', '%') AND t3.eStatus IN ${tagState} ${tagSearch};`
+        LEFT JOIN Users AS t4 ON t4.iParentID = t3.id
+        LEFT JOIN Users AS t5 ON t5.iParentID = t4.id
+        LEFT JOIN Users AS t6 ON t6.iParentID = t5.id
+        WHERE t6.iClass='5' AND t6.strGroupID LIKE CONCAT('${req.user.strGroupID}', '%') AND t6.eStatus IN ${tagState} ${tagSearch};`
     );
             
     full_count = list.length;

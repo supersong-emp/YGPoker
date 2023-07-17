@@ -74,11 +74,11 @@
                                 <th>색인</th>
                                 <th>아이디</th>
                                 <th>닉네임</th>
-                                <!-- <th>매장 ID</th>
+                                <th>매장 ID</th>
                                 <th>총판 ID</th>
-                                <th>부지사 ID</th> -->
                                 <th>지사 ID</th>
                                 <th>본사 ID</th>
+                                <th>대본사 ID</th>
                                 <th>이름</th>
                                 <th>구분</th>
                                 <th>이메일</th>
@@ -447,8 +447,8 @@
                   <input type="number" class="form-control" id="CashSend" placeholder="전달할 머니를 적어주세요.">
                 </div>
                 <div class="form-group">
-                  <label for="PointSend">보유 마일리지</label>
-                  <input type="number" class="form-control" id="PointSend" placeholder="전달할 마일리지를 적어주세요.">
+                  <label for="PointSend">보유 포인트</label>
+                  <input type="number" class="form-control" id="PointSend" placeholder="전달할 포인트를 적어주세요.">
                 </div>
                 <button type="submit" class="btn btn-primary" onclick="RequestMoneySend()">변경 저장</button>
               </form>
@@ -850,9 +850,9 @@
                         return label;
                     }
                 },
-                // { data:"lev5" },
-                // { data:"lev4" },
-                // { data:"lev3" },
+                { data:"lev5" },
+                { data:"lev4" },
+                { data:"lev3" },
                 { data:"lev2" },
                 { data:"lev1" },
                 { data: "strName" },
@@ -861,11 +861,17 @@
                     render: function (d, t, s, m) {
                         var text = "";
                         if (d == 0)
-                            text = "본사";
+                            text = "대본사";
                         else if (d == 1)
+                            text = "본사";
+                        else if (d == 2)
+                            text = "지사";
+                        else if (d == 3)
                             text = "총판";
+                        else if (d == 4)
+                            text = "매장";
                         else if (d == 5)
-                            text = "회원";
+                            text = "일반회원";
                         return text;
                     }
                 },
@@ -1253,7 +1259,7 @@
         }
         else if(iPoint > user.iPoint)
         {
-            alert('보유 마일리지가 부족 합니다.');
+            alert('보유 포인트가 부족 합니다.');
             return;
         }
         $.ajax({

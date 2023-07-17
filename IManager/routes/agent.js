@@ -47,9 +47,9 @@ let GetChildren = async (strGroupID, iTargetClass, dateStart, dateEnd, strID) =>
         t2.updatedAt as updatedAt,
         IFNULL((SELECT sum(iAmount) FROM Inouts WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND eState = 'COMPLETE' AND eType = 'INPUT' AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}' ),0) as iInput,
         IFNULL((SELECT sum(iAmount) FROM Inouts WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND eState = 'COMPLETE' AND eType = 'OUTPUT' AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as iOutput,
-        IFNULL((SELECT SUM(iCash) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND iClass != 0),0) as iTotalMoney,
-        IFNULL((SELECT SUM(iPoint) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND iClass != 0),0) as iTotalPoint,
-        IFNULL((SELECT SUM(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t1.strGroupID,'%')),0) as iTotalBets
+        IFNULL((SELECT SUM(iCash) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND strGroupID != t2.strGroupID AND iClass != 0),0) as iTotalMoney,
+        IFNULL((SELECT SUM(iPoint) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND strGroupID != t2.strGroupID AND iClass != 0),0) as iTotalPoint,
+        IFNULL((SELECT SUM(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t1.strGroupID,'%')),0) AND strGroupID != t2.strGroupID as iTotalBets
         FROM Users AS t1
         LEFT JOIN Users AS t2 ON t2.iParentID = t1.id
         WHERE t2.iClass = '${iTargetClass}' AND t1.strGroupID LIKE CONCAT('${strGroupID}', '%') ${idCondition};`
