@@ -68,11 +68,11 @@
                         <input type="hidden" name="id" id="uid" value="" />
                         <label>권한</label>
                         <select class="form-control form-control-light" name="iClass" id="iClass">
-                            <option value="1">지사</option>
-                            <option value="2">지사+부지사</option>
-                            <option value="3">지사+부지사+총판</option>
-                            <option value="4">지사+부지사+총판+매장</option>
-                            <option value="5" selected>지사+부지사+총판+매장+유저</option>
+                            <option value="1">본사</option>
+                            <option value="2">본사+지사</option>
+                            <option value="3">본사+지사+총판</option>
+                            <option value="4">본사+지사+총판+매장</option>
+                            <option value="5" selected>본사+지사+총판+매장+유저</option>
                         </select>
                         <div class="form-group">
                             <label for="task-description">제목</label>
@@ -201,15 +201,15 @@
                     render: function (d) {
                         var text = "";
                         if (d == 1)
-                            text = "지사";
+                            text = "본사";
                         else if (d == 2)
-                            text = "지사+부지사";
+                            text = "본사+지사";
                         else if (d == 3)
-                            text = "지사+부지사+총판";
+                            text = "본사+지사+총판";
                         else if (d == 4)
-                            text = "지사+부지사+총판+매장";
+                            text = "본사+지사+총판+매장";
                         else if (d == 5)
-                            text = "지사+부지사+총판+매장+유저";
+                            text = "본사+지사+총판+매장+유저";
                         return text;
                     }
                 },
