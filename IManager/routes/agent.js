@@ -517,22 +517,8 @@ router.post('/request_register', async(req, res) => {
         }
         else
         {
-            let admin = await db.Users.findOne({where:{strID:req.user.strID}});
-            if ( admin.iCash < req.body.iCash )
-            {
-                object.result = 'Error';
-                object.error = 'Over Cash';
-                res.send(object);
-                return;
-            }
-            else if( admin.iPoint < req.body.iPoint )
-            {
-                object.result = 'Error';
-                object.error = 'Over Point';
-                res.send(object);
-                return;
-            }
-            await parent.decrement({iPoint:req.body.iPoint,iCash:req.body.iCash});
+            //let admin = await db.Users.findOne({where:{strID:req.user.strID}});
+
             await user.update({
                 strPassword:req.body.strPassword,
                 fSettle:req.body.fSettle,
@@ -546,35 +532,9 @@ router.post('/request_register', async(req, res) => {
                 strBank:req.body.strBank,
                 strName:req.body.strName,
                 strAccount:req.body.strAccount,
+                strNickname:req.body.strNickname,
             });
-            if(req.body.iCash > 0)
-            {
-                await db.Inouts.create({
-                    strID:user.strID,
-                    strNickname:user.strNickname,
-                    iClass:user.iClass,
-                    strGroupID:user.strGroupID,
-                    strDepositor:user.strName,
-                    iAmount:req.body.iCash,
-                    strGivename:req.user.strNickname,
-                    eType:'GIVE',
-                    eState:'COMPLETE',
-                });
-            }
-            if(req.body.iPoint > 0)
-            {
-                await db.Inouts.create({
-                    strID:user.strID,
-                    strNickname:user.strNickname,
-                    iClass:user.iClass,
-                    strGroupID:user.strGroupID,
-                    strDepositor:user.strName,
-                    iAmount:req.body.iPoint,
-                    strGivename:req.user.strNickname,
-                    eType:'PGIVE',
-                    eState:'COMPLETE',
-                });
-            }
+            
             res.send(object);
         }
     }

@@ -314,14 +314,14 @@
                                             <td style="border:1px solid #ccc;">
                                               <div style="display: flex;">
                                                 <input type="text" id="strID" name="strID" maxlength="20"/>
-                                                <button style="height: fit-content; margin-left: 5px;" onclick="RequestAgentCheckID();">check</button>
+                                                <button style="height: fit-content; margin-left: 5px;" onclick="RequestCheckID();">check</button>
                                               </div>
                                             </td>
                                             <th style="vertical-align: middle; border:1px solid #ccc;">Nickname</th>
                                             <td style="border:1px solid #ccc;">
                                               <div style="display: flex;">
                                                 <input type="text" id="strNickname" name="strNickname" maxlength="20"/>
-                                                <button style="margin-left: 5px;" onclick="RequestAgentCheckNickname();">check</button>
+                                                <button style="margin-left: 5px;" onclick="RequestCheckNickname();">check</button>
                                               </div>
                                             </td>
                                           </tr>
@@ -396,11 +396,11 @@
                                           <tr style="text-align:center;">
                                             <th style="vertical-align: middle; border:1px solid #ccc; text-align:center;">보유머니</th>
                                             <td style="border:1px solid #ccc;">
-                                                <input type="number" id="iCash" name="iCash" placeholder="">
+                                                <input type="number" id="iCash" name="iCash" placeholder="" readonly>
                                             </td>
                                             <th style="vertical-align: middle; border:1px solid #ccc;">보유마일리지</th>
                                             <td style="border:1px solid #ccc; vertical-align: middle;">
-                                                <input type="number" id="iPoint" name="iPoint" placeholder="">
+                                                <input type="number" id="iPoint" name="iPoint" placeholder="" readonly>
                                             </td>
                                           </tr>
                                           <!-- <tr style="text-align:center;">

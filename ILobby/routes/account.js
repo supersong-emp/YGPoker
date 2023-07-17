@@ -157,6 +157,8 @@ router.post('/request_register', async(req, res) => {
                 fBaccaratR:0,
                 iPoint:0,
                 iCash:0,
+                iPointBase:0,
+                iCashBase:0,
                 strName:req.body.strName,
                 eUserType:'NORMAL',
                 strEMail:'',
@@ -172,6 +174,7 @@ router.post('/request_register', async(req, res) => {
                 strOptionCode:'11110000',
                 strIP:ip,
                 strDesc:'',
+                
             });
             
             res.send(object);

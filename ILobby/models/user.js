@@ -5,6 +5,7 @@ module.exports = function (sequelize, Sequelize) {
     const Users = sequelize.define('Users', {
         id: {
             type: Sequelize.INTEGER,
+            autoIncrement: true,
             allowNull: false,
             primaryKey: true
         },
