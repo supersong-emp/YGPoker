@@ -120,21 +120,29 @@
                                     <a class="nav-link" href="/inout/monthlist">
                                         관리자 정산
                                     </a>
-                                    <% if ( user.iClass == 1 ) { %>
+                                    
                                     <div class="sb-sidenav-menu-heading">온라인주문배송 관리툴</div>
-                                    <a class="nav-link" href="/inout/inputcharge">
-                                        충전 신청
-                                    </a>
-                                    <a class="nav-link" href="/inout/outputcharge">
-                                        출금 신청
-                                    </a>
+                                    <% if ( user.iClass == 0 ) { %>
                                     <a class="nav-link" href="/inout/input">
                                         온라인 충전관리
                                     </a>
                                     <a class="nav-link" href="/inout/output">
                                         온라인 환전관리
                                     </a>
-                                    <%}%>
+                                    <% } else if( user.iClass == 1){ %>
+                                        <a class="nav-link" href="/inout/input">
+                                            온라인 충전관리
+                                        </a>
+                                        <a class="nav-link" href="/inout/output">
+                                            온라인 환전관리
+                                        </a>
+                                        <a class="nav-link" href="/inout/inputcharge">
+                                            충전 신청
+                                        </a>
+                                        <a class="nav-link" href="/inout/outputcharge">
+                                            출금 신청
+                                        </a>
+                                    <% } %>
                                     <!-- <div class="sb-sidenav-menu-heading">쿠폰 관리툴</div>
                                     <a class="nav-link" href="#">
                                         쿠폰등록 신청
@@ -145,7 +153,7 @@
                                     <a class="nav-link" href="#">
                                         쿠폰 통계
                                     </a> -->
-                                    <% if ( user.iClass == 0 ) { %>
+                                    <% if ( user.iClass <= 1 ) { %>
                                     <div class="sb-sidenav-menu-heading">랭킹</div>
                                     <a class="nav-link" href="/rank/ranklist">
                                         게임머니 변동 랭킹
