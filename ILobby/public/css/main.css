@@ -127,6 +127,36 @@
 
 
 
+  @media (max-width: 680px){
+    .mb-menu ul{
+        display:flex;
+        justify-content: center;
+    }
+    .mb-menu ul li{
+        padding:20px;
+    }
+    .mb-menu ul li p{
+        display:none;
+    }
+    .mb-menu ul li div{
+        font-size:35px;
+    }
+  }
+
+
+
+  @media (max-width: 600px){
+    .mb-menu ul{
+        display:flex;
+        justify-content: center;
+    }
+    .mb-menu ul li{
+        width:23%;
+        padding:20px;
+    }
+  }
+
+
 
 
 
@@ -242,5 +272,45 @@
     }
     .menu-num{
         margin-left:0;
+    }
+
+    header form{
+        width:90%;
+        
+    }
+    form input{
+        width:49%;
+        margin:0;
+    }
+
+    form button{
+        width:100%;
+        margin:5px 0;
+    }
+    .plugin{
+        width:90%;
+    }
+  }
+
+
+
+
+
+  @media (max-width: 420px){
+    
+
+    .mb-menu ul{
+        display:flex;
+        justify-content:center;
+    }
+    .mb-menu ul li{
+        width:25%;
+        padding:20px 30px;
+    }
+    .mb-menu ul li p{
+        display:none;
+    }
+    .mb-menu ul li div{
+        font-size:35px;
     }
   }
