@@ -928,7 +928,7 @@ table {
 
 
 /* sub-gnb */
-.header-wrap .sub-gnb ul{width:98%; display:flex; justify-content: space-around;}
+.header-wrap .sub-gnb ul{width:98%; margin:0 auto; display:flex; justify-content: space-around;}
 
 /* -------------------container------------------------- */
 .container { height: 600px;  margin-top: 3px;}
