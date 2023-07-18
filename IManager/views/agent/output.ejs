@@ -172,7 +172,7 @@
                 dataType: "json",
                 success: function (obj) {
                     if (obj.result == "OK") {
-                        $('#OutputDBID').val(obj.strID);
+                        $('#OutputDBID').val(obj.id);
                         $('#OutputStatus').val(obj.state);
                         
                         $("#OutputDialog").modal("show");
@@ -287,7 +287,7 @@
             },
             columns: [
                 {
-                    data: "id"
+                    data: "number"
                 },
                 {
                     data: "strID"
@@ -342,7 +342,7 @@
                     }
                 }
             ],
-            //order: [[0, "desc"]],
+            order: [[0, "desc"]],
             keys: true,
             "language": {
                 "paginate": {

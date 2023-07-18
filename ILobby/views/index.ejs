@@ -159,7 +159,7 @@
                     </div>
                     <div class="w-11/12 flex flex-wrap py-3 mt-4 justify-center mx-auto ">
                         <p class="mr-2 leading-10 text-white mt-1 flex-grow: 1 flex-shrink: 0 flex-basis: 33%">입금하실 금액</p>
-                        <input type="number" class="outline-none mr-1 h-8 px-3 my-2  bg-[#4d4d4d] rounded-sm focus:outline-[#00ef89] flex-grow: 1 flex-shrink: 0 flex-basis: 33%" id="inputAmount" name="inputAmount">
+                        <input type="number" class="outline-none mr-1 h-8 px-3 my-2  bg-[#4d4d4d] rounded-sm focus:outline-[#00ef89] flex-grow: 1 flex-shrink: 0 flex-basis: 33%" name="inputAmount">
                         <ul class="flex flex-wrap  flex-grow: 1 flex-shrink: 0 flex-basis: 33% mt-2">
                             <a href="#" onclick="increaseInputAmount(50000)" class="mb-1">
                                 <li class="leading-8  bg-gradient-to-r from-neutral-700 to-stone-500 hover:from-neutral-500 hover:to-stone-400 font-semibold text-white rounded-sm px-2 mr-1 outline-none"style="flex-basis: calc(33.333% - 5px);">5만원</li>
@@ -190,8 +190,7 @@
                     </p>
                 </div>
                 <div class="w-11/12 mx-auto py-5 push-btn">>
-                    <button id="sendinput"
-                        class="w-3/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg button_requestinput">입금신청</button>
+                    <button class="w-3/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg button_requestinput sendinput">입금신청</button>
                 </div>
             </div>
         </div>    
@@ -212,7 +211,7 @@
                     <div class="w-5/6 mx-auto flex flex-wrap">
                         <p class="w-32 leading-8 mr-3 text-right text-white">은행명</p>
                         <input type="text" readonly
-                            class="outline-none w-4/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] rounded-sm one" value="<%=user.strDesc%>">
+                            class="outline-none w-4/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] rounded-sm one" value="<%=user.strBank%>">
                     </div>
                     <div class="w-5/6 mx-auto my-5">
                         <p class="w-32 text-right leading-8 mr-3 text-white float-left">계좌번호</p>
@@ -227,7 +226,7 @@
                     <div class="w-5/6 mx-auto my-5">
                         <p class="w-32 text-right leading-8 mr-3 text-white float-left">출금하실 금액</p>
                         <input type="number"
-                            class="outline-none w-5/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] text-right rounded-sm five" id="outputAmount" name="outputAmount">
+                            class="outline-none w-5/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] text-right rounded-sm five outputAmount" name="outputAmount">
                     </div>
                     <div class="w-11/12 mx-auto pb-5">
                         <ul class="flex flex-wrap justify-center space-x-2 exchange-btn">
@@ -257,7 +256,7 @@
                 </div>
                 <div class="w-11/12 mx-auto py-5">
                     <button
-                        class="w-3/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg exchange-btn btn-box" id = "sendoutput">출금신청</button>
+                        class="w-3/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg exchange-btn btn-box sendoutput">출금신청</button>
                 </div>
             </div>
         </div>
@@ -864,7 +863,7 @@
                         </div>
                         <div class="w-11/12 flex flex-wrap py-3 mt-4 justify-center mx-auto ">
                             <p class="mr-2 leading-10 text-white mt-1 flex-grow: 1 flex-shrink: 0 flex-basis: 33%">입금하실 금액</p>
-                            <input type="number" class="outline-none mr-1 h-8 px-3 my-2  bg-[#4d4d4d] rounded-sm focus:outline-[#00ef89] flex-grow: 1 flex-shrink: 0 flex-basis: 33%" id="inputAmount" name="inputAmount">
+                            <input type="number" class="outline-none mr-1 h-8 px-3 my-2  bg-[#4d4d4d] rounded-sm focus:outline-[#00ef89] flex-grow: 1 flex-shrink: 0 flex-basis: 33%" name="minputAmount">
                             <ul class="flex flex-wrap  flex-grow: 1 flex-shrink: 0 flex-basis: 33% mt-2">
                                 <a href="#" onclick="increaseInputAmount(50000)" class="mb-1">
                                     <li class="leading-8  bg-gradient-to-r from-neutral-700 to-stone-500 hover:from-neutral-500 hover:to-stone-400 font-semibold text-white rounded-sm px-2 mr-1 outline-none"style="flex-basis: calc(33.333% - 5px);">5만원</li>
@@ -895,8 +894,7 @@
                         </p>
                     </div>
                     <div class="w-11/12 mx-auto py-5 push-btn">>
-                        <button id="sendinput"
-                            class="w-2/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg button_requestinput">입금신청</button>
+                        <button class="w-2/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg button_requestinput sendinput">입금신청</button>
                     </div>
                 </div>
             </div>    
@@ -917,7 +915,7 @@
                         <div class="w-5/6 mx-auto flex flex-wrap">
                             <p class="w-32 leading-8 mr-3 text-right text-white">은행명</p>
                             <input type="text" readonly
-                                class="outline-none w-4/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] rounded-sm one" value="<%=user.strDesc%>">
+                                class="outline-none w-4/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] rounded-sm one" value="<%=user.strBank%>">
                         </div>
                         <div class="w-5/6 mx-auto my-5">
                             <p class="w-32 text-right leading-8 mr-3 text-white float-left">계좌번호</p>
@@ -932,7 +930,7 @@
                         <div class="w-5/6 mx-auto my-5">
                             <p class="w-32 text-right leading-8 mr-3 text-white float-left">출금하실 금액</p>
                             <input type="number"
-                                class="outline-none w-5/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] text-right rounded-sm five" id="outputAmount" name="outputAmount">
+                                class="outline-none w-5/12 mr-5 h-8 px-3 bg-[#4d4d4d] text-white rounded-sm focus:outline-[#00ef89] text-right rounded-sm five outputAmount" name="moutputAmount">
                         </div>
                         <div class="w-11/12 mx-auto pb-5">
                             <ul class="flex flex-wrap justify-center space-x-2 exchange-btn">
@@ -962,7 +960,7 @@
                     </div>
                     <div class="w-11/12 mx-auto py-5">
                         <button
-                            class="w-2/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg exchange-btn btn-box" id = "sendoutput">출금신청</button>
+                            class="w-2/6 block text-center mx-auto px-10 py-3 bg-gradient-to-r from-[#00101d] via-[#144a7e] to-[#051c2e] shadow-xl hover:from-[#0e2e49] hover:via-[#1f62a0] hover:to-[#072845] shadow-xl  text-xl text-white font-semibold rounded-lg exchange-btn btn-box sendoutput">출금신청</button>
                     </div>
                 </div>
             </div>
@@ -1698,6 +1696,11 @@
     let iInspection = 0;
     let strContents = '';
     const popupall = document.querySelector('.popup_all');
+
+    function IsMobile()
+    {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
     
     const closeBtns = document.querySelectorAll('.popup_close');
         closeBtns.forEach(btn => {
@@ -1716,24 +1719,58 @@
             document.getElementById(objId).style.display = dis;
         }
     function increaseInputAmount(value) {
-        var inputAmount = document.getElementById("inputAmount");
-        var currentAmount = parseInt(inputAmount.value, 10) || 0; // 현재 입력된 값 (숫자형으로 변환)
+        var inputAmount = 0;
+        if(this.IsMobile() == true)
+        {
+            inputAmount = $('input[name=minputAmount]');
+        }
+        else
+        {
+            inputAmount = $('input[name=inputAmount]');
+        }
+        //var inputAmount = document.getElementById("inputAmount");
+        var currentAmount = parseInt(inputAmount.val(), 10) || 0; // 현재 입력된 값 (숫자형으로 변환)
         var newAmount = currentAmount + value; // 새로운 값 (현재 값 + 클릭한 버튼의 값)
-        inputAmount.value = newAmount; // 새로운 값으로 입력 필드 업데이트
+        inputAmount.val(newAmount); // 새로운 값으로 입력 필드 업데이트
     }
     function resetInputAmount() {
-        var inputAmount = document.getElementById("inputAmount");
-        inputAmount.value = 0; // 입력 필드를 0으로 초기화
+        var inputAmount = 0;
+        if(this.IsMobile() == true)
+        {
+            inputAmount = $('input[name=minputAmount]');
+        }
+        else
+        {
+            inputAmount = $('input[name=inputAmount]');
+        }
+        //var inputAmount = document.getElementById("inputAmount");
+        inputAmount.val(0); // 입력 필드를 0으로 초기화
     }
     function increaseOutputAmount(value) {
-        var outputAmount = document.getElementById("outputAmount");
-        var currentAmount = parseInt(outputAmount.value, 10) || 0; // 현재 입력된 값 (숫자형으로 변환)
+        var outputAmount;
+        if(this.IsMobile() == true)
+        {
+            outputAmount = $('input[name=moutputAmount]');
+        }
+        else
+        {
+            outputAmount = $('input[name=outputAmount]');
+        }
+        var currentAmount = parseInt(outputAmount.val(), 10) || 0; // 현재 입력된 값 (숫자형으로 변환)
         var newAmount = currentAmount + value; // 새로운 값 (현재 값 + 클릭한 버튼의 값)
-        outputAmount.value = newAmount; // 새로운 값으로 입력 필드 업데이트
+        outputAmount.val(newAmount); // 새로운 값으로 입력 필드 업데이트
     }
     function resetOutputAmount() {
-        var outputAmount = document.getElementById("outputAmount");
-        outputAmount.value = 0; // 입력 필드를 0으로 초기화
+        var outputAmount = 0;
+        if(this.IsMobile() == true)
+        {
+            outputAmount = $('input[name=moutputAmount]');
+        }
+        else
+        {
+            outputAmount = $('input[name=outputAmount]');
+        }
+        outputAmount.val(0); // 입력 필드를 0으로 초기화
     }
     function announcementlist()
     {
@@ -1873,9 +1910,18 @@
             }
         });
     });
-    $(document).on('click', '#sendinput', (e) => {
+    $(document).on('click', '.sendinput', (e) => {
 
-    let iAmount = $('#inputAmount').val();
+    //let iAmount = $('#inputAmount').val();
+    let iAmount = 0;
+        if(this.IsMobile() == true)
+        {
+            iAmount = $('input[name=minputAmount]').val();
+        }
+        else
+        {
+            iAmount = $('input[name=inputAmount]').val();
+        }
 
     $.ajax({
         type:'post',
@@ -1903,9 +1949,16 @@
     });
     });
 
-    $(document).on('click', '#sendoutput', (e) => {
-
-        let iAmount = $('#outputAmount').val();
+    $(document).on('click', '.sendoutput', (e) => {
+        let iAmount = 0;
+        if(this.IsMobile() == true)
+        {
+            iAmount = $('input[name=moutputAmount]').val();
+        }
+        else
+        {
+            iAmount = $('input[name=outputAmount]').val();
+        }
         console.log(`iAmount : ${iAmount} iCash : ${user.iCash}`);
 
         if ( parseInt(iAmount) > parseInt(user.iCash) )

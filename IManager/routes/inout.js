@@ -252,9 +252,10 @@ router.post('/inputcomplete', async (req, res) => {
             if ( user != null )
             {
                 console.log("COMPLETE");
-                let total = user.iCash + parseInt(input.iAmount);
+                //let total = user.iCash + parseInt(input.iAmount);
 
-                await user.update({iCash:total})
+                await user.increment({iCash:parseInt(input.iAmount)});
+                //await user.update({iCash:total})
                 await input.update({eState:req.body.state});
                 result = {result:'OK'}
             }
@@ -334,7 +335,8 @@ router.post('/outputlist', async (req, res) => {
     for (var i in querydatas )
     {
         data.push({
-            id:querydatas.length-i,
+            number:querydatas.length-i,
+            id:querydatas[i].id,
             strID:querydatas[i].strID,
             strNickname:querydatas[i].strID,
             iClass:querydatas[i].iClass,
@@ -508,18 +510,18 @@ router.post('/outputcomplete', async (req, res) => {
     {
         if ( req.body.state == 'COMPLETE' )
         {
-            let user = await db.Users.findOne({where:{strID:output.strID}});
-            if ( user != null )
-            {
-                 let total = user.iCash - parseInt(output.iAmount);
+            // let user = await db.Users.findOne({where:{strID:output.strID}});
+            // if ( user != null )
+            // {
+            //      let total = user.iCash - parseInt(output.iAmount);
 
-                 await user.update({iCash:total})
-            }
+            //      await user.update({iCash:total})
+            // }
         }
-        // if ( req.body.state == 'CANCEL' )
-        // {
-        //     await db.User.increment({iPoint:parseInt(output.iAmount)}, {where:{strLoginID:output.strLoginID}});
-        // }
+        else if ( req.body.state == 'CANCEL' )
+        {
+            await db.Users.increment({iCash:parseInt(output.iAmount)}, {where:{strID:output.strID}});
+        }
 
         await output.update({eState:req.body.state});
 

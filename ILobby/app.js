@@ -72,13 +72,15 @@ global.strGameAddress = 'https://ygpo888.net';
 //global.strBig2Address = 'http://localhost:5556';
 global.strBig2Address = 'https://ygpokerbig2.net';
 
+//global.strAddress = 'http://localhost:3000';
+global.strAddress = 'http://157.230.38.106:3000';
+
 let Instance = require('./game/ILobby');
 const { get } = require('http');
 //let IGameManager = require('./game/IGameManager');
 
 //let kGameManager = new IGameManager();
 //let instanceApp = new Instance(io, '/', null, null);
-let 
 instanceApp = new Instance(io, '/');
 //let instanceGame = new Instance(io, '/game', kGameManager, 'Game');
 
