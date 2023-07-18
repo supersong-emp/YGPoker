@@ -49,7 +49,7 @@
                 </div>
                 <input type="password" placeholder="비밀번호" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text pass" name = "strPassword" autocomplete="off">
                 <input type="password" placeholder="비밀번호 확인" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text pass" name = "strPasswordConfirm">
-                <input type="text" placeholder="은행명" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strDesc">
+                <input type="text" placeholder="은행명" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strBank">
                 <input type="text" placeholder="계좌번호" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strAccount">
                 <input type="text" placeholder="예금주명" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strName">
                 <input type="text" placeholder="연락처(숫자만 입력)" class="w-full py-2 rounded-sm outline-none px-2 mb-2 bg-[#393939] text-white focus:outline-white box-text" name = "strMobileNo">
@@ -67,7 +67,7 @@
             $('input[name=strNickname]').val('');
             $('input[name=strPassword]').val('');
             $('input[name=strPasswordConfirm]').val('');           
-            $('input[name=strDesc]').val('');
+            $('input[name=strBank]').val('');
             $('input[name=strAccount]').val('');
             $('input[name=strName]').val('');
             $('input[name=strMobileNo]').val('');
@@ -80,7 +80,7 @@
             let strNickname = $('input[name=strNickname]').val();
             let strPassword = $('input[name=strPassword]').val();
             let strPasswordConfirm = $('input[name=strPasswordConfirm]').val();
-            let strDesc = $('input[name=strDesc]').val();
+            let strBank = $('input[name=strBank]').val();
             let strAccount = $('input[name=strAccount]').val();
             let strName = $('input[name=strName]').val();
             let strMobileNo = $('input[name=strMobileNo]').val();
@@ -99,7 +99,7 @@
                     strID:strID,
                     strNickname:strNickname,
                     strPassword:strPassword,
-                    strDesc:strDesc,
+                    strBank:strBank,
                     strAccount:strAccount,
                     strName:strName,
                     strMobileNo:strMobileNo,

@@ -108,7 +108,7 @@ router.post('/request_register', async(req, res) => {
     }
     else if(req.body.strBank == '')
     {
-        res.send({result:'NOTDESC', reason:'은행명을 확인해주세요.'});
+        res.send({result:'NOTBANK', reason:'은행명을 확인해주세요.'});
     }
     else if(req.body.strAccount == '')
     {
@@ -283,7 +283,7 @@ router.post('/request_input', async (req, res) => {
         strNickname:req.user.strNickname,
         iClass:req.user.iClass,
         strGroupID:req.user.strGroupID,
-        strDepositor:'test',
+        strDepositor:req.user.strName,
         iAmount:req.body.iAmount,
         eType:'INPUT',
         eState:'STANDBY',
@@ -298,9 +298,10 @@ router.post('/request_input', async (req, res) => {
 
         let objectData = {eType:0, strID:req.user.strID, iAmount:req.body.iAmount};
 
-        const customAxios = axios.create({});
-        //const response = await axios.post(strAddress, objectData);
-        const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
+        //const customAxios = axios.create({});
+        const strAddress = `${global.strAddress}/alert`;
+        const response = await axios.post(strAddress, objectData);
+        //const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
         console.log(response);
         console.log(response.data);
         if ( response.data.result == 'OK' )
@@ -324,7 +325,7 @@ router.post('/request_output', async (req, res) => {
         strNickname:req.user.strNickname,
         iClass:req.user.iClass,
         strGroupID:req.user.strGroupID,
-        strDepositor:'test',
+        strDepositor:req.user.strName,
         iAmount:req.body.iAmount,
         eType:'OUTPUT',
         eState:'STANDBY',
@@ -332,22 +333,25 @@ router.post('/request_output', async (req, res) => {
     
 
     //let user = await db.Users.findOne({where:{strID:req.body.strID}});
-    const user = await db.Users.decrement({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
+    //const user = 
 
-    console.log(user);
-
+    //console.log(user);
+    await db.Users.decrement({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
     res.send({result:'OK'});
     try {
 
         let objectData = {eType:1, strID:req.user.strID, iAmount:req.body.iAmount};
 
-        const customAxios = axios.create({});
-        //const response = await axios.post(strAddress, objectData);
-        const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
+        //const customAxios = axios.create({});
+        const strAddress = `${global.strAddress}/alert`;
+        const response = await axios.post(strAddress, objectData);
+        //const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
         console.log(response);
         console.log(response.data);
         if ( response.data.result == 'OK' )
+        {
             return {result:'OK', data:response.data};
+        }
         else
             return {result:'error', error:response.data.error};    
     }
@@ -384,9 +388,10 @@ router.post('/request_autoAccount', async (req, res) => {
 
         let objectData = {eType:2, strID:req.user.strID};
 
-        const customAxios = axios.create({});
-        //const response = await axios.post(strAddress, objectData);
-        const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
+       // const customAxios = axios.create({});
+       const strAddress = `${global.strAddress}/alert`;
+       const response = await axios.post(strAddress, objectData);
+        //const response = await customAxios.post('http://localhost:3000/alert', objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
         console.log(response);
         console.log(response.data);
         if ( response.data.result == 'OK' )
