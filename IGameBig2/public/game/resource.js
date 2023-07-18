@@ -90,14 +90,14 @@ for ( var i = 0; i < 4; ++i)
 // imageBettingButton.src = "img/game/button_bet.png"; //  731 x 230
 
 var imageBetButtons = [];
-for ( var i = 0; i < 4; ++i)
+for ( var i = 0; i < 6; ++i)
 {
     imageBetButtons.push(new Image());
     imageBetButtons[i].src = `img/game/button_bet${zeroPad(i, 2)}.png`;
 }
 
 var imageButtons = [];
-for ( var i = 0; i < 16; ++i)
+for ( var i = 0; i < 9; ++i)
 {
     imageButtons.push(new Image());
     imageButtons[i].src = `img/game/button_${zeroPad(i, 2)}.png`;

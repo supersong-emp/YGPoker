@@ -118,14 +118,14 @@ imageLobbyRoomBar.onload = ()=> {
 imageLobbyRoomBar.src = "img/lobby/roombar.png"; //  1533 x 102
 
 var imageBetButtons = [];
-for ( var i = 0; i < 2; ++i)
+for ( var i = 0; i < 6; ++i)
 {
     imageBetButtons.push(new Image());
     imageBetButtons[i].src = `img/game/button_bet${zeroPad(i, 2)}.png`;
 }
 
 var imageButtons = [];
-for ( var i = 0; i < 14; ++i)
+for ( var i = 0; i < 7; ++i)
 {
     imageButtons.push(new Image());
     imageButtons[i].src = `img/game/button_${zeroPad(i, 2)}.png`;
