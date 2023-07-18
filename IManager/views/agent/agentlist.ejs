@@ -131,6 +131,7 @@
                                 <th>하부보유캐시</th>
                                 <th>하부보유포인트</th>
                                 <th>최종접속일</th>
+                                <th>상부보기</th>
                                 <th>하부보기</th>
                                 <th>동작</th>
                             </tr>
@@ -727,6 +728,199 @@
                     {
                         data: null,
                         render: function (d, t, s) {
+                            return '<button type="button" class="btn btn-primary parent-button" data-id="' + s.id + '" data-iclass="' + s.iClass + '">상부보기</button>';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function (d, t, s) {
+                            return '<button type="button" class="btn btn-primary details-button" data-id="' + s.id + '" data-iclass="' + s.iClass + '">하부보기</button>';
+                        }
+                    },
+                    {
+                        data: null,
+                        //data:"quit",
+                        render: function (d, t) {
+                            var html = "";
+                            if(d.eStatus != "QUIT")
+                            //if(d.userStatus != "QUIT")
+                                html += "<a href='#' class='QuitButton' title='탈퇴'>X</a>";
+                            return html;
+                        }
+                    }
+                ],
+                keys: true,
+                "language": {
+                    "paginate": {
+                        "previous": "<i class='mdi mdi-chevron-left'>",
+                        "next": "<i class='mdi mdi-chevron-right'>"
+                    },
+                    "info": "현재 페이지 _PAGE_/_PAGES_, 총 _TOTAL_ 건",
+                    "lengthMenu": "한 페이지 길이 _MENU_",
+                    "emptyTable": "조건에 맞는 데이터가 없습니다",
+                    "infoEmpty" : "표시할 데이터 없음"
+                },
+                "sort": false,
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+                },
+                createdRow: function (row, data) {
+                    $(row).attr("data-id", data.id);
+                    $(row).attr("data-loginId", data.strID);
+                    // if (data.eStatus == "QUIT")
+                    //     $(row).addClass("table-dark");
+
+                    if ( data.iClass == 1 )
+                    {
+                        $(row).attr('style', 'background-color:#f0f0f0;')
+                    }
+                    else if ( data.iClass == 2 )
+                    {
+                        $(row).attr('style', 'background-color:#fcfcac;')                    
+                    }
+                    else if ( data.iClass == 3 )
+                    {
+                        $(row).attr('style', 'background-color:#f9d9f9;')                    
+                    }
+                    else if ( data.iClass == 4 )
+                    {
+                        $(row).attr('style', 'background-color:#a0f0f0;')                    
+                    }
+                }
+            });
+        });
+
+        //상부 보기 클릭
+        $(document).on('click', '.parent-button', function() {
+            var id = $(this).data('id');  // 버튼의 data-id 속성 값을 가져옵니다.
+            var iClass = $(this).attr('data-iclass'); 
+            console.log("parent-button");
+            console.log(id);
+            console.log(iClass);
+            if(iClass == 1)
+            {
+                alert("더 이상의 상부는 없습니다.");
+                return;
+            }
+
+             // Destroy the existing DataTable.
+            if ($.fn.dataTable.isDataTable('#user-datatable')) {
+                $('#user-datatable').DataTable().destroy();
+            }
+            dataTableInstance = $('#user-datatable').DataTable({
+                "serverSide": true,
+                "searching": false,
+                "ajax": {
+                    //url: "@Url.Action("UserList")",
+                    url:"/agent/request_agentlistparent",
+                    "type": "POST",
+                    "data": function (d) {
+                        return $.extend({}, d, {
+                            "id" : id,
+                            dateStart:$('#dateStart').val(),
+                            dateEnd:$('#dateEnd').val()
+                        });
+                    }
+                },
+                responsive : true,
+                order: [[ 1, 'asc' ]],
+                columns: [
+
+                    {
+                        data: "id",
+                        render: function (d, t) {
+                            return d;// return "<input type='checkbox' name='chk' id='chk" + d + "' value='" + d + "' /><label for='chk" + d + "'>" + d + "</label>";
+                        }
+                    },
+                    {
+                        data: "iClass",
+                        render: function (d, t, s, m) {
+                            var text = "";
+                            if (d == 0)
+                                text = "대본사";
+                            else if (d == 1)
+                                text = "본사";
+                            else if (d == 2)
+                                text = "지사";
+                            else if (d == 3)
+                                text = "총판";
+                            else if (d == 4)
+                                text = "매장";
+                            return text;
+                        }
+                    },
+                    {
+                        data: "strID",
+                        render: function (d) {
+                            return "<a href='#' class='UserIdPopup' data-id='" + d + "'>" + d + "</a>";
+                        }
+                    },
+                    { 
+                        data: "strNickname" 
+                    },
+                    { 
+                        data: "iMyMoney", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iMyRolling", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iInput", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iOutput", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iTotalBets", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iTotalBets", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iTotalMoney", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: "iTotalPoint", render: function (d) {
+                            let c = parseInt(d);
+                            return c.toLocaleString();
+                        } 
+                    },
+                    { 
+                        data: "updatedAt", render: function (d) {
+                            let date = moment(d).format('YYYY-MM-DD HH:mm:ss');
+                            return date;
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function (d, t, s) {
+                            return '<button type="button" class="btn btn-primary parent-button" data-id="' + s.id + '" data-iclass="' + s.iClass + '">상부보기</button>';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function (d, t, s) {
                             return '<button type="button" class="btn btn-primary details-button" data-id="' + s.id + '" data-iclass="' + s.iClass + '">하부보기</button>';
                         }
                     },
@@ -1010,6 +1204,12 @@
                     data: "updatedAt", render: function (d) {
                         let date = moment(d).format('YYYY-MM-DD HH:mm:ss');
                         return date;
+                    }
+                },
+                {
+                    data: null,
+                    render: function (d, t, s) {
+                        return '<button type="button" class="btn btn-primary parent-button" data-id="' + s.id + '" data-iclass="' + s.iClass + '">상부보기</button>';
                     }
                 },
                 {

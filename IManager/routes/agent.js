@@ -163,6 +163,119 @@ router.post('/request_agentlistchild', async(req, res) => {
     res.send(JSON.stringify(object));
 });
 
+let GetParent = async (strGroupID, iTargetClass, dateStart, dateEnd, strID) => {
+
+    //console.log(`##### GetChildren strGroupID (${strGroupID}), iClass (${iTargetClass})`);
+    let idCondition = strID ? `AND t2.strID = '${strID}'` : '';
+    let groupCondition = iTargetClass == 1 ? '' : `AND strGroupID != t2.strGroupID`;
+    const [list] = await db.sequelize.query(`
+        SELECT
+        t2.id as id,
+        t2.strID as strID,
+        t2.strNickname as strNickname,
+        t2.strGroupID as strGroupID,
+        t2.iClass as iClass,
+        t2.fSettle as fSettle,
+        t2.fHoldemR as fHoldemR,
+        t2.iCash as iMyMoney,
+        t2.iRolling as iMyRolling,
+        t2.createdAt as createdAt,
+        t2.updatedAt as updatedAt,
+        IFNULL((SELECT sum(iAmount) FROM Inouts WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND eState = 'COMPLETE' AND eType = 'INPUT' AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}' ),0) as iInput,
+        IFNULL((SELECT sum(iAmount) FROM Inouts WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') AND eState = 'COMPLETE' AND eType = 'OUTPUT' AND date(createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'),0) as iOutput,
+        IFNULL((SELECT SUM(iCash) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') ${groupCondition} AND iClass != 0),0) as iTotalMoney,
+        IFNULL((SELECT SUM(iPoint) FROM Users WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') ${groupCondition} AND iClass != 0),0) as iTotalPoint,
+        IFNULL((SELECT SUM(iAmount) FROM RecordBets WHERE strGroupID LIKE CONCAT(t2.strGroupID,'%') ${groupCondition}),0) as iTotalBets
+        FROM Users AS t1
+        LEFT JOIN Users AS t2 ON t2.id = t1.iParentID
+        WHERE t2.iClass = '${iTargetClass}' AND t2.strGroupID = '${strGroupID}' ${idCondition};`
+    );
+    return list;
+}
+
+let RecursiveGetParent = async (strGroupID, iTargetClass, dateStart, dateEnd, strID, list) =>
+{
+    if ( parseInt(iTargetClass) >= 5 )
+    //if ( iTargetClass > 0 )
+        return;
+    
+    let parent = await GetParent(strGroupID, parseInt(iTargetClass), dateStart, dateEnd, strID);
+    for ( let i in parent )
+    {
+        list.push(parent[i]);
+        //console.log(`==========> Pushed ${children[i].strID}`);
+        //await RecursiveGetChildren(children[i].strGroupID, parseInt(children[i].iClass), dateStart, dateEnd, list);
+    }
+}
+
+let GetParentStrGroupID = async (strGroupID, iTargetClass) =>
+{  
+    // iTargetClass가 3이면 strGroupID의 길이는 9, 
+    // 2이면 7, 1이면 5가 되어야 합니다.
+    let requiredLength = 2 * iTargetClass + 3;
+    if (typeof strGroupID === 'string' && strGroupID.length === requiredLength) {
+        // Class 당 2자리를 제거하고 남은 문자열을 반환합니다.
+        return strGroupID.substring(0, requiredLength - 2);
+    } else {
+        return null;
+    }
+}
+
+router.post('/request_agentlistparent', async(req, res) => {
+
+    console.log('/request_agentlistparent');
+    console.log(req.body);
+
+    //console.log(`strID : ${req.user.strID}, iClass : ${req.user.iClass}, strGroupID : ${req.user.strGroupID}`);
+    var user = await db.Users.findOne({where:{id:req.body.id}});
+    let iTargetClass = 0;
+    let message = '';
+    let result = '';
+
+    if (user.iClass == 1) {
+        // Send a message if user.iClass is 4.
+        //res.send({result:'NotChild', reason:'더 이상의 하부는 없습니다.'});
+
+        iTargetClass = parseInt(user.iClass);
+        message = '더 이상의 상부는 없습니다.';
+        result = 'NotParent';
+    }
+    else
+    {
+        iTargetClass = parseInt(user.iClass) - 1;
+        result = 'OK';
+    }
+    let strGroupID = await GetParentStrGroupID(user.strGroupID,iTargetClass);
+
+    var data = [];
+    let listAgents = [];
+    
+    await RecursiveGetParent(strGroupID, iTargetClass, req.body.dateStart, req.body.dateEnd, req.body.search, listAgents);
+
+    // 이 부분에서 start와 length를 사용해야 합니다.
+    let start = req.body.start; // Ajax 요청에서 시작 인덱스를 가져옵니다.
+    let length = req.body.length; // Ajax 요청에서 가져올 데이터의 수를 가져옵니다.
+
+    // 잘라낸 배열을 사용해 data를 채웁니다.
+    for (let i = start; i < start + length && i < listAgents.length; i++) {
+        data.push(listAgents[i]);
+    }
+
+    let totalRecords = await db.Users.count();  // 전체 레코드 수를 얻는 쿼리
+
+    let filteredRecords = listAgents.length;
+
+    var object = {};
+    object.draw = req.body.draw;
+    object.recordsTotal = totalRecords;
+    object.recordsFiltered = filteredRecords;
+    object.data = data;
+    object.message = message;
+    object.result = result;
+
+    res.send(JSON.stringify(object));
+});
+
 router.post('/request_agentdetail', async (req, res)=> {
 
     console.log('/request_agentdetail');
