@@ -267,7 +267,6 @@ export default class IModeGame {
 
     SetBettingButtons(buttons) {
         this.listBettingButtons = buttons;
-        //this.isMobile = isMobile;
     }
 
     SetSliderBar(slider) {

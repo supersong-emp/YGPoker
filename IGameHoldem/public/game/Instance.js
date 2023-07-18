@@ -352,11 +352,11 @@ Game.SetBg(account.strOptionCode[2]);
 Game.SetDeck(account.strOptionCode[3], imagesGameDeck);
 Game.SetSliderBar(moblieSliderBar);
 if(IsMobile()){
-    Game.SetBettingButtons(mobilebuttonsGameBetting, true);
+    Game.SetBettingButtons(mobilebuttonsGameBetting);
 }
 else 
 {
-    Game.SetBettingButtons(buttonsGameBetting, false);
+    Game.SetBettingButtons(buttonsGameBetting);
 }
 Game.SetLocationButtons(buttonsGameLocation);
 
