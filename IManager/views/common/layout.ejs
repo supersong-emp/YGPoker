@@ -321,15 +321,17 @@
                 console.log('SM_Alert');
                 console.log(objectData);
                 //objectData.eType = 0 (input), objectData.eType = 1 (output), objectData.eType = 2 (letter)
-                if(objectData.eType == 0)
-                {
-                    $('#alert_input').show();
-                    sAlert.play();
-                }
-                if(objectData.eType == 1)
-                {
-                    $('#alert_output').show();
-                    sAlert.play();
+                if(user.iClass <= 1){
+                    if(objectData.eType == 0)
+                    {
+                        $('#alert_input').show();
+                        sAlert.play();
+                    }
+                    if(objectData.eType == 1)
+                    {
+                        $('#alert_output').show();
+                        sAlert.play();
+                    }
                 }
                 if(objectData.eType == 2)
                 {

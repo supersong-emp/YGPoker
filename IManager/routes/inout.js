@@ -1153,9 +1153,9 @@ router.post('/inputsendcharge', async (req, res) => {
     });
 
     //let user = await db.Users.findOne({where:{strID:req.body.strID}});
-    const user = await db.Users.increment({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
+    //const user = await db.Users.increment({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
 
-    console.log(user);
+    //console.log(user);
 
     res.send({result:'OK'});
 });
@@ -1241,7 +1241,7 @@ router.post('/outputsendcharge', async (req, res) => {
     });
 
     //let user = await db.Users.findOne({where:{strID:req.body.strID}});
-    const user = await db.Users.increment({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
+    const user = await db.Users.decrement({iCash:parseInt(req.body.iAmount)}, {where:{strID:req.user.strID}, returning:true, plain:true});
 
     console.log(user);
 
