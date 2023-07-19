@@ -123,12 +123,12 @@
                                     
                                     <div class="sb-sidenav-menu-heading">온라인주문배송 관리툴</div>
                                     <% if ( user.iClass == 0 ) { %>
-                                    <a class="nav-link" href="/inout/input">
-                                        온라인 충전관리
-                                    </a>
-                                    <a class="nav-link" href="/inout/output">
-                                        온라인 환전관리
-                                    </a>
+                                        <a class="nav-link" href="/inout/input">
+                                            온라인 충전관리
+                                        </a>
+                                        <a class="nav-link" href="/inout/output">
+                                            온라인 환전관리
+                                        </a>
                                     <% } else if( user.iClass == 1){ %>
                                         <a class="nav-link" href="/inout/input">
                                             온라인 충전관리
@@ -142,7 +142,15 @@
                                         <a class="nav-link" href="/inout/outputcharge">
                                             출금 신청
                                         </a>
+                                    <% } else {%>
+                                        <a class="nav-link" href="/inout/inputcharge">
+                                            충전 신청
+                                        </a>
+                                        <a class="nav-link" href="/inout/outputcharge">
+                                            출금 신청
+                                        </a>
                                     <% } %>
+                                    
                                     <!-- <div class="sb-sidenav-menu-heading">쿠폰 관리툴</div>
                                     <a class="nav-link" href="#">
                                         쿠폰등록 신청
