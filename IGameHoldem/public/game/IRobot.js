@@ -9,6 +9,9 @@ export default class IRobot{
         this.iElapsedTime = 0;
         this.bEnableBetting = false;
         this.iCallAmount = 0;
+
+        this.eState = '';
+        this.listRooms = [];
     }
 
     Update()
@@ -28,6 +31,11 @@ export default class IRobot{
             this.socket.emit('CM_Betting', objectBetting);
             this.bEnableBetting = false;
         }
+    }
+
+    RequestRoomList()
+    {
+        this.socket.emit('CM_RoomList');
     }
 
     OnIO()
@@ -303,6 +311,12 @@ export default class IRobot{
 
             // this.Game.ProcessShowDownTurnCard(listData);
         });
+
+        this.socket.on('SM_RoomList', (listRooms) => {
+
+            console.log(`SM_RoomList`);
+            console.log(listRooms);
+        })
 
         this.socket.on('SM_Error', (objectError) => {
 

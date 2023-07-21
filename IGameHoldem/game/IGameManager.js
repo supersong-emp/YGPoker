@@ -209,6 +209,7 @@ class IGameManager
                     eGameType:this.listGames[i].eGameType,
                     iNumPlayers:iNumPlayers, 
                     iMaxPlayers:iMaxPlayers,
+                    lUnique:this.listGames[i].lUnique,
                     //iBuyIn:iBuyIn,
                     iDefaultCoin:this.listGames[i].iDefaultCoin
                 }
