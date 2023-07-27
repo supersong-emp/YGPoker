@@ -58,7 +58,7 @@ class ILobby
                 this.RemoveUser(socket);
             });
 
-            socket.on('CM_Login', (strID, strPassword, iPoint) => {
+            socket.on('CM_Login', (strID, strPassword, iCash) => {
 
                 console.log(`CM_Login`);
 
@@ -67,7 +67,7 @@ class ILobby
                 socket.eStage = 'LOBBY';
                 //socket.iLocation = -1;
                 // socket.iCoin = 100000;
-                socket.iPoint = iPoint;
+                socket.iCash = iCash;
 
                 //console.log(`${socket.strID}, ${socket.eStage}`);
 
@@ -117,6 +117,10 @@ class ILobby
                 }
                 else
                 {
+                    if(request.error == 'NotExistRoom')
+                    {
+                        this.RemoveRoom(objectData.lUnique);
+                    }
                     socket.emit('SM_Error', {error:request.error});
                 }
             });
@@ -132,10 +136,15 @@ class ILobby
 
                 if ( request.result == 'OK' )
                 {
+                    this.UpdateRoom(request.data);
                     socket.emit('SM_RoomInfo', {result:'OK', data:request});
                 }
                 else
                 {
+                    if(request.error == 'NotExistRoom')
+                    {
+                        this.RemoveRoom(objectData.lUnique);
+                    }
                     socket.emit('SM_Error', {error:request.error});
                 }
             })
@@ -160,6 +169,10 @@ class ILobby
                 }
                 else
                 {
+                    if(request.error == 'NotExistRoom')
+                    {
+                        this.RemoveRoom(objectData.lUnique);
+                    }
                     socket.emit('SM_Error', {error:request.error});
                 }
             });
@@ -182,6 +195,10 @@ class ILobby
                 }
                 else
                 {
+                    if(request.error == 'NotExistRoom')
+                    {
+                        this.RemoveRoom(objectData.lUnique);
+                    }
                     socket.emit('SM_Error', {error:request.error});
                 }
             });
@@ -239,7 +256,9 @@ class ILobby
     UpdateRoom(objectData)
     {
         console.log(`ILobby::UpdateRoom`);
-        console.log(objectData);
+        //console.log(objectData);
+
+        //console.log(objectData.listPlayer.length);
 
         let instanceRoom = this.FindRoom(objectData.lUnique);
         if ( instanceRoom == null )
@@ -250,27 +269,26 @@ class ILobby
                 strGameName:objectData.strGameName,
                 iDefaultCoin:objectData.iDefaultCoin,
                 strPassword:objectData.strPassword,
-                iBuyIn:objectData.iBuyIn,
+                //iBuyIn:objectData.iBuyIn,
                 iMaxPlayer:objectData.iMaxPlayer,
                 iNumPlayer:objectData.iNumPlayer,
                 iBettingTime:objectData.iBettingTime,
-
+                listPlayer:objectData.listPlayer
             };
             this.listRooms.push(objectRoom);
         }
         else
         {
-            instanceRoom = {
-                lUnique:objectData.lUnique,
-                strGameName:objectData.strGameName,
-                eGameType:objectData.eGameType,
-                iDefaultCoin:objectData.iDefaultCoin,
-                strPassword:objectData.strPassword,
-                iBuyIn:objectData.iBuyIn,
-                iMaxPlayer:objectData.iMaxPlayer,
-                iNumPlayer:objectData.iNumPlayer,
-                iBettingTime:objectData.iBettingTime,
-            };
+            instanceRoom.lUnique = objectData.lUnique;
+            instanceRoom.strGameName = objectData.strGameName;
+            instanceRoom.eGameType = objectData.eGameType;
+            instanceRoom.iDefaultCoin = objectData.iDefaultCoin;
+            instanceRoom.strPassword = objectData.strPassword;
+            //instanceRoom.iBuyIn = objectData.iBuyIn;
+            instanceRoom.iMaxPlayer = objectData.iMaxPlayer;
+            instanceRoom.iNumPlayer = objectData.iNumPlayer;
+            instanceRoom.iBettingTime = objectData.iBettingTime;
+            instanceRoom.listPlayer = objectData.listPlayer;
         }
     }
 
@@ -327,7 +345,9 @@ class ILobby
         
         for ( let i in this.listRooms )
         {
-            console.log(this.listRooms[i].iDefaultCoin);
+            //console.log(this.listRooms[i]);
+            //let iNumPlayer = this.listRooms[i].listUsers.GetLength();
+            //console.log(iNumPlayer);
             if ( this.listRooms[i].iDefaultCoin == (iDefaultCoin/2) && this.listRooms[i].eGameType == eGameType)
             {
                 listRooms.push(this.listRooms[i]);
@@ -347,6 +367,9 @@ class ILobby
         
         for ( let i in this.listRooms )
         {
+            console.log(this.listRooms[i]);
+            //let iNumPlayer = this.listRooms[i].listUsers.GetLength();
+            //console.log(iNumPlayer);
             console.log(this.listRooms[i].eGameType);
             if(eGameType == "ALL")
             {

@@ -198,10 +198,18 @@ class IGameManager
 
         for ( let i in this.listGames )
         {
+            console.log(this.listGames[i]);
             let iNumPlayers = this.listGames[i].listUsers.GetLength();
             let iMaxPlayers = this.listGames[i].cMaxPlayer;
-            //let iBuyIn = this.listGames[i].iBuyIn;
-    
+
+            let listPlayer = [];
+            for ( let j = 0; j < this.listGames[i].listUsers.GetLength(); ++ j )
+            {
+                const player = this.listGames[i].listUsers.GetSocket(j);
+                //console.log(player);
+                const iCoin = player.iCoin+player.iCash;
+                listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            }
             listRooms.push(
                 {
                     iNo:i+1, 
@@ -210,8 +218,8 @@ class IGameManager
                     iNumPlayers:iNumPlayers, 
                     iMaxPlayers:iMaxPlayers,
                     lUnique:this.listGames[i].lUnique,
-                    //iBuyIn:iBuyIn,
-                    iDefaultCoin:this.listGames[i].iDefaultCoin
+                    iDefaultCoin:this.listGames[i].iDefaultCoin,
+                    listPlayer:listPlayer
                 }
             );
         }

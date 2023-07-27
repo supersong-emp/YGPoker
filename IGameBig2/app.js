@@ -206,7 +206,7 @@ app.post('/request_roomlist', async (req, res) => {
         for ( let i = 0; i < game.listUsers.GetLength(); ++ i )
         {
             const player = game.listUsers.GetSocket(i);
-            strUsers+=`(${player.strID}:${player.iPoint})`;
+            strUsers+=`(${player.strID}:${player.iCash})`;
         }
 
         let objectData = {

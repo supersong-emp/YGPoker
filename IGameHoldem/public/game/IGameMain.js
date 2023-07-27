@@ -207,7 +207,7 @@ export default class IGameMain{
 
             this.socket.strID = data.strID;
             this.socket.iCoin = data.iCoin;
-            this.socket.iPoint = data.iPoint;
+            this.socket.iCash = data.iCash;
 
             this.Game.UpdateGameInfo(data.strGameName, data.iBlind);
             this.Game.UpdatePoint(parseInt(data.iCoin));
@@ -249,7 +249,7 @@ export default class IGameMain{
             if ( true == objectData.eResult )
             {
                 this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, []);
-                this.Game.UpdatePoint(parseInt(objectData.iPoint));
+                this.Game.UpdatePoint(parseInt(objectData.iCash));
             }
         });
 
@@ -261,7 +261,7 @@ export default class IGameMain{
 
             this.socket.strID = objectData.strID;
             this.socket.iCoin = objectData.iCoin;
-            this.socket.iPoint = objectData.iPoint;
+            this.socket.iCash = objectData.iCash;
 
             this.Game.UpdateGameInfo(objectData.strGameName, objectData.iBlind);
             //this.Game.UpdatePoint(parseInt(objectData.iCoin));
@@ -269,7 +269,7 @@ export default class IGameMain{
             this.Game.SetMaxPlayer(iMaxPlayer);
             this.Game.ProcessLocation(listPlayers);
             this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, objectData.listHandCard);
-            this.Game.UpdatePoint(parseInt(objectData.iPoint));
+            this.Game.UpdatePoint(parseInt(objectData.iCash));
             this.Game.SetTableCard(objectData.listTableCard);
         })
 
@@ -332,7 +332,7 @@ export default class IGameMain{
             chatElement.append(tag.tag.tag);
             soundClick.play();
 
-            // Ã¤ÆÃ ¿ä¼ÒÀÇ ½ºÅ©·Ñ À§Ä¡¸¦ °¡Àå ¾Æ·¡·Î ¼³Á¤
+            // Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             chatElement.scrollTop(chatElement.prop("scrollHeight"));
         });
 
@@ -532,7 +532,7 @@ export default class IGameMain{
             }
             //logElement.append(tag.tag.tag);
 
-            // °ÔÀÓ·Î±× ¿ä¼ÒÀÇ ½ºÅ©·Ñ À§Ä¡¸¦ °¡Àå ¾Æ·¡·Î ¼³Á¤
+            // ï¿½ï¿½ï¿½Ó·Î±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             logElement.scrollTop(logElement.prop("scrollHeight"));
             
             this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);

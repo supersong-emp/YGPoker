@@ -15,7 +15,7 @@ module.exports = function (sequelize, Sequelize) {
             type: Sequelize.STRING,
         },
         eUserType: {
-            type: Sequelize.ENUM('NORMAL', 'AGENT', 'ADMIN'),
+            type: Sequelize.ENUM('NORMAL', 'AGENT', 'ADMIN','JOKER'),
         },
         strPassword: {
             type: Sequelize.STRING,

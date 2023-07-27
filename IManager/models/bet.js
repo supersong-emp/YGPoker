@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         iAmount: {
             type:DataTypes.INTEGER,
         },
+        iRollingAdmin: {
+            type:DataTypes.INTEGER,
+        },
         iRollingPAdmin: {
             type:DataTypes.INTEGER,
         },

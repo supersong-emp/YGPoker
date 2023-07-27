@@ -108,7 +108,7 @@ class IGame
                 switch ( element.iSubDB )
                 {
                 case E.EUserDBType.UpdatePoint:
-                    await db.Users.update({iPoint:element.iPoint}, {where:{strID:element.strID}});
+                    await db.Users.update({iCash:element.iCash}, {where:{strID:element.strID}});
                     this.listDBUpdate.splice(i, 1);
                     -- i;
                     break;
@@ -621,7 +621,7 @@ class IGame
             let player = this.listUsers.GetSocket(i);
             let iBuyIn = parseInt(player.strOptionCode[1]) * 100;
             const iEnableRebuyIn = player.strOptionCode[0];
-            console.log(`FullBroadcastRebuyIn (iBuyIn : ${iBuyIn}): ${player.strID} iPoint : ${player.iPoint}, Option : ${player.strOptionCode}, iCoin : ${player.iCoin}, bMenualRebuyin : ${player.bMenualRebuyin}`);
+            console.log(`FullBroadcastRebuyIn (iBuyIn : ${iBuyIn}): ${player.strID} iCash : ${player.iCash}, Option : ${player.strOptionCode}, iCoin : ${player.iCoin}, bMenualRebuyin : ${player.bMenualRebuyin}`);
 
             let bQuit = false;
 
@@ -634,11 +634,11 @@ class IGame
                 console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
 
                 // 리바인 사용하거나 수동 리바인 눌렀을떄.
-                if ( player.iPoint >= (cRebuyInAmount-parseInt(player.iCoin)))
+                if ( player.iCash >= (cRebuyInAmount-parseInt(player.iCoin)))
                 {
                     // player.iCoin = 100000;
                     // player.iCash -= 100000;
-                    player.iPoint -= (cRebuyInAmount-parseInt(player.iCoin));
+                    player.iCash -= (cRebuyInAmount-parseInt(player.iCoin));
                     player.iCoin = cRebuyInAmount;
                 }
                 else
@@ -659,7 +659,7 @@ class IGame
             { 
                 strID:player.strID,
                 iCoin:player.iCoin,
-                iPoint:player.iPoint,
+                iCash:player.iCash,
                 bQuit:bQuit,
             };
             listObject.push(objectData);
@@ -1208,9 +1208,9 @@ class IGame
                 continue;
             if( this.bSetGame == false )
             {
-                const cCash = parseInt(this.listUsers.GetSocket(i).iPoint) + parseInt(this.listUsers.GetSocket(i).iCoin);
-                console.log(`${cCash} : ${this.listUsers.GetSocket(i).iPoint} : ${this.listUsers.GetSocket(i).iCoin}`);
-                this.listDBUpdate.push({iDB:E.EDBType.Users, iSubDB:E.EUserDBType.UpdatePoint, strID:this.listUsers.GetSocket(i).strID, iPoint:cCash});
+                const cCash = parseInt(this.listUsers.GetSocket(i).iCash) + parseInt(this.listUsers.GetSocket(i).iCoin);
+                console.log(`${cCash} : ${this.listUsers.GetSocket(i).iCash} : ${this.listUsers.GetSocket(i).iCoin}`);
+                this.listDBUpdate.push({iDB:E.EDBType.Users, iSubDB:E.EUserDBType.UpdatePoint, strID:this.listUsers.GetSocket(i).strID, iCash:cCash});
                 this.listUsers.GetSocket(i).bFold = false;
                 this.listUsers.GetSocket(i).iScore = 0;
             }

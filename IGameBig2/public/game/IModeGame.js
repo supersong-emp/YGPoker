@@ -1199,8 +1199,8 @@ export default class IModeGame {
         this.iBlind = parseInt(iBlind);
     }
 
-    UpdatePoint(iPoint) {
-        this.listTexts[0].UpdateCaption(iPoint.toLocaleString());
+    UpdatePoint(iCash) {
+        this.listTexts[0].UpdateCaption(iCash.toLocaleString());
     }
 
     EnableBetting(strID,objectData) {
@@ -1353,7 +1353,7 @@ export default class IModeGame {
                             window.close();
                         }
                     }
-                    else this.UpdatePoint(listObject[i].iPoint);
+                    else this.UpdatePoint(listObject[i].iCash);
                 }
             }
         }

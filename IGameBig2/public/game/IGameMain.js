@@ -207,7 +207,7 @@ export default class IGameMain{
 
             this.socket.strID = data.strID;
             this.socket.iCoin = data.iCoin;
-            this.socket.iPoint = data.iPoint;
+            this.socket.iCash = data.iCash;
 
             this.Game.UpdateGameInfo(data.strGameName, data.iBlind);
             this.Game.UpdatePoint(parseInt(data.iCoin));
@@ -249,7 +249,7 @@ export default class IGameMain{
             if ( true == objectData.eResult )
             {
                 this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar);
-                this.Game.UpdatePoint(parseInt(objectData.iPoint));
+                this.Game.UpdatePoint(parseInt(objectData.iCash));
             }
         });
 

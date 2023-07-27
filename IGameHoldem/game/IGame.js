@@ -303,6 +303,8 @@ class IGame
     
     async GetOdds(strID)
     {
+        let user = await db.Users.findOne({ where: { strID: strID } });
+
         const [list] = await db.sequelize.query(
         `SELECT  t1.fHoldemR AS fAdminR,
         t1.strID as strAdminID,
@@ -325,7 +327,7 @@ class IGame
         LEFT JOIN Users AS t6 ON t6.iParentID = t5.id
         WHERE t6.strID='${strID}';`);
 
-        let object = {fAdmin:0, fPAdmin:0, fVAdmin:0, fAgent:0, fShop:0, fUser:0,strAdminID:'', strPAdminID:'', strVAdminID:'', strAgentID:'', strShopID:'', strUserID:strID};
+        let object = {fAdmin:0, fPAdmin:0, fVAdmin:0, fAgent:0, fShop:0, fUser:0,strAdminID:'', strPAdminID:'', strVAdminID:'', strAgentID:'', strShopID:'', strUserID:strID, eUserType:user.eUserType};
         if ( list.length > 0 )
         {
             object = {
@@ -357,7 +359,7 @@ class IGame
                 switch ( element.iSubDB )
                 {
                 case E.EUserDBType.UpdatePoint:
-                    await db.Users.update({iPoint:element.iPoint}, {where:{strID:element.strID}});
+                    await db.Users.update({iCash:element.iCash}, {where:{strID:element.strID}});
                     this.listDBUpdate.splice(i, 1);
                     -- i;
                     break;
@@ -374,27 +376,44 @@ class IGame
                                 const cRollingAgent = parseInt(odds.fAgent * element.iValidAmount * 0.01);
                                 const cRollingShop = parseInt(odds.fShop * element.iValidAmount * 0.01);
 
-                                await db.RecordBets.create({
-                                    strID: element.strID,
-                                    iClass: element.iClass,
-                                    strGroupID: element.strGroupID,
-                                    iAmount: element.iAmount,
-                                    strBet: element.strBetting,
-                                    iRollingAdmin: parseInt(odds.fAdmin * element.iValidAmount * 0.01),
-                                    iRollingPAdmin: cRollingShop,
-                                    iRollingVAdmin: cRollingVAdmin,
-                                    iRollingAgent: cRollingAgent,
-                                    iRollingShop: cRollingShop,
-                                });
+                                if(odds.eUserType == 'JOKER')
+                                {
+                                    await db.RecordBets.create({
+                                        strID: element.strID,
+                                        iClass: element.iClass,
+                                        strGroupID: element.strGroupID,
+                                        iAmount: element.iAmount,
+                                        strBet: element.strBetting,
+                                        iRollingAdmin: 0,
+                                        iRollingPAdmin: 0,
+                                        iRollingVAdmin: 0,
+                                        iRollingAgent: 0,
+                                        iRollingShop: 0,
+                                    });
+                                }
+                                else 
+                                {
+                                    await db.RecordBets.create({
+                                        strID: element.strID,
+                                        iClass: element.iClass,
+                                        strGroupID: element.strGroupID,
+                                        iAmount: element.iAmount,
+                                        strBet: element.strBetting,
+                                        iRollingAdmin: parseInt(odds.fAdmin * element.iValidAmount * 0.01),
+                                        iRollingPAdmin: cRollingShop,
+                                        iRollingVAdmin: cRollingVAdmin,
+                                        iRollingAgent: cRollingAgent,
+                                        iRollingShop: cRollingShop,
+                                    });
 
-                                console.log(`########## Calculate Rolling`);
-                                console.log(odds);
+                                    console.log(`########## Calculate Rolling`);
+                                    console.log(odds);
 
-                                await db.Users.increment({ iRolling: cRollingPAdmin }, { where: { strID: odds.strPAdminID } });
-                                await db.Users.increment({ iRolling: cRollingVAdmin }, { where: { strID: odds.strVAdminID } });
-                                await db.Users.increment({ iRolling: cRollingAgent }, { where: { strID: odds.strAgentID } });
-                                await db.Users.increment({ iRolling: cRollingShop }, { where: { strID: odds.strShopID } });
-
+                                    await db.Users.increment({ iRolling: cRollingPAdmin }, { where: { strID: odds.strPAdminID } });
+                                    await db.Users.increment({ iRolling: cRollingVAdmin }, { where: { strID: odds.strVAdminID } });
+                                    await db.Users.increment({ iRolling: cRollingAgent }, { where: { strID: odds.strAgentID } });
+                                    await db.Users.increment({ iRolling: cRollingShop }, { where: { strID: odds.strShopID } });
+                                }
                                 this.listDBUpdate.splice(i, 1);
                                 --i;
                                 break;
@@ -479,7 +498,7 @@ class IGame
             socket.bNewPlaying = exist.bNewPlaying;
             socket.iStartCoin = exist.iStartCoin;
             socket.iCoin = exist.iCoin;
-            socket.iPoint = exist.iPoint;
+            socket.iCash = exist.iCash;
             socket.bRejoin = true;
 
             this.SwitchUser(socket.strID, socket);
@@ -513,7 +532,7 @@ class IGame
             // socket.emit('SM_SelectLocation', {eResult:true, iCoin:socket.iCoin, iPoint:socket.iPoint, iLocation:socket.iLocation, iAvatar:socket.iAvatar});      
             //socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iPoint:iPoint, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
 
-            let objectData = {eResult:true, strID:socket.strID, strGameName:this.strGameName, iBlind:this.iDefaultCoin, iCoin:socket.iCoin, iPoint:socket.iPoint, 
+            let objectData = {eResult:true, strID:socket.strID, strGameName:this.strGameName, iBlind:this.iDefaultCoin, iCoin:socket.iCoin, iCash:socket.iCash, 
                 iLocation:socket.iLocation, iAvatar:socket.iAvatar, 
                 listHandCard:socket.listHandCard,
                 listTableCard:this.listTableCard
@@ -1012,7 +1031,7 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
-            if(player.bSpectator == false)
+            if(player.bSpectator == false && player.iLocation != -1)
             {
                 objectHand = this.ProcessPokerHand(player);
             }
@@ -1029,7 +1048,7 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
-            if(player.bSpectator == false)
+            if(player.bSpectator == false && player.iLocation != -1)
             {
                 objectHand = this.ProcessPokerHand(player);
             }
@@ -1045,7 +1064,7 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
-            if(player.bSpectator == false)
+            if(player.bSpectator == false && player.iLocation != -1)
             {
                 objectHand = this.ProcessPokerHand(player);
             }
@@ -1138,7 +1157,7 @@ class IGame
             let player = this.listUsers.GetSocket(i);
             let iBuyIn = parseInt(player.strOptionCode[1]) * 100;
             const iEnableRebuyIn = player.strOptionCode[0];
-            console.log(`FullBroadcastRebuyIn (iBuyIn : ${iBuyIn}): ${player.strID} Cash : ${player.iPoint}, Option : ${player.strOptionCode}, iCoin : ${player.iCoin}, bMenualRebuyin : ${player.bMenualRebuyin}`);
+            console.log(`FullBroadcastRebuyIn (iBuyIn : ${iBuyIn}): ${player.strID} Cash : ${player.iCash}, Option : ${player.strOptionCode}, iCoin : ${player.iCoin}, bMenualRebuyin : ${player.bMenualRebuyin}`);
 
             let bQuit = false;
 
@@ -1151,11 +1170,11 @@ class IGame
                     console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
 
                     // 리바인 사용하거나 수동 리바인 눌렀을떄.
-                    if ( player.iPoint >= (cRebuyInAmount-parseInt(player.iCoin)))
+                    if ( player.iCash >= (cRebuyInAmount-parseInt(player.iCoin)))
                     {
                         // player.iCoin = 100000;
                         // player.iCash -= 100000;
-                        player.iPoint -= (cRebuyInAmount-parseInt(player.iCoin));
+                        player.iCash -= (cRebuyInAmount-parseInt(player.iCoin));
                         player.iCoin = cRebuyInAmount;
                     }
                     else
@@ -1180,10 +1199,10 @@ class IGame
                 console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
 
                 // 리바인 사용하거나 수동 리바인 눌렀을떄.
-                if (player.iPoint >= (cRebuyInAmount - parseInt(player.iCoin))) {
+                if (player.iCash >= (cRebuyInAmount - parseInt(player.iCoin))) {
                     // player.iCoin = 100000;
                     // player.iCash -= 100000;
-                    player.iPoint -= (cRebuyInAmount - parseInt(player.iCoin));
+                    player.iCash -= (cRebuyInAmount - parseInt(player.iCoin));
                     player.iCoin = cRebuyInAmount;
                 }
                 else {
@@ -1196,7 +1215,7 @@ class IGame
             { 
                 strID:player.strID,
                 iCoin:player.iCoin,
-                iPoint:player.iPoint,
+                iCash:player.iCash,
                 bQuit:bQuit,
             };
             listObject.push(objectData);
@@ -1264,7 +1283,7 @@ class IGame
 
     FindPlayer(strID)
     {
-        console.log("FindPlayer!!!!!!!!!!!!");
+        //console.log("FindPlayer!!!!!!!!!!!!");
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             if ( strID == this.listUsers.GetSocket(i).strID )
@@ -2363,8 +2382,8 @@ class IGame
             if ( this.listUsers.GetSocket(i).bEnable == false )
                 continue;
 
-            const cCash = parseInt(this.listUsers.GetSocket(i).iPoint) + parseInt(this.listUsers.GetSocket(i).iCoin);
-            this.listDBUpdate.push({iDB:E.EDBType.Users, iSubDB:E.EUserDBType.UpdatePoint, strID:this.listUsers.GetSocket(i).strID, iPoint:cCash});
+            const cCash = parseInt(this.listUsers.GetSocket(i).iCash) + parseInt(this.listUsers.GetSocket(i).iCoin);
+            this.listDBUpdate.push({iDB:E.EDBType.Users, iSubDB:E.EUserDBType.UpdatePoint, strID:this.listUsers.GetSocket(i).strID, iCash:cCash});
         }
     }
 

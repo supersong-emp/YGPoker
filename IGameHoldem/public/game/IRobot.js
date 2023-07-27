@@ -12,30 +12,78 @@ export default class IRobot{
 
         this.eState = '';
         this.listRooms = [];
+
+        this.lUnique = 0;
+    }
+        
+    async selectRandomRoom() {
+        // 먼저 방 목록을 업데이트합니다.
+        await this.RequestRoomList();
+        
+        // 룸 리스트에서 랜덤하게 방을 선택하고 lUnique 값을 갱신합니다.
+        let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers);
+        if (availableRooms.length > 0) {
+            let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
+            this.lUnique = randomRoom.lUnique;
+        }
+        // Ensure updated room list before returning
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
     }
 
-    Update()
-    {
+    async Update() {
+       // Wait for random interval before selecting room
+        
+        ++this.iElapsedTime;
         console.log('Update');
-
-        this.iElapsedTime ++;
-        if ( this.bConnected == false && this.iElapsedTime > 3 )
-        {
-            this.socket.emit('CM_JoinGame', this.account.strID, this.account.lUnique, this.account.iCoin, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass);
-            this.bConnected = true;
+        if ( this.bConnected == false && this.iElapsedTime > 3 ) {
+            // Select room
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
+            await this.selectRandomRoom();
+            let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers);
+            if (availableRooms.length > 0) {
+                // Choose a random room
+                let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
+                this.lUnique = randomRoom.lUnique;
+                
+                let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
+                if (selectedRoom && this.account.iCash && this.account.iCash > 0) {
+                    let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
+                    let availableLocations = [];
+                
+                    for (let i = 0; i < parseInt(selectedRoom.iMaxPlayers); i++) {
+                        if (!existingLocations.includes(i)) {
+                            availableLocations.push(i);
+                        }
+                    }
+                
+                    if (availableLocations.length > 0) {
+                        let randomIndex = Math.floor(Math.random() * availableLocations.length);
+                        this.iLocation = availableLocations[randomIndex];
+                        console.log(this.iLocation);
+                
+                        this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass);
+                        this.bConnected = true;
+                    }
+                }
+            }
         }
 
-        if ( this.bEnableBetting == true && this.iElapsedTime > 2 )
+        if ( this.bEnableBetting == true && this.iElapsedTime > 1 )
         {
+            //console.log(this.iElapsedTime);
             let objectBetting = {strBetting:'Call', iAmount:this.iCallAmount};
             this.socket.emit('CM_Betting', objectBetting);
             this.bEnableBetting = false;
-        }
+        } 
     }
-
     RequestRoomList()
     {
         this.socket.emit('CM_RoomList');
+    }
+
+    RequestRoomInfo(lUnique)
+    {
+        this.socket.emit('CM_RoomInfo',lUnique);
     }
 
     OnIO()
@@ -67,10 +115,11 @@ export default class IRobot{
 
             this.socket.strID = data.strID;
             this.socket.iCoin = data.iCoin;
-            this.socket.iPoint = data.iPoint;
+            this.socket.iCash = data.iCash;
 
             // this.Game.UpdateGameInfo(data.strGameName, data.iBlind);
             // this.Game.UpdatePoint(parseInt(data.iCoin));
+            console.log(this.iLocation);
 
             this.socket.emit('CM_SelectLocation', this.iLocation);
         });
@@ -104,7 +153,8 @@ export default class IRobot{
 
             console.log(`SM_SelectLocation ${objectData.eResult}, ${objectData.iLocation}`);
             console.log(objectData);
-
+            this.RequestRoomList();
+            this.iElapsedTime = 0;
             // if ( true == objectData.eResult )
             // {
             //     this.Game.ProcessLocationComplete(socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar);
@@ -208,7 +258,6 @@ export default class IRobot{
             this.bEnableBetting = true;
             this.iElapsedTime = 0;
             this.iCallAmount = objectData.iCallAmount;
-
         });
 
         this.socket.on('SM_Focus', (objectPlayer) => {
@@ -316,7 +365,16 @@ export default class IRobot{
 
             console.log(`SM_RoomList`);
             console.log(listRooms);
+
+            this.listRooms = listRooms;
         })
+
+        this.socket.on('SM_RoomInfo', (listInfo) => {
+
+            console.log(`SM_RoomInfo`);
+            console.log(listInfo);
+        })
+
 
         this.socket.on('SM_Error', (objectError) => {
 

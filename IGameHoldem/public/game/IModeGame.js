@@ -956,7 +956,7 @@ export default class IModeGame {
 
             if (this.fDealingTurnTime < 0.7 && this.fDealingTurnTime > 0.5) {
                 soundcardturn.play();
-                console.log(this.fDealingTurnTime);
+                //console.log(this.fDealingTurnTime);
             }
             else if (this.fDealingTurnTime > 1.2) {
                 this.bEnableDealingCard = true;
@@ -969,7 +969,7 @@ export default class IModeGame {
 
             if (this.fDealingRiverTime < 0.7 && this.fDealingRiverTime > 0.5) {
                 soundcardriver.play();
-                console.log(this.fDealingRiverTime);
+                //console.log(this.fDealingRiverTime);
             }
             else if (this.fDealingRiverTime > 1.2) {
                 this.bEnableDealingCard = true;
@@ -1454,7 +1454,7 @@ export default class IModeGame {
                             window.close();
                         }
                     }
-                    else this.UpdatePoint(listObject[i].iPoint);
+                    else this.UpdatePoint(listObject[i].iCash);
                 }
             }
         }

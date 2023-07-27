@@ -158,16 +158,16 @@ class IGameInstance
             if ( instanceRoom != null )
             {
                 console.log(`======================================= ${iBuyIn} : ${instanceRoom.iDefaultCoin}`);
-                let iPoint = parseInt(iCoin)-(parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
-                if ( iPoint < 0 )
+                let iCash = parseInt(iCoin)-(parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
+                if ( iCash < 0 )
                 {
                     socket.emit('SM_Error', {error:'NotEnoughCoin'});
                 }
                 else
                 {
                     socket.iCoin = (parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
-                    socket.iPoint = iPoint;
-                    socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iPoint:iPoint, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
+                    socket.iCash = parseInt(iCash);
+                    socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iCash:iCash, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
                 }
             }
                 //socket.emit('SM_EnterGame', {result:'OK'});
@@ -295,7 +295,7 @@ class IGameInstance
 
                 console.log(`${socket.iLocation}, ${socket.strID}, ${socket.eStage}, ${socket.lUnique}, ##### Avatar : ${socket.iAvatar}`);
 
-                socket.emit('SM_SelectLocation', {eResult:ret, iCoin:socket.iCoin, iPoint:socket.iPoint, iLocation:iLocation, iAvatar:socket.iAvatar});
+                socket.emit('SM_SelectLocation', {eResult:ret, iCoin:socket.iCoin, iCash:socket.iCash, iLocation:iLocation, iAvatar:socket.iAvatar});
             });
 
             socket.on('CM_StartGame', () => {

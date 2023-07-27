@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <!-- jQuery 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- 부트스트랩 JavaScript 파일 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script src='/socket.io/socket.io.js'></script>
 </head>
  <body>
@@ -8,8 +13,39 @@
     <script type="module" src="game/IRobot.js"></script>
     <script type="module" src="game/IRobotManager.js"></script>
 	<script type="text/javascript">
-		//var socket = io('/game');
+		var socket = io('/game');
 
+        $(document).ready(function () {
+            $.ajax({
+                type:'post',
+                url: "/robot/request_robot",
+                data: {},
+                success:function(ret) {
+                    console.log(ret);
+
+                    if ( ret.result == 'OK' )
+                    {
+						// 데이터를 받은 후 커스텀 이벤트를 생성하고 dispatch
+                        var event = new CustomEvent('receivedRobotData', { detail: ret.data });
+                        document.dispatchEvent(event);
+                    }
+                    else
+                    {
+                        alert('수정을 완료 하지 못했습니다.');
+                    }
+                }
+            });
+            // 다른 JavaScript 파일에서 이 이벤트를 listen
+            document.addEventListener('receivedRobotData', function (event) {
+                // 이벤트에서 데이터를 받아 처리
+                var robotData = event.detail;
+                // IRobotManager에 데이터를 넘김
+                IRobotManager.processData(robotData);
+            });
+        });
+
+        
+    
         // let account = {strID:'bbb', strPassword:'1111', iAvatar:5, lUnique:1555, iCoin:100000, strOptionCode:'01120000', strGroupID:'001010101', iClass:5};
 
         // let robot = new IRobot(io, account, 0);

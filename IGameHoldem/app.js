@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/account', require('./routes/account'));
+app.use('/robot', require('./routes/robot'));
 
 const db = require('./db');
 db.sequelize.sync();
@@ -36,8 +37,8 @@ let instanceGame = new Instance(io, '/game', kGameManager);
 
 instanceGame.OnIO(io);
 
-global.strLobbyAddress = 'http://localhost:7000';
-//global.strLobbyAddress = 'http://157.230.38.106:7000';
+//global.strLobbyAddress = 'http://localhost:7000';
+global.strLobbyAddress = 'http://157.230.38.106:7000';
 
 
 app.get('/', (req, res) => {
@@ -77,8 +78,18 @@ app.post('/create', (req, res) => {
         //let result = this.GameManager.QuickJoin()
         //let result = kGameManager.QuickJoin(data.strRoomName, data.strPassword, data.iDefaultCoin, data.iBuyIn, data.iBettingTime, data.iNumPlayers, null);
         //let result = kGameManager.CreateGame(data.strRoomName, data.strPassword, data.iDefaultCoin, data.iBuyIn, data.iBettingTime, data.iMaxPlayer);
+        
         let result = kGameManager.CreateGame(data.strRoomName, data.eGameType, data.strPassword, data.iDefaultCoin, data.iBettingTime, data.iMaxPlayer);
-        console.log(result);
+        //console.log(result);
+
+        let listPlayer = [];
+        for ( let i = 0; i < result.listUsers.GetLength(); ++ i )
+        {
+            const player = result.listUsers.GetSocket(i);
+            //console.log(player);
+            const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+        }
 
         if ( result != null )
         {
@@ -94,7 +105,8 @@ app.post('/create', (req, res) => {
                     iBettingTime:result.iBettingTime,
                     iMaxPlayer:result.cMaxPlayer,
                     //iNumPlayer:result.listUsers.GetLength()
-                    iNumPlayer:1
+                    iNumPlayer:1,
+                    listPlayer:listPlayer
                 }
             );
         }
@@ -120,8 +132,9 @@ app.post('/roominfo', (req, res) => {
         for ( let i = 0; i < result.listUsers.GetLength(); ++ i )
         {
             const player = result.listUsers.GetSocket(i);
-
-            listPlayer.push({strID:player.strID, iCoin:player.iPoint, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            //console.log(player);
+            const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
         }
 
         res.send(
@@ -134,13 +147,14 @@ app.post('/roominfo', (req, res) => {
                 iDefaultCoin:result.iDefaultCoin,
                 iBettingTime:result.iBettingTime,
                 iMaxPlayer:result.cMaxPlayer,
+                iNumPlayer:result.listUsers.GetLength(),
                 listPlayer:listPlayer
             }
         );
     }
     else
     {
-        res.send({result:'Error', error:'NotExistRoom'});
+        res.send({result:'Error', error:'NotExistRoom',lUnique:data.lUnique});
     }
 });
 
@@ -164,6 +178,15 @@ app.post('/join', (req, res) => {
         //let result = kGameManager.Join(data.lUnique, null);
         let result = kGameManager.CheckJoin(data.lUnique, null);
         let iBuyin = parseInt(req.body.strOptionCode[1]) *100;
+
+        let listPlayer = [];
+        for ( let i = 0; i < result.listUsers.GetLength(); ++ i )
+        {
+            const player = result.listUsers.GetSocket(i);
+            //console.log(player);
+            const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+        }
         if ( result != null )
         {
             if ( parseInt(iBuyin) <= parseInt(req.body.iCoin) )
@@ -179,7 +202,8 @@ app.post('/join', (req, res) => {
                         //iBuyIn:result.iBuyIn,
                         iBettingTime:result.iBettingTime,
                         iMaxPlayer:result.cMaxPlayer,
-                        iNumPlayer:result.listUsers.GetLength()
+                        iNumPlayer:result.listUsers.GetLength(),
+                        listPlayer:listPlayer
                     }
                 );
             }
@@ -190,7 +214,7 @@ app.post('/join', (req, res) => {
         }
         else
         {
-            res.send({result:'Error', error:'NotExistRoom'});
+            res.send({result:'Error', error:'NotExistRoom',lUnique:data.lUnique});
         }
     }
 });
@@ -212,6 +236,15 @@ app.post('/quickjoin', (req, res) => {
     {
         //let result = this.GameManager.QuickJoin()
         let result = kGameManager.QuickJoin(data.strRoomName, data.eGameType, data.strPassword, data.iDefaultCoin, data.iBettingTime, data.iNumPlayers, null);
+
+        let listPlayer = [];
+        for ( let i = 0; i < result.listUsers.GetLength(); ++ i )
+        {
+            const player = result.listUsers.GetSocket(i);
+            //console.log(player);
+            const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+        }
         if ( result != null )
         {
             res.send(
@@ -225,7 +258,8 @@ app.post('/quickjoin', (req, res) => {
                     //iBuyIn:result.iBuyIn,
                     iBettingTime:result.iBettingTime,
                     iMaxPlayer:result.cMaxPlayer,
-                    iNumPlayer:result.listUsers.GetLength()
+                    iNumPlayer:result.listUsers.GetLength(),
+                    listPlayer:listPlayer
                 }
             );
         }
@@ -250,7 +284,7 @@ app.post('/request_roomlist', async (req, res) => {
         for ( let i = 0; i < game.listUsers.GetLength(); ++ i )
         {
             const player = game.listUsers.GetSocket(i);
-            strUsers+=`(${player.strID}:${player.iPoint})`;
+            strUsers+=`(${player.strID}:${player.iCash})`;
         }
 
         let objectData = {

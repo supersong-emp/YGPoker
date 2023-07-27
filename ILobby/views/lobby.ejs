@@ -52,11 +52,11 @@
                         <span class="mem-img"><img id="iMainAvatar" src="images/avatars/avatar00.png"></span>
                         <span class="mem-info">
                             <ul><%=user.strID%>
-                                <button onclick="pointChange();">포인트전환</button>
+                                <!-- <button onclick="pointChange();">포인트전환</button> -->
                             </ul>
                             
-                            <ul>point<span>
-                                    <num id="MainCash"><%=user.iPoint.toLocaleString()%></num>P
+                            <ul>cash<span>
+                                    <num id="MainCash"><%=user.iCash.toLocaleString()%></num>P
                                 </span></ul>
                         </span>
                         <span class="user-nav">
@@ -197,10 +197,10 @@
                         <li>보유머니</li>
                         <li><%=user.iCash.toLocaleString()%><span>원</span></li>
                     </ul>
-                    <ul>
+                    <!-- <ul>
                         <li>포인트</li>
                         <li><%=user.iPoint.toLocaleString()%><span>원</span></li>
-                    </ul>
+                    </ul> -->
                      <ul>
                         <li>닉네임</li>
                         <li><input type="text" name="strCheckNickname" value="<%=user.strNickname%>"><button type="button" onclick="OnClickCheckNickname()">중복확인</button></li>
@@ -595,7 +595,7 @@
             $('.seven').hide();
             $('.eig').hide();
             $('.nine').hide();
-            socket.emit('CM_Login', account.strID, account.strPassword, account.iPoint);
+            socket.emit('CM_Login', account.strID, account.strPassword, account.iCash);
             //eGameType = "ALL";
             if(targetName == 'IHoldemLobby')
             {
@@ -739,6 +739,7 @@
             if ( objectData.error == 'NotExistRoom' )
             {
                 alert('There is no Room to join.');
+                
             }
             else if ( objectData.error == 'AlreadyPlaying' )
             {
@@ -907,11 +908,11 @@
                         break;
                 }
             }   
-            let tag = `${objectData.data.data.iDefaultCoin}-${objectData.data.data.iDefaultCoin*2}`;
+            let tag2 = `${objectData.data.data.iDefaultCoin}-${objectData.data.data.iDefaultCoin*2}`;
             
-            $('.table-txt').text(tag);
+            $('.table-txt').text(tag2);
 
-            
+           socket.emit('CM_RoomGameList', {eGameType:eGameType});
         })
 
         socket.on('SM_OpenGame', (objectData) => {
@@ -952,7 +953,7 @@
                 var strID = $(`<input type="hidden" value="${account.strID}" name="strID">`);
                 var strPassword = $(`<input type="hidden" value="${account.strPassword}" name="strPassword">`);
                 var lUnique = $(`<input type="hidden" value="${objectData.lUnique}" name="lUnique">`);
-                var iCoin = $(`<input type="hidden" value='${account.iPoint}' name="iCoin">`);
+                var iCoin = $(`<input type="hidden" value='${account.iCash}' name="iCoin">`);
                 var iAvatar = $(`<input type="hidden" value='${iAvatarIndex}' name="iAvatar">`);
                 var strOptionCode = $(`<input type="hidden" value='${account.strOptionCode}' name="strOptionCode">`);
                 var strGroupID = $(`<input type="hidden" value='${account.strGroupID}' name="strGroupID">`);
@@ -1045,7 +1046,7 @@
                 strPassword:'', 
                 iBuyIn:iBuyIn,
                 iBettingTime:0,
-                iNumPlayers:0,
+                iNumPlayer:0,
             };
 
             console.log(data);
@@ -1079,7 +1080,7 @@
                 strID:account.strID,
                 strGroupID:account.strGroupID,
                 iClass:account.iClass,
-                iCoin:account.iPoint, 
+                iCoin:account.iCash, 
                 lUnique:lUnique,
                 strOptionCode:account.strOptionCode
             };
@@ -1100,7 +1101,7 @@
                 strID:account.strID,
                 strGroupID:account.strGroupID,
                 iClass:account.iClass,
-                iCoin:account.iPoint, 
+                iCoin:account.iCash, 
                 lUnique:lUnique,
                 strOptionCode:account.strOptionCode
             };
@@ -1178,7 +1179,7 @@
 			console.log(strPassword);
             console.log(`R-Name : ${strRoomName}, Pass : ${strPassword}, NumPlayers : ${iNumPlayers}, BettingTime : ${iBettingTime}, iBuyIn : ${iBuyIn}, iBlind : ${iBlind}`);
 
-            if ( account.iPoint < iBuyIn )
+            if ( account.iCash < iBuyIn )
             {
                 $('#popup_alerttext1').text('보유포인트가 바이인 보다 적습니다.');
                 $('.button_cancelalert').hide();
