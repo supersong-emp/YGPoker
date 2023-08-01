@@ -480,35 +480,82 @@ export default class IRobot{
             // objectData.eState 가 PREFLOP,FLOP,TURN, RIVER 홀덤 턴 유형 받아오기.
             // objectData.iDefaultCoin 으로 레이즈 금액 랜덤 설정.
             // isHoleCardInRange에 핸드레인지 'CO','BTN' 이렇게 있음.
-            if (objectData.strIDjoker == ''){
-                if(objectData.eState == 'PREFLOP')
-                {
-                    if(iCallAmount > 0)
+            if(objectData.iCoin != 0)
+            {
+                if (objectData.strIDjoker == ''){
+                    if(objectData.eState == 'PREFLOP')
                     {
-                        if (this.isHoleCardInRange(holeCards, 'CO')) {
-                            // holeCards가 컷오프 레인지에 있음
-                            if(this.isHoleCardInRange(holeCards, 'PREFLOP'))
-                            {
-                                bettingType = 'RAISE';
-                                iCallAmount = parseInt(iCallAmount + (Math.floor(Math.random() * 21 + 20) * parseInt(objectData.iDefaultCoin)));
-                            }
-                            else
-                            {
-                                if (objectData.iCallAmount == 0) {
-                                    bettingType = 'Check';
-                                    iCallAmount = 0;
-                                } else if (objectData.iCallAmount > 0 && objectData.iCallAmount < parseInt(objectData.iDefaultCoin*60)) {
-                                    if(objectData.iCoin < parseInt(objectData.iDefaultCoin*20))
-                                    {
-                                        console.log("ALLIN!!!!!!!!!!!!!!!!");
-                                        console.log(parseInt(objectData.iDefaultCoin*20));
-                                        bettingType = 'Allin';
-                                        iCallAmount = objectData.iCoin;
+                        if(iCallAmount > 0)
+                        {
+                            if (this.isHoleCardInRange(holeCards, 'CO')) {
+                                // holeCards가 컷오프 레인지에 있음
+                                if(this.isHoleCardInRange(holeCards, 'PREFLOP'))
+                                {
+                                    bettingType = 'RAISE';
+                                    iCallAmount = parseInt(iCallAmount + (Math.floor(Math.random() * 21 + 20) * parseInt(objectData.iDefaultCoin)));
+                                }
+                                else
+                                {
+                                    if (objectData.iCallAmount == 0) {
+                                        bettingType = 'Check';
+                                        iCallAmount = 0;
+                                    } else if (objectData.iCallAmount > 0 && objectData.iCallAmount < parseInt(objectData.iDefaultCoin*40)) {
+                                        if(objectData.iCoin < parseInt(objectData.iDefaultCoin*20))
+                                        {
+                                            console.log("ALLIN!!!!!!!!!!!!!!!!");
+                                            console.log(parseInt(objectData.iDefaultCoin*20));
+                                            bettingType = 'Allin';
+                                            iCallAmount = objectData.iCoin;
+                                        }
+                                        else
+                                        {
+                                            bettingType = 'Call';
+                                        }
                                     }
                                     else
                                     {
-                                        bettingType = 'Call';
+                                        bettingType = 'Fold';
+                                        iCallAmount = 0;
                                     }
+                                }
+                            } 
+                            else {
+                                // holeCards가 컷오프 레인지에 없음
+                                if (objectData.iCallAmount == 0) {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+        
+                                } else if (objectData.iCallAmount > 0) {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
+                        
+                            }
+                        }
+                        else if(objectData.eState == 'FLOP' )
+                        {
+                            if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,3), objectData.eState)){
+                                if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
+                                {
+                                    bettingType = 'Call';
+                                    //iCallAmount = iCallAmount;
+                                }
+                                else if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+                                }
+                                else
+                                {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
+                            } 
+                            else {
+                                if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
                                 }
                                 else
                                 {
@@ -516,144 +563,105 @@ export default class IRobot{
                                     iCallAmount = 0;
                                 }
                             }
-                        } 
-                        else {
-                            // holeCards가 컷오프 레인지에 없음
-                            if (objectData.iCallAmount == 0) {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-    
-                            } else if (objectData.iCallAmount > 0) {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
-                            }
-                    
                         }
-                    }
-                    else if(objectData.eState == 'FLOP' )
-                    {
-                        if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,3), objectData.eState)){
-                            if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
-                            {
-                                bettingType = 'Call';
-                                //iCallAmount = iCallAmount;
-                            }
-                            else if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-                            }
-                            else
-                            {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
-                            }
-                        } 
-                        else {
-                            if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-                            }
-                            else
-                            {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
+                        else if(objectData.eState == 'TURN')
+                        {
+                            if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,4), objectData.eState)){
+                                if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
+                                {
+                                    bettingType = 'Call';
+                                }
+                                else if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+                                }
+                                else
+                                {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
+                            } 
+                            else {
+                                if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+                                }
+                                else
+                                {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
                             }
                         }
-                    }
-                    else if(objectData.eState == 'TURN')
-                    {
-                        if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,4), objectData.eState)){
-                            if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
-                            {
-                                bettingType = 'Call';
-                            }
-                            else if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-                            }
-                            else
-                            {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
-                            }
-                        } 
-                        else {
-                            if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-                            }
-                            else
-                            {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
+                        else if(objectData.eState == 'RIVER')
+                        {
+                            if(this.hasViableVision(holeCards, objectData.tableCards, objectData.eState)){
+                                if(iCallAmount > 0)
+                                {
+                                    bettingType = 'Call';
+                                    //iCallAmount = iCallAmount;
+                                }
+                                else if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+                                }
+                                else
+                                {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
+                            } 
+                            else {
+                                if(iCallAmount == 0)
+                                {
+                                    bettingType = 'Check';
+                                    iCallAmount = 0;
+                                }
+                                else
+                                {
+                                    bettingType = 'Fold';
+                                    iCallAmount = 0;
+                                }
                             }
                         }
                     }
-                    else if(objectData.eState == 'RIVER')
+                }
+                else
+                {
+                    if(this.account.strID == objectData.strIDjoker)
                     {
-                        if(this.hasViableVision(holeCards, objectData.tableCards, objectData.eState)){
-                            if(iCallAmount > 0)
+                        if (objectData.iCallAmount == 0) {
+                            bettingType = 'Raise';
+                            iCallAmount = parseInt(objectData.iCallAmount + (Math.floor(Math.random() * 21 + 20) * objectData.iDefaultCoin));
+                        } else if (objectData.iCallAmount > 0) {
+                            bettingType = Math.random() < 0.5 ? 'Raise' : 'Call'; // 랜덤하게 Raise나 Call 선택
+                            if(bettingType == 'Raise')
                             {
-                                bettingType = 'Call';
-                                //iCallAmount = iCallAmount;
-                            }
-                            else if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
+                                iCallAmount = parseInt(objectData.iCallAmount + ((Math.floor(Math.random() * 3) + 1) * objectData.iCallAmount));
                             }
                             else
                             {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
-                            }
-                        } 
-                        else {
-                            if(iCallAmount == 0)
-                            {
-                                bettingType = 'Check';
-                                iCallAmount = 0;
-                            }
-                            else
-                            {
-                                bettingType = 'Fold';
-                                iCallAmount = 0;
+                                iCallAmount = objectData.iCallAmount;
                             }
                         }
+                    }
+                }
+                if(bettingType == 'Raise' || bettingType == 'Call')
+                {
+                    if(objectData.iCallAmount > objectData.iCoin)
+                    {
+                        bettingType = 'Allin';
+                        iCallAmount = objectData.iCoin;
                     }
                 }
             }
             else
             {
-                if(this.account.strID == objectData.strIDjoker)
-                {
-                    if (objectData.iCallAmount == 0) {
-                        bettingType = 'Raise';
-                        iCallAmount = parseInt(objectData.iCallAmount + (Math.floor(Math.random() * 21 + 20) * objectData.iDefaultCoin));
-                    } else if (objectData.iCallAmount > 0) {
-                        bettingType = Math.random() < 0.5 ? 'Raise' : 'Call'; // 랜덤하게 Raise나 Call 선택
-                        if(bettingType == 'Raise')
-                        {
-                            iCallAmount = parseInt(objectData.iCallAmount + ((Math.floor(Math.random() * 3) + 1) * objectData.iCallAmount));
-                        }
-                        else
-                        {
-                            iCallAmount = objectData.iCallAmount;
-                        }
-                    }
-                }
-            }
-            if(bettingType == 'Raise' || bettingType == 'Call')
-            {
-                if(objectData.iCallAmount > objectData.iCoin)
-                {
-                    bettingType = 'Allin';
-                    iCallAmount = objectData.iCoin;
-                }
+                bettingType = 'Allin'
+                iCallAmount = 0;
             }
             this.bEnableBetting = true;
             this.iCallAmount = iCallAmount;

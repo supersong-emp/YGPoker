@@ -2641,8 +2641,6 @@ class IGame
 
         if (tableCards && handCards) // 핸드와 테이블이 설정되었으면 합쳐서 listcarddeck에 추가.
         {
-            //tableCards = this.listCardDeck.slice(players.length * 2, players.length * 2 + 5);
-
             let sortedHandCards = [];
             let currentLocation = dealLocation;
             for (let i = 0; i < players.length; i++) {
@@ -2654,9 +2652,14 @@ class IGame
             console.log(tableCards);
             console.log( Object.values(handCards).flat());
             this.listCardDeck = Object.values(handCards).flat().concat(tableCards);
+            this.tableCards = tableCards;
             //this.tableCards = tableCards;
         }
-        this.tableCards = this.listCardDeck.slice(players.length * 2, players.length * 2 + 5);
+        else
+        {
+            this.tableCards = this.listCardDeck.slice(players.length * 2, players.length * 2 + 5);
+        }
+        
         console.log(this.listCardDeck);
     }
 
