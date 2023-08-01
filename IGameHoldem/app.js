@@ -55,7 +55,7 @@ app.post('/game', (req, res) => {
 
     console.log(req.body);
 
-    let account = {strID:req.body.strID, strPassword:req.body.strPassowrd, lUnique:req.body.lUnique, iCoin:req.body.iCoin, iAvatar:req.body.iAvatar, strOptionCode:req.body.strOptionCode, strGroupID:req.body.strGroupID, iClass:req.body.iClass};
+    let account = {strID:req.body.strID, strPassword:req.body.strPassowrd, lUnique:req.body.lUnique, iCoin:req.body.iCoin, iAvatar:req.body.iAvatar, strOptionCode:req.body.strOptionCode, strGroupID:req.body.strGroupID, iClass:req.body.iClass, eUserType:req.body.eUserType};
     res.render('game', {account:account});
 });
 

@@ -118,7 +118,7 @@ class IGameInstance
 
             // this.GameManager.OnIO(io);
 
-            socket.on('CM_Login', (strID, strPassword, iAvatar) => {
+            socket.on('CM_Login', (strID, strPassword, iAvatar, eUserType) => {
 
                 console.log(`CM_Login`);
 
@@ -128,22 +128,23 @@ class IGameInstance
                 socket.iLocation = -1;
                 //socket.iCoin = 100000;
                 socket.iAvatar = iAvatar;
+                socket.eUserType = eUserType;
                 // socket.iCoin = this.iCoinList[this.iCurrentCoin];
                 // this.iCurrentCoin ++;
                 // this.iCurrentCoin = Math.floor(this.iCurrentCoin%5);
                 //socket.iCash = 200000;
 
-                console.log(`${socket.strID}, ${socket.eStage}, ##### CM_Login Avatar : ${iAvatar}`);
+                console.log(`${socket.strID}, ${socket.eStage}, ##### CM_Login Avatar : ${iAvatar}, eUserType : ${eUserType}`);
 
                 this.PrintLobbyUsers();
 
-                socket.emit('SM_Login', {result:'OK', strID:strID, iCoin:socket.iCoin, iAvatar:iAvatar});
+                socket.emit('SM_Login', {result:'OK', strID:strID, iCoin:socket.iCoin, iAvatar:iAvatar, eUserType:eUserType});
            });
 
-        socket.on('CM_JoinGame', (strID, lUnique, iCoin, iAvatar, strOptionCode, strGroupID, iClass) => {
+        socket.on('CM_JoinGame', (strID, lUnique, iCoin, iAvatar, strOptionCode, strGroupID, iClass, eUserType) => {
 
             console.log(`CM_JoinGame`);
-            console.log(`strID : ${strID}, iCoin : ${iCoin}, lUnique : ${lUnique}, Avatar : ${iAvatar}, strGroupID : ${strGroupID}`);
+            console.log(`strID : ${strID}, iCoin : ${iCoin}, lUnique : ${lUnique}, Avatar : ${iAvatar}, strGroupID : ${strGroupID}, eUserType : ${eUserType}`);
 
             socket.strID = strID;
             //socket.strPassword = strPassword;
@@ -151,6 +152,7 @@ class IGameInstance
             socket.iLocation = -1;
             // socket.iCoin = iCoin;
             socket.iAvatar = iAvatar;
+            socket.eUserType = eUserType;
             socket.strOptionCode = strOptionCode;
             socket.strGroupID = strGroupID;
             socket.iClass = iClass;
@@ -172,7 +174,7 @@ class IGameInstance
                     {
                         socket.iCoin = (parseInt(iBuyIn)*parseInt(instanceRoom.iDefaultCoin));
                         socket.iCash = parseInt(iCash);
-                        socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iCash:iCash, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
+                        socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iCash:iCash, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin, eUserType:eUserType});
                     }
                 }
             }
@@ -305,7 +307,7 @@ class IGameInstance
 
                 console.log(`${socket.iLocation}, ${socket.strID}, ${socket.eStage}, ${socket.lUnique}, ##### Avatar : ${socket.iAvatar}`);
 
-                socket.emit('SM_SelectLocation', {eResult:ret, iCoin:socket.iCoin, iCash:socket.iCash, iLocation:iLocation, iAvatar:socket.iAvatar});
+                socket.emit('SM_SelectLocation', {eResult:ret, iCoin:socket.iCoin, iCash:socket.iCash, iLocation:iLocation, iAvatar:socket.iAvatar, eUserType:socket.eUserType});
             });
 
             socket.on('CM_StartGame', () => {

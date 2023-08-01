@@ -959,8 +959,9 @@
                 var strGroupID = $(`<input type="hidden" value='${account.strGroupID}' name="strGroupID">`);
                 var iClass = $(`<input type="hidden" value='${account.iClass}' name="iClass">`);
                 var iMaxPlayer = $(`<input type="hidden" value='${objectData.iMaxPlayer}' name="iMaxPlayer">`);
+                var eUserType = $(`<input type="hidden" value='${account.eUserType}' name="eUserType">`);
 
-                $form.append(eGameType).append(strID).append(lUnique).append(iCoin).append(iAvatar).append(strOptionCode).append(strGroupID).append(iClass).append(iMaxPlayer);
+                $form.append(eGameType).append(strID).append(lUnique).append(iCoin).append(iAvatar).append(strOptionCode).append(strGroupID).append(iClass).append(iMaxPlayer).append(eUserType);
                 showCookiePermission();
             }
         });

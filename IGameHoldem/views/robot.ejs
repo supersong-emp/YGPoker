@@ -9,31 +9,32 @@
 	<script src='/socket.io/socket.io.js'></script>
 </head>
  <body>
-
+    <button id="requestRobotButton" class="btn btn-primary">로봇 참가</button>
     <script type="module" src="game/IRobot.js"></script>
     <script type="module" src="game/IRobotManager.js"></script>
 	<script type="text/javascript">
 		var socket = io('/game');
 
         $(document).ready(function () {
-            $.ajax({
-                type:'post',
-                url: "/robot/request_robot",
-                data: {},
-                success:function(ret) {
-                    console.log(ret);
+            $("#requestRobotButton").click(function() {
+                $.ajax({
+                    type:'post',
+                    url: "/robot/request_robot",
+                    data: {},
+                    success:function(ret) {
+                        console.log(ret);
 
-                    if ( ret.result == 'OK' )
-                    {
-						// 데이터를 받은 후 커스텀 이벤트를 생성하고 dispatch
-                        var event = new CustomEvent('receivedRobotData', { detail: ret.data });
-                        document.dispatchEvent(event);
+                        if ( ret.result == 'OK' )
+                        {
+                            var event = new CustomEvent('receivedRobotData', { detail: ret.data });
+                            document.dispatchEvent(event);
+                        }
+                        else
+                        {
+                            alert('수정을 완료 하지 못했습니다.');
+                        }
                     }
-                    else
-                    {
-                        alert('수정을 완료 하지 못했습니다.');
-                    }
-                }
+                });
             });
             // 다른 JavaScript 파일에서 이 이벤트를 listen
             document.addEventListener('receivedRobotData', function (event) {

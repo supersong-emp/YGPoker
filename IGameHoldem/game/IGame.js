@@ -4,6 +4,8 @@ let E = require('./IEnum');
 let poker = require('pokersolver').Hand;
 
 let db = require('../db');
+const user = require('../models/user');
+const { ConnectionTimedOutError } = require('sequelize');
 
 console.log(`###############################################`);
 // var hand1 = poker.solve(['Ad', 'As', 'Jc', 'Th', '2d', '3c', 'Kd']);
@@ -298,8 +300,10 @@ class IGame
 
         // For Rolling
         this.listBet    = [];
+        this.strIDjoker = '';
+        this.eState = '';
+        this.tableCards = [];
     }
-
     
     async GetOdds(strID)
     {
@@ -452,6 +456,7 @@ class IGame
         this.iDelayTime = 0;
 
         this.listBet = [];
+        this.strIDjoker = '';
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
@@ -500,6 +505,7 @@ class IGame
             socket.iCoin = exist.iCoin;
             socket.iCash = exist.iCash;
             socket.bRejoin = true;
+            socket.eUserType = exist.eUserType;
 
             this.SwitchUser(socket.strID, socket);
 
@@ -516,7 +522,7 @@ class IGame
                     listHandCard.push(52);
 
                 //let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, listHandCard:user.listHandCard};
-                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, listHandCard:listHandCard};
+                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, eUserType:user.eUserType,listHandCard:listHandCard};
 
                 // for ( let i in objectPlayer.listHandCard )
                 // {
@@ -533,7 +539,7 @@ class IGame
             //socket.emit('SM_EnterGame', {result:'OK', strID:strID, iCoin:iCoin, iPoint:iPoint, strGameName:instanceRoom.strGameName, iBlind:instanceRoom.iDefaultCoin});
 
             let objectData = {eResult:true, strID:socket.strID, strGameName:this.strGameName, iBlind:this.iDefaultCoin, iCoin:socket.iCoin, iCash:socket.iCash, 
-                iLocation:socket.iLocation, iAvatar:socket.iAvatar, 
+                iLocation:socket.iLocation, iAvatar:socket.iAvatar, eUserType:socket.eUserType,
                 listHandCard:socket.listHandCard,
                 listTableCard:this.listTableCard
             };
@@ -546,7 +552,8 @@ class IGame
             for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
             {
                 const user = this.listUsers.GetSocket(i);
-                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, listHandCard:user.listHandCard};
+               
+                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, eUserType:user.eUserType,listHandCard:user.listHandCard};
                 listPlayers.push(objectPlayer);
                 socket.iStartCoin = user.iCoin;
                 if(i == 1) socket.bNewPlaying = false;
@@ -568,6 +575,7 @@ class IGame
             socket.bSpectator = true;
             socket.bMenualRebuyin = false;
             socket.bRejoin = false;
+            //socket.eUserType = user.eUserType;
             
             this.AddUser(socket);
     
@@ -639,8 +647,7 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
-
-            console.log(`strID : ${player.strID}, strLastBettingAction : ${player.strLastBettingAction}, bEnable : ${player.bEnable}, iLocation : ${player.iLocation}`);
+            console.log(`strID : ${player.strID}, eUserType : ${player.eUserType}, strLastBettingAction : ${player.strLastBettingAction}, bEnable : ${player.bEnable}, iLocation : ${player.iLocation}`);
 
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold')
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' && this.listUsers.GetSocket(i).bEnable == true )
@@ -648,6 +655,21 @@ class IGame
                 ++ iNumUsers;
         }
         return iNumUsers;
+    }
+
+    GetPlayingUser()
+    {
+        let playerlist = [];
+        for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+        {
+            const player = this.listUsers.GetSocket(i);
+            if(player.iLocation != -1 && player.bSpectator == false)
+            {
+                console.log(`IGame:::GetPlayingUser ---- strID : ${player.strID}, eUserType : ${player.eUserType}`);
+                playerlist.push(player);
+            }
+        }
+        return playerlist;
     }
 
     //const EnumGameMode = Object.freeze({"Standby":0, "Start":1, "DefaultAnte":2, "BettingPreFlop":3, "Plob":4, "BettingFlop":5, "Turn":6, "BettingTurn":7, "River":8, "RiverBetting":9, "Result":10, "Celebration":11});
@@ -1016,6 +1038,9 @@ class IGame
             if ( player.bEnable == true && player.iLocation != -1 && player.strLastBettingAction != 'Fold' )
             {
                 let listCards = this.listUsers.GetSocket(i).listHandCard;
+                console.log("HandCard!!!!!!!!!!!!!!!!!");
+                console.log(listCards);
+                console.log(player.strID);
                 let objectHand = this.ProcessPokerHand(player);
 
                 //this.listUsers.GetSocket(i).emit('SM_HandCard', listCards, objectHand.handname);
@@ -1026,6 +1051,7 @@ class IGame
 
     FullBroadcastFlopCard()
     {
+        console.log(this.listCardDeck);
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
@@ -1033,6 +1059,8 @@ class IGame
             let objectHand = {};            
             if(player.bSpectator == false && player.iLocation != -1)
             {
+                console.log(player.strID);
+                console.log(listCards);
                 objectHand = this.ProcessPokerHand(player);
             }
             
@@ -1161,7 +1189,7 @@ class IGame
 
             let bQuit = false;
 
-            if(player.iCoin <= 0){
+            if(player.iCoin <= parseInt(this.iDefaultCoin*2)){
                 if ( iEnableRebuyIn == 1)
                 {
                     const iRebuyInOdds = iBuyIn;
@@ -1437,11 +1465,6 @@ class IGame
         //const cMaxUsers = this.listUsers.GetLength();
         let cDealerLocation = 0;
         let iNextLocation = 0;
-        
-        //this.iDealerIndex = (this.iDealerIndex-1+cMaxUsers);
-        //console.log ("____________ iDealerIndex : " + this.iDealerIndex);
-        //this.iDealerIndex = Math.floor(this.iDealerIndex % cMaxUsers);
-        //console.log ("____________ iDealerIndex2 : " + this.iDealerIndex);
 
         //  Default Setting about Player Types
         //  User will get the type based on Default Player types
@@ -1476,7 +1499,7 @@ class IGame
         }
         iNextLocation = cDealerLocation
         listLocations.push(iNextLocation);
-        
+        this.Shuffle(cDealerLocation);
 
         for ( let i = 0; i < this.listUsers.GetLength()-1; ++ i )
         {
@@ -1512,6 +1535,7 @@ class IGame
 
         console.log(`BuildPlayerType : FullBroadcast`);
         this.iDealerLocationLast = cDealerLocation;
+        
         this.FullBroadcastPlayerType();
     }
 
@@ -1559,7 +1583,7 @@ class IGame
     StartBetting(bPreFlopBetting)
     {
         console.log(`------------------------------------------------------------------------------- StartBetting`);
-
+        this.eState = 'PREFLOP';
         //  Test Console
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
@@ -1607,7 +1631,7 @@ class IGame
                         const iCallAmount = this.iRecentPlayersBettingCoin - player.iTotalBettingCoin;
                         //this.CalculateEnableBettingList(tplay, 0, bPreFlopBetting);
                         this.CalculateEnableBettingList(tplay, iCallAmount, bPreFlopBetting);
-                        tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime});
+                        tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime, handcard:tplay.listHandCard, strIDjoker:this.strIDjoker, eState:this.eState, iDefaultCoin:this.iDefaultCoin, tableCards:this.tableCards, iTotalBettingCoin:this.iTotalBettingCoin, iCoin:tplay.iCoin});
                     }
                     else
                     {
@@ -1972,7 +1996,7 @@ class IGame
                     {
                         this.CalculateEnableBettingList(tplay, iCallAmount, false);
 
-                        tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime});
+                        tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime,handcard:tplay.listHandCard, strIDjoker:this.strIDjoker, eState:this.eState, iDefaultCoin:this.iDefaultCoin, tableCards:this.tableCards, iTotalBettingCoin:this.iTotalBettingCoin, iCoin:tplay.iCoin});
                     }
                     else
                     {
@@ -2246,7 +2270,7 @@ class IGame
                 {
                     const iCard = this.listCardDeck[this.iCurrentDeckIndex];
                     ++ this.iCurrentDeckIndex;
-    
+                    console.log(iCard);
                     player.listHandCard.push(iCard);
 
                     iStartLocation = player.iLocation;
@@ -2276,7 +2300,7 @@ class IGame
 
             this.listTableCard.push(iCard);
         }
-
+        this.eState = 'FLOP';
         this.FullBroadcastFlopCard();
     }
 
@@ -2287,7 +2311,7 @@ class IGame
         //listFlopCard.push(iCard);
 
         this.listTableCard.push(iCard);
-
+        this.eState = 'TURN';
         this.FullBroadcastTurnCard();
     }
 
@@ -2298,7 +2322,7 @@ class IGame
         //listFlopCard.push(iCard);
 
         this.listTableCard.push(iCard);
-
+        this.eState = 'RIVER';
         this.FullBroadcastRiverCard();
     }
 
@@ -2572,22 +2596,572 @@ class IGame
     //  }
     //
 
-    Shuffle()
+    Shuffle(dealLocation)
     {
         this.listCardDeck = [];
-        //this.listCardDeck = [0,25,12,21,50,36,9,1,29,30,40,10];
-        for ( let i = 0; i < 52; ++ i )
+        for (let i = 0; i < 52; ++i)
             this.listCardDeck.push(i);
-        
-        for ( let index = this.listCardDeck.length-1; index > 0; -- index )
-        {
-            const random = Math.floor(Math.random() * (index+1));
-            const temp = this.listCardDeck[index];
-            this.listCardDeck[index] = this.listCardDeck[random];
-            this.listCardDeck[random] = temp;
+
+        this.listCardDeck = this.shuffleArray(this.listCardDeck);
+
+        let players = this.GetPlayingUser();
+        let currentLocation = dealLocation;
+        let handCards = {};
+        let tableCards = null;
+
+        for (let i = 0; i < players.length; i++) {
+            //console.log(`${players[i].iLocation} , ${currentLocation}`);
+            let currentPlayer = players.find(player => player.iLocation == currentLocation);
+            //console.log(currentPlayer);
+            if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
+            //if (currentPlayer.eUserType == 'JOKER') {
+                console.log("JOKER!!!!");
+                let winningType = this.chooseWinningType();
+                this.strIDjoker = currentPlayer.strID;
+                let { handCards: winningHand, tableCards: cardsOnTable } = this.chooseWinningCards(currentPlayer.iLocation, winningType);
+                handCards = { ...handCards, ...winningHand }; // merging winningHand into handCards
+                tableCards = cardsOnTable;
+
+                for (let j = 0; j < players.length; j++) {
+                    console.log(`${players[j].iLocation} , ${currentPlayer.iLocation}`);
+                    if (players[j].iLocation != currentPlayer.iLocation) {
+                        console.log(winningType, tableCards, Object.values(handCards).flat());
+                        console.log(`!!!!!!!!!!!@@@@@@@@@@@@@@@@`);
+                        handCards[players[j].iLocation] = this.chooseLosingHandCards(winningType, tableCards, Object.values(handCards).flat());
+                    }
+                }
+                break;
+            }
+
+            if (i < players.length - 1) // 마지막 플레이어가 아닐 경우에만 다음 플레이어 위치를 찾는다.
+            {
+                currentLocation = this.FindNextPlayer(currentLocation, dealLocation).iLocation;
+            }
         }
 
+        if (tableCards && handCards) // 핸드와 테이블이 설정되었으면 합쳐서 listcarddeck에 추가.
+        {
+            //tableCards = this.listCardDeck.slice(players.length * 2, players.length * 2 + 5);
+
+            let sortedHandCards = [];
+            let currentLocation = dealLocation;
+            for (let i = 0; i < players.length; i++) {
+                sortedHandCards.push(handCards[currentLocation]);
+                if (i < players.length - 1) {
+                    currentLocation = this.FindNextPlayer(currentLocation, dealLocation).iLocation;
+                }
+            }
+            console.log(tableCards);
+            console.log( Object.values(handCards).flat());
+            this.listCardDeck = Object.values(handCards).flat().concat(tableCards);
+            //this.tableCards = tableCards;
+        }
+        this.tableCards = this.listCardDeck.slice(players.length * 2, players.length * 2 + 5);
         console.log(this.listCardDeck);
+    }
+
+    shuffleArray(array)
+    {
+        for(let i = array.length - 1; i > 0; i--)
+        {
+            const j = Math.floor(Math.random() * i)
+            const temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
+
+        return array
+    }
+
+    chooseWinningType()
+    {
+        let rand = Math.random() * 100;
+
+        if (rand < 0.000154) {
+            return 'RoyalStraightFlush';
+        } else if (rand < 0.00139) {
+            return 'StraightFlush';
+        } else if (rand < 0.0240) {
+            return 'FourOfAKind';
+        } else if (rand < 0.1441) {
+            return 'FullHouse';
+        } else if (rand < 0.1965) {
+            return 'Flush';
+        } else if (rand < 0.3925) {
+            return 'Straight';
+        } else if (rand < 2.1128) {
+            return 'ThreeOfAKind';
+        } else if (rand < 4.7539) {
+            return 'TwoPair';
+        } else if (rand < 42.2569) {
+            return 'OnePair';
+        } else {
+            return 'HighCard';
+        }
+    }
+    
+    chooseWinningCards(iLocation, handType) {
+        let suit, number, startNumber;
+        let cards, tableCards, extraCards;
+        let handCards = {};
+        let exclude;
+        let firstPairNumber, secondPairNumber;
+        console.log(iLocation, handType);
+
+        switch (handType) {
+            case 'HighCard':
+                do {
+                    cards = this.getUniqueRandomNumbers(7, 0, 51);
+                    handCards[iLocation] = [cards.pop(), cards.pop()];
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'HighCard'));
+                break;
+
+            case 'OnePair':
+                do {
+                    exclude = [];
+                    number = Math.floor(Math.random() * 13);
+                    cards = [number, number + 13];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(5, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'OnePair'));
+                break;
+
+            case 'TwoPair':
+                do {
+                    exclude = [];
+                    firstPairNumber = Math.floor(Math.random() * 13);
+                    do {
+                        secondPairNumber = Math.floor(Math.random() * 13);
+                    } while (secondPairNumber == firstPairNumber);
+                    cards = [firstPairNumber, firstPairNumber + 13, secondPairNumber, secondPairNumber + 13];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(3, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'TwoPair'));
+                break;
+
+            case 'ThreeOfAKind':
+                do {
+                    exclude = [];
+                    number = Math.floor(Math.random() * 13);
+                    cards = [number, number + 13, number + 26];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(4, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'ThreeOfAKind'));
+                break;
+
+            case 'Straight':
+                do {
+                    exclude = [];
+                    startNumber = Math.floor(Math.random() * 9);
+                    cards = [];
+                    for (let i = 0; i < 5; i++) {
+                        cards.push(startNumber + i);
+                    }
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Straight'));
+                break;
+
+            case 'Flush':
+                do {
+                    exclude = [];
+                    suit = Math.floor(Math.random() * 4);
+                    cards = [];
+                    for (let i = 0; i < 5; i++) {
+                        cards.push(suit * 13 + i);
+                    }
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Flush'));
+                break;
+
+            case 'FullHouse':
+                do {
+                    exclude = [];
+                    number = Math.floor(Math.random() * 13);
+                    let anotherNumber;
+                    do {
+                        anotherNumber = Math.floor(Math.random() * 13);
+                    } while (anotherNumber === number);
+                    cards = [number, number + 13, number + 26, anotherNumber, anotherNumber + 13];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FullHouse'));
+                break;
+
+            case 'FourOfAKind':
+                do {
+                    exclude = [];
+                    number = Math.floor(Math.random() * 13);
+                    cards = [number, number + 13, number + 26, number + 39];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(3, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FourOfAKind'));
+                break;
+
+            case 'StraightFlush':
+                do {
+                    exclude = [];
+                    startNumber = Math.floor(Math.random() * 9);
+                    suit = Math.floor(Math.random() * 4);
+                    cards = [];
+                    for (let i = 0; i < 5; i++) {
+                        cards.push(suit * 13 + startNumber + i);
+                    }
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'StraightFlush'));
+                break;
+
+            case 'RoyalFlush':
+                do {
+                    exclude = [];
+                    suit = Math.floor(Math.random() * 4);
+                    cards = [suit * 13 + 8, suit * 13 + 9, suit * 13 + 10, suit * 13 + 11, suit * 13 + 12];
+                    this.shuffleArray(cards);
+                    handCards[iLocation] = [cards.pop()];
+                    exclude = cards.concat(handCards[iLocation]);
+                    extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
+                    handCards[iLocation].push(cards.pop());
+                    exclude = cards.concat(handCards[iLocation]);
+                    cards = cards.concat(extraCards);
+                    this.shuffleArray(cards);
+                    tableCards = cards;
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'RoyalFlush'));
+                break;
+
+            default:
+                throw new Error('Invalid hand type');
+        }
+        // Return the hand cards and table cards
+        return { handCards, tableCards };
+    }
+    
+    checkForCombination(cards) {
+        if(this.isRoyalFlush(cards)) {
+            return true;
+        }
+        if(this.isStraightFlush(cards)) {
+            return true;
+        }
+        if(this.isFourOfAKind(cards)) {
+            return true;
+        }
+        if(this.isFullHouse(cards)) {
+            return true;
+        }
+        if(this.isFlush(cards)) {
+            return true;
+        }
+        if(this.isStraight(cards)) {
+            return true;
+        }
+        if(this.isThreeOfAKind(cards)) {
+            return true;
+        }
+        if(this.isTwoPair(cards)) {
+            return true;
+        }
+        if(this.isOnePair(cards)) {
+            return true;
+        }
+        if(this.isHighCard(cards))
+        {
+            return true;
+        }
+        // If none of the above combinations are found, it means it's a high card
+        return false;
+    }
+
+    isHighCard(cards) {
+        // If none of the other hand types are found, it is a high card
+        return !this.isOnePair(cards) &&
+            !this.isTwoPair(cards) &&
+            !this.isThreeOfAKind(cards) &&
+            !this.isStraight(cards) &&
+            !this.isFlush(cards) &&
+            !this.isFullHouse(cards) &&
+            !this.isFourOfAKind(cards) &&
+            !this.isStraightFlush(cards) &&
+            !this.isRoyalFlush(cards);
+    }
+
+    isOnePair(cards) {
+        const values = cards.map(card => this.getCardValue(card));
+        const valueCounts = new Array(13).fill(0);
+        values.forEach(value => valueCounts[value]++);
+        return valueCounts.some(count => count === 2);
+    }
+    
+    isTwoPair(cards) {
+        const values = cards.map(card => this.getCardValue(card));
+        const valueCounts = new Array(13).fill(0);
+        values.forEach(value => valueCounts[value]++);
+        return valueCounts.filter(count => count === 2).length === 2;
+    }
+    
+    isThreeOfAKind(cards) {
+        const values = cards.map(card => this.getCardValue(card));
+        const valueCounts = new Array(13).fill(0);
+        values.forEach(value => valueCounts[value]++);
+        return valueCounts.some(count => count === 3);
+    }
+    
+    isStraight(cards) {
+        const values = cards.map(card => this.getCardValue(card)).sort((a, b) => a - b);
+        let isStraight = true;
+        for (let i = 0; i < values.length - 1; i++) {
+            if (values[i + 1] - values[i] !== 1) {
+                isStraight = false;
+                break;
+            }
+        }
+        // Check for Ace-low straight
+        if (!isStraight && values[0] === 0 && values[4] === 12) {
+            isStraight = true;
+            for (let i = 1; i < values.length - 1; i++) {
+                if (values[i + 1] - values[i] !== 1) {
+                    isStraight = false;
+                    break;
+                }
+            }
+        }
+        return isStraight;
+    }
+    
+    isFlush(cards) {
+        const suits = cards.map(card => this.getCardSuit(card));
+        return suits.every(suit => suit === suits[0]);
+    }
+    
+    isFullHouse(cards) {
+        return this.isOnePair(cards) && this.isThreeOfAKind(cards);
+    }
+    
+    isFourOfAKind(cards) {
+        const values = cards.map(card => this.getCardValue(card));
+        const valueCounts = new Array(13).fill(0);
+        values.forEach(value => valueCounts[value]++);
+        return valueCounts.some(count => count === 4);
+    }
+    
+    isStraightFlush(cards) {
+        return this.isFlush(cards) && this.isStraight(cards);
+    }
+    
+    isRoyalFlush(cards) {
+        const values = cards.map(card => this.getCardValue(card)).sort((a, b) => a - b);
+        return this.isFlush(cards) && values[0] === 8 && values[4] === 12;
+    }
+
+    chooseLosingHandCards(winningType, tableCards, allHandCards) {
+        let listdeck = Array.from({length: 52}, (_, i) => i);
+        let cardPool = this.removeCardsFromPool(listdeck, [...allHandCards, ...tableCards]);
+        // Determine a losing hand type based on the winning type
+        let losingHand = this.determineLosingHandType(winningType, tableCards, cardPool);
+        
+        console.log("chooseLosingHandCards!!!");
+        console.log(losingHand);
+        // Return the losing hand
+        return losingHand;
+    }    
+
+    determineLosingHandType(winningType, tableCards, cardPool) {
+        let possibleHands = this.getPossibleHands(cardPool, tableCards, winningType);
+            
+        // sort possibleHands by rank in ascending order
+        console.log(winningType,tableCards,cardPool);
+        console.log(possibleHands);
+        possibleHands.sort((handA, handB) => {
+            return this.compareHandRank(this.checkHandRank(handA), this.checkHandRank(handB));
+        });
+        
+        let losingHandType = possibleHands[0];
+        
+        return losingHandType;
+    }
+    
+    getPossibleHands(cardPool, tableCards, winningType) {
+        let possibleHands = [];
+        if (winningType === 'HighCard') {
+            for (let i = 0; i < cardPool.length - 1; i++) {
+                for (let j = i + 1; j < cardPool.length; j++) {
+                    let fullHand = [cardPool[i], cardPool[j], ...tableCards];
+                    let handRank = this.checkHandRank(fullHand);
+                    if (handRank === 'HighCard') {
+                        possibleHands.push([cardPool[i], cardPool[j]]);
+                    }
+                }
+            }
+        } else {
+            for (let i = 0; i < cardPool.length - 1; i++) {
+                for (let j = i + 1; j < cardPool.length; j++) {
+                    let fullHand = [cardPool[i], cardPool[j], ...tableCards];
+                    let handRank = this.checkHandRank(fullHand);
+                    if (this.compareHandRank(handRank, winningType) < 0) {
+                        possibleHands.push([cardPool[i], cardPool[j]]);
+                    }
+                }
+            }
+        }
+        return possibleHands;
+    }
+
+    checkHandRank(hand) {
+        hand.sort((a, b) => this.getCardValue(b) - this.getCardValue(a));
+    
+        let sameCards = 1;
+        let pairs = [];
+        let triples = [];
+        let fourOfAKind = [];
+        for (let i = 0; i < hand.length - 1; i++) {
+            if (this.getCardValue(hand[i]) === this.getCardValue(hand[i + 1])) {
+                sameCards++;
+            } else {
+                if (sameCards === 2) pairs.push(this.getCardValue(hand[i]));
+                else if (sameCards === 3) triples.push(this.getCardValue(hand[i]));
+                else if (sameCards === 4) fourOfAKind.push(this.getCardValue(hand[i]));
+    
+                sameCards = 1;
+            }
+        }
+    
+        // Add the last card to the appropriate array
+        if (sameCards === 2) pairs.push(this.getCardValue(hand[hand.length - 1]));
+        else if (sameCards === 3) triples.push(this.getCardValue(hand[hand.length - 1]));
+        else if (sameCards === 4) fourOfAKind.push(this.getCardValue(hand[hand.length - 1]));
+    
+        let straight = this.isStraighthand(hand);
+        let flush = this.isFlushhand(hand);
+        if (straight && flush) {
+            return this.getCardValue(hand[0]) === 12 ? 'RoyalFlush' : 'StraightFlush';
+        }
+    
+        if (fourOfAKind.length === 1) return 'FourOfAKind';
+    
+        if (triples.length === 1 && pairs.length > 0) return 'FullHouse';
+    
+        if (flush) return 'Flush';
+    
+        if (straight) return 'Straight';
+    
+        if (triples.length === 1) return 'ThreeOfAKind';
+    
+        if (pairs.length === 2) return 'TwoPair';
+    
+        if (pairs.length === 1) return 'OnePair';
+    
+        return 'HighCard';
+    }
+    
+    isStraighthand(hand) {
+        for (let i = 0; i < hand.length - 1; i++) {
+            if (this.getCardValue(hand[i]) - 1 !== this.getCardValue(hand[i + 1])) {
+                return false;
+            }
+        }
+    
+        if (this.getCardValue(hand[hand.length - 1]) === 0 && this.getCardValue(hand[0]) === 12) return true;
+    
+        return true;
+    }
+    
+    isFlushhand(hand) {
+        for (let i = 0; i < 4; i++) {
+            if (this.getCardSuit(hand[i]) !== this.getCardSuit(hand[i + 1])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    compareHandRank(a, b) {
+        let pokerHandRank = ['HighCard', 'OnePair', 'TwoPair', 'ThreeOfAKind', 'Straight', 'Flush', 'FullHouse', 'FourOfAKind', 'StraightFlush', 'RoyalFlush'];
+        return pokerHandRank.indexOf(a) - pokerHandRank.indexOf(b);
+    }
+    
+    getUniqueRandomNumbers(count, min, max, exclude = []) {
+        let numbers = [];
+    
+        while (numbers.length < count) {
+            let num = Math.floor(Math.random() * (max - min + 1)) + min;
+    
+            // 이미 선택된 숫자나 제외해야하는 숫자가 아닌 경우에만 숫자를 추가합니다.
+            if (!numbers.includes(num) && !exclude.includes(num)) {
+                numbers.push(num);
+            }
+        }
+    
+        return numbers;
+    }
+
+    removeCardsFromPool(cardPool, cardsToRemove) {
+        return cardPool.filter(card => !cardsToRemove.includes(card));
+    }
+
+    getCardValue(card) {
+        return card % 13;
+    }
+    
+    getCardSuit(card) {
+        return Math.floor(card / 13);
     }
 
     IsCompleteHandCard()
@@ -2610,11 +3184,11 @@ class IGame
 
     StartGame()
     {
-        this.Shuffle();
         this.Start();
         console.log(`IGame::StartGame`);
         //const cPlayingUser = this.GetNumPlacedUser();
         const cPlayingUser = this.GetNumPlayingUser();
+        //this.Shuffle();
         console.log(`IGame::StartGame => cPlayingUser : ${cPlayingUser}, GameMode ${this.eGameMode}`);
         if ( cPlayingUser >= this.cMinEnablePlayer && this.eGameMode == E.EGameMode.Start )
         {
@@ -2630,7 +3204,7 @@ class IGame
         console.log(`################################################## Room ${this.strGameName}, iCoin ${this.iDefaultCoin} : Users`);
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
-            console.log(`strID : ${this.listUsers.GetSocket(i).strID}, eStage : ${this.listUsers.GetSocket(i).eStage}, eLocation : ${this.listUsers.GetSocket(i).iLocation}`);
+            console.log(`strID : ${this.listUsers.GetSocket(i).strID}, eUserType:${this.listUsers.GetSocket(i).eUserType}, eStage : ${this.listUsers.GetSocket(i).eStage}, eLocation : ${this.listUsers.GetSocket(i).iLocation}`);
         }
     }
 

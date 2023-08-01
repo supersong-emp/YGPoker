@@ -22,14 +22,14 @@ export default class IGameMain{
     Login()
     {
         console.log(`IGameMain::Login ${account.strID}, ${account.strPassword}, Avatar : ${account.iAvatar}`);
-        this.socket.emit('CM_Login', account.strID, account.strPassword, account.iAvatar);
+        this.socket.emit('CM_Login', account.strID, account.strPassword, account.iAvatar, account.eUserType);
     }
 
     JoinGame()
     {
         console.log(`CM_Join`);
         console.log(account);
-        this.socket.emit('CM_JoinGame', account.strID, account.lUnique, account.iCoin, account.iAvatar, account.strOptionCode, account.strGroupID, account.iClass);
+        this.socket.emit('CM_JoinGame', account.strID, account.lUnique, account.iCoin, account.iAvatar, account.strOptionCode, account.strGroupID, account.iClass, account.eUserType);
     }
 
     
@@ -197,6 +197,7 @@ export default class IGameMain{
             this.socket.strID = data.strID;
             this.socket.iCoin = data.iCoin;
             this.socket.iAvatar = data.iAvatar;
+            this.socket.eUserType = data.eUserType;
 
         });
 
@@ -235,7 +236,7 @@ export default class IGameMain{
             console.log(`SM_JoinGame`);
             console.log(listPlayers);
 
-            console.log(this.Game);
+            //console.log(this.Game);
             this.Game.SetMaxPlayer(iMaxPlayer);
             this.Game.ProcessLocation(listPlayers);
         });
@@ -248,7 +249,7 @@ export default class IGameMain{
 
             if ( true == objectData.eResult )
             {
-                this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, []);
+                this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, objectData.eUserType,[]);
                 this.Game.UpdatePoint(parseInt(objectData.iCash));
             }
         });
@@ -268,7 +269,7 @@ export default class IGameMain{
 
             this.Game.SetMaxPlayer(iMaxPlayer);
             this.Game.ProcessLocation(listPlayers);
-            this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, objectData.listHandCard);
+            this.Game.ProcessLocationComplete(this.socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar, objectData.eUserType, objectData.listHandCard);
             this.Game.UpdatePoint(parseInt(objectData.iCash));
             this.Game.SetTableCard(objectData.listTableCard);
         })
@@ -332,7 +333,6 @@ export default class IGameMain{
             chatElement.append(tag.tag.tag);
             soundClick.play();
 
-            // ä�� ����� ��ũ�� ��ġ�� ���� �Ʒ��� ����
             chatElement.scrollTop(chatElement.prop("scrollHeight"));
         });
 
@@ -532,7 +532,6 @@ export default class IGameMain{
             }
             //logElement.append(tag.tag.tag);
 
-            // ���ӷα� ����� ��ũ�� ��ġ�� ���� �Ʒ��� ����
             logElement.scrollTop(logElement.prop("scrollHeight"));
             
             this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);

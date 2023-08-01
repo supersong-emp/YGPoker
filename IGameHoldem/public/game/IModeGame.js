@@ -319,8 +319,8 @@ export default class IModeGame {
     //     this.listPlayers.push(user);
     // }
 
-    AddUser(strID, iCoin, iLocation, iFxLocation, iAvatar, listHandCard) {
-        let user = new IUser(strID,iCoin,iLocation,iFxLocation,iAvatar,this.kTimer,this.kSC,listHandCard,this.isMobile);
+    AddUser(strID, iCoin, iLocation, iFxLocation, iAvatar, eUserType,listHandCard) {
+        let user = new IUser(strID,iCoin,iLocation,iFxLocation,iAvatar,eUserType,this.kTimer,this.kSC,listHandCard,this.isMobile);
         user.OnSize(
             this.kSC.m_fWidthRate,
             this.kSC.m_fHeightRate
@@ -382,9 +382,9 @@ export default class IModeGame {
                     this.listPlayers[i].iLocation == list[j] &&
                     true == this.listPlayers[i].bEnablePlay
                 ) {
-                    console.log(
-                        `F.N.P : ${this.listPlayers[i].strID}, ${this.listPlayers[i].iLocation}`
-                    );
+                    // console.log(
+                    //     `F.N.P : ${this.listPlayers[i].strID}, ${this.listPlayers[i].iLocation}`
+                    // );
                     return this.listPlayers[i];
                 }
 
@@ -843,7 +843,6 @@ export default class IModeGame {
 
             //if ( this.fDealingCardElapsedTime > 30 )
             if (this.fDealingCardElapsedTime > 0.2) {
-                console.log(``);
                 let player = this.FindNextPlayer(this.iLastDealingCardLocation, -1);
                 if (null != player) {
                     //if ( player.listHandCard.length < 2 )
@@ -1033,6 +1032,7 @@ export default class IModeGame {
                     listPlayers[i].iLocation,
                     listPlayers[i].iLocation,
                     listPlayers[i].iAvatar,
+                    listPlayers[i].eUserType,
                     listPlayers[i].listHandCard
                 );
             }
@@ -1069,10 +1069,10 @@ export default class IModeGame {
         let iFx = (objectPlayer.iLocation - iMyLocation + 9) % 9;
 
         //this.AddUser(objectPlayer.strID, objectPlayer.iLocation, objectPlayer.iLocation);
-        this.AddUser(objectPlayer.strID,objectPlayer.iCoin,objectPlayer.iLocation,iFx,objectPlayer.iAvatar,this.kTimer,this.kSC);
+        this.AddUser(objectPlayer.strID,objectPlayer.iCoin,objectPlayer.iLocation,iFx,objectPlayer.iAvatar, objectPlayer.eUserType, this.kTimer,this.kSC);
     }
 
-    ProcessLocationComplete(strID, iCoin, iLocation, iAvatar, listHandCard) {
+    ProcessLocationComplete(strID, iCoin, iLocation, iAvatar, eUserType, listHandCard) {
         this.bEnableLocation = false;
 
         this.socket.iLocation = iLocation;
@@ -1089,7 +1089,7 @@ export default class IModeGame {
         }
 
         //this.AddUser(strID, iCoin, iLocation, 0, iAvatar, this.kTimer, this.kSC);
-        this.AddUser(strID, iCoin, iLocation, 0, iAvatar, listHandCard);
+        this.AddUser(strID, iCoin, iLocation, 0, iAvatar, eUserType, listHandCard);
     }
 
     IsEnableLocation(iLocation) {

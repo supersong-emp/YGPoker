@@ -7,15 +7,16 @@ import IChipDealer from "../game/IChipDealer.js";
 
 export default class IUser{
 
-    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, kTimer, kSC, listHandCard, isMobile)
+    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, eUserType, kTimer, kSC, listHandCard, isMobile)
     {
-        console.log(`IUser::constructor : ${strID}, Coin ${iGameCoin}, iLocation:${iLocation}, iFxLocation :${iFxLocation}, iAvatar : ${iAvatar}`);
+        console.log(`IUser::constructor : ${strID}, Coin ${iGameCoin}, iLocation:${iLocation}, iFxLocation :${iFxLocation}, iAvatar : ${iAvatar}, eUserType: ${eUserType}`);
 
         this.strID = strID;
         this.iGameCoin = iGameCoin;
         this.iLocation  = iLocation;
         this.iFxLocation = iFxLocation;
         this.iAvatar = parseInt(iAvatar);
+        this.eUserType = eUserType;
 
         this.strPlayerType = '';
         this.bEnableRenderBettingType = false;
