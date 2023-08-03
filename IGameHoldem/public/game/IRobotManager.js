@@ -35,22 +35,20 @@ IRobot.prototype.selectRandomRoom = async function() {
 IRobot.prototype.update = async function () {
     // Wait for random interval before selecting room
     
-    if (this.bConnected == false) {
-        this.fElapsedTime -= this.timer.GetElapsedTime();
-        //console.log(this.fElapsedTime);
-        //console.log(this.timer.GetElapsedTime());
-        if (this.fElapsedTime > 3) {
+    if (this.bConnected == false ){
+        this.fElapsedTime-=this.timer.GetElapsedTime();
+        if(this.fElapsedTime > 3) {
             await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
             // Select room
             await this.selectRandomRoom();
-            let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers);
+            let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers && room.iMaxPlayers - room.iNumPlayers > 2);
             if (availableRooms.length > 0) {
                 // Choose a random room
                 let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
                 this.lUnique = randomRoom.lUnique;
 
                 let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
-                if (selectedRoom && this.account.iCash && this.account.iCash > 0) {
+                if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
                     let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
                     let availableLocations = [];
 
@@ -68,6 +66,45 @@ IRobot.prototype.update = async function () {
                         this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass, this.account.eUserType);
                         this.bConnected = true;
                         this.fElapsedTime = 0;
+                    }
+                }
+                else
+                {
+                    const index = robots.findIndex(robot => robot.account.strID === this.account.strID);
+                    if (index !== -1) {
+                        robots.splice(index, 1);
+                    }
+                }
+            }
+            else
+            {
+                this.RequestMakeGame();
+
+                // Use the same logic to join the game as above
+                let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
+                if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin * 100)) {
+                    let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
+                    let availableLocations = [];
+
+                    for (let i = 0; i < parseInt(selectedRoom.iMaxPlayers); i++) {
+                        if (!existingLocations.includes(i)) {
+                            availableLocations.push(i);
+                        }
+                    }
+
+                    if (availableLocations.length > 0) {
+                        let randomIndex = Math.floor(Math.random() * availableLocations.length);
+                        this.iLocation = availableLocations[randomIndex];
+
+                        this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass, this.account.eUserType);
+                        this.bConnected = true;
+                        this.fElapsedTime = 0;
+                    }
+                }
+                else {
+                    const index = robots.findIndex(robot => robot.account.strID === this.account.strID);
+                    if (index !== -1) {
+                        robots.splice(index, 1);
                     }
                 }
             }

@@ -1231,7 +1231,10 @@ export default class IModeGame {
     }
 
     UpdateStrHandName() {
-        this.kMainUser.textHand.UpdateCaption(this.strHand);
+        if(this.kMainUser.bEnablePlay == true)
+        {
+            this.kMainUser.textHand.UpdateCaption(this.strHand);
+        }
     }
 
     CheckBettingCoin(iCoin) {

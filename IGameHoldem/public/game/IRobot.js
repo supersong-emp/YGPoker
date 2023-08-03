@@ -145,14 +145,14 @@ export default class IRobot{
                 await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
                 // Select room
                 await this.selectRandomRoom();
-                let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers);
+                let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers && room.iMaxPlayers - room.iNumPlayers > 2);
                 if (availableRooms.length > 0) {
                     // Choose a random room
                     let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
                     this.lUnique = randomRoom.lUnique;
 
                     let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
-                    if (selectedRoom && this.account.iCash && this.account.iCash > 0) {
+                    if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
                         let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
                         let availableLocations = [];
 
@@ -173,6 +173,32 @@ export default class IRobot{
                         }
                     }
                 }
+                else
+                {
+                    this.RequestMakeGame();
+
+                     // Use the same logic to join the game as above
+                     let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
+                     if (selectedRoom && this.account.iCash && this.account.iCash > 0  && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
+                         let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
+                         let availableLocations = [];
+ 
+                         for (let i = 0; i < parseInt(selectedRoom.iMaxPlayers); i++) {
+                             if (!existingLocations.includes(i)) {
+                                 availableLocations.push(i);
+                             }
+                         }
+ 
+                         if (availableLocations.length > 0) {
+                             let randomIndex = Math.floor(Math.random() * availableLocations.length);
+                             this.iLocation = availableLocations[randomIndex];
+ 
+                             this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass, this.account.eUserType);
+                             this.bConnected = true;
+                             this.fElapsedTime = 0;
+                         }
+                     }
+                }
             }
         }
         if ( this.bEnableBetting == true ){
@@ -186,6 +212,24 @@ export default class IRobot{
                 this.fElapsedTime = 0;
             } 
         }
+    }
+
+    async RequestMakeGame()
+    {
+        let strDefaultRoomName = ['YG포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
+        let index = Math.floor(Math.random()*3);
+        let strRoomName = strDefaultRoomName[index];
+        let data = {
+            //eGameType:0,
+            eGameType:'HOLDEM',
+            iDefaultCoin:500, 
+            strRoomName:strRoomName, 
+            strPassword:'', 
+            //iBuyIn:iBuyIn,
+            iBettingTime:10,
+            iMaxPlayer:9,
+        };
+        this.socket.emit('CM_CreateRoom',data);
     }
     
     RequestRoomList()
@@ -300,8 +344,37 @@ export default class IRobot{
         return false;
     }
 
+    async RequestAxios(strAddress, objectData)
+    {
+        console.log(`IGameInstance::RequestAxios ${strAddress}`);
+        console.log(objectData);
+
+        try {
+
+            const customAxios = axios.create({});
+            const response = await customAxios.post(strAddress, objectData, {headers:{ 'Accept-Encoding': 'application/json'}});
+            console.log(response.data);
+            if ( response.data.result == 'OK' )
+                return {result:'OK', data:response.data};
+            else
+                return {result:'error', error:response.data.error};    
+        }
+        catch (error) {
+
+            return {result:'error', error:'axios'};
+
+        }
+    }
+
     OnIO()
     {
+        this.socket.on('SM_CreateRoom',async (instanceRoom) => {
+            console.log("SM_CreateRoom");
+            console.log(instanceRoom);
+
+            this.lUnique = instanceRoom.lUnique;
+        });
+
         this.socket.on('SM_RequestLogin', (data) => {
 
             //let account = {strID:'bbb', strPassword:'1111', iAvatar:5};
@@ -309,9 +382,6 @@ export default class IRobot{
             console.log(`SM_RequestLogin`);
             this.socket.emit('CM_Login', this.account.strID, this.account.strPassword, this.account.iAvatar, this.account.eUserType);
         });
-
-        // 840114
-        // socket.e
 
         this.socket.on('SM_Login', (data) => {
 
@@ -335,6 +405,7 @@ export default class IRobot{
             // this.Game.UpdateGameInfo(data.strGameName, data.iBlind);
             // this.Game.UpdatePoint(parseInt(data.iCoin));
             console.log(this.iLocation);
+            this.socket.emit('CM_RoomUpdate', {strID:data.strID, strGameName:data.strGameName, iDefaultCoin:data.iBlind, eGameType:'HOLDEM'});
 
             this.socket.emit('CM_SelectLocation', this.iLocation);
         });
@@ -425,9 +496,11 @@ export default class IRobot{
 
             console.log(`SM_DefaultAnteSB`);
             console.log(objectData);
-
+            let data = {};
+            let iCash = parseInt(objectData.iCash) + parseInt(objectData.iCoin);
+            data = {strID:objectData.strID,iCash:iCash};
             this.socket.emit('CM_DefaultAnteSB', objectData.iCoin);
-
+            this.socket.emit('CM_UpdateICash',data);
             // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
             // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
         });
@@ -692,6 +765,9 @@ export default class IRobot{
             console.log(`SM_FullBroadcastBetting`);
             console.log(objectData);
 
+            let data = {strID:objectData.strID,iCash:parseInt(objectData.iCash)+parseInt(objectData.iCoin)};
+
+            this.socket.emit('CM_UpdateICash',data);
             // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, objectData.strBetting);
             // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
         });
@@ -743,6 +819,10 @@ export default class IRobot{
             console.log(listResult);
             console.log(listWinCards);
             console.log(strWinnerHand);
+
+            let data = {strID:listResult.strID,iCash:parseInt(listResult.iCash)+parseInt(listResult.iCoin)};
+
+            this.socket.emit('CM_UpdateICash',data);
 
             // this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);
             // this.Game.UpdatePot(listPots);

@@ -969,9 +969,9 @@ class IGame
         this.Broadcast(socket, 'SM_BroadcastDefaultAnteBB', objectPlayer);
     }
 
-    FullBroadcastBetting(socket, iCoin, iBettingCoin, strBetting, iTotalBettingCoin)
+    FullBroadcastBetting(socket, iCoin, iCash,iBettingCoin, strBetting, iTotalBettingCoin)
     {
-        let objectPlayer = {strID:socket.strID, iCoin:iCoin, iBettingCoin:iBettingCoin, strBetting:strBetting, iTotalBettingCoin:iTotalBettingCoin, listPots:this.listPots};
+        let objectPlayer = {strID:socket.strID, iCoin:iCoin, iCash:iCash,iBettingCoin:iBettingCoin, strBetting:strBetting, iTotalBettingCoin:iTotalBettingCoin, listPots:this.listPots};
 
         //this.Broadcast(socket, 'SM_BroadcastBetting', objectPlayer);
 
@@ -1035,7 +1035,7 @@ class IGame
         {
             const player = this.listUsers.GetSocket(i);
 
-            if ( player.bEnable == true && player.iLocation != -1 && player.strLastBettingAction != 'Fold' )
+            if ( player.bEnable == true && player.iLocation != -1 && player.strLastBettingAction != 'Fold' && player.bSpectator == false)
             {
                 let listCards = this.listUsers.GetSocket(i).listHandCard;
                 console.log("HandCard!!!!!!!!!!!!!!!!!");
@@ -1126,6 +1126,7 @@ class IGame
                                 iRank:player.iRank,
                                 iWinCoin:player.iWinCoin,
                                 iCoin:player.iCoin,
+                                iCash:player.iCash,
                                 strDescr:player.strDescr
                             };
 
@@ -1414,7 +1415,7 @@ class IGame
                 //if ( this.listUsers.GetSocket(i).iLocation == list[j] && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' ) {
                     if ( this.listUsers.GetSocket(i).iLocation == list[j] && 
                             this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' && 
-                            this.listUsers.GetSocket(i).bEnable == true ) 
+                            this.listUsers.GetSocket(i).bEnable == true) 
                     {
 
                     console.log(`FindNextUser : ${list[j]}, socket : ${this.listUsers.GetSocket(i).strID}`);
@@ -1492,6 +1493,8 @@ class IGame
         if (this.iDealerLocationLast == -1)
         {
             cDealerLocation = this.listUsers.GetSocket(0).iLocation;
+            console.log(cDealerLocation);
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         else{
             let player = this.FindNextPlayer(this.iDealerLocationLast, -1);
@@ -2060,7 +2063,7 @@ class IGame
     ProcessBetting(socket, objectBetting)
     {
         this.CalculateBettingAmount(socket, objectBetting);
-        this.FullBroadcastBetting(socket, socket.iCoin, socket.iBettingCoin, objectBetting.strBetting, this.iTotalBettingCoin);
+        this.FullBroadcastBetting(socket, socket.iCoin, socket.iCash, socket.iBettingCoin, objectBetting.strBetting, this.iTotalBettingCoin);
 
         const cEnablePlayer = this.GetNumPlayingUser();
         console.log(`##### ProcessBetting : NumEnableUser ${cEnablePlayer} to Result`);
@@ -2174,6 +2177,7 @@ class IGame
             const objectData = {
                 strID:socket.strID, 
                 iCoin:socket.iCoin, 
+                iCash:socket.iCash,
                 iBettingCoin:this.iDefaultCoin, 
                 iTotalBettingCoin:this.iTotalBettingCoin,
                 listPots:this.listPots,
@@ -2214,6 +2218,7 @@ class IGame
             const objectData = {
                 strID:socket.strID, 
                 iCoin:socket.iCoin, 
+                iCash:socket.iCash,
                 iBettingCoin:this.iDefaultCoin*2, 
                 iTotalBettingCoin:this.iTotalBettingCoin,
                 listPots:this.listPots,
@@ -2235,7 +2240,8 @@ class IGame
                 this.Betting(player, this.iDefaultCoin*2, 'BB');
                 const objectData = {
                     strID:player.strID, 
-                    iCoin:player.iCoin, 
+                    iCoin:player.iCoin,
+                    iCash:player.iCash,
                     iBettingCoin:this.iDefaultCoin*2, 
                     iTotalBettingCoin:this.iTotalBettingCoin,
                     listPots:this.listPots,

@@ -586,6 +586,7 @@ class IGame
                 strID:player.strID, 
                 iRank:player.iRank,
                 iWinCoin:player.iWinCoin,
+                iCash:player.iCash,
                 iCoin:player.iCoin,
                 iAvatar:player.iAvatar,
                 iScore:player.iScore,

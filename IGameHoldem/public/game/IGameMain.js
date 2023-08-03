@@ -516,7 +516,7 @@ export default class IGameMain{
             var logElement = $('#output_log');
             if(cPlayingUser == 1)
             {
-                tag = `<p>${listResult[0].strID} has won by default. win coin : ${listResult[0].iWinCoin}</p>`;
+                tag = `<p>${listResult[0].strID} 기권승. 이긴 금액 : ${listResult[0].iWinCoin}</p>`;
                 logElement.append(tag);
             }
             else
@@ -525,7 +525,7 @@ export default class IGameMain{
                 {
                     if(listResult[i].iRank == 1)
                     {
-                        tag = `<p style="display: flex; white-space: nowrap;">${listResult[i].strID} has won. win coin : ${listResult[i].iWinCoin}, hand card : <img src = "img/cards/${"card"+String(listResult[i].iCard1).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listResult[i].iCard2).padStart(2, '0')}.png" width = "35" height = "70">, table card : <img src = "img/cards/${"card"+String(listWinCards[0]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[1]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[2]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[3]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[4]).padStart(2, '0')}.png" width = "35" height = "70"></p>`;
+                        tag = `<p style="display: flex; white-space: nowrap;">${listResult[i].strID} 승리. 이긴 금액 : ${listResult[i].iWinCoin}, 핸드카드 : <img src = "img/cards/${"card"+String(listResult[i].iCard1).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listResult[i].iCard2).padStart(2, '0')}.png" width = "35" height = "70">, table card : <img src = "img/cards/${"card"+String(listWinCards[0]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[1]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[2]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[3]).padStart(2, '0')}.png" width = "35" height = "70"> <img src = "img/cards/${"card"+String(listWinCards[4]).padStart(2, '0')}.png" width = "35" height = "70"></p>`;
                         logElement.append(tag);
                     }
                 }

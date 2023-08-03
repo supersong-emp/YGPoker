@@ -204,6 +204,35 @@ class IGameInstance
                 socket.emit('SM_RoomList', listRooms);
             });
 
+            socket.on('CM_CreateRoom', async (data) => {
+                console.log("CM_CreateRoom");
+                console.log(data);
+                let instanceRoom = this.GameManager.CreateGame(data.strRoomName, data.eGameType, data.strPassword, data.iDefaultCoin, data.iBettingTime, data.iMaxPlayer);
+                
+                socket.emit('SM_CreateRoom', instanceRoom);
+                let listPlayer = [];
+                for ( let i = 0; i < instanceRoom.listUsers.GetLength(); ++ i )
+                {
+                    const player = instanceRoom.listUsers.GetSocket(i);
+                    //console.log(player);
+                    const iCoin = player.iCoin+player.iCash;
+                    listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+                }
+
+                let objectData ={
+                    lUnique:instanceRoom.lUnique,
+                    strGameName:instanceRoom.strGameName,
+                    eGameType:instanceRoom.eGameType,
+                    strPassword:instanceRoom.strPassword,
+                    iDefaultCoin:instanceRoom.iDefaultCoin,
+                    iBettingTime:instanceRoom.iBettingTime,
+                    iMaxPlayer:instanceRoom.cMaxPlayer,
+                    iNumPlayer:1,
+                    listPlayer:listPlayer
+                };
+                await this.RequestAxios(`${global.strLobbyAddress}/createroom`, {objectData:objectData});
+            });
+
             socket.on('CM_RoomList', () => {
 
                 let listRooms = this.GameManager.GetRoomList();
@@ -289,15 +318,16 @@ class IGameInstance
                     socket.emit('SM_Error', {error:'NotEnoughBuyin'});
                 }
             });
+            
+            socket.on('CM_RoomUpdate', (objectData) => {
 
-            // socket.on('CM_CreateRoom', (data) => {
+                console.log(`CM_RoomUpdate`);
+                console.log(objectData);
 
-            //     console.log(`CM_CreateRoom`);
-            //     console.log(data);
-
-            // });
-
-            //  Game
+                io.emit('SM_RoomUpdate', objectData);
+                //socket.emit('SM_RoomUpdate', objectData);
+                console.log("SM_RoomUpdate!!!!!!");
+            });
 
             socket.on('CM_SelectLocation', (iLocation) => {
 
@@ -377,6 +407,14 @@ class IGameInstance
 
                 this.GameManager.ProcessBetting(socket, objectBetting);
             });
+
+            socket.on('CM_UpdateICash', (objectBetting) => {
+                console.log(`CM_UpdateICash`);
+                console.log(objectBetting);
+
+                socket.emit('SM_UpdateICash', objectBetting);
+            });
+            
         });
     }
 

@@ -628,34 +628,37 @@ export default class IUser{
 
     Betting(strBetting, iCoin, iMyCoin)
     {
-        this.UpdateMyCoin(iMyCoin);
-        this.SetBettingType(strBetting, iMyCoin);
-        this.ibettingCallCoin += parseInt(iCoin);
-        this.textCallCoin.UpdateCaption(this.ibettingCallCoin.toLocaleString());
-        for( let i in this.listProgressBar)
+        if(this.bEnablePlay == true)
         {
-           this.listProgressBar[i].bEnable = false;
-           this.listProgressBar[i].UpdateTime(0);
+            this.UpdateMyCoin(iMyCoin);
+            this.SetBettingType(strBetting, iMyCoin);
+            this.ibettingCallCoin += parseInt(iCoin);
+            this.textCallCoin.UpdateCaption(this.ibettingCallCoin.toLocaleString());
+            for( let i in this.listProgressBar)
+            {
+            this.listProgressBar[i].bEnable = false;
+            this.listProgressBar[i].UpdateTime(0);
+            }
+
+            //
+            const tx = this.x + 0;
+            const ty = this.y + 20;
+
+            // let x = cChipLocations[this.iFxLocation].x;
+            // let y = cChipLocations[this.iFxLocation].y;
+            let x = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).x;
+            let y = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).y;
+
+            // let x = 760;
+            // let y = 600;
+
+            //let dealer = new ICardDealer(x, y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 70, 110, iCard);
+
+            let dealer = new IChipDealer(tx, ty, x, y, this.m_fHR, this.m_fVR, this.kTimer, 40, 40, iCoin);
+            this.listChipDealer.push(dealer);
+
+            soundChipThrow.play();
         }
-
-        //
-        const tx = this.x + 0;
-        const ty = this.y + 20;
-
-        // let x = cChipLocations[this.iFxLocation].x;
-        // let y = cChipLocations[this.iFxLocation].y;
-        let x = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).x;
-        let y = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).y;
-
-        // let x = 760;
-        // let y = 600;
-
-        //let dealer = new ICardDealer(x, y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 70, 110, iCard);
-
-        let dealer = new IChipDealer(tx, ty, x, y, this.m_fHR, this.m_fVR, this.kTimer, 40, 40, iCoin);
-        this.listChipDealer.push(dealer);
-
-        soundChipThrow.play();
     }
 
     SetBettingType(strBettingType, iMyCoin)
