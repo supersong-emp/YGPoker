@@ -23,5 +23,7 @@ const Fees = require('./models/fee')(sequelize, Sequelize);
 db.Fees = Fees;
 const ResultHoldems = require('./models/resultHoldem')(sequelize, Sequelize);
 db.ResultHoldems = ResultHoldems;
+const Inouts = require('./models/inout')(sequelize, Sequelize);
+db.Inouts = Inouts;
 
 module.exports = db;

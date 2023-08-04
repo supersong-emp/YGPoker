@@ -17,6 +17,7 @@
                     <th>게임</th>
                     <th>방제목</th>
                     <th>블라인드</th>
+                    <th>머니주기</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,11 @@
         </table>
     </div>
     <button id="requestRobotButton" class="btn btn-primary">로봇 참가</button>
+    <button id="giveAllMoneyButton" class="btn btn-primary">전체 머니 주기</button>
+    <div class="text-end mr-3">
+        <span class="badge bg-primary fs-4 fw-bold">조커 본사 머니:</span>
+        <span id="jokerCash" class="fs-4"></span>
+    </div>
     <script type="module" src="game/IRobot.js"></script>
     <script type="module" src="game/IRobotManager.js"></script>
     <script src='/socket.io/socket.io.js'></script>
@@ -31,6 +37,7 @@
 		var socket = io('/game');
 
         document.addEventListener('DOMContentLoaded', (event) => {
+            
             var robotData = [];
             $("#requestRobotButton").click(function() {
                 $.ajax({
@@ -44,6 +51,8 @@
                         {
                             var event = new CustomEvent('receivedRobotData', { detail: ret.data });
                             document.dispatchEvent(event);
+                            // Joker의 현금 업데이트
+                            $('#jokerCash').text(ret.jokerCash.toLocaleString());
                         }
                         else
                         {
@@ -52,6 +61,66 @@
                     }
                 });
             });
+
+            // 머니 주기 버튼에 대한 클릭 이벤트
+            $(document).on('click', '.giveMoney', function() {
+                var id = $(this).data('id');  // 이 버튼이 속한 로봇의 ID를 가져옴
+                var amount = prompt("얼마를 주시겠습니까?");
+                if (amount) {
+                    $.ajax({
+                        type:'post',
+                        url: "/robot/request_moneygive",
+                        data: { strID: id, amount: amount },
+                        success:function(ret) {
+                            console.log(ret);
+                            if (ret.result == 'OK') {
+                                // 데이터를 업데이트
+                                for (var i = 0; i < robotData.length; i++) {
+                                    if (robotData[i].strID == ret.data.strID) {
+                                        robotData[i].iCash = ret.data.iCash;
+                                        break;
+                                    }
+                                }
+                                // Joker의 현금 업데이트
+                                $('#jokerCash').text(ret.jokerCash.toLocaleString());
+                                // 테이블 업데이트
+                                updateTable(robotData);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // 로봇 전체에 머니 주기 버튼
+            $("#giveAllMoneyButton").click(function() {
+                var amount = prompt("모든 로봇에게 얼마를 주시겠습니까?");
+                if (amount) {
+                    $.ajax({
+                        type:'post',
+                        url: "/robot/request_moneygiveall",
+                        data: { amount: amount },
+                        success:function(ret) {
+                            console.log(ret);
+                            if (ret.result == 'OK') {
+                                // 데이터를 업데이트
+                                for (var i = 0; i < robotData.length; i++) {
+                                    for (var j = 0; j < ret.data.length; j++) {
+                                        if (robotData[i].strID == ret.data[j].strID) {
+                                            robotData[i].iCash = ret.data[j].iCash;
+                                            break;
+                                        }
+                                    }
+                                }
+                                // Joker의 현금 업데이트
+                                $('#jokerCash').text(ret.jokerCash.toLocaleString());
+                                // 테이블 업데이트
+                                updateTable(robotData);
+                            }
+                        }
+                    });
+                }
+            });
+
             // 다른 JavaScript 파일에서 이 이벤트를 listen
             document.addEventListener('receivedRobotData', function (event) {
                 // 이벤트에서 데이터를 받아 처리
@@ -75,13 +144,17 @@
                 // 각 로봇에 대해
                 data.forEach(function(robot) {
                     // 테이블에 새로운 행을 추가
-                    var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.strGameName + "</td><td>" + (robot.iBlind) + "</td></tr>";
+                    var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.strGameName + "</td><td>" + robot.iBlind + "</td><td><button class='btn btn-primary giveMoney' data-id='" + robot.strID + "'>머니주기</button></td></tr>";
                     $("#robotTable tbody").append(newRow);
                 });
             }     
 
             socket.on('connect', () => {
                 console.log("connect");
+            });
+
+            socket.on('disconnect', () => {
+                console.log("disconnect");
             });
 
             socket.on('SM_UpdateICash', (data) => {
@@ -116,14 +189,6 @@
                 // 테이블 업데이트
                 updateTable(robotData);
             });
-            
-            socket.on('SM_RoomList', (listRooms) => {
-
-                console.log(`SM_RoomList!!!! ejs`);
-                console.log(listRooms);
-
-                //this.listRooms = listRooms;
-            })
         });
 
         
