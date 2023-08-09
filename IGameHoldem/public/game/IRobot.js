@@ -545,6 +545,8 @@ export default class IRobot{
             // objectData.handcard에서 카드를 문자열로 변환
             let holeCards = this.convertCardsToHoleCardString(objectData.handcard[0], objectData.handcard[1]);
 
+            console.log(holeCards);
+
             // 기본 베팅 유형 설정
             let bettingType = objectData.listEnableBettingType.includes('Check') ? 'Check' : 'Call';
             let iCallAmount = objectData.iCallAmount;
@@ -553,7 +555,7 @@ export default class IRobot{
             // objectData.eState 가 PREFLOP,FLOP,TURN, RIVER 홀덤 턴 유형 받아오기.
             // objectData.iDefaultCoin 으로 레이즈 금액 랜덤 설정.
             // isHoleCardInRange에 핸드레인지 'CO','BTN' 이렇게 있음.
-            if(objectData.iCoin != 0)
+            if(objectData.iCoin > 0)
             {
                 if (objectData.strIDjoker == ''){
                     if(objectData.eState == 'PREFLOP')
@@ -564,7 +566,7 @@ export default class IRobot{
                                 // holeCards가 컷오프 레인지에 있음
                                 if(this.isHoleCardInRange(holeCards, 'PREFLOP'))
                                 {
-                                    bettingType = 'RAISE';
+                                    bettingType = 'Raise';
                                     iCallAmount = parseInt(iCallAmount + (Math.floor(Math.random() * 21 + 20) * parseInt(objectData.iDefaultCoin)));
                                 }
                                 else
@@ -724,7 +726,7 @@ export default class IRobot{
                 }
                 if(bettingType == 'Raise' || bettingType == 'Call')
                 {
-                    if(objectData.iCallAmount > objectData.iCoin)
+                    if(objectData.iCallAmount >= objectData.iCoin)
                     {
                         bettingType = 'Allin';
                         iCallAmount = objectData.iCoin;
