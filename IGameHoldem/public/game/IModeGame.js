@@ -1231,9 +1231,12 @@ export default class IModeGame {
     }
 
     UpdateStrHandName() {
-        if(this.kMainUser.bEnablePlay == true)
+        if(this.kMainUser != null)
         {
-            this.kMainUser.textHand.UpdateCaption(this.strHand);
+            if(this.kMainUser.bEnablePlay == true)
+            {
+                this.kMainUser.textHand.UpdateCaption(this.strHand);
+            }
         }
     }
 
@@ -1754,7 +1757,11 @@ export default class IModeGame {
     EnableUserList(listUser) {
         for (let i in listUser) {
             let player = this.FindUser(listUser[i]);
-            if (null != player) player.bEnablePlay = true;
+            if (null != player) 
+            {
+                player.bEnablePlay = true;
+                player.bSpectator = false;
+            }
         }
     }
 }

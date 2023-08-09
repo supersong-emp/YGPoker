@@ -160,6 +160,7 @@ export default class IUser{
         this.ibettingCallCoin = 0;
 
         this.bReserveExit = false;
+        this.bSpectator = true;
     }
 
     Initialize()
@@ -384,9 +385,12 @@ export default class IUser{
             this.listCardDealer[i].Render(ctx);
         }
 
-        for ( let i in this.listChipDealer )
+        if(this.bSpectator == false)
         {
-            this.listChipDealer[i].Render(ctx);
+            for ( let i in this.listChipDealer )
+            {
+                this.listChipDealer[i].Render(ctx);
+            }
         }
 
          // 플랍, 리버, 턴 모드일때만 보이는거.
@@ -453,12 +457,14 @@ export default class IUser{
                 this.listCardDealer.splice(0, 1);
             }
         }
-
-        for ( let i in this.listChipDealer )
+        if(this.bSpectator == false)
         {
-            this.listChipDealer[i].Update();
-            if ( this.bBettingMode == false )
-                this.listChipDealer.splice(i, 1);
+            for ( let i in this.listChipDealer )
+            {
+                this.listChipDealer[i].Update();
+                if ( this.bBettingMode == false )
+                    this.listChipDealer.splice(i, 1);
+            }
         }
     }
 
@@ -503,9 +509,12 @@ export default class IUser{
         {
             this.listCardDealer[i].OnSize(fHR, fVR);
         }
-        for ( let i in this.listChipDealer )
+        if(this.bSpectator == false)
         {
-            this.listChipDealer[i].OnSize(fHR, fVR);
+            for ( let i in this.listChipDealer )
+            {
+                this.listChipDealer[i].OnSize(fHR, fVR);
+            }
         }
         this.iCurrentX = this.x * fHR;
         this.iCurrentY = this.y * fVR;

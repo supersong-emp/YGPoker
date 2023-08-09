@@ -56,7 +56,6 @@ schedule.scheduleJob('0 0 0 * * *', async()=> {
     
 });
 
-
 // db
 const db = require('./db');
 db.sequelize.sync();
@@ -81,7 +80,7 @@ const { get } = require('http');
 
 //let kGameManager = new IGameManager();
 //let instanceApp = new Instance(io, '/', null, null);
-instanceApp = new Instance(io, '/');
+let instanceApp = new Instance(io, '/');
 //let instanceGame = new Instance(io, '/game', kGameManager, 'Game');
 
 instanceApp.OnIO(io);
@@ -209,6 +208,16 @@ app.post('/request_onlineuser', async (req, res) => {
 
     res.send({result:'OK', list:listUsers});
 });
+
+app.post('/createroom', async (req, res) => {
+
+    console.log('/createroom');
+    console.log(req.body.objectData);
+    
+    instanceApp.UpdateRoom(req.body.objectData);
+
+});
+
 
 server.listen(cPort, ()=> {
 

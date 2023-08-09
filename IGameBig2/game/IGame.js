@@ -1166,7 +1166,7 @@ class IGame
 
     ConvertCardIndex(index)
     {
-        const cSuit = ['s', 'h', 'd', 'c'];
+        const cSuit = ['s', 'h', 'c', 'd'];
         const cRank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
 
         let suit = Math.floor(index / 13);
