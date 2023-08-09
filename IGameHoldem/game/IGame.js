@@ -461,6 +461,14 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             let player = this.listUsers.GetSocket(i);
+            if(player.iLocation == -1)
+            {
+                player.bSpectator = true;
+            }
+            else
+            {
+                player.bSpectator = false;
+            }
 
             player.iTotalBettingCoin = 0;
             player.iBettingCoin = 0;
@@ -470,7 +478,6 @@ class IGame
             player.strHand = '';
             player.iWinCoin = 0;
             player.iRank = 9;
-            player.bSpectator = false;
             player.strDescr = '';
             player.bMenualRebuyin = false;
             player.bRejoin = false;
@@ -647,12 +654,15 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
-            console.log(`strID : ${player.strID}, eUserType : ${player.eUserType}, strLastBettingAction : ${player.strLastBettingAction}, bEnable : ${player.bEnable}, iLocation : ${player.iLocation}`);
+            
 
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold')
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' && this.listUsers.GetSocket(i).bEnable == true )
-            if ( player.iLocation != -1 && player.strLastBettingAction != 'Fold' && player.bEnable == true )
+            if ( player.iLocation != -1 && player.strLastBettingAction != 'Fold' && player.bEnable == true && player.bSpectator == false)
+            {
+                console.log(`strID : ${player.strID}, eUserType : ${player.eUserType}, strLastBettingAction : ${player.strLastBettingAction}, bEnable : ${player.bEnable}, iLocation : ${player.iLocation}`);
                 ++ iNumUsers;
+            }
         }
         return iNumUsers;
     }
@@ -1057,6 +1067,7 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
+            console.log(player.bSpectator);
             if(player.bSpectator == false && player.iLocation != -1)
             {
                 console.log(player.strID);
@@ -1076,8 +1087,11 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
+            console.log(player.bSpectator);
             if(player.bSpectator == false && player.iLocation != -1)
             {
+                console.log(player.strID);
+                console.log(listCards);
                 objectHand = this.ProcessPokerHand(player);
             }
             this.listUsers.GetSocket(i).emit('SM_TurnCard', listCards, objectHand.handdescr, this.listPots);
@@ -1092,8 +1106,11 @@ class IGame
             const player = this.listUsers.GetSocket(i);
             let listCards = this.listTableCard;
             let objectHand = {};            
+            console.log(player.bSpectator);
             if(player.bSpectator == false && player.iLocation != -1)
             {
+                console.log(player.strID);
+                console.log(listCards);
                 objectHand = this.ProcessPokerHand(player);
             }
             this.listUsers.GetSocket(i).emit('SM_RiverCard', listCards, objectHand.handdescr, this.listPots);
@@ -1415,7 +1432,8 @@ class IGame
                 //if ( this.listUsers.GetSocket(i).iLocation == list[j] && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' ) {
                     if ( this.listUsers.GetSocket(i).iLocation == list[j] && 
                             this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' && 
-                            this.listUsers.GetSocket(i).bEnable == true) 
+                            this.listUsers.GetSocket(i).bEnable == true &&
+                            this.listUsers.GetSocket(i).bSpectator == false ) 
                     {
 
                     console.log(`FindNextUser : ${list[j]}, socket : ${this.listUsers.GetSocket(i).strID}`);
@@ -1492,9 +1510,19 @@ class IGame
         //  Build Location List
         if (this.iDealerLocationLast == -1)
         {
-            cDealerLocation = this.listUsers.GetSocket(0).iLocation;
-            console.log(cDealerLocation);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            // listUsers의 길이만큼 반복
+            for (let i = 0;  i < this.listUsers.GetLength(); i++) {
+                let currentLocation = this.listUsers.GetSocket(i).iLocation;
+                // console.log(this.listUsers.GetSocket(i).strID);
+                // console.log(currentLocation);
+                if (currentLocation != -1) {
+                    // console.log(currentLocation);
+                    cDealerLocation = currentLocation;
+                    break;  // 적절한 위치를 찾았으므로 반복문 종료
+                }
+            }
+            // console.log(cDealerLocation);
+            // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         else{
             let player = this.FindNextPlayer(this.iDealerLocationLast, -1);
@@ -2368,6 +2396,8 @@ class IGame
                 continue;
             if ( this.listUsers.GetSocket(i).bEnable == false )
                 continue;
+            if ( this.listUsers.GetSocket(i).bSpectator == true)
+                continue;
 
             const objectHand = this.ProcessPokerHand(this.listUsers.GetSocket(i));
             // let listCard = [];
@@ -2411,6 +2441,8 @@ class IGame
                 continue;
             if ( this.listUsers.GetSocket(i).bEnable == false )
                 continue;
+            if ( this.listUsers.GetSocket(i).bSpectator == true)
+                continue;
 
             const cCash = parseInt(this.listUsers.GetSocket(i).iCash) + parseInt(this.listUsers.GetSocket(i).iCoin);
             this.listDBUpdate.push({iDB:E.EDBType.Users, iSubDB:E.EUserDBType.UpdatePoint, strID:this.listUsers.GetSocket(i).strID, iCash:cCash});
@@ -2426,6 +2458,9 @@ class IGame
 
         listCard.push(player.listHandCard[0]);
         listCard.push(player.listHandCard[1]);
+
+        console.log("ProcessPokerHand!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log(listCard);
         
         let hand = this.ConvertCardList(listCard);
 
@@ -2616,7 +2651,7 @@ class IGame
         let tableCards = null;
 
         for (let i = 0; i < players.length; i++) {
-            //console.log(`${players[i].iLocation} , ${currentLocation}`);
+            console.log(`${players[i].iLocation} , ${currentLocation}`);
             let currentPlayer = players.find(player => player.iLocation == currentLocation);
             //console.log(currentPlayer);
             if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {

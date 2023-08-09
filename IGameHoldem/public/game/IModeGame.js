@@ -319,8 +319,10 @@ export default class IModeGame {
     //     this.listPlayers.push(user);
     // }
 
-    AddUser(strID, iCoin, iLocation, iFxLocation, iAvatar, eUserType,listHandCard) {
+    AddUser(strID, iCoin, iLocation, iFxLocation, iAvatar, eUserType, listHandCard) {
         let user = new IUser(strID,iCoin,iLocation,iFxLocation,iAvatar,eUserType,this.kTimer,this.kSC,listHandCard,this.isMobile);
+        console.log("AddUser bSpectator!!!!!");
+        console.log(user.bSpectator);
         user.OnSize(
             this.kSC.m_fWidthRate,
             this.kSC.m_fHeightRate
@@ -1081,7 +1083,7 @@ export default class IModeGame {
         for (let i in this.listPlayers) {
             let iFx = (this.listPlayers[i].iLocation - iLocation + 9) % 9;
             console.log(
-                `Target iFx : ${iFx}, Mine : ${iLocation}, Target Origin : ${this.listPlayers[i].iLocation}`
+                `Target iFx : ${iFx}, Mine : ${iLocation}, Target Origin : ${this.listPlayers[i].iLocation}, ${this.listPlayers[i].bSpectator}`
             );
 
             this.listPlayers[i].Locate(iFx);
@@ -1760,7 +1762,10 @@ export default class IModeGame {
             if (null != player) 
             {
                 player.bEnablePlay = true;
-                player.bSpectator = false;
+                if(player.iLocation != -1)
+                {
+                    player.bSpectator = false;
+                }
             }
         }
     }

@@ -238,14 +238,14 @@ export default class IUser{
                     const x = this.x + (i*100) - 25;
                     const y = this.y - 20;
                         if ( i == 0 ) {
-                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 350);
+                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
                             if ( this.bWinner == true && this.listWinCards[0] == true ) //&& this.bRender == true )
-                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 350);
+                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
                         }
                         else {
-                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 10);
+                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
                             if ( this.bWinner == true && this.listWinCards[1] == true )//&& this.bRender == true )
-                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 10);
+                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
                         }
                 }
             }
@@ -442,28 +442,47 @@ export default class IUser{
         //         this.iBettingType = -1;
         //     }
         // }
-
-        for ( let i in this.listCardDealer )
-        {
-            this.listCardDealer[i].Update();
-            if ( this.listCardDealer[i].iCompleteStep == 1 )
-            {
-                soundPlaceCard.play();
-
-                this.listHandCard.push(this.listCardDealer[i].iCardIndex);
-                //this.listHandCard.push(this.listTempHandCard[i]);
-                this.listCardDealer[i].iCompleteStep = 2;
-                //this.listTempHandCard.splice(0, 1);
-                this.listCardDealer.splice(0, 1);
-            }
-        }
         if(this.bSpectator == false)
         {
+            for ( let i in this.listCardDealer )
+            {
+                this.listCardDealer[i].Update();
+                if ( this.listCardDealer[i].iCompleteStep == 1 )
+                {
+                    soundPlaceCard.play();
+
+                    this.listHandCard.push(this.listCardDealer[i].iCardIndex);
+                    //this.listHandCard.push(this.listTempHandCard[i]);
+                    this.listCardDealer[i].iCompleteStep = 2;
+                    //this.listTempHandCard.splice(0, 1);
+                    this.listCardDealer.splice(0, 1);
+                }
+            }
             for ( let i in this.listChipDealer )
             {
                 this.listChipDealer[i].Update();
                 if ( this.bBettingMode == false )
                     this.listChipDealer.splice(i, 1);
+            }
+        }
+        else
+        {
+            for ( let i in this.listCardDealer )
+            {
+                for ( let i in this.listCardDealer )
+            {
+                this.listCardDealer[i].Update();
+                if ( this.listCardDealer[i].iCompleteStep == 1 )
+                {
+                    soundPlaceCard.play();
+
+                    this.listHandCard.push(52);
+                    //this.listHandCard.push(this.listTempHandCard[i]);
+                    this.listCardDealer[i].iCompleteStep = 2;
+                    //this.listTempHandCard.splice(0, 1);
+                    this.listCardDealer.splice(0, 1);
+                }
+            }
             }
         }
     }
@@ -505,17 +524,17 @@ export default class IUser{
         {
             this.listProgressBar[i].OnSize(fHR, fVR);
         }
-        for ( let i in this.listCardDealer )
-        {
-            this.listCardDealer[i].OnSize(fHR, fVR);
-        }
-        if(this.bSpectator == false)
-        {
-            for ( let i in this.listChipDealer )
-            {
-                this.listChipDealer[i].OnSize(fHR, fVR);
-            }
-        }
+        // for ( let i in this.listCardDealer )
+        // {
+        //     this.listCardDealer[i].OnSize(fHR, fVR);
+        // }
+        // if(this.bSpectator == false)
+        // {
+        //     for ( let i in this.listChipDealer )
+        //     {
+        //         this.listChipDealer[i].OnSize(fHR, fVR);
+        //     }
+        // }
         this.iCurrentX = this.x * fHR;
         this.iCurrentY = this.y * fVR;
 
@@ -637,7 +656,7 @@ export default class IUser{
 
     Betting(strBetting, iCoin, iMyCoin)
     {
-        if(this.bEnablePlay == true)
+        if(this.bEnablePlay == true && this.bSpectator == false)
         {
             this.UpdateMyCoin(iMyCoin);
             this.SetBettingType(strBetting, iMyCoin);
@@ -732,9 +751,10 @@ export default class IUser{
         const tx = this.x + (index*100) - 25;
         const ty = this.y - 20;
 
-        let fAngle = 350;
-        if ( this.iNumCards == 1 )
-            fAngle = 10;
+        let fAngle = 0;
+        // let fAngle = 350;
+        // if ( this.iNumCards == 1 )
+        //     fAngle = 10;
 
         //let dealer = new ICardDealer(x, y, tx, ty, this.m_fHR, this.m_fVR, this.kTimer, 70, 110, iCard, fAngle);
         //console.log("this.m_fHRthis.m_fHR : " + this.m_fHR + " this.m_fVR.m_fVR : " + this.m_fVR);

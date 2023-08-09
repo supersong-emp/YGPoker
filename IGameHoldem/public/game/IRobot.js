@@ -91,21 +91,24 @@ export default class IRobot{
     // 숫자 카드를 문자 카드로 변환하고 동일한 슈트인지 여부를 확인하는 함수
     convertCardsToHoleCardString(cardNumber1, cardNumber2) {
         let suitIndex1 = Math.floor(cardNumber1 / 13);
-        let rankIndex1 = (cardNumber1 % 13 + 9) % 13;  // 0을 'A'로 처리하도록 수정
+        let rankIndex1 = cardNumber1 % 13;   // 0을 'A'로 처리하도록 수정
 
         let suitIndex2 = Math.floor(cardNumber2 / 13);
-        let rankIndex2 = (cardNumber2 % 13 + 9) % 13;  // 0을 'A'로 처리하도록 수정
+        let rankIndex2 = cardNumber2 % 13;   // 0을 'A'로 처리하도록 수정
 
         let holeCardString = '';
         
         // 동일한 랭크일 경우
         if (rankIndex1 === rankIndex2) {
             holeCardString += this.cardRanks[rankIndex1] + this.cardRanks[rankIndex2];
-        } 
+        }
         // 다른 랭크일 경우
         else {
             // 항상 랭크가 높은 카드를 먼저 표시합니다. a,k,q,j....3,2
-            if (rankIndex1 > rankIndex2) {
+            if ((rankIndex1 == 0 && rankIndex2 != 0) || (rankIndex2 == 0 && rankIndex1 != 0)) {
+                holeCardString += (rankIndex1 == 0 ? this.cardRanks[rankIndex1] : this.cardRanks[rankIndex2]) +
+                                  (rankIndex1 != 0 ? this.cardRanks[rankIndex1] : this.cardRanks[rankIndex2]);
+            } else if (rankIndex1 > rankIndex2) {
                 holeCardString += this.cardRanks[rankIndex1] + this.cardRanks[rankIndex2];
             } else {
                 holeCardString += this.cardRanks[rankIndex2] + this.cardRanks[rankIndex1];
@@ -555,9 +558,9 @@ export default class IRobot{
             // objectData.eState 가 PREFLOP,FLOP,TURN, RIVER 홀덤 턴 유형 받아오기.
             // objectData.iDefaultCoin 으로 레이즈 금액 랜덤 설정.
             // isHoleCardInRange에 핸드레인지 'CO','BTN' 이렇게 있음.
-            if(objectData.iCoin > 0)
+            if( objectData.iCoin > 0 )
             {
-                if(this.account.strID == objectData.strIDjoker)
+                if( this.account.strID == objectData.strIDjoker )
                 {
                     if (objectData.iCallAmount == 0) {
                         bettingType = 'Raise';
@@ -573,11 +576,20 @@ export default class IRobot{
                             iCallAmount = objectData.iCallAmount;
                         }
                     }
-                }
-                else{
-                    if(objectData.eState == 'PREFLOP')
+                    if(bettingType == 'Raise' || bettingType == 'Call')
                     {
-                        if(iCallAmount > 0)
+                        if(iCallAmount >= objectData.iCoin)
+                        {
+                            bettingType = 'Allin';
+                            iCallAmount = objectData.iCoin;
+                        }
+                    }
+                }
+                else
+                {
+                    if(objectData.iCallAmount > 0)
+                    {
+                        if(objectData.eState == 'PREFLOP')
                         {
                             if (this.isHoleCardInRange(holeCards, 'CO')) {
                                 // holeCards가 컷오프 레인지에 있음
@@ -591,8 +603,8 @@ export default class IRobot{
                                     if (objectData.iCallAmount == 0) {
                                         bettingType = 'Check';
                                         iCallAmount = 0;
-                                    } else if (objectData.iCallAmount > 0 && objectData.iCallAmount < parseInt(objectData.iDefaultCoin*40)) {
-                                        if(objectData.iCoin < parseInt(objectData.iDefaultCoin*20))
+                                    } else if (objectData.iCallAmount > 0 && objectData.iCallAmount < parseInt(objectData.iDefaultCoin*30)) {
+                                        if(objectData.iCoin < parseInt(objectData.iDefaultCoin*15))
                                         {
                                             console.log("ALLIN!!!!!!!!!!!!!!!!");
                                             console.log(parseInt(objectData.iDefaultCoin*20));
@@ -718,6 +730,11 @@ export default class IRobot{
                                     iCallAmount = 0;
                                 }
                             }
+                        }
+                        else
+                        {
+                            bettingType = 'Fold';
+                            iCallAmount = 0;
                         }
                     }
                 }
