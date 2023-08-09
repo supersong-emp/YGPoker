@@ -557,7 +557,24 @@ export default class IRobot{
             // isHoleCardInRange에 핸드레인지 'CO','BTN' 이렇게 있음.
             if(objectData.iCoin > 0)
             {
-                if (objectData.strIDjoker == ''){
+                if(this.account.strID == objectData.strIDjoker)
+                {
+                    if (objectData.iCallAmount == 0) {
+                        bettingType = 'Raise';
+                        iCallAmount = parseInt(objectData.iCallAmount + (Math.floor(Math.random() * 21 + 20) * objectData.iDefaultCoin));
+                    } else if (objectData.iCallAmount > 0) {
+                           bettingType = Math.random() < 0.5 ? 'Raise' : 'Call'; // 랜덤하게 Raise나 Call 선택
+                        if(bettingType == 'Raise')
+                        {
+                            iCallAmount = parseInt(objectData.iCallAmount + ((Math.floor(Math.random() * 3) + 1) * objectData.iCallAmount));
+                        }
+                        else
+                        {
+                            iCallAmount = objectData.iCallAmount;
+                        }
+                    }
+                }
+                else{
                     if(objectData.eState == 'PREFLOP')
                     {
                         if(iCallAmount > 0)
@@ -700,26 +717,6 @@ export default class IRobot{
                                     bettingType = 'Fold';
                                     iCallAmount = 0;
                                 }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if(this.account.strID == objectData.strIDjoker)
-                    {
-                        if (objectData.iCallAmount == 0) {
-                            bettingType = 'Raise';
-                            iCallAmount = parseInt(objectData.iCallAmount + (Math.floor(Math.random() * 21 + 20) * objectData.iDefaultCoin));
-                        } else if (objectData.iCallAmount > 0) {
-                            bettingType = Math.random() < 0.5 ? 'Raise' : 'Call'; // 랜덤하게 Raise나 Call 선택
-                            if(bettingType == 'Raise')
-                            {
-                                iCallAmount = parseInt(objectData.iCallAmount + ((Math.floor(Math.random() * 3) + 1) * objectData.iCallAmount));
-                            }
-                            else
-                            {
-                                iCallAmount = objectData.iCallAmount;
                             }
                         }
                     }
