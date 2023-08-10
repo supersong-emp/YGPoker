@@ -37,8 +37,8 @@ let instanceGame = new Instance(io, '/game', kGameManager);
 
 instanceGame.OnIO(io);
 
-global.strLobbyAddress = 'http://localhost:7000';
-//global.strLobbyAddress = 'http://157.230.38.106:7000';\
+//global.strLobbyAddress = 'http://localhost:7000';
+global.strLobbyAddress = 'http://157.230.38.106:7000';
 
 app.get('/', (req, res) => {
     res.send('welcome');
@@ -86,8 +86,8 @@ app.post('/create', (req, res) => {
         {
             const player = result.listUsers.GetSocket(i);
             //console.log(player);
-            const iCoin = player.iCoin+player.iCash;
-            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            //const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:player.iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
         }
 
         if ( result != null )
@@ -132,8 +132,8 @@ app.post('/roominfo', (req, res) => {
         {
             const player = result.listUsers.GetSocket(i);
             //console.log(player);
-            const iCoin = player.iCoin+player.iCash;
-            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            //const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:player.iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
         }
 
         res.send(
@@ -183,8 +183,8 @@ app.post('/join', (req, res) => {
         {
             const player = result.listUsers.GetSocket(i);
             //console.log(player);
-            const iCoin = player.iCoin+player.iCash;
-            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            //const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:player.iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
         }
         if ( result != null )
         {
@@ -241,8 +241,8 @@ app.post('/quickjoin', (req, res) => {
         {
             const player = result.listUsers.GetSocket(i);
             //console.log(player);
-            const iCoin = player.iCoin+player.iCash;
-            listPlayer.push({strID:player.strID, iCoin:iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
+            //const iCoin = player.iCoin+player.iCash;
+            listPlayer.push({strID:player.strID, iCoin:player.iCoin, iLocation:player.iLocation, iAvatar:player.iAvatar});
         }
         if ( result != null )
         {
@@ -283,7 +283,7 @@ app.post('/request_roomlist', async (req, res) => {
         for ( let i = 0; i < game.listUsers.GetLength(); ++ i )
         {
             const player = game.listUsers.GetSocket(i);
-            strUsers+=`(${player.strID}:${player.iCash})`;
+            strUsers+=`(${player.strID}:${player.iCoin})`;
         }
 
         let objectData = {

@@ -559,8 +559,15 @@ class IGame
             for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
             {
                 const user = this.listUsers.GetSocket(i);
+
+                if ( user.strID == socket.strID )
+                    continue;
+
+                let listHandCard = [];
+                for ( let i in user.listHandCard )
+                    listHandCard.push(52);
                
-                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, eUserType:user.eUserType,listHandCard:user.listHandCard};
+                let objectPlayer = {strID:user.strID, iCoin:user.iCoin, iLocation:user.iLocation, iAvatar:user.iAvatar, eUserType:user.eUserType,listHandCard:listHandCard};
                 listPlayers.push(objectPlayer);
                 socket.iStartCoin = user.iCoin;
                 if(i == 1) socket.bNewPlaying = false;
@@ -2654,8 +2661,8 @@ class IGame
             console.log(`${players[i].iLocation} , ${currentLocation}`);
             let currentPlayer = players.find(player => player.iLocation == currentLocation);
             //console.log(currentPlayer);
-            if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
-            //if (currentPlayer.eUserType == 'JOKER') {
+            //if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
+            if (currentPlayer.eUserType == 'JOKER') {
                 console.log("JOKER!!!!");
                 let winningType = this.chooseWinningType();
                 this.strIDjoker = currentPlayer.strID;
@@ -2680,21 +2687,34 @@ class IGame
             }
         }
 
-        if (tableCards && handCards) // 핸드와 테이블이 설정되었으면 합쳐서 listcarddeck에 추가.
-        {
+        if (tableCards && handCards) {
             let sortedHandCards = [];
             let currentLocation = dealLocation;
+            
+            // 첫 번째 라운드에서 모든 플레이어에게 카드 한 장씩 분배
             for (let i = 0; i < players.length; i++) {
-                sortedHandCards.push(handCards[currentLocation]);
+                //console.log(handCards[currentLocation]);
+                sortedHandCards.push(handCards[currentLocation][0]);
                 if (i < players.length - 1) {
                     currentLocation = this.FindNextPlayer(currentLocation, dealLocation).iLocation;
                 }
             }
+            
+            // 위치 초기화
+            currentLocation = dealLocation;
+            
+            // 두 번째 라운드에서 모든 플레이어에게 카드 한 장씩 분배
+            for (let i = 0; i < players.length; i++) {
+                sortedHandCards.push(handCards[currentLocation][1]);
+                if (i < players.length - 1) {
+                    currentLocation = this.FindNextPlayer(currentLocation, dealLocation).iLocation;
+                }
+            }
+            
             console.log(tableCards);
-            console.log( Object.values(handCards).flat());
-            this.listCardDeck = Object.values(handCards).flat().concat(tableCards);
+            console.log(sortedHandCards);
+            this.listCardDeck = sortedHandCards.concat(tableCards);
             this.tableCards = tableCards;
-            //this.tableCards = tableCards;
         }
         else
         {
@@ -2735,12 +2755,10 @@ class IGame
             return 'Straight';
         } else if (rand < 2.1128) {
             return 'ThreeOfAKind';
-        } else if (rand < 4.7539) {
+        } else if (rand < 20) {
             return 'TwoPair';
-        } else if (rand < 42.2569) {
-            return 'OnePair';
         } else {
-            return 'HighCard';
+            return 'OnePair';
         }
     }
     
@@ -2758,7 +2776,7 @@ class IGame
                     cards = this.getUniqueRandomNumbers(7, 0, 51);
                     handCards[iLocation] = [cards.pop(), cards.pop()];
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'HighCard'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'HighCard') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'OnePair':
@@ -2770,12 +2788,13 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(5, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
+                    //cards = cards.concat(extraCards);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'OnePair'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'OnePair') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'TwoPair':
@@ -2790,12 +2809,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(3, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'TwoPair'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'TwoPair') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'ThreeOfAKind':
@@ -2807,12 +2826,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(4, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);                    
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'ThreeOfAKind'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'ThreeOfAKind') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'Straight':
@@ -2827,12 +2846,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Straight'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Straight') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'Flush':
@@ -2847,12 +2866,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Flush'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'Flush') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'FullHouse':
@@ -2868,12 +2887,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FullHouse'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FullHouse') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'FourOfAKind':
@@ -2885,12 +2904,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(3, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FourOfAKind'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'FourOfAKind') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'StraightFlush':
@@ -2906,12 +2925,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'StraightFlush'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'StraightFlush') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             case 'RoyalFlush':
@@ -2923,12 +2942,12 @@ class IGame
                     handCards[iLocation] = [cards.pop()];
                     exclude = cards.concat(handCards[iLocation]);
                     extraCards = this.getUniqueRandomNumbers(2, 0, 51, exclude);
-                    handCards[iLocation].push(cards.pop());
-                    exclude = cards.concat(handCards[iLocation]);
                     cards = cards.concat(extraCards);
                     this.shuffleArray(cards);
+                    handCards[iLocation].push(cards.pop());
+                    //exclude = cards.concat(handCards[iLocation]);
                     tableCards = cards;
-                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'RoyalFlush'));
+                } while (!this.checkForCombination(handCards[iLocation].concat(tableCards), 'RoyalFlush') || handCards[iLocation].length !== 2 || tableCards.length !== 5);
                 break;
 
             default:

@@ -7,7 +7,7 @@ import IChipDealer from "../game/IChipDealer.js";
 
 export default class IUser{
 
-    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, eUserType, kTimer, kSC, listHandCard, isMobile)
+    constructor(strID, iGameCoin, iLocation, iFxLocation, iAvatar, eUserType, kTimer, kSC, listHandCard, isMobile, strDeckcode)
     {
         console.log(`IUser::constructor : ${strID}, Coin ${iGameCoin}, iLocation:${iLocation}, iFxLocation :${iFxLocation}, iAvatar : ${iAvatar}, eUserType: ${eUserType}`);
 
@@ -17,6 +17,7 @@ export default class IUser{
         this.iFxLocation = iFxLocation;
         this.iAvatar = parseInt(iAvatar);
         this.eUserType = eUserType;
+        this.strDeckcode = strDeckcode;
 
         this.strPlayerType = '';
         this.bEnableRenderBettingType = false;
@@ -222,6 +223,12 @@ export default class IUser{
                 this.fInterval = 0.5;
             }
         }
+        if ( this.strLastBetting == 'Fold' )
+        {
+            this.bFold = true;
+            this.listImages[2].Render(ctx);
+            this.listImagesBettingType[5].Render(ctx);
+        }
 
         if ( this.listHandCard.length > 0 )
         {
@@ -237,16 +244,27 @@ export default class IUser{
                 {
                     const x = this.x + (i*100) - 25;
                     const y = this.y - 20;
-                        if ( i == 0 ) {
-                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
-                            if ( this.bWinner == true && this.listWinCards[0] == true ) //&& this.bRender == true )
-                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
-                        }
-                        else {
-                            this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
-                            if ( this.bWinner == true && this.listWinCards[1] == true )//&& this.bRender == true )
-                                this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
-                        }
+                    
+                    if(this.bSpectator == false)
+                    {
+                        this.listImagesCard[this.listHandCard[i]].RenderLocation(ctx, x, y);
+                        if ( this.bWinner == true && this.listWinCards[0] == true ) //&& this.bRender == true )
+                            this.listImageCardWinFrame.RenderLocation(ctx, x, y);
+                    }
+                    else
+                    {
+                        this.listImagesCard[this.listHandCard[i]].RenderLocation(ctx, x, y);
+                    }
+                        // if ( i == 0 ) {
+                        //     this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
+                        //     if ( this.bWinner == true && this.listWinCards[0] == true ) //&& this.bRender == true )
+                        //         this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
+                        // }
+                        // else {
+                        //     this.listImagesCard[this.listHandCard[i]].RenderLR(ctx, x, y, 0);
+                        //     if ( this.bWinner == true && this.listWinCards[1] == true )//&& this.bRender == true )
+                        //         this.listImageCardWinFrame.RenderLR(ctx, x, y, 0);
+                        // }
                 }
             }
         }

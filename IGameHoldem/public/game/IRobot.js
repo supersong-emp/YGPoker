@@ -740,7 +740,7 @@ export default class IRobot{
                 }
                 if(bettingType == 'Raise' || bettingType == 'Call')
                 {
-                    if(objectData.iCallAmount >= objectData.iCoin)
+                    if(iCallAmount >= objectData.iCoin)
                     {
                         bettingType = 'Allin';
                         iCallAmount = objectData.iCoin;
