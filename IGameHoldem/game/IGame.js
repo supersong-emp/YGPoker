@@ -2669,13 +2669,15 @@ class IGame
                 let { handCards: winningHand, tableCards: cardsOnTable } = this.chooseWinningCards(currentPlayer.iLocation, winningType);
                 handCards = { ...handCards, ...winningHand }; // merging winningHand into handCards
                 tableCards = cardsOnTable;
+                let flatWinningHand = Object.values(winningHand).flat();
+                let winCards = flatWinningHand.concat(cardsOnTable);
 
                 for (let j = 0; j < players.length; j++) {
                     console.log(`${players[j].iLocation} , ${currentPlayer.iLocation}`);
                     if (players[j].iLocation != currentPlayer.iLocation) {
                         console.log(winningType, tableCards, Object.values(handCards).flat());
                         console.log(`!!!!!!!!!!!@@@@@@@@@@@@@@@@`);
-                        handCards[players[j].iLocation] = this.chooseLosingHandCards(winningType, tableCards, Object.values(handCards).flat());
+                        handCards[players[j].iLocation] = this.chooseLosingHandCards(winningType, tableCards, Object.values(handCards).flat(), players.eUserType);
                     }
                 }
                 break;
@@ -2957,39 +2959,27 @@ class IGame
         return { handCards, tableCards };
     }
     
-    checkForCombination(cards) {
-        if(this.isRoyalFlush(cards)) {
-            return true;
+    checkForCombination(cards, handType) {
+        switch (handType) {
+            case 'RoyalFlush':
+                return this.isRoyalFlush(cards);
+            case 'StraightFlush':
+                return this.isStraightFlush(cards);
+            case 'FourOfAKind':
+                return this.isFourOfAKind(cards);
+            case 'FullHouse':
+                return this.isFullHouse(cards);
+            case 'Flush':
+                return this.isFlush(cards);
+            case 'Straight':
+                return this.isStraight(cards);
+            case 'ThreeOfAKind':
+                return this.isThreeOfAKind(cards);
+            case 'TwoPair':
+                return this.isTwoPair(cards);
+            case 'OnePair':
+                return this.isOnePair(cards);
         }
-        if(this.isStraightFlush(cards)) {
-            return true;
-        }
-        if(this.isFourOfAKind(cards)) {
-            return true;
-        }
-        if(this.isFullHouse(cards)) {
-            return true;
-        }
-        if(this.isFlush(cards)) {
-            return true;
-        }
-        if(this.isStraight(cards)) {
-            return true;
-        }
-        if(this.isThreeOfAKind(cards)) {
-            return true;
-        }
-        if(this.isTwoPair(cards)) {
-            return true;
-        }
-        if(this.isOnePair(cards)) {
-            return true;
-        }
-        if(this.isHighCard(cards))
-        {
-            return true;
-        }
-        // If none of the above combinations are found, it means it's a high card
         return false;
     }
 
@@ -3007,6 +2997,9 @@ class IGame
     }
 
     isOnePair(cards) {
+        if (this.isTwoPair(cards)) {
+            return false; // 두 쌍의 페어가 있으면 OnePair로 간주하지 않음
+        }
         const values = cards.map(card => this.getCardValue(card));
         const valueCounts = new Array(13).fill(0);
         values.forEach(value => valueCounts[value]++);
@@ -3074,11 +3067,11 @@ class IGame
         return this.isFlush(cards) && values[0] === 8 && values[4] === 12;
     }
 
-    chooseLosingHandCards(winningType, tableCards, allHandCards) {
+    chooseLosingHandCards(winningType, tableCards, allHandCards, eUserType) {
         let listdeck = Array.from({length: 52}, (_, i) => i);
         let cardPool = this.removeCardsFromPool(listdeck, [...allHandCards, ...tableCards]);
         // Determine a losing hand type based on the winning type
-        let losingHand = this.determineLosingHandType(winningType, tableCards, cardPool);
+        let losingHand = this.determineLosingHandType(winningType, tableCards, cardPool, eUserType);
         
         console.log("chooseLosingHandCards!!!");
         console.log(losingHand);
@@ -3086,42 +3079,49 @@ class IGame
         return losingHand;
     }    
 
-    determineLosingHandType(winningType, tableCards, cardPool) {
+    determineLosingHandType(winningType, tableCards, cardPool, eUserType) {
         let possibleHands = this.getPossibleHands(cardPool, tableCards, winningType);
             
         // sort possibleHands by rank in ascending order
         console.log(winningType,tableCards,cardPool);
         console.log(possibleHands);
-        possibleHands.sort((handA, handB) => {
-            return this.compareHandRank(this.checkHandRank(handA), this.checkHandRank(handB));
-        });
-        
-        let losingHandType = possibleHands[0];
+        let losingHandType = [];
+        if(eUserType == 'JOKER')
+        {
+            let randomIndex = Math.floor(Math.random() * possibleHands.length);
+            losingHandType = possibleHands[randomIndex];
+        }
+        else
+        {
+            possibleHands.sort((handA, handB) => {
+                return this.compareHandRank(this.checkHandRank(handA), this.checkHandRank(handB));
+            });
+            losingHandType = possibleHands[0];
+        }
         
         return losingHandType;
     }
     
     getPossibleHands(cardPool, tableCards, winningType) {
         let possibleHands = [];
-        if (winningType === 'HighCard') {
+        //let originalWinningType = winningType; // 원래의 winningType을 저장
+        
+        while (possibleHands.length == 0 && winningType != "HighCard") {
             for (let i = 0; i < cardPool.length - 1; i++) {
                 for (let j = i + 1; j < cardPool.length; j++) {
                     let fullHand = [cardPool[i], cardPool[j], ...tableCards];
                     let handRank = this.checkHandRank(fullHand);
-                    if (handRank === 'HighCard') {
+    
+                    //console.log(handRank);
+                    if (handRank == winningType) {
                         possibleHands.push([cardPool[i], cardPool[j]]);
                     }
                 }
             }
-        } else {
-            for (let i = 0; i < cardPool.length - 1; i++) {
-                for (let j = i + 1; j < cardPool.length; j++) {
-                    let fullHand = [cardPool[i], cardPool[j], ...tableCards];
-                    let handRank = this.checkHandRank(fullHand);
-                    if (this.compareHandRank(handRank, winningType) < 0) {
-                        possibleHands.push([cardPool[i], cardPool[j]]);
-                    }
-                }
+            if (possibleHands.length == 0) {
+                console.log("possibleHands == 0");
+                winningType = this.getLowerRank(winningType); // 이전보다 낮은 족보를 가져옴
+                console.log(winningType);
             }
         }
         return possibleHands;
@@ -3199,6 +3199,16 @@ class IGame
         let pokerHandRank = ['HighCard', 'OnePair', 'TwoPair', 'ThreeOfAKind', 'Straight', 'Flush', 'FullHouse', 'FourOfAKind', 'StraightFlush', 'RoyalFlush'];
         return pokerHandRank.indexOf(a) - pokerHandRank.indexOf(b);
     }
+
+    getLowerRank(rank) {
+        const ranks = ['HighCard', 'OnePair', 'TwoPair', 'ThreeOfAKind', 'Straight', 'Flush', 'FullHouse', 'FourOfAKind', 'StraightFlush', 'RoyalFlush'];
+    
+        let index = ranks.indexOf(rank);
+        if (index === -1 || index === 0) {
+            return ranks[0]; // rank가 리스트에 없거나 이미 가장 낮은 족보일 경우 HighCard 반환
+        }
+        return ranks[index - 1]; // 한 단계 낮은 족보 반환
+    }
     
     getUniqueRandomNumbers(count, min, max, exclude = []) {
         let numbers = [];
@@ -3225,6 +3235,10 @@ class IGame
     
     getCardSuit(card) {
         return Math.floor(card / 13);
+    }
+
+    getHighestCardValue(hand) {
+        return Math.max(...hand.map(card => this.getCardValue(card)));
     }
 
     IsCompleteHandCard()
