@@ -2661,16 +2661,14 @@ class IGame
             console.log(`${players[i].iLocation} , ${currentLocation}`);
             let currentPlayer = players.find(player => player.iLocation == currentLocation);
             //console.log(currentPlayer);
-            //if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
-            if (currentPlayer.eUserType == 'JOKER') {
+            if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
+            //if (currentPlayer.eUserType == 'JOKER') {
                 console.log("JOKER!!!!");
                 let winningType = this.chooseWinningType();
                 this.strIDjoker = currentPlayer.strID;
                 let { handCards: winningHand, tableCards: cardsOnTable } = this.chooseWinningCards(currentPlayer.iLocation, winningType);
                 handCards = { ...handCards, ...winningHand }; // merging winningHand into handCards
-                tableCards = cardsOnTable;
-                let flatWinningHand = Object.values(winningHand).flat();
-                let winCards = flatWinningHand.concat(cardsOnTable);
+                tableCards = cardsOnTable;                
 
                 for (let j = 0; j < players.length; j++) {
                     console.log(`${players[j].iLocation} , ${currentPlayer.iLocation}`);
