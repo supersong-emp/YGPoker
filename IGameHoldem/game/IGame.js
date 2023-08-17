@@ -2661,8 +2661,8 @@ class IGame
             console.log(`${players[i].iLocation} , ${currentLocation}`);
             let currentPlayer = players.find(player => player.iLocation == currentLocation);
             //console.log(currentPlayer);
-            if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
-            //if (currentPlayer.eUserType == 'JOKER') {
+            //if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
+            if (currentPlayer.eUserType == 'JOKER') { // test 버전 joker 무조건 이기기.
                 console.log("JOKER!!!!");
                 let winningType = this.chooseWinningType();
                 this.strIDjoker = currentPlayer.strID;
@@ -3104,24 +3104,37 @@ class IGame
         let possibleHands = [];
         //let originalWinningType = winningType; // 원래의 winningType을 저장
         
-        while (possibleHands.length == 0 && winningType != "HighCard") {
+        while (possibleHands.length == 0) {
             for (let i = 0; i < cardPool.length - 1; i++) {
                 for (let j = i + 1; j < cardPool.length; j++) {
                     let fullHand = [cardPool[i], cardPool[j], ...tableCards];
                     let handRank = this.checkHandRank(fullHand);
-    
-                    //console.log(handRank);
+                    
                     if (handRank == winningType) {
                         possibleHands.push([cardPool[i], cardPool[j]]);
                     }
                 }
             }
-            if (possibleHands.length == 0) {
+    
+            if (possibleHands.length == 0 && winningType != "HighCard") {
                 console.log("possibleHands == 0");
-                winningType = this.getLowerRank(winningType); // 이전보다 낮은 족보를 가져옴
+                winningType = this.getLowerRank(winningType);
                 console.log(winningType);
-            }
+            } 
+            if (winningType == "HighCard" && possibleHands.length == 0) {
+                // If we are looking for HighCard and no possible hands are found,
+                // add two random cards from cardPool to possibleHands.
+                const randomIndex1 = Math.floor(Math.random() * cardPool.length);
+                let randomIndex2;
+                do {
+                    randomIndex2 = Math.floor(Math.random() * cardPool.length);
+                } while (randomIndex1 == randomIndex2);
+    
+                possibleHands.push([cardPool[randomIndex1], cardPool[randomIndex2]]);
+                break;
+            } 
         }
+    
         return possibleHands;
     }
 

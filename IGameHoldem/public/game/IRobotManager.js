@@ -3,17 +3,20 @@ import ITimer from "../game/ITimer.js";
 
 let robots = [];
 
-// 사용자 데이터를 기반으로 IRobot 객체를 생성하는 함수
-function createRobots(userData) {
-    for (let i = 0; i < userData.length; i++) {
-        // Check if the user has enough iCash
-        if (userData[i].iCash && userData[i].iCash > 0) {
-            //console.log(userData[i]);
-            let timer = new ITimer();
-            let robot = new IRobot(userData[i], i, timer);
-            robots.push(robot);
-            robot.OnIO();
-        }
+// 단일 로봇 데이터 처리
+function createSingleRobot(robotData) {
+    if (robotData.iCash && robotData.iCash > 0) {
+        let timer = new ITimer();
+        let robot = new IRobot(robotData, timer);  // 인덱스 값은 적절히 조정할 필요가 있습니다.
+        robots.push(robot);
+        robot.OnIO();
+    }
+}
+
+// 여러 로봇 데이터 처리
+function createMultipleRobots(robotData) {
+    for (let i = 0; i < robotData.length; i++) {
+        createSingleRobot(robotData[i]);
     }
 }
 
@@ -142,10 +145,15 @@ window.onload = function() {
     // 이벤트 리스너 설정
     document.addEventListener('receivedRobotData', function (event) {
         // 이벤트에서 데이터를 받아 처리
-        var userData = event.detail;
-        // userData를 사용하여 IRobot 객체 생성
-        console.log(userData);
-        createRobots(userData);
+        var robotData = event.detail;
+        // robotData 사용하여 IRobot 객체 생성
+        console.log(robotData);
+        // 데이터 타입(단일 로봇 vs. 여러 로봇)에 따라 처리
+        if (Array.isArray(robotData)) {
+            createMultipleRobots(robotData);
+        } else {
+            createSingleRobot(robotData);
+        }
     });
     // 최초 실행
     doRandomInterval();

@@ -29,6 +29,23 @@ router.post('/request_robot', async (req, res) => {
     }
 });
 
+router.post('/request_robotinfo', async (req, res) => {
+
+    console.log(`/request_robot`);
+    console.log(req.body);
+
+    //let joker = await db.Users.findOne({where:{strID:'joker'}});
+    let robot = await db.Users.findOne({where:{strID:req.body.strID}});
+    if ( robot != null )
+    {
+        res.send({result:'OK', data:robot});
+    }
+    else
+    {
+        res.send({result:'Error'});
+    }
+});
+
 router.post('/request_moneygive', async (req, res) => {
     console.log(`/request_moneygive`);
     console.log(req.body);

@@ -18,13 +18,14 @@
                     <th>방제목</th>
                     <th>블라인드</th>
                     <th>머니주기</th>
+                    <th>참가</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
-    <button id="requestRobotButton" class="btn btn-primary">로봇 참가</button>
+    <button id="requestRobotButton" class="btn btn-primary">로봇 전체 참가</button>
     <button id="giveAllMoneyButton" class="btn btn-primary">전체 머니 주기</button>
     <div class="text-end mr-3">
         <span class="badge bg-primary fs-4 fw-bold">조커 본사 머니:</span>
@@ -34,11 +35,38 @@
     <script type="module" src="game/IRobotManager.js"></script>
     <script src='/socket.io/socket.io.js'></script>
 	<script type="text/javascript">
-		var socket = io('/game');
+		const socket = io('/game');
 
         document.addEventListener('DOMContentLoaded', (event) => {
-            
             var robotData = [];
+            $.ajax({
+                    type:'post',
+                    url: "/robot/request_robot",
+                    data: {},
+                    success:function(ret) {
+                        console.log(ret);
+                        if ( ret.result == 'OK' )
+                        {
+                            //var event = new CustomEvent('receivedRobotData', { detail: ret.data });
+                            //document.dispatchEvent(event);
+                            // Joker의 현금 업데이트
+                            robotData = ret.data;
+                            for(let i=0; i < robotData.length; i++) {
+                                robotData[i].strGameName = '';
+                                robotData[i].iBlind = '';
+                                robotData[i].eGameType = '홀덤';
+                                robotData[i].sEnter = '참가';
+                            }
+                            $('#jokerCash').text(ret.jokerCash.toLocaleString());
+                            updateTable(robotData);
+                        }
+                        else
+                        {
+                            alert('수정을 완료 하지 못했습니다.');
+                        }
+                    }
+            });
+            
             $("#requestRobotButton").click(function() {
                 $.ajax({
                     type:'post',
@@ -46,16 +74,22 @@
                     data: {},
                     success:function(ret) {
                         console.log(ret);
+                        if (ret.result == 'OK') {
+                            let relevantRobots = robotData.filter(existingRobot => {
+                                // 해당 로봇을 ret.data에서 찾기
+                                let foundRobot = ret.data.find(r => r.strID == existingRobot.strID);
 
-                        if ( ret.result == 'OK' )
-                        {
-                            var event = new CustomEvent('receivedRobotData', { detail: ret.data });
+                                // 찾은 로봇의 sEnter가 undefined 또는 '참가'인지 확인
+                                return foundRobot && (foundRobot.sEnter == undefined || foundRobot.sEnter == '참가');
+                            });
+
+                            // 해당 로봇 데이터만 이벤트로 전송
+                            var event = new CustomEvent('receivedRobotData', { detail: relevantRobots });
                             document.dispatchEvent(event);
+
                             // Joker의 현금 업데이트
                             $('#jokerCash').text(ret.jokerCash.toLocaleString());
-                        }
-                        else
-                        {
+                        } else {
                             alert('수정을 완료 하지 못했습니다.');
                         }
                     }
@@ -90,6 +124,40 @@
                     });
                 }
             });
+            $(document).on('click', '.enterRobot', function() {
+                var id = $(this).data('id');  // 이 버튼이 속한 로봇의 ID를 가져옴
+                var iCash = $(this).closest('tr').find('td:nth-child(3)').text(); // 해당 로봇의 iCash 값을 가져옵니다.
+                var buttonText = $(this).text(); // 버튼의 텍스트 값을 확인
+                console.log(id);
+                console.log(iCash);
+
+                if (buttonText == '퇴장') {
+                    alert("곧 기능 추가가 됩니다. 잠시만 기다려주세요.");
+                    return;  // '퇴장'인 경우 함수 종료
+                }
+
+                if (parseInt(iCash) == 0) {
+                    alert("머니가 0원이라 참가할 수가 없습니다.");
+                    return;
+                }
+
+                $.ajax({
+                    type:'post',
+                    url: "/robot/request_robotinfo",
+                    data: { strID: id },
+                    success:function(ret) {
+                        console.log(ret);
+                        if (ret.result == 'OK') {
+                            var event = new CustomEvent('receivedRobotData', { detail: ret.data });
+                            document.dispatchEvent(event);
+                        }
+                        else
+                        {
+                            alert("ai 값이 정확하지 않습니다. 확인 부탁드립니다.");
+                        }
+                    }
+                });
+            });
 
             // 로봇 전체에 머니 주기 버튼
             $("#giveAllMoneyButton").click(function() {
@@ -123,30 +191,45 @@
 
             // 다른 JavaScript 파일에서 이 이벤트를 listen
             document.addEventListener('receivedRobotData', function (event) {
-                // 이벤트에서 데이터를 받아 처리
-                robotData = event.detail;
-                
+                // `event.detail`이 배열인지 확인
+                let receivedData = Array.isArray(event.detail) ? event.detail : [event.detail]; // 배열이 아니라면 배열로 만듦
+
                 // Add the new properties
                 for(let i=0; i < robotData.length; i++) {
-                    robotData[i].strGameName = '';
-                    robotData[i].iBlind = '';
-                    robotData[i].eGameType = '홀덤';
+                    for(let j=0; j < receivedData.length; j++) {
+                        if(receivedData[j].strID == robotData[i].strID) {
+                            robotData[i].strGameName = '';
+                            robotData[i].iBlind = '';
+                            robotData[i].eGameType = '홀덤';
+                            robotData[i].sEnter = '퇴장';
+                        }
+                    }
                 }
 
                 updateTable(robotData);
-                // IRobotManager에 데이터를 넘김
-                //IRobotManager.processData(robotData);
             });
+
+            function appendToTable(robot) {
+                // 버튼의 클래스를 결정
+                var buttonClass = (robot.sEnter === '참가') ? 'btn-primary' : 'btn-danger';
+                // 테이블에 새로운 행을 추가
+                var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.strGameName + "</td><td>" + robot.iBlind + "</td><td><button class='btn btn-primary giveMoney' data-id='" + robot.strID + "'>머니주기</button></td>" + "</td><td><button class='btn " + buttonClass + " enterRobot' data-id='" + robot.strID + "'>" + robot.sEnter + "</button></td></tr>";
+                
+                $("#robotTable tbody").append(newRow);
+            }
 
             function updateTable(data) {
                 // 테이블 내용을 초기화
                 $("#robotTable tbody").empty();
                 // 각 로봇에 대해
-                data.forEach(function(robot) {
-                    // 테이블에 새로운 행을 추가
-                    var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.strGameName + "</td><td>" + robot.iBlind + "</td><td><button class='btn btn-primary giveMoney' data-id='" + robot.strID + "'>머니주기</button></td></tr>";
-                    $("#robotTable tbody").append(newRow);
-                });
+                // 데이터 타입 확인
+                if (Array.isArray(data)) {
+                    // 배열 데이터 처리
+                    data.forEach(appendToTable);
+                } else {
+                    // 단일 데이터 처리
+                    appendToTable(data);
+                }
             }     
 
             socket.on('connect', () => {
@@ -189,301 +272,19 @@
                 // 테이블 업데이트
                 updateTable(robotData);
             });
+
+            $(document).on('keydown', function (event) {
+                // F5 키의 keyCode는 116입니다.
+                if (event.which == 116) {
+                    event.preventDefault(); // 기본 동작 중단
+                    alert("F5 버튼은 사용할 수 없습니다.");
+                }
+            });
         });
 
-        
-    
-        // let account = {strID:'bbb', strPassword:'1111', iAvatar:5, lUnique:1555, iCoin:100000, strOptionCode:'01120000', strGroupID:'001010101', iClass:5};
-
-        // let robot = new IRobot(io, account, 0);
-
-        // socket.on('SM_RequestLogin', (data) => {
-
-        //     console.log(`SM_RequestLogin`);
-            
-        // });
-
-        
-        //socket.emit('CM_JoinGame', account.strID, account.lUnique, account.iCoin, account.iAvatar, account.strOptionCode, account.strGroupID, account.iClass);
-
-
-        // socket.on('SM_RequestLogin', (data) => {
-
-        //     //let account = {strID:'bbb', strPassword:'1111', iAvatar:5};
-
-        //     console.log(`SM_RequestLogin`);
-        //     socket.emit('CM_Login', account.strID, account.strPassword, account.iAvatar);
-        // });
-
-        // // 840114
-        // // socket.e
-
-        // socket.on('SM_Login', (data) => {
-
-        // console.log(`SM_Login`);
-        //     console.log(data);
-        //     socket.strID = data.strID;
-        //     socket.iCoin = data.iCoin;
-        //     socket.iAvatar = data.iAvatar;
-        // });
-
-        // socket.on('SM_EnterGame', (data) => {
-
-        //     console.log('SM_EnterGame');
-        //     console.log(data);
-
-        //     socket.strID = data.strID;
-        //     socket.iCoin = data.iCoin;
-        //     socket.iPoint = data.iPoint;
-
-        //     // this.Game.UpdateGameInfo(data.strGameName, data.iBlind);
-        //     // this.Game.UpdatePoint(parseInt(data.iCoin));
-
-        //     socket.emit('CM_SelectLocation', 0);
-        // });
-
-        // socket.on('SM_LeaveGame', (data) => {
-
-        //     console.log('SM_LeaveGame');
-        //     console.log(data);
-
-        //     if ( data.result == 'OK' )
-        //     {
-        //         // this.Game.Initialize();
-        //     }
-        // });
-
-        // socket.on('SM_JoinUser', (user) => {
-
-        // });
-
-        // socket.on('SM_JoinGame', (listPlayers, iMaxPlayer) => {
-
-        //     console.log(`SM_JoinGame`);
-        //     console.log(listPlayers);
-
-        //     // this.Game.SetMaxPlayer(iMaxPlayer);
-        //     // this.Game.ProcessLocation(listPlayers);
-        // });
-
-        // //  Game
-        // socket.on('SM_SelectLocation', (objectData) => {
-
-        //     console.log(`SM_SelectLocation ${objectData.eResult}, ${objectData.iLocation}`);
-        //     console.log(objectData);
-
-        //     // if ( true == objectData.eResult )
-        //     // {
-        //     //     this.Game.ProcessLocationComplete(socket.strID, objectData.iCoin, objectData.iLocation, objectData.iAvatar);
-        //     //     this.Game.UpdatePoint(parseInt(objectData.iPoint));
-        //     // }
-        // });
-
-        // socket.on('SM_BroadcastJoinUser', (objectPlayer) => {
-
-        //     console.log(`SM_BroadcastJoinUser`);
-        //     console.log(objectPlayer);
-        // });
-
-        // socket.on('SM_BroadcastLeaveUser', (objectPlayer) => {
-
-        //     console.log(`SM_BroadcastLeaveUser`);
-        //     console.log(objectPlayer);
-
-        //     // this.Game.RemoveUser(objectPlayer);
-        // });
-
-        // socket.on('SM_BroadcastPlaceUser', (objectPlayer) => {
-
-        //     console.log(`SM_BroadcastPlaceUser`);
-        //     console.log(objectPlayer);
-
-        //     //this.Game.ProcessLocationSingle(objectPlayer);
-        // });
-
-        // socket.on('SM_EnableStartGame', () => {
-
-        //     console.log(`SM_EnableStartGame`);
-
-        //     //this.Game.listButtons[0].bEnable = true;
-        // });
-
-        // socket.on('SM_StartGame', (objectData) => {
-
-        //     console.log(`SM_StartGame : eResult : ${objectData.eResult}`);
-        //     console.log(objectData.listUser);
-        //     // this.Game.EnableUserList(objectData.listUser);
-        //     // this.Game.StartGame();
-        // })
-
-        // socket.on('SM_FullBroadcastPlayerType', (listData) => {
-
-        //     console.log(`SM_FullBroadcastPlayerType`);
-        //     console.log(listData);
-
-        //     // this.Game.SetPlayerType(listData);
-        // });
-
-        // socket.on('SM_DefaultAnteSB', (objectData) => {
-
-        //     console.log(`SM_DefaultAnteSB`);
-        //     console.log(objectData);
-
-        //     socket.emit('CM_DefaultAnteSB', objectData.iCoin);
-
-        //     // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
-        //     // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
-        // });
-
-        // socket.on('SM_BroadcastDefaultAnteSB', (objectData) => {
-
-        //     console.log(`SM_BroadcastDefaultAnteSB`);
-        //     console.log(objectData);
-
-        //     // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
-        //     // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
-        // });
-
-        // socket.on('SM_DefaultAnteBB', (objectData) => {
-
-        //     console.log(`SM_DefaultAnteBB`);
-        //     console.log(objectData);
-
-        //     socket.emit('CM_DefaultAnteBB', objectData.iCoin);
-
-        //     // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
-        //     // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
-        // });
-
-        // socket.on('SM_BroadcastDefaultAnteBB', (objectData) => {
-
-        //     console.log(`SM_BroadcastDefaultAnteBB`);
-        //     console.log(objectData);
-
-        //     // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
-        //     // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
-        // });
-
-        // socket.on('SM_EnableBetting', (objectData) => {
-
-        //     console.log(`SM_EnableBetting : Call ${objectData.iCallAmount}`);
-        //     console.log(objectData.listEnableBettingType);
-
-        //     // this.Game.EnableBetting(objectData);
-        //     // this.Game.Focus(socket.strID, objectData.iBettingTime);
-
-        //     let objectBetting = {strBetting:'Call', iAmount:objectData.iCallAmount};
-        //     socket.emit('CM_Betting', objectBetting);
-
-        // });
-
-        // socket.on('SM_Focus', (objectPlayer) => {
-
-        //     console.log(`SM_Focus : ${objectPlayer.strID}`);
-        //     // this.Game.Focus(objectPlayer.strID, objectPlayer.iBettingTime);
-        // });
-
-        // socket.on('SM_Mode', (objectData) => {
-
-        //     console.log(`SM_Mode : ${objectData.eMode}`);
-
-        //     // switch ( objectData.eMode )
-        //     // {
-        //     // case 'Standby':
-        //     //     this.Game.Initialize();
-        //     //     break;
-        //     // }
-        // });
-
-        // socket.on('SM_FullBroadcastBetting', (objectData) => {
-
-        //     console.log(`SM_FullBroadcastBetting`);
-        //     console.log(objectData);
-
-        //     // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, objectData.strBetting);
-        //     // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
-        // });
-
-        // socket.on('SM_HandCard', (listCard, strHand, listPots) => {
-
-        //     console.log(`SM_HandCard`);
-        //     console.log(listCard);
-        //     console.log(strHand);
-        //     console.log(listPots);
-
-        //     // this.Game.SetHandCard(listCard, strHand);
-        //     // this.Game.UpdatePot(listPots);
-        // });
-
-        // socket.on('SM_FlopCard', (listCard, strHand, listPots) => {
-
-        //     console.log(`SM_FlopCard`);
-        //     console.log(listCard);
-        //     console.log(strHand);
-
-        //     // this.Game.SetFlopCard(listCard, strHand);
-        //     // this.Game.UpdatePot(listPots);
-        // });
-
-        // socket.on('SM_TurnCard', (listCard, strHand, listPots) => {
-
-        //     console.log(`SM_TurnCard`);
-        //     console.log(listCard);
-        //     console.log(strHand);
-
-        //     // this.Game.SetTurnCard(listCard, strHand);
-        //     // this.Game.UpdatePot(listPots);
-        // });
-
-        // socket.on('SM_RiverCard', (listCard, strHand, listPots) => {
-
-        // console.log(`SM_RiverCard`);
-        //     console.log(listCard);
-        //     console.log(strHand);
-
-        //     // this.Game.SetRiverCard(listCard, strHand);
-        //     // this.Game.UpdatePot(listPots);
-        // });
-
-        // socket.on('SM_Result', (listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser, listPots) => {
-
-        //     console.log(`SM_Result`);
-        //     console.log(listResult);
-        //     console.log(listWinCards);
-        //     console.log(strWinnerHand);
-
-        //     // this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);
-        //     // this.Game.UpdatePot(listPots);
-        // });
-
-        // socket.on('SM_RebuyIn', (listObject) => {
-
-        //     console.log(`SM_RebuyIn`);
-        //     console.log(listObject);
-
-        //     // this.Game.ProcessRebuyIn(listObject);
-        // });
-
-        // socket.on('SM_ShowDown',(listData) => {
-
-        //     console.log(`SM_ShowDown`);
-        //     this.Game.ProcessShowDown();
-        // });
-
-        // socket.on('SM_ShowDownTurnCard',(listData) => {
-
-        //     console.log(`SM_ShowDownTurnCard`);
-        //     console.log(listData);
-
-        //     // this.Game.ProcessShowDownTurnCard(listData);
-        // });
-
-        // socket.on('SM_Error', (objectError) => {
-
-        //     console.log(`SM_Error`);
-        //     console.log(objectError);
-        // });
-
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+        });
 	</script>
 </body>
 </html>

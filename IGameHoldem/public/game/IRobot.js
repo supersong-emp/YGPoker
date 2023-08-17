@@ -1,10 +1,10 @@
 export default class IRobot{
 
-    constructor(account, iLocation, timer)
+    constructor(account, timer)
     {
         this.socket = io('/game');
         this.account = account;
-        this.iLocation = iLocation;
+        this.iLocation = -1;
         this.bConnected = false;
         this.fElapsedTime = 0;
         this.timer = timer;
