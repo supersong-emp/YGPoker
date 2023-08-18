@@ -132,7 +132,7 @@ export default class IUser{
         }
 
         //this.labelCoin = new IUILabel(this.iCurrentX+ 80, this.iCurrentY + 130, 25, 25, 20, NumberImages, 124, 124, iGameCoin.toString(), 0);
-        this.textlCoin = new IUIText(this.iCurrentX+ 80, this.iCurrentY + 155, 20, iGameCoin.toLocaleString(), 0);
+        this.textlCoin = new IUIText(this.iCurrentX+ 80, this.iCurrentY + 155, 30, iGameCoin.toLocaleString(), 0);
         this.listProgressBar = [];
         for ( let i = 0; i < 3; ++ i )
         {
@@ -141,9 +141,9 @@ export default class IUser{
         }
         //this.labelTime = new IUILabel(this.iCurrentX - 25, this.iCurrentY + 180, 30, 30, 15, NumberImages, 114, 114, this.iBettingTime.toString(), 0);
         //this.textName = new IUIText(this.iCurrentX + -80, this.iCurrentY + 200, 15, strID, 0);
-        this.textName = new IUIText(this.iCurrentX+80, this.iCurrentY + 200, 20, strID, 0);
+        this.textName = new IUIText(this.iCurrentX+80, this.iCurrentY + 200, 30, strID, 0);
         this.textHand = new IUIText(this.iCurrentX+80, this.iCurrentY + 250, 20, '', 0);
-        this.textCallCoin = new IUIText(kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).x, kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).y, 15, '', 0);
+        this.textCallCoin = new IUIText(kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).x, kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).y, 20, '', 0);
         
         this.m_fVR = 1;
         this.m_fHR = 1;

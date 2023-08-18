@@ -28,7 +28,7 @@ export default class IModeGame {
         ];
         this.listTexts = [
             new IUIText(370, 920, 20, "1000000", 2),
-            new IUIText(370, 957, 15, "RoomName", 2),
+            new IUIText(370, 957, 20, "RoomName", 2),
             new IUIText(370, 994, 20, "B", 2),
         ];
         this.listDot = [

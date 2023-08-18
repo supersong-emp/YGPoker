@@ -10,7 +10,7 @@ export default class IUIText{
 
         //this.strFont = `$bold ${iFontSize}px Georgia`;
         //this.strFont = `'${iFontSize}px Georgia'`;
-        this.strFont = iFontSize.toString()+'px Hahmlet';
+        this.strFont = iFontSize.toString()+'px Noto Sans KR';
         //alert(this.strFont);
         
 
@@ -28,7 +28,7 @@ export default class IUIText{
         this.iCurrentY = this.y * fVR;
 
         this.iFontSize = this.OriginFontSize * fHR;
-        this.strFont = this.iFontSize.toString()+'px Hahmlet';
+        this.strFont = this.iFontSize.toString()+'px Noto Sans KR';
 
         console.log(`this.iFontSize : ${this.iFontSize}`);
     }
@@ -74,7 +74,7 @@ export default class IUIText{
 
     UpdateFontSize(iWidth)
     {
-        this.iFontSize = Math.round(iWidth * 0.015);
-        this.strFont = this.iFontSize.toString()+'px Hahmlet';
+        this.iFontSize = Math.round(iWidth * 0.025);
+        this.strFont = this.iFontSize.toString()+'px Noto Sans KR';
     }
 }
