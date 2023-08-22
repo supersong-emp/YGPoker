@@ -1,4 +1,4 @@
-export default class IRobot{
+class IRobot{
 
     constructor(account, timer)
     {
@@ -15,6 +15,8 @@ export default class IRobot{
         this.eState = '';
         this.listRooms = [];
 
+        this.sGameName = '';
+        this.iBlind = 0;
         this.lUnique = 0;
     }
 
@@ -134,6 +136,8 @@ export default class IRobot{
         if (availableRooms.length > 0) {
             let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
             this.lUnique = randomRoom.lUnique;
+            this.sGameName = randomRoom.strGameName;
+            this.iBlind = randomRoom.iDefaultCoin;
         }
         // Ensure updated room list before returning
         await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
@@ -153,6 +157,8 @@ export default class IRobot{
                     // Choose a random room
                     let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
                     this.lUnique = randomRoom.lUnique;
+                    this.sGameName = randomRoom.strGameName;
+                    this.iBlind = randomRoom.iDefaultCoin;
 
                     let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
                     if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
@@ -499,11 +505,10 @@ export default class IRobot{
 
             console.log(`SM_DefaultAnteSB`);
             console.log(objectData);
-            let data = {};
-            let iCash = parseInt(objectData.iCash) + parseInt(objectData.iCoin);
-            data = {strID:objectData.strID,iCash:iCash};
+
             this.socket.emit('CM_DefaultAnteSB', objectData.iCoin);
-            this.socket.emit('CM_UpdateICash',data);
+            //this.socket.emit('CM_UpdateICash',data);
+
             // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, '');
             // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
         });
@@ -780,10 +785,12 @@ export default class IRobot{
 
             console.log(`SM_FullBroadcastBetting`);
             console.log(objectData);
-
-            let data = {strID:objectData.strID,iCash:parseInt(objectData.iCash)+parseInt(objectData.iCoin)};
-
-            this.socket.emit('CM_UpdateICash',data);
+            if(objectData.strID == this.account.strID)
+            {
+                let iCash = parseInt(objectData.iCash) + parseInt(objectData.iCoin);
+                this.account.iCash = iCash;
+            }
+            //this.socket.emit('CM_UpdateICash',data);
             // this.Game.SetPlayerBetting(objectData.strID, objectData.iCoin, objectData.iBettingCoin, objectData.strBetting);
             // this.Game.UpdateTotalBettingCoin(objectData.iTotalBettingCoin);
         });
@@ -836,10 +843,11 @@ export default class IRobot{
             console.log(listWinCards);
             console.log(strWinnerHand);
 
-            let data = {strID:listResult.strID,iCash:parseInt(listResult.iCash)+parseInt(listResult.iCoin)};
-
-            this.socket.emit('CM_UpdateICash',data);
-
+            if(listResult.strID == this.account.strID)
+            {
+                let iCash = parseInt(listResult.iCash)+parseInt(listResult.iCoin);
+                this.account.iCash = iCash;
+            }
             // this.Game.ProcessResult(listResult, listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser);
             // this.Game.UpdatePot(listPots);
         });
@@ -888,3 +896,5 @@ export default class IRobot{
         });
     }
 }
+
+window.IRobot = IRobot;

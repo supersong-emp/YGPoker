@@ -15,7 +15,7 @@
                     <th>닉네임</th>
                     <th>캐쉬</th>
                     <th>게임</th>
-                    <th>방제목</th>
+                    <th>방번호</th>
                     <th>블라인드</th>
                     <th>머니주기</th>
                     <th>참가</th>
@@ -31,11 +31,11 @@
         <span class="badge bg-primary fs-4 fw-bold">조커 본사 머니:</span>
         <span id="jokerCash" class="fs-4"></span>
     </div>
-    <script type="module" src="game/IRobot.js"></script>
-    <script type="module" src="game/IRobotManager.js"></script>
+    <script src="game/IRobot.js"></script>
+    <script src="game/IRobotTimer.js"></script>
+    <script src="game/IRobotManager.js"></script>
     <script src='/socket.io/socket.io.js'></script>
 	<script type="text/javascript">
-		const socket = io('/game');
 
         document.addEventListener('DOMContentLoaded', (event) => {
             var robotData = [];
@@ -52,7 +52,7 @@
                             // Joker의 현금 업데이트
                             robotData = ret.data;
                             for(let i=0; i < robotData.length; i++) {
-                                robotData[i].strGameName = '';
+                                robotData[i].lUnique = '';
                                 robotData[i].iBlind = '';
                                 robotData[i].eGameType = '홀덤';
                                 robotData[i].sEnter = '참가';
@@ -86,6 +86,8 @@
                             // 해당 로봇 데이터만 이벤트로 전송
                             var event = new CustomEvent('receivedRobotData', { detail: relevantRobots });
                             document.dispatchEvent(event);
+
+                            //console.log(robots);
 
                             // Joker의 현금 업데이트
                             $('#jokerCash').text(ret.jokerCash.toLocaleString());
@@ -196,10 +198,10 @@
 
                 // Add the new properties
                 for(let i=0; i < robotData.length; i++) {
-                    for(let j=0; j < receivedData.length; j++) {
-                        if(receivedData[j].strID == robotData[i].strID) {
-                            robotData[i].strGameName = '';
-                            robotData[i].iBlind = '';
+                    for(let j=0; j < robots.length; j++) {
+                        if(robots[j].account.strID == robotData[i].strID) {
+                            robotData[i].lUnique = robots.lUnique;
+                            robotData[i].iBlind = robots.iBlind;
                             robotData[i].eGameType = '홀덤';
                             robotData[i].sEnter = '퇴장';
                         }
@@ -211,9 +213,9 @@
 
             function appendToTable(robot) {
                 // 버튼의 클래스를 결정
-                var buttonClass = (robot.sEnter === '참가') ? 'btn-primary' : 'btn-danger';
+                var buttonClass = (robot.sEnter == '참가') ? 'btn-primary' : 'btn-danger';
                 // 테이블에 새로운 행을 추가
-                var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.strGameName + "</td><td>" + robot.iBlind + "</td><td><button class='btn btn-primary giveMoney' data-id='" + robot.strID + "'>머니주기</button></td>" + "</td><td><button class='btn " + buttonClass + " enterRobot' data-id='" + robot.strID + "'>" + robot.sEnter + "</button></td></tr>";
+                var newRow = "<tr><td>" + robot.strID + "</td><td>" + robot.strNickname + "</td><td>" + robot.iCash + "</td><td>" + robot.eGameType + "</td><td>" + robot.lUnique + "</td><td>" + robot.iBlind + "</td><td><button class='btn btn-primary giveMoney' data-id='" + robot.strID + "'>머니주기</button></td>" + "</td><td><button class='btn " + buttonClass + " enterRobot' data-id='" + robot.strID + "'>" + robot.sEnter + "</button></td></tr>";
                 
                 $("#robotTable tbody").append(newRow);
             }
@@ -230,48 +232,49 @@
                     // 단일 데이터 처리
                     appendToTable(data);
                 }
-            }     
+            }
 
-            socket.on('connect', () => {
-                console.log("connect");
-            });
-
-            socket.on('disconnect', () => {
-                console.log("disconnect");
-            });
-
-            socket.on('SM_UpdateICash', (data) => {
-                console.log(`SM_UpdateICash`);
-                console.log(data);
-
-                // 데이터를 업데이트
-                for (var i = 0; i < robotData.length; i++) {
-                    if (robotData[i].strID == data.strID) {
-                        robotData[i].iCash = data.iCash;
-                        break;
+            function updateCashFromRobots() {
+                // 여기서는 robots 데이터가 전역 범위에 있다고 가정합니다.
+                console.log("updateCashFromRobots!!!!!!!!!!!!!!!!!!!!!!!");
+                console.log(robotData);
+                console.log(robots);
+                robotData.forEach(robot => {
+                    let correspondingRobot = robots.find(r => r.account.strID == robot.strID);
+                    console.log(correspondingRobot);
+                    if (correspondingRobot) {
+                        robot.iCash = correspondingRobot.account.iCash; // cash 업데이트
+                        robot.lUnique = correspondingRobot.lUnique;
+                        robot.iBlind = correspondingRobot.iBlind;
+                        robot.sEnter = '퇴장';
+                        updateCashInTable(robot); // DOM에서 해당 로봇의 cash 값 업데이트
                     }
-                }
-                // 테이블 업데이트
-                updateTable(robotData);
-            });
+                });
+            }
 
-            socket.on('SM_RoomUpdate', (data) => {
-                console.log(`SM_RoomUpdate ejs`);
-                console.log(data);
+            function updateCashInTable(robot) {
+                // 해당 로봇의 테이블 row를 찾음
+                console.log("updateCashInTable!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                console.log(robot);
+                var row = $("#robotTable tbody tr").filter(function() {
+                    return $(this).find('td:first').text() == robot.strID;
+                });
 
-                // 데이터를 업데이트
-                //여기에 data.strGameName, data.iBlind, data.eGameType 업데이트 해줄려고 하는데 
-                for (var i = 0; i < robotData.length; i++) {
-                    if (robotData[i].strID == data.strID) {
-                        robotData[i].strGameName = data.strGameName;
-                        robotData[i].iBlind = data.iBlind;
-                        //robotData[i].eGameType = data.eGameType;
-                        break;
-                    }
+                // row가 존재하는 경우, 해당 로봇의 cash 값을 직접 수정
+                if (row.length) {
+                    row.find('td:nth-child(3)').text(robot.iCash);
+                    row.find('td:nth-child(5)').text(robot.lUnique);
+                    row.find('td:nth-child(6)').text(robot.iBlind);
+
+                     // 참가/퇴장 버튼의 클래스 및 텍스트 업데이트
+                    var button = row.find('.enterRobot');
+                    var buttonClass = (robot.sEnter == '참가') ? 'btn-primary' : 'btn-danger';
+                    button.removeClass('btn-primary btn-danger').addClass(buttonClass).text(robot.sEnter);
                 }
-                // 테이블 업데이트
-                updateTable(robotData);
-            });
+            }
+
+            // 10초마다 updateCashFromRobots 함수 호출
+            setInterval(updateCashFromRobots, 10000);
 
             $(document).on('keydown', function (event) {
                 // F5 키의 keyCode는 116입니다.

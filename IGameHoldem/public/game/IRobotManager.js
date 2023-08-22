@@ -1,5 +1,5 @@
-import IRobot from "../game/IRobot.js";
-import ITimer from "../game/ITimer.js";
+//import IRobot from "../game/IRobot.js";
+//import ITimer from "../game/ITimer.js";
 
 let robots = [];
 
@@ -24,12 +24,14 @@ function createMultipleRobots(robotData) {
 IRobot.prototype.selectRandomRoom = async function() {
     // 먼저 방 목록을 업데이트합니다.
     await this.RequestRoomList();
-
+        
     // 룸 리스트에서 랜덤하게 방을 선택하고 lUnique 값을 갱신합니다.
     let availableRooms = this.listRooms.filter(room => room.iNumPlayers < room.iMaxPlayers);
     if (availableRooms.length > 0) {
         let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
         this.lUnique = randomRoom.lUnique;
+        this.sGameName = randomRoom.strGameName;
+        this.iBlind = randomRoom.iDefaultCoin;
     }
     // Ensure updated room list before returning
     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
@@ -37,7 +39,6 @@ IRobot.prototype.selectRandomRoom = async function() {
 
 IRobot.prototype.update = async function () {
     // Wait for random interval before selecting room
-    
     if (this.bConnected == false ){
         this.fElapsedTime-=this.timer.GetElapsedTime();
         if(this.fElapsedTime > 3) {
@@ -49,6 +50,8 @@ IRobot.prototype.update = async function () {
                 // Choose a random room
                 let randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
                 this.lUnique = randomRoom.lUnique;
+                this.sGameName = randomRoom.strGameName;
+                this.iBlind = randomRoom.iDefaultCoin;
 
                 let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
                 if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
@@ -71,57 +74,45 @@ IRobot.prototype.update = async function () {
                         this.fElapsedTime = 0;
                     }
                 }
-                else
-                {
-                    const index = robots.findIndex(robot => robot.account.strID === this.account.strID);
-                    if (index !== -1) {
-                        robots.splice(index, 1);
-                    }
-                }
             }
             else
             {
                 this.RequestMakeGame();
 
-                // Use the same logic to join the game as above
-                let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
-                if (selectedRoom && this.account.iCash && this.account.iCash > 0 && this.account.iCash > parseInt(selectedRoom.iDefaultCoin * 100)) {
-                    let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
-                    let availableLocations = [];
+                 // Use the same logic to join the game as above
+                 let selectedRoom = this.listRooms.find(room => room.lUnique == this.lUnique);
+                 if (selectedRoom && this.account.iCash && this.account.iCash > 0  && this.account.iCash > parseInt(selectedRoom.iDefaultCoin*100)) {
+                     let existingLocations = selectedRoom.listPlayer.map(player => player.iLocation);
+                     let availableLocations = [];
 
-                    for (let i = 0; i < parseInt(selectedRoom.iMaxPlayers); i++) {
-                        if (!existingLocations.includes(i)) {
-                            availableLocations.push(i);
-                        }
-                    }
+                     for (let i = 0; i < parseInt(selectedRoom.iMaxPlayers); i++) {
+                         if (!existingLocations.includes(i)) {
+                             availableLocations.push(i);
+                         }
+                     }
 
-                    if (availableLocations.length > 0) {
-                        let randomIndex = Math.floor(Math.random() * availableLocations.length);
-                        this.iLocation = availableLocations[randomIndex];
+                     if (availableLocations.length > 0) {
+                         let randomIndex = Math.floor(Math.random() * availableLocations.length);
+                         this.iLocation = availableLocations[randomIndex];
 
-                        this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass, this.account.eUserType);
-                        this.bConnected = true;
-                        this.fElapsedTime = 0;
-                    }
-                }
-                else {
-                    const index = robots.findIndex(robot => robot.account.strID === this.account.strID);
-                    if (index !== -1) {
-                        robots.splice(index, 1);
-                    }
-                }
+                         this.socket.emit('CM_JoinGame', this.account.strID, this.lUnique, this.account.iCash, this.account.iAvatar, this.account.strOptionCode, this.account.strGroupID, this.account.iClass, this.account.eUserType);
+                         this.bConnected = true;
+                         this.fElapsedTime = 0;
+                     }
+                 }
             }
         }
     }
-    if (this.bEnableBetting == true) {
+    if ( this.bEnableBetting == true ){
         this.fElapsedTime -= this.timer.GetElapsedTime();
-        if (this.fElapsedTime > 2) {
+        if( this.fElapsedTime > 2 )
+        {
             //console.log(this.iElapsedTime);
-            let objectBetting = { strBetting: this.strBetting, iAmount: this.iCallAmount };
+            let objectBetting = {strBetting:this.strBetting, iAmount:this.iCallAmount};
             this.socket.emit('CM_Betting', objectBetting);
             this.bEnableBetting = false;
             this.fElapsedTime = 0;
-        }
+        } 
     }
 };
 
