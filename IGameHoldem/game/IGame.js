@@ -303,6 +303,9 @@ class IGame
         this.strIDjoker = '';
         this.eState = '';
         this.tableCards = [];
+
+        //  
+        this.strCurrentBettingPlayerID = '';
     }
     
     async GetOdds(strID)
@@ -458,6 +461,8 @@ class IGame
         this.listBet = [];
         this.strIDjoker = '';
 
+        this.strCurrentBettingPlayerID = '';
+
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             let player = this.listUsers.GetSocket(i);
@@ -601,6 +606,23 @@ class IGame
 
     Leave(socket)
     {
+        //
+
+        if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
+        {
+            if ( this.strCurrentBettingPlayerID != '' )
+            {
+                console.log(`IGame::Leave (BetUser : ${this.strCurrentBettingPlayerID}), (LeaveUser : ${socket.strID})`);
+                if ( this.strCurrentBettingPlayerID == socket.strID )
+                {
+                    const objectBetting = {strBetting:'Fold', iAmount:0};
+                    this.ProcessBetting(socket, objectBetting);
+                }
+            }
+        }
+
+        //
+
         console.log(`IGame::Leave ${socket.strID}`);
 
         // socket.eStage = 'LOBBY';
@@ -1670,6 +1692,8 @@ class IGame
                         //this.CalculateEnableBettingList(tplay, 0, bPreFlopBetting);
                         this.CalculateEnableBettingList(tplay, iCallAmount, bPreFlopBetting);
                         tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime, handcard:tplay.listHandCard, strIDjoker:this.strIDjoker, eState:this.eState, iDefaultCoin:this.iDefaultCoin, tableCards:this.tableCards, iTotalBettingCoin:this.iTotalBettingCoin, iCoin:tplay.iCoin});
+
+                        this.strCurrentBettingPlayerID = tplay.strID;
                     }
                     else
                     {
@@ -2035,6 +2059,8 @@ class IGame
                         this.CalculateEnableBettingList(tplay, iCallAmount, false);
 
                         tplay.emit('SM_EnableBetting', {iCallAmount:iCallAmount, listEnableBettingType:this.listEnableBettingType, iBettingTime:this.iBettingTime,handcard:tplay.listHandCard, strIDjoker:this.strIDjoker, eState:this.eState, iDefaultCoin:this.iDefaultCoin, tableCards:this.tableCards, iTotalBettingCoin:this.iTotalBettingCoin, iCoin:tplay.iCoin});
+
+                        this.strCurrentBettingPlayerID = tplay.strID;
                     }
                     else
                     {
