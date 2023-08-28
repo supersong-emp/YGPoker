@@ -1025,15 +1025,7 @@ export default class IModeGame {
                 //this.ProcessLocationSingle(listPlayers[i]);
                 this.listDisableLocations.push(listPlayers[i].iLocation);
                 let listHandCard = [];
-                
-                if(this.strDeckcode == 1)
-                {
-                    listHandCard = [52,52]
-                }
-                else
-                {
-                    listHandCard = [53,53]
-                }
+        
                 console.log(
                     `############# ${listPlayers[i].strID}, ${listPlayers[i].iLocation}`
                 );
@@ -1098,17 +1090,6 @@ export default class IModeGame {
 
             this.listPlayers[i].Locate(iFx);
             this.listPlayers[i].OnSize(this.kSC.m_fWidthRate, this.kSC.m_fHeightRate);
-            if(strID != this.listPlayers[i].strID)
-            {
-                if(this.strDeckcode == 1)
-                {
-                    currentHandcard = [52,52]
-                }
-                else
-                {
-                    currentHandcard = [53,53]
-                }
-            }
         }
         
         //this.AddUser(strID, iCoin, iLocation, 0, iAvatar, this.kTimer, this.kSC);

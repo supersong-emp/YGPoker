@@ -171,10 +171,10 @@ class IGameManager
 
                 return true;
             }
-            else if ( 1 == iNumUsers )
-            {
-                this.listGames[cIndex].SetMode(E.EGameMode.Standby);
-            }
+            // else if ( 1 == iNumUsers )
+            // {
+            //     this.listGames[cIndex].SetMode(E.EGameMode.Standby);
+            // }
             //return true;
         }
         return false;

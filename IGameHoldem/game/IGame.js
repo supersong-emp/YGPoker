@@ -607,6 +607,7 @@ class IGame
     Leave(socket)
     {
         //
+        //if( this.eGameMode == E.EGameMode.BuildPlayerType )
 
         if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
         {
@@ -1080,10 +1081,17 @@ class IGame
                 console.log("HandCard!!!!!!!!!!!!!!!!!");
                 console.log(listCards);
                 console.log(player.strID);
-                let objectHand = this.ProcessPokerHand(player);
-
+                let objectHand = [];
+                if(player.bConnection == true)
+                {
+                    if(listCards.length != 0)
+                    {
+                        objectHand = this.ProcessPokerHand(player);
+                        this.listUsers.GetSocket(i).emit('SM_HandCard', listCards, objectHand.handdescr, this.listPots);
+                    }
+                }
                 //this.listUsers.GetSocket(i).emit('SM_HandCard', listCards, objectHand.handname);
-                this.listUsers.GetSocket(i).emit('SM_HandCard', listCards, objectHand.handdescr, this.listPots);
+                //this.listUsers.GetSocket(i).emit('SM_HandCard', listCards, objectHand.handdescr, this.listPots);
             }
         }
     }
@@ -1705,7 +1713,7 @@ class IGame
                         }
                         else 
                         {
-                            let objectBetting = {strBetting:'Call', iAmount:iCallAmount};
+                            let objectBetting = {strBetting:'Fold', iAmount:0};
                             this.ProcessBetting(tplay, objectBetting);                            
                         }
                     }
@@ -2071,7 +2079,7 @@ class IGame
                         }
                         else 
                         {
-                            let objectBetting = {strBetting:'Call', iAmount:iCallAmount};
+                            let objectBetting = {strBetting:'Fold', iAmount:0};
                             this.ProcessBetting(tplay, objectBetting);                            
                         }
                     }
@@ -2431,33 +2439,14 @@ class IGame
                 continue;
             if ( this.listUsers.GetSocket(i).bSpectator == true)
                 continue;
-
-            const objectHand = this.ProcessPokerHand(this.listUsers.GetSocket(i));
-            // let listCard = [];
-
-            // for ( let i in this.listTableCard )
-            //     listCard.push(this.listTableCard[i]);
-
-            // listCard.push(this.listUsers.GetSocket(i).listHandCard[0]);
-            // listCard.push(this.listUsers.GetSocket(i).listHandCard[1]);
-            
-            // let hand = this.ConvertCardList(listCard);
-
-            // let pokerhand = poker.solve(hand);
-            // let handname = pokerhand.name;
-            // if ( handname == 'Straight Flush')
-            // {
-            //     if ( pokerhand.descr == 'Royal Flush' )
-            //     handname = 'Royal Flush';
-            // }
-
-            // this.listUsers.GetSocket(i).strHand = handname;
-            // this.listUsers.GetSocket(i).objectHand = pokerhand;
-
-            this.listUsers.GetSocket(i).strHand = objectHand.handname;
-            this.listUsers.GetSocket(i).objectHand = objectHand.pokerhand;
-            this.listUsers.GetSocket(i).strDescr = objectHand.handdescr;
-
+            const objectHand = [];
+            if(player.listHandCard.length != 0)
+            {
+                objectHand = this.ProcessPokerHand(this.listUsers.GetSocket(i));
+                this.listUsers.GetSocket(i).strHand = objectHand.handname;
+                this.listUsers.GetSocket(i).objectHand = objectHand.pokerhand;
+                this.listUsers.GetSocket(i).strDescr = objectHand.handdescr;
+            }
             // console.log(listCard);
             // console.log(hand);
             // console.log(pokerhand.name);
@@ -2492,7 +2481,7 @@ class IGame
         listCard.push(player.listHandCard[0]);
         listCard.push(player.listHandCard[1]);
 
-        console.log("ProcessPokerHand!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        //console.log("ProcessPokerHand!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         console.log(listCard);
         
         let hand = this.ConvertCardList(listCard);
