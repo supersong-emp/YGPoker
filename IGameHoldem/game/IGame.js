@@ -607,9 +607,38 @@ class IGame
     Leave(socket)
     {
         //
-        //if( this.eGameMode == E.EGameMode.BuildPlayerType )
+        if( this.eGameMode == E.EGameMode.BuildPlayerType )
+        {
+            this.SetMode(E.EGameMode.BuildPlayerType);            
+        }
+        else if ( this.eGameMode == E.EGameMode.DefaultAnteSB )
+        {
+            if ( socket.strPlayerType == 'SB' )
+            {
+                if ( socket.iTotalBettingCoin > 0 )
+                {
+                }
 
-        if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
+                this.SetMode(E.EGameMode.BuildPlayerType);
+            }
+        }
+        else if ( this.eGameMode == E.EGameMode.DefaultAnteBB )
+        {
+            if ( socket.strPlayerType == 'BB' )
+            {
+                if ( socket.iTotalBettingCoin > 0 )
+                {
+
+                }
+                this.SetMode(E.EGameMode.BuildPlayerType);
+            }
+        }
+        else if ( this.eGameMode == E.EGameMode.Result )
+        {
+            if ( player.iLocation != -1 && player.strLastBettingAction != 'Fold' && player.bEnable == true && player.bSpectator == false)
+                this.SetMode(E.EGameMode.Result);
+        }
+        else if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
         {
             if ( this.strCurrentBettingPlayerID != '' )
             {
