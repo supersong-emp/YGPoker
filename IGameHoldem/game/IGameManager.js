@@ -38,6 +38,7 @@ class IGameManager
         const cIndex = this.FindGameIndex(lUnique);
         if ( -1 != cIndex )
         {
+
             this.listGames.splice(cIndex, 1);
         }
         this.PrintRoomList();
@@ -155,6 +156,23 @@ class IGameManager
         return null;
     }
 
+    LeaveSetting(socket)
+    {
+        console.log(`IGameManager::Leave : ${socket.lUnique},  ${socket.eStage}, SocketID : ${socket.id}, strID : ${socket.strID}`);
+        const cIndex = this.FindGameIndex(socket.lUnique);
+        if ( -1 != cIndex )
+        {
+            let iNumUsers = this.listGames[cIndex].LeaveSetting(socket);
+            if ( 0 == iNumUsers )
+            {
+                this.listGames[cIndex].DeleteListUser();
+                this.DeleteGame(this.listGames[cIndex].lUnique);
+                return true;
+            }
+        }
+        return false;
+    }
+
     Leave(socket)
     {
         console.log(`IGameManager::Leave : ${socket.lUnique},  ${socket.eStage}, SocketID : ${socket.id}, strID : ${socket.strID}`);
@@ -168,14 +186,8 @@ class IGameManager
                 this.DeleteGame(this.listGames[cIndex].lUnique);
                 // this.listGames.splice(cIndex, 0);  
                 // this.PrintRoomList();              
-
                 return true;
             }
-            // else if ( 1 == iNumUsers )
-            // {
-            //     this.listGames[cIndex].SetMode(E.EGameMode.Standby);
-            // }
-            //return true;
         }
         return false;
     }

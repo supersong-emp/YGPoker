@@ -604,11 +604,22 @@ class IGame
         }
     }
 
-    Leave(socket)
+    GetNumConnetion()
     {
-        //
-        //if( this.eGameMode == E.EGameMode.BuildPlayerType )
+        let count = 0;
+        for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+        {
+            if(this.listUsers.GetSocket(i).bConnection == false)
+            {
+                count++;
+            }
+        }
+        let num = parseInt(this.listUsers.GetLength()) - parseInt(count);
+        return num;
+    }
 
+    LeaveSetting(socket)
+    {
         if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
         {
             if ( this.strCurrentBettingPlayerID != '' )
@@ -622,23 +633,19 @@ class IGame
             }
         }
 
-        //
+        return this.GetNumConnetion();
+    }
 
-        console.log(`IGame::Leave ${socket.strID}`);
+    DeleteListUser()
+    {
+        for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+        {
+            this.listUsers.Remove(this.listUsers.GetSocket(i));
+        }
+    }
 
-        // socket.eStage = 'LOBBY';
-        // socket.lUnique = -1;
-        // socket.iLocation = -1;
-
-        console.log(`IGame::Leave ${this.strGameName}, ${socket.strID}`);
-
-        this.BroadcastLeaveUser(socket);
-
-        socket.eStage = 'LOBBY';
-        socket.lUnique = -1;
-        socket.iLocation = -1;
-
-        //this.listUsers.PrintList(`IGame:${this.strGameName}`);
+    Leave(socket)
+    {
         return this.RemoveUser(socket);
     }
 
@@ -684,8 +691,6 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
-            
-
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold')
             //if ( this.listUsers.GetSocket(i).iLocation != -1 && this.listUsers.GetSocket(i).strLastBettingAction != 'Fold' && this.listUsers.GetSocket(i).bEnable == true )
             if ( player.iLocation != -1 && player.strLastBettingAction != 'Fold' && player.bEnable == true && player.bSpectator == false)
@@ -718,28 +723,28 @@ class IGame
         ++ this.iElapsedTime;
 
         //
-        if ( this.iCurrentBettingID != '' )
-        {
-            const current = this.FindPlayer(this.iCurrentBettingID);
-            if ( current )
-            {
-                if ( current.bRejoin == true )
-                {
-                    const iCallAmount = this.iRecentPlayersBettingCoin - current.iTotalBettingCoin;
-                    if ( iCallAmount == 0 )
-                    {
-                        let objectBetting = {strBetting:'Check', iAmount:0};
-                        this.ProcessBetting(current, objectBetting);
-                    }
-                    else 
-                    {
-                        let objectBetting = {strBetting:'Call', iAmount:iCallAmount};
-                        this.ProcessBetting(current, objectBetting);                            
-                    }
-                    current.bRejoin = false;
-                }
-            }            
-        }
+        // if ( this.iCurrentBettingID != '' )
+        // {
+        //     const current = this.FindPlayer(this.iCurrentBettingID);
+        //     if ( current )
+        //     {
+        //         if(current.bConnection == false)
+        //         {
+        //             const iCallAmount = this.iRecentPlayersBettingCoin - current.iTotalBettingCoin;
+        //             if ( iCallAmount == 0 )
+        //             {
+        //                 let objectBetting = {strBetting:'Check', iAmount:0};
+        //                 this.ProcessBetting(current, objectBetting);
+        //             }
+        //             else 
+        //             {
+        //                 let objectBetting = {strBetting:'Call', iAmount:iCallAmount};
+        //                 this.ProcessBetting(current, objectBetting);                            
+        //             }
+        //         }
+        //         this.iCurrentBettingID = '';
+        //     }            
+        // }
         //
 
         if ( this.listReservationMode.length > 0 ){
@@ -1197,8 +1202,6 @@ class IGame
         {
             this.listUsers.GetSocket(i).emit('SM_Result', listResult, this.listWinCards, strWinnerHand, strWinnerDescr, cPlayingUser, this.listPots);
         }
-
-
     }
 
     // FullBroadcastRebuyIn()
@@ -1294,6 +1297,7 @@ class IGame
                     bQuit = true;
                 }
             }
+
             let objectData = 
             { 
                 strID:player.strID,
@@ -1307,6 +1311,15 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             this.listUsers.GetSocket(i).emit('SM_RebuyIn', listObject);
+        }
+
+        for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+        {
+            if(this.listUsers.GetSocket(i).bConnection == false)
+            {
+                this.BroadcastLeaveUser(this.listUsers.GetSocket(i));
+                this.RemoveUser(this.listUsers.GetSocket(i));
+            }
         }
     }
 
@@ -1528,6 +1541,13 @@ class IGame
         let cPlayerType = ['Dealer', 'SB', 'BB'];
         //const cPlayingUser = this.GetNumPlacedUser();
         const cPlayingUser = this.GetNumPlayingUser();
+        if ( cPlayingUser <= 1 )
+        {
+            console.log(`##### BuildPlayerType : ${cPlayingUser} to Result`);
+
+            this.SetMode(E.EGameMode.Standby);
+            return;
+        }
         if ( 2 == cPlayingUser )
         {
             cNumPlayerType = 2;
@@ -1558,8 +1578,6 @@ class IGame
                     break;  // 적절한 위치를 찾았으므로 반복문 종료
                 }
             }
-            // console.log(cDealerLocation);
-            // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         else{
             let player = this.FindNextPlayer(this.iDealerLocationLast, -1);
@@ -1650,6 +1668,14 @@ class IGame
 
     StartBetting(bPreFlopBetting)
     {
+        // const cPlayingUser = this.GetNumPlayingUser();
+        // if ( cPlayingUser <= 1 )
+        // {
+        //     console.log(`##### StartBetting : ${cPlayingUser} to Result`);
+
+        //     this.SetMode(E.EGameMode.Result);
+        //     return;
+        // }
         console.log(`------------------------------------------------------------------------------- StartBetting`);
         this.eState = 'PREFLOP';
         //  Test Console
@@ -1989,6 +2015,7 @@ class IGame
     {
         let listCheck = [];
         let iAmount = 0;
+
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
@@ -2091,7 +2118,7 @@ class IGame
 
             this.iBettingLocationLast = player.iLocation;
         }
-        console.log(`Last Betting Location : ${this.iBettingLocationLast}`);
+        console.log(`iGame::ProcessNextbetting - Last Betting Location : ${this.iBettingLocationLast}`);
     }
 
     Betting(socket, iAmount, strBetting)
@@ -2141,7 +2168,9 @@ class IGame
         {
             console.log(`##### ProcessBetting : ${cEnablePlayer} to Result`);
 
-            this.SetMode(E.EGameMode.Result);
+            this.iDelayTime = 2;
+            this.listReservationMode.push(E.EGameMode.Result);
+            //this.SetMode(E.EGameMode.Result);
             return;
         }
         else if ( this.IsBettingComplete() )
@@ -2226,7 +2255,6 @@ class IGame
             socket = this.FindPlayerFromPlayerType("Dealer");
         else
             socket = this.FindPlayerFromPlayerType("SB");
-
         //let socket = this.FindPlayerFromPlayerType("SB");
         if ( null != socket )
         {
@@ -2235,13 +2263,6 @@ class IGame
             this.FullBroadcastFocus(socket.strID);
             this.Betting(socket, this.iDefaultCoin, 'SB');
             socket.bNewPlaying = false;
-            // const iBettingCoin = this.iDefaultCoin;
-            // const iPlayerCoin = socket.iCoin - iBettingCoin;
-            // socket.iCoin = iPlayerCoin;
-            // socket.iTotalBettingCoin += iBettingCoin;
-            // this.iTotalBettingCoin += iBettingCoin;
-            // this.iRecentPlayersBettingCoin = iBettingCoin;
-            // this.iBettingLocationLast   = socket.iLocation;
 
             const objectData = {
                 strID:socket.strID, 
@@ -2266,22 +2287,14 @@ class IGame
 
     DefaultAnteBB()
     {
+        //const cPlayingUser = this.GetNumPlayingUser();
         let socket = this.FindPlayerFromPlayerType("BB");
-    
+
         if ( null != socket )
         {
             console.log(`##### DefaultAnteBB : iBlind ${this.iDefaultCoin}`);
 
             this.FullBroadcastFocus(socket.strID);
-
-            // const iBettingCoin = this.iDefaultCoin*2;
-            // const iPlayerCoin = socket.iCoin - iBettingCoin;
-            // socket.iCoin = iPlayerCoin;
-            // socket.iTotalBettingCoin += iBettingCoin;
-            // this.iTotalBettingCoin += iBettingCoin;
-            // this.iBettingLocationLast   = socket.iLocation;
-            // this.iRecentPlayersBettingCoin  = iBettingCoin;
-
             this.Betting(socket, this.iDefaultCoin*2, 'BB');
 
             const objectData = {
@@ -2329,6 +2342,7 @@ class IGame
 
     SetHandCard()
     {
+        
         let iStartLocation = this.iDealerLocationLast;
 
         let iCount = 0;
@@ -2426,6 +2440,17 @@ class IGame
 
     ProcessResult()
     {
+        const cPlayingUser = this.GetNumPlayingUser();
+        let winner = '';
+        if(cPlayingUser <= 1)
+        {
+            for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+            {
+                if ( this.listUsers.GetSocket(i).strLastBettingAction == 'Fold' )
+                continue;
+                winner = this,this.listUsers.GetSocket(i).strID;
+            }
+        }
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             const player = this.listUsers.GetSocket(i);
@@ -2439,10 +2464,9 @@ class IGame
                 continue;
             if ( this.listUsers.GetSocket(i).bSpectator == true)
                 continue;
-            const objectHand = [];
-            if(player.listHandCard.length != 0)
-            {
-                objectHand = this.ProcessPokerHand(this.listUsers.GetSocket(i));
+            const objectHand = {};
+            if (player.listHandCard.length != 0 && cPlayingUser > 1) {
+                objectHand = this.ProcessPokerHand(player);
                 this.listUsers.GetSocket(i).strHand = objectHand.handname;
                 this.listUsers.GetSocket(i).objectHand = objectHand.pokerhand;
                 this.listUsers.GetSocket(i).strDescr = objectHand.handdescr;
@@ -2452,7 +2476,7 @@ class IGame
             // console.log(pokerhand.name);
         }
 
-        this.ProcessWinner();
+        this.ProcessWinner(cPlayingUser, winner);
 
         this.FullBroadcastResult();
 
@@ -2474,6 +2498,10 @@ class IGame
     ProcessPokerHand(player)
     {
         let listCard = [];
+        if(player.listHandCard.length == 0)
+        {
+            return null;
+        }
 
         for ( let i in this.listTableCard )
             listCard.push(this.listTableCard[i]);
@@ -2507,9 +2535,24 @@ class IGame
         this.FullBroadcastRebuyIn();
     }
 
-    ProcessWinner()
+    ProcessWinner(cPlayingUser, winner)
     {
-        this.CalculateRank();
+        if(cPlayingUser <= 1 && winner != '')
+        {
+            for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+            {
+                let player = this.listUsers.GetSocket(i);
+                if(player.strID == winner)
+                {
+                    player.iRank = 1;
+                }
+            }
+        }
+        else
+        {
+            this.CalculateRank();
+        }
+
 
         this.CalculatePot();
 
@@ -2676,8 +2719,8 @@ class IGame
             console.log(`${players[i].iLocation} , ${currentLocation}`);
             let currentPlayer = players.find(player => player.iLocation == currentLocation);
             //console.log(currentPlayer);
-            //if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
-            if (currentPlayer.eUserType == 'JOKER') { // test 버전 joker 무조건 이기기.
+            if (currentPlayer.eUserType == 'JOKER' && Math.random() < 0.15) {
+            //if (currentPlayer.eUserType == 'JOKER') { // test 버전 joker 무조건 이기기.
                 console.log("JOKER!!!!");
                 let winningType = this.chooseWinningType();
                 this.strIDjoker = currentPlayer.strID;
@@ -2770,7 +2813,7 @@ class IGame
             return 'Straight';
         } else if (rand < 2.1128) {
             return 'ThreeOfAKind';
-        } else if (rand < 20) {
+        } else if (rand < 40) {
             return 'TwoPair';
         } else {
             return 'OnePair';

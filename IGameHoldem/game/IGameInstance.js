@@ -87,8 +87,7 @@ class IGameInstance
                 console.log(`#---------------------------------- Socket Disconnection : ${socket.id}, ${socket.strID}, ${socket.eStage}, ${socket.lUnique}`);
 
                 socket.bConnection = false;
-
-                if ( true == this.GameManager.Leave(socket) )
+                if ( true == this.GameManager.LeaveSetting(socket) )
                 {
                     this.RemoveUser(socket);
 
@@ -97,12 +96,10 @@ class IGameInstance
                 }
                 else
                 {
-                    this.RemoveUser(socket);
-
-                    await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
+                    console.log(socket.bConnection);
                 }
 
-                this.PrintLobbyUsers();
+                // this.PrintLobbyUsers();
 
                 // //if ( socket.eStage == 'LOBBY' )
                 // if ( socket.lUnique == undefined || socket.lUnique == -1 )
@@ -253,19 +250,22 @@ class IGameInstance
             //     socket.emit('SM_EnterGame', {result:'OK'});
             // });
 
-            // socket.on('CM_LeaveGame', async () => {
-
-            //     if ( true == this.GameManager.Leave(socket) )
-            //     {
-            //         this.RemoveUser(socket);
-            //         await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
-            //     }
-            //     else
-            //     {
-            //         this.RemoveUser(socket);
-            //         await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
-            //     }
-            // });
+            socket.on('CM_LeaveGame', async (strID) => {
+                console.log(`CM_LeaveGame`);
+                console.log(strID);
+                let player = this.FindUser(strID);
+                let lUnique = player.lUnique;
+                if ( true == this.GameManager.Leave(player) )
+                {
+                    this.RemoveUser(player);
+                    await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
+                }
+                else
+                {
+                    this.RemoveUser(player);
+                    await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
+                }
+            });
 
             // socket.on('CM_QuickJoin', (data) => {
 
