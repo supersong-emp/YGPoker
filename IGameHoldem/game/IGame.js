@@ -606,20 +606,9 @@ class IGame
 
     GetNumConnetion()
     {
-        let count = 0;
-        for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
-        {
-            if(this.listUsers.GetSocket(i).bConnection == false)
-            {
-                count++;
-            }
-        }
-        let num = parseInt(this.listUsers.GetLength()) - parseInt(count);
-        return num;
-    }
+        //
+        //if( this.eGameMode == E.EGameMode.BuildPlayerType )
 
-    LeaveSetting(socket)
-    {
         if ( this.eGameMode == E.EGameMode.BettingPreFlop || this.eGameMode == E.EGameMode.BettingFlop || this.eGameMode == E.EGameMode.BettingTurn || this.eGameMode == E.EGameMode.BettingRiver )
         {
             if ( this.strCurrentBettingPlayerID != '' )
