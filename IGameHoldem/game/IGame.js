@@ -2464,7 +2464,7 @@ class IGame
                 continue;
             if ( this.listUsers.GetSocket(i).bSpectator == true)
                 continue;
-            const objectHand = {};
+            let objectHand = {};
             if (player.listHandCard.length != 0 && cPlayingUser > 1) {
                 objectHand = this.ProcessPokerHand(player);
                 this.listUsers.GetSocket(i).strHand = objectHand.handname;
