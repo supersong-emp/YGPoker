@@ -182,7 +182,7 @@ configScreen.listMobileLocationV.push({x:570, y:1590});// plus, minus button
 configScreen.listMobileLocationV.push({x:1630, y:860}); // sliderbar
 configScreen.listDesktopLocationsV.push({x:1700, y:300}); //mobile sliderbar
 configScreen.listDesktopLocationsV.push({x:1400, y:200}); // MobileRaiseBar
-configScreen.listMobileLocationV.push({x:860, y:1200});// mobile sliderbar
+configScreen.listMobileLocationV.push({x:560, y:1100});// mobile sliderbar
 configScreen.listMobileLocationV.push({x:560, y:1100}); // MobileRaiseBar
 
 configScreen.listDesktopLocationsH.push({x:50, y:800}); // Chat 버튼
@@ -328,10 +328,10 @@ let imagesGameDeck =
 let buttonSlider = new IUIButton(70, 70, 70, 70, null,imageSliderButton, 50, 50, "");
 let sliderBar = 
 [
-    new IUISlider(cBettingButtonLocations[9].x, cBettingButtonLocations[9].y, 200, 50, imageSlider, 200, 50, buttonSlider,0)
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 610, '',1),
     // new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
-    // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
-    // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
 ];
 
 let moblieSliderBar = 

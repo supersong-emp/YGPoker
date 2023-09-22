@@ -999,6 +999,7 @@ export default class IModeGame {
                 }
                 this.kMainUser.iAutoFoldCounter++;
                 if (this.kMainUser.iAutoFoldCounter >= 3) {
+                    this.listAbnormalID.push(this.kMainUser.strID);
                     window.close();
                 }
             }
