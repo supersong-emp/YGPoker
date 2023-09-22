@@ -182,7 +182,7 @@ configScreen.listMobileLocationV.push({x:570, y:1590});// plus, minus button
 configScreen.listMobileLocationV.push({x:1630, y:860}); // sliderbar
 configScreen.listDesktopLocationsV.push({x:1700, y:300}); //mobile sliderbar
 configScreen.listDesktopLocationsV.push({x:1400, y:200}); // MobileRaiseBar
-configScreen.listMobileLocationV.push({x:760, y:1160});// mobile sliderbar
+configScreen.listMobileLocationV.push({x:760, y:1120});// mobile sliderbar
 configScreen.listMobileLocationV.push({x:560, y:1100}); // MobileRaiseBar
 
 configScreen.listDesktopLocationsH.push({x:50, y:800}); // Chat 버튼
