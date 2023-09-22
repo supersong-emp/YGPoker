@@ -738,16 +738,16 @@
 
             if ( objectData.error == 'NotExistRoom' )
             {
-                alert('There is no Room to join.');
+                alert('존재하지 않는 방입니다. 다시 시도해 주세요.');
                 
             }
             else if ( objectData.error == 'AlreadyPlaying' )
             {
-                alert('Already playing in the game.');
+                alert('이전 게임이 정상적으로 끝나지 않아 잠시만 기다려주세요.');
             }
             else if ( objectData.error == 'NotEnoughCoin' )
             {
-                alert('Game Coin is not enough.');
+                alert('게임머니가 부족합니다. 확인해주세요.');
             }
             //location.reload();
         });
