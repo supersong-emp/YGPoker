@@ -254,6 +254,7 @@ class IGameInstance
                 console.log(`CM_LeaveGame`);
                 console.log(strID);
                 let player = this.FindUser(strID);
+                if(player == null)return;
                 let lUnique = player.lUnique;
                 if ( true == this.GameManager.Leave(player) )
                 {

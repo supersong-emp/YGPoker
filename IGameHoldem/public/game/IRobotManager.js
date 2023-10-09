@@ -111,6 +111,7 @@ IRobot.prototype.update = async function () {
             let objectBetting = {strBetting:this.strBetting, iAmount:this.iCallAmount};
             this.socket.emit('CM_Betting', objectBetting);
             this.bEnableBetting = false;
+            console.log(`Bot ElapsedTime :  ${this.fElapsedTime}`);
             this.fElapsedTime = 0;
         } 
     }
