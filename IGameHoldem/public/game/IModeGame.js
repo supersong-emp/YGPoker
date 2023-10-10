@@ -172,11 +172,6 @@ export default class IModeGame {
 
     //  When i am in a game alone
     Initialize() {
-        if(this.listAbnormalID.length > 0)
-        {
-            for(let i in this.listAbnormalID)
-                this.socket.emit('CM_LeaveGame',this.listAbnormalID[i]);
-        }
         this.iTotalBettingCoin = 0;
         this.iCallCoin = 0;
         this.listLabels[0].UpdateCaption("0");
@@ -1420,6 +1415,7 @@ export default class IModeGame {
             let player = this.FindUser(listResult[i].strID);
             if (cPlayingUser == 1) {
                 player.bAbstentionWin = true;
+                //player.bWinner = true;
             }
             if (null != player) {
                 console.log(
@@ -1478,6 +1474,12 @@ export default class IModeGame {
                     else this.UpdatePoint(listObject[i].iCash);
                 }
             }
+        }
+
+        if(this.listAbnormalID.length > 0)
+        {
+            for(let i in this.listAbnormalID)
+                this.socket.emit('CM_LeaveGame',this.listAbnormalID[i]);
         }
     }
 

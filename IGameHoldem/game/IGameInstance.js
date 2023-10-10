@@ -10,6 +10,8 @@ class IGameInstance
         this.namespaceIO = io.of(namespaceIO);
         this.listUsers = new ISocketList();
 
+        this.listAbnormalSocket = [];
+
         this.GameManager = kGameManager;
     }
 
@@ -81,36 +83,27 @@ class IGameInstance
                 socket.emit('SM_RequestLogin');
             }
 
-            socket.on('disconnect', async ()=> {
-
+            socket.on('disconnect', async () => {
                 let lUnique = socket.lUnique;
                 console.log(`#---------------------------------- Socket Disconnection : ${socket.id}, ${socket.strID}, ${socket.eStage}, ${socket.lUnique}`);
-
+            
                 socket.bConnection = false;
-                if ( true == this.GameManager.LeaveSetting(socket) )
-                {
-                    this.RemoveUser(socket);
-
-                    //await this.RequestAxios('http://localhost:7000/removeroom', {lUnique:lUnique});
+                this.listAbnormalSocket.push(socket);
+                
+                if (this.GameManager.LeaveSetting(socket)) {
+                    // 역순으로 순회
+                    for(let i = this.listAbnormalSocket.length - 1; i >= 0; i--) {
+                        if (lUnique == this.listAbnormalSocket[i].lUnique) {
+                            this.RemoveUser(this.listAbnormalSocket[i]);
+                            this.listAbnormalSocket.splice(i, 1); // 제거
+                        }
+                    }
+                    // this.RemoveUser(socket);
+            
                     await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
-                }
-                else
-                {
+                } else {
                     console.log(socket.bConnection);
                 }
-
-                // this.PrintLobbyUsers();
-
-                // //if ( socket.eStage == 'LOBBY' )
-                // if ( socket.lUnique == undefined || socket.lUnique == -1 )
-                // {
-                //     this.RemoveUser(socket);
-                // }
-                // //else if ( socket.eStage == 'GAME' )
-                // else
-                // {
-                //     this.GameManager.Leave(socket);
-                // }
             });
 
             // this.GameManager.OnIO(io);
@@ -434,8 +427,10 @@ class IGameInstance
 
     RemoveUser(socket)
     {
-        this.listUsers.Remove(socket);
-        this.PrintLobbyUsers();
+        if(socket != null){
+            this.listUsers.Remove(socket);
+            this.PrintLobbyUsers();
+        }
     }
 
     PrintLobbyUsers()

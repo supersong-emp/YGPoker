@@ -2448,7 +2448,7 @@ class IGame
             {
                 if ( this.listUsers.GetSocket(i).strLastBettingAction == 'Fold' )
                 continue;
-                winner = this,this.listUsers.GetSocket(i).strID;
+                winner = this.listUsers.GetSocket(i).strID;
             }
         }
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
@@ -2537,6 +2537,7 @@ class IGame
 
     ProcessWinner(cPlayingUser, winner)
     {
+        //console.log(`IGame::ProcessWinner cPlayerUser -> ${cPlayingUser}, winner -> ${winner}`);
         if(cPlayingUser <= 1 && winner != '')
         {
             for ( let i = 0; i < this.listUsers.GetLength(); ++ i )

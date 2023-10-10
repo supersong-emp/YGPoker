@@ -245,11 +245,28 @@ export default class IUser{
                     const x = this.x + (i*100) - 25;
                     const y = this.y - 20;
                     
-                    if(this.bSpectator == false)
+                    if(this.bSpectator == false && this.bAbstentionWin == false)
                     {
                         this.listImagesCard[this.listHandCard[i]].RenderLocation(ctx, x, y);
-                        if ( this.bWinner == true && this.listWinCards[0] == true ) //&& this.bRender == true )
-                            this.listImageCardWinFrame.RenderLocation(ctx, x, y);
+                        if (i == 0) {
+                            if (this.bWinner == true && this.listWinCards[0] == true) //&& this.bRender == true )
+                                this.listImageCardWinFrame.RenderLocation(ctx, x, y);
+                        }
+                        else {
+                            if (this.bWinner == true && this.listWinCards[1] == true) //&& this.bRender == true )
+                                this.listImageCardWinFrame.RenderLocation(ctx, x, y);
+                        }
+                    }
+                    else if(this.bAbstentionWin == true && this.iFxLocation != 0)
+                    {
+                        if(this.strDeckcode == 1)
+                        {
+                            this.listImagesCard[52].RenderLocation(ctx, x, y);
+                        }
+                        else
+                        {
+                            this.listImagesCard[53].RenderLocation(ctx, x, y);
+                        }
                     }
                     else
                     {
