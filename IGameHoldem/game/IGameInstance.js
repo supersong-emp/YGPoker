@@ -247,41 +247,21 @@ class IGameInstance
                 console.log(`CM_LeaveGame`);
                 console.log(strID);
                 let player = this.FindUser(strID);
-                if(player == null)return;
-                let lUnique = player.lUnique;
-                if ( true == this.GameManager.Leave(player) )
-                {
-                    this.RemoveUser(player);
-                    await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
-                }
-                else
-                {
-                    this.RemoveUser(player);
-                    await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
+                if(player != null){
+                    let lUnique = player.lUnique;
+                    if ( true == this.GameManager.Leave(player) )
+                    {
+                        this.RemoveUser(player);
+                        await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
+                    }
+                    else
+                    {
+                        this.RemoveUser(player);
+                        await this.RequestAxios(`${global.strLobbyAddress}/leaveroom`, {lUnique:lUnique});                    
+                    }
                 }
             });
 
-            // socket.on('CM_QuickJoin', (data) => {
-
-            //     console.log(`CM_QuickJoin`);
-
-            //     console.log(`User Coin : ${socket.iCoin}, DefaultCoin : ${data.iDefaultCoin}`);
-
-            //     const cBuyin = parseInt(data.iDefaultCoin) * 100;
-
-            //     if ( socket.iCoin >= cBuyin )
-            //     {
-            //         this.GameManager.QuickJoin(data.iDefaultCoin, socket);
-                
-            //         this.RemoveUser(socket);
-    
-            //         socket.emit('SM_EnterGame', {result:'OK'});
-            //     }
-            //     else
-            //     {
-            //         socket.emit('SM_Error', {error:'NotEnoughBuyin'});
-            //     }
-            // });
             socket.on('CM_QuickJoin', (data) => {
 
                 console.log(`CM_QuickJoin`);

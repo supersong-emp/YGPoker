@@ -36,30 +36,14 @@
     
     <!-- pc용 header -->
     <header class="w-full pc-header pt-back hidden md:block">
-
-        <% if ( iLogin == 0 ) { %>
         <div>
             <div class="w-11/12 mx-auto text-right pt-5 pr-5 pl-5 pb-8 flex justify-end relative">
-                <form action="/account/login" method="post">
-                    <input type="text" placeholder="아이디" class="py-1 rounded-full pl-1 outline-none focus:outline-[#00ef89]" name = "strID" onfocus="this.placeholder=''">
-                    <input type="password" placeholder="비밀번호" class="py-1 rounded-full mx-2 pl-1 outline-none focus:outline-[#00ef89]" name = "strPassword" onfocus="this.placeholder=''">
-                    <button class="rounded-full bg-[#00ef89] py-1.5 px-4 ">로그인</button>
-                </form>
-                <div  class="rounded-full border-solid border-2 border-[#00ef89] py-1 px-3 text-[#00ef89] box-border ml-2">
-                    <a href="/account/register">회원가입</a>
-                </div>
+                <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
+                <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
+                <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
+                <button class="rounded-full bg-[#00ef89] py-1.5 px-4 " onclick="location.href='/account/logout'">Logout</button>
             </div>
         </div>
-        <% } else { %>
-            <div>
-                <div class="w-11/12 mx-auto text-right pt-5 pr-5 pl-5 pb-8 flex justify-end relative">
-                    <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
-                    <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
-                    <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
-                    <button class="rounded-full bg-[#00ef89] py-1.5 px-4 " onclick="location.href='/account/logout'">Logout</button>
-                </div>
-            </div>
-        <% } %>
         <div class="p-3">
             <div class="w-11/12 mx-auto flex justify-between">
                 <div class="">
@@ -102,29 +86,15 @@
         <div class="py-3 w-11/12 mx-auto">
             <img src="images/logo_main.png" alt="">
         </div>
-        <% if ( iLogin == 0 ) { %>
-        <div class="w-full inline-block text-center">
-            <form action="/account/login" method="post" class="inline-block">
-                <input type="text" placeholder="아이디" class="  rounded-full pl-1 py-2 outline-none focus:outline-[#00ef89]" name = "strID" onfocus="this.placeholder=''">
-                <input type="password" placeholder="비밀번호" class=" rounded-full pl-1 py-2 outline-none focus:outline-[#00ef89]" name = "strPassword" onfocus="thisplaceholder=''">
-                <button class="rounded-full bg-[#00ef89] py-1.5 px-4 ">로그인</button>
-            </form>
-            <div class="inline-block leading-9 plugin rounded-full border-solid border-2 border-[#00ef89] px-3 text-[#00ef89] box-border">
-                <a href="/account/register" class="w-full block">회원가입</a>
+        <div class="w-full flex">
+            <div class="w-11/12 mx-auto text-center pt-5 pb-8 flex justify-end flex-wrap relative">
+                <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
+                <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
+                <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
+                <button class="rounded-full bg-[#00ef89] py-1.5 px-4 " onclick="location.href='/account/logout'">Logout</button>
             </div>
         </div>
-        <% } else { %>
-            <div class="w-full flex">
-                <div class="w-11/12 mx-auto text-center pt-5 pb-8 flex justify-end flex-wrap relative">
-                    <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
-                    <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
-                    <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
-                    <button class="rounded-full bg-[#00ef89] py-1.5 px-4 " onclick="location.href='/account/logout'">Logout</button>
-                </div>
-            </div>
-        <% } %>
     </header>
-    <% if ( iLogin > 0 ) { %>
     <!--pc용-->
     <div class="popup_all hidden md:block" style="display:none">
         <div class="fixed inset-0 z-50 overflow-auto bg-gray-900 bg-opacity-50" id="popup_input">
@@ -1533,7 +1503,6 @@
                     </div>
                 </div>
             </div>
-        <% } %>
 
 <!-- section 영역 (배너) -->
     <section class="w-full bg-[#222222] background">
@@ -1688,11 +1657,8 @@
 </body>
 </html>
 <script>
-    let iLogin = '<%=iLogin%>';
-    if(iLogin > 0)
-    {
-        var user = JSON.parse('<%-JSON.stringify(user)%>');
-    }
+
+    var user = JSON.parse('<%-JSON.stringify(user)%>');
     let iInspection = 0;
     let strContents = '';
     const popupall = document.querySelector('.popup_all');
@@ -1842,12 +1808,7 @@
     }
     $(document).on('click', '#announcement', (e) => {
         e.preventDefault();
-        //let iLogin = '<%=iLogin%>'
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         popupall.style.display = 'block';
         $('#popup_ann').show();
         $.ajax({
@@ -1987,12 +1948,7 @@
     
     $(document).on('click', '#promotion', (e) => {
         e.preventDefault();
-        //let iLogin = '<%=iLogin%>'
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         console.log("promotion");
         popupall.style.display = 'block';
         $('#popup_promotion').show();
@@ -2033,12 +1989,7 @@
     })
     $(document).on('click', '#consulting', (e) => {
         e.preventDefault();
-        //let iLogin = '<%=iLogin%>'
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         console.log("consulting");
         popupall.style.display = 'block';
         $('#popup_consulting').show();
@@ -2090,35 +2041,21 @@
     })
     $(document).on('click', '#input', (e) => {
         e.preventDefault();
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         console.log("input");
         popupall.style.display = 'block';
         $('#popup_input').show();
     })
     $(document).on('click', '#output', (e) => {
         e.preventDefault();
-        //let iLogin = '<%=iLogin%>'
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         console.log("output");
         popupall.style.display = 'block';
         $('#popup_output').show();
     })
     $(document).on('click', '#myinfo', (e) => {
         e.preventDefault();
-        //let iLogin = '<%=iLogin%>'
-        if(iLogin == 0)
-        {
-            alert("로그인을 먼저 해주세요.");
-            return;
-        }
+
         console.log("myinfo");
         popupall.style.display = 'block';
         $('#popup_myinfo').show();
@@ -2139,11 +2076,8 @@
         $('#popup_letter').hide();
         $('#popup_alert').hide();
 
-        if(iLogin != 0 )
-        {
-            this.announcementlist();
-            this.enventlist();
-        }
+        this.announcementlist();
+        this.enventlist();
 
         $.ajax({
         url:"/account/request_inspection",
@@ -2166,9 +2100,6 @@
     });
 
     function openLobby(lobbyName) {
-        // 로그인 상태를 확인
-        console.log(iLogin);
-
         if(iInspection == 1)
         {
             $('#popup_alerttext1').text(strContents);
@@ -2182,11 +2113,6 @@
             $('#popup_alerttext1').text('게임 준비 중 입니다.');
             $('.button_cancelalert').hide();
             $('#popup_alert').show();
-            return;
-        }
-
-        if(iLogin == 0) {
-            alert("로그인을 먼저 해주세요.");
             return;
         }
 

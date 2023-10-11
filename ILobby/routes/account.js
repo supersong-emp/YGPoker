@@ -21,12 +21,7 @@ const { type } = require('os');
 var requestIp = require('request-ip');
 //
 router.get('/login', async(req, res) => {
-
-    let iLogin = 0;
-    if ( req.user != null )
-        iLogin = 1;
-    console.log(iLogin);
-    res.render('/', {iLayout:1, messages:req.flash('error')[0]});
+    res.render('account/login', {iLayout:1, messages:req.flash('error')[0]});
 });
 
 router.get('/register', async(req, res) => {

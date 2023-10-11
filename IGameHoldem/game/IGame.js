@@ -1311,6 +1311,7 @@ class IGame
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
             this.listUsers.GetSocket(i).emit('SM_RebuyIn', listObject);
+            this.listUsers.GetSocket(i).emit('SM_Mode', {eMode:'RebuyIn'});
         }
 
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )

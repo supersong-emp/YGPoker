@@ -782,9 +782,7 @@ class IRobot{
 
             switch ( objectData.eMode )
             {
-            case 'Standby':
-                //this.Game.Initialize();
-                
+            case 'RebuyIn':
                 if(this.listAbnormalID.length > 0)
                 {
                     for(let i in this.listAbnormalID)

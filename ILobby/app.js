@@ -90,18 +90,15 @@ const cPort = 7000;
 
 app.get('/', (req, res) => {
     //res.render('login');
-
-    // if ( req.user == null )
-    //     res.redirect('/account/login');
-    
-    // else
-    //     res.redirect('/');
     console.log(req.user);
-    let iLogin = 0;
-    if ( req.user != null )
-        iLogin = 1;
-    res.render('index', {iLogin:iLogin, user:req.user});
 
+    if ( req.user == null )
+        res.redirect('/account/login');
+    
+    else
+    {
+        res.render('index', {user:req.user});
+    }
 });
 
 app.get('/lobby', (req, res) => {
@@ -130,17 +127,6 @@ app.get('/lobby', (req, res) => {
 //     }
 //     return '';
 // }
-
-// app.post('/game', (req, res) => {
-
-//     console.log('/game');
-//     console.log(req.body);
-
-//     const strAddress = GetAddress(req.body.eGameType);
-
-//     let account = {strAddress:strAddress, strID:req.user.strID, strPassword:req.user.strPassowrd, lUnique:req.body.lUnique, iCoin:req.body.iCoin};
-//     res.render('game', {account:account});
-// });
 
 app.post('/login', (req, res) => {
 
