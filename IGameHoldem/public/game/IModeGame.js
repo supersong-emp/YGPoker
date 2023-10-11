@@ -147,7 +147,6 @@ export default class IModeGame {
         
         this.bEnableChat = false;
 
-        this.listAbnormalID = [];
         if(isMobile)
         {
             this.listLabels[0].SetLocation(684,1010);
@@ -195,7 +194,6 @@ export default class IModeGame {
         this.listTableCardTemp = [];
         this.iNumCards = 0;
         this.listWinCards = [false, false, false, false, false];
-        this.listAbnormalID = [];
 
         for (let i in this.listPlayers) {
             this.listPlayers[i].Initialize();
@@ -414,7 +412,9 @@ export default class IModeGame {
 
     RemoveUser(objectPlayer) {
         console.log(`RemoveUser : Length(${this.listPlayers.length})`);
-        this.listAbnormalID.push(objectPlayer.strID);
+
+        this.socket.emit('CM_LeaveGame', objectPlayer.strID);
+        
         for (let i in this.listPlayers) {
             console.log(
                 `RemoveUser : ${objectPlayer.strID}, ${this.listPlayers[i].strID}`
@@ -994,7 +994,7 @@ export default class IModeGame {
                 }
                 this.kMainUser.iAutoFoldCounter++;
                 if (this.kMainUser.iAutoFoldCounter >= 3) {
-                    this.listAbnormalID.push(this.kMainUser.strID);
+                    //this.RemoveUser(this.kMainUser);
                     window.close();
                 }
             }
@@ -1013,7 +1013,7 @@ export default class IModeGame {
             ((this.kMainUser && this.kMainUser.bFold == true && this.kMainUser.bReserveExit == true) || 
             (this.bPlaying == false && exitText == '나가기 예약'))) {
             this.bReserveButton = true;
-            // this.socket.emit('CM_LeaveGame');
+            //this.RemoveUser(this.kMainUser);
             window.close();
         }
     }
@@ -1462,8 +1462,7 @@ export default class IModeGame {
                 //if ( listObject[i].strID == this.socket.strID && listObject[i].iCoin == 0 )
                 if (listObject[i].strID == this.socket.strID) {
                     if (listObject[i].bQuit == true) {
-                        //this.socket.emit('CM_LeaveGame');
-                        this.RemoveUser(listObject[i]);
+                        //this.RemoveUser(listObject[i]);
                         if (window.confirm("리바인 금액이 부족합니다.")) {
                             window.close();
                         }
@@ -1474,12 +1473,6 @@ export default class IModeGame {
                     else this.UpdatePoint(listObject[i].iCash);
                 }
             }
-        }
-
-        if(this.listAbnormalID.length > 0)
-        {
-            for(let i in this.listAbnormalID)
-                this.socket.emit('CM_LeaveGame',this.listAbnormalID[i]);
         }
     }
 

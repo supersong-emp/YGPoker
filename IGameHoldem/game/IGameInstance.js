@@ -249,7 +249,14 @@ class IGameInstance
                 let player = this.FindUser(strID);
                 if(player != null){
                     let lUnique = player.lUnique;
-                    if ( true == this.GameManager.Leave(player) )
+                    for(let i in this.listAbnormalSocket)
+                    {
+                        if(this.listAbnormalSocket[i].strID == strID)
+                        {
+                            this.listAbnormalSocket.splice(i,1);
+                        }
+                    }
+                    if ( this.GameManager.Leave(player) )
                     {
                         this.RemoveUser(player);
                         await this.RequestAxios(`${global.strLobbyAddress}/removeroom`, {lUnique:lUnique});
@@ -361,6 +368,19 @@ class IGameInstance
 
                 console.log(`CM_ManualRebuyin :`);
                 socket.bMenualRebuyin = true;
+            });
+
+            socket.on('CM_ChangeOptionCode', (objectData) => {
+
+                console.log(`CM_ChangeOptionCode : `);
+                console.log(objectData);
+
+                const player = this.FindUser(objectData.strID);
+                if(player != null)
+                {
+                    player.strOptionCode = objectData.strOptionCode;
+                    //player.emit('SM_ChangeOptionCode',{strID:objectData.strID, strOptionCode:objectData.strOptionCode});
+                }
             });
 
             socket.on('CM_DefaultAnteSB', (iCoin) => {

@@ -263,6 +263,7 @@
         let OnClickManualRebuyin = () => {
             bManualRebuyin = true;
             socket.emit('CM_ManualRebuyin',{bManualRebuyin:bManualRebuyin});
+            OnClickSettingClose();
         }
 
 		let OnClickModifySetting = () => {
@@ -290,7 +291,7 @@
             strOptionCode = strOption + strOptionCode;
 
             console.log(`Off : ${bOff}, On : ${bOn}, iBuyIn : ${iBuyIn},strOptionCode : ${strOptionCode}`);
-
+            OnClickSettingClose();
             $.ajax({
                 type:'post',
                 url: "/account/request_modifysetting",
@@ -303,9 +304,9 @@
 
                     if ( ret.result == 'OK' )
                     {
-						alert('수정이 완료 되었습니다.');
-						OnClickSettingClose();
+						//alert('수정이 완료 되었습니다.');
                         account.strOptionCode = strOptionCode;
+                        socket.emit('CM_ChangeOptionCode',{strID:account.strID, strOptionCode:strOptionCode});
                     }
                     else
                     {

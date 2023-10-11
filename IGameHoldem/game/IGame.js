@@ -1285,15 +1285,17 @@ class IGame
                 console.log(`RebuyIn : ${iEnableRebuyIn}, Odds ${iRebuyInOdds}, Amount : ${cRebuyInAmount}`);
 
                 // 리바인 사용하거나 수동 리바인 눌렀을떄.
+
                 if (player.iCash >= (cRebuyInAmount - parseInt(player.iCoin))) {
-                    // player.iCoin = 100000;
-                    // player.iCash -= 100000;
-                    player.iCash -= (cRebuyInAmount - parseInt(player.iCoin));
-                    player.iCoin = cRebuyInAmount;
+                    if (player.iCoin < cRebuyInAmount) {
+                        // player.iCoin = 100000;
+                        // player.iCash -= 100000;
+                        player.iCash -= (cRebuyInAmount - parseInt(player.iCoin));
+                        player.iCoin = cRebuyInAmount;
+                    }
                 }
                 else {
                     console.log(`Auto Quit : Not Enough Cash On RebuyIn`);
-                    //player.emit('SM_Quit', {code:'NotEnoughCash'});
                     bQuit = true;
                 }
             }

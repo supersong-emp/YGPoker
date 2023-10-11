@@ -336,6 +336,16 @@ export default class IGameMain{
             chatElement.scrollTop(chatElement.prop("scrollHeight"));
         });
 
+        this.socket.on('SM_ChangeOptionCode', (objectData) => {
+
+            console.log(`SM_ChangeOptionCode`);
+            console.log(objectData);
+
+            this.Game.SetBg(objectData.strOptionCode);
+
+            soundClick.play();
+        });
+
         this.socket.on('SM_ChatClose', () => {
 
             console.log(`SM_ChatClose`);
@@ -440,6 +450,8 @@ export default class IGameMain{
             case 'Standby':
                 this.Game.Initialize();
                 break;
+            case 'Rebuyin':
+
             }
         });
 
