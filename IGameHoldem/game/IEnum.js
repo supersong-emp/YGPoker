@@ -36,7 +36,7 @@ const EnumGameTime = Object.freeze({
     "BuildPlayerType":1.5,
     "DefaultAnteSB":0.5,
     "DefaultAnteBB":0.5,
-    "HandCard":1,
+    "HandCard":3,
     "Flop":3,
     "Turn":3,
     "River":3,

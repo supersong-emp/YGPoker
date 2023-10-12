@@ -450,8 +450,11 @@ export default class IGameMain{
             case 'Standby':
                 this.Game.Initialize();
                 break;
+            case 'PreFlop':
+                this.Game.SetPreFlop();
+                break;
             case 'Rebuyin':
-
+                break;
             }
         });
 
