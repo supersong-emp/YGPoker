@@ -135,6 +135,7 @@ router.post('/request_register', async(req, res) => {
             }
 
             let strGroupID = parent.strGroupID;
+            const randomAvatar = Math.floor(Math.random() * 31); // This will generate a random integer between 0 and 30
 
             await db.Users.create({
                 strID:req.body.strID,
@@ -160,7 +161,7 @@ router.post('/request_register', async(req, res) => {
                 strImage:'',
                 eStatus:'NORMAL',
                 eAuthenticated:'NONE',
-                iAvatar:0,
+                iAvatar:randomAvatar,
                 iLevel:0,
                 iExp:0,
                 strBank:req.body.strBank,
@@ -168,8 +169,7 @@ router.post('/request_register', async(req, res) => {
                 strMobileNo:req.body.strMobileNo,
                 strOptionCode:'11110000',
                 strIP:ip,
-                strDesc:'',
-                
+                strDesc:''
             });
             
             res.send(object);
