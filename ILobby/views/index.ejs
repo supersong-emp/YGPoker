@@ -88,8 +88,10 @@
         <!-- pc용 header -->
         <div>
             <header class="w-full pc-header pt-back hidden md:block">
+                
                 <div>
-                    <div class="w-11/12 mx-auto text-right pt-5 pr-5 pl-5 pb-5 flex justify-end relative">
+                    <img src="images/logo_main.png" alt="" class="logo_image">
+                    <div class="mx-auto text-right pt-5 pr-5 pl-5 pb-5 flex justify-end relative">
                         <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
                         <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
@@ -109,11 +111,11 @@
 
         <!-- MB용 header -->
             <header class="w-full mb-header pt-back block md:hidden">
-                <div class="py-3 w-11/12 mx-auto">
-                    <img src="images/logo_main.png" alt="">
+                <div class="logo_box">
+                    <img src="images/logo_main.png" alt="" class="logo_image">
                 </div>
                 <div class="w-full flex">
-                    <div class="w-11/12 mx-auto text-center pt-5 pb-8 flex justify-end flex-wrap relative">
+                    <div class="mx-auto text-right pt-5 pb-5 flex justify-end flex-wrap relative right">
                         <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
                         <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
@@ -1532,35 +1534,7 @@
 
         <!-- section 영역 (배너) -->
             <section class="w-full bg-[#222222] background">
-                <!-- mb-menu -->
-                <div class="w-11/12 mx-auto py-3 mb-menu block md:hidden">
-                    <ul class="mx-auto text-center">
-                        <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#091223] rounded-lg inline-block">
-                            <a href="#" id="announcement">
-                                <div class="material-icons text-2xl text-[#00ef89]">speaker_notes</div>
-                                <p class="text-base text-white">공지사항</p>
-                            </a>
-                        </li>
-                        <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#091223] rounded-lg inline-block">
-                            <a href="#" id="input">
-                                <div class="material-icons text-2xl text-[#00ef89]">monetization_on</div>
-                                <p class="text-base text-white">입금신청</p>
-                            </a>
-                        </li>
-                        <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#091223] rounded-lg inline-block">
-                            <a href="#" id="output">
-                                <div class="material-icons text-2xl text-[#00ef89]">currency_exchange</div>
-                                <p class="text-base text-white">출금신청</p>
-                            </a>
-                        </li>
-                        <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#091223] rounded-lg inline-block">
-                            <a href="#" id="myinfo">
-                                <div class="material-icons text-2xl text-[#00ef89]">person_pin_circle</div>
-                                <p class="text-base text-white">마이페이지</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                
                 <div class="w-10/12 mx-auto pt-5 bg-img">
                     <div class="h-auto shadow-lg mx-auto bg-cover">
                         <img src="images/back3.png" class="mx-auto object-cover">
@@ -1680,6 +1654,41 @@
                     <img src="images/foot_brand.244b3eea.png" class="mx-auto opacity-75">
                 </div>
             </footer>
+            <!-- mb-menu -->
+            <div class="mx-auto py-3 mb-menu block md:hidden">
+                <ul class="mx-auto text-center">
+                    <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
+                        <a href="#" id="announcement">
+                            <div class="material-icons text-2xl text-[#00ef89]">speaker_notes</div>
+                            <p class="text-base text-white">공지사항</p>
+                        </a>
+                    </li>
+                    <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
+                        <a href="#" id="input">
+                            <div class="material-icons text-2xl text-[#00ef89]">monetization_on</div>
+                            <p class="text-base text-white">입금신청</p>
+                        </a>
+                    </li>
+                    <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#00ef89] rounded-full inline-block bottom_home">
+                        <a href="#" id="home">
+                            <div class="material-icons text-2xl text-[#000000]">home</div>
+                            <p class="text-base text-[0a0a0a]">홈</p>
+                        </a>
+                    </li>
+                    <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
+                        <a href="#" id="output">
+                            <div class="material-icons text-2xl text-[#00ef89]">currency_exchange</div>
+                            <p class="text-base text-white">출금신청</p>
+                        </a>
+                    </li>
+                    <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
+                        <a href="#" id="myinfo">
+                            <div class="material-icons text-2xl text-[#00ef89]">person_pin_circle</div>
+                            <p class="text-base text-white">마이페이지</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>  
         </div>
     </div>
 </body>

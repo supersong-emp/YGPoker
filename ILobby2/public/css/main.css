@@ -1,0 +1,316 @@
+.pt-back{
+    background-image:url('../images/popback.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+}
+
+.inner-bg{
+    background-image:url('../images/bg2.jpg');
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+    
+}
+.message_box{
+    max-width:800px;
+}
+.one_on_one{
+    max-width:800px;
+}
+.event{
+    max-width:800px;
+}
+.notice{
+    max-width:800px;
+}
+.push{
+    max-width:800px;
+}
+.exchange{
+    max-width:800px;
+}
+.point{
+    max-width:800px;
+}
+.coupon{
+    max-width:800px;
+}
+.deposit-list{
+    max-width:800px;
+}
+.password{
+    max-width:800px;
+}
+
+
+
+
+@media (min-width: 768px) { /* 화면 너비가 768px 이상일 때 */
+    .flex-wrap {
+      flex-direction: row; /* 요소들을 가로로 나열 */
+    }
+  }
+
+
+
+
+
+  @media (max-width: 767px){
+    .push{
+        font-size:15px;
+        line-height:1.3;
+    }
+
+    .push .push-btn button{
+        font-size:18px;
+    }
+
+    .size-full{
+        width:100%;
+    }
+   
+    .exchange .exchange-input .one{
+        width:33%;
+    }
+    .exchange .exchange-input .two{
+        width:33%;
+    }
+    .exchange .exchange-input .three{
+        width:50%;
+    }
+    .exchange .exchange-input .four{
+        width:50%;
+    }
+    .exchange .exchange-input .five{
+        width:50%;
+    }
+
+
+    
+    .password-txt{
+        font-size:14px;
+    }
+
+
+    .input-two{
+        width:138px;
+    }
+    
+
+    .text-line{
+        text-align:right;
+        line-height:18px;
+    }
+
+
+
+
+    /* 공지사항내용 */
+   
+
+    .qna{
+        width:100%;
+    }
+    
+    .event{
+        width:100%;
+    }
+
+    .question{
+        width:100%;
+    }
+    .message{
+        width:100%;
+    }
+  }
+
+
+
+  @media (max-width: 680px){
+    .mb-menu ul{
+        display:flex;
+        justify-content: center;
+    }
+    .mb-menu ul li{
+        padding:20px;
+    }
+    .mb-menu ul li p{
+        display:none;
+    }
+    .mb-menu ul li div{
+        font-size:35px;
+    }
+  }
+
+
+
+  @media (max-width: 600px){
+    .mb-menu ul{
+        display:flex;
+        justify-content: center;
+    }
+    .mb-menu ul li{
+        width:23%;
+        padding:20px;
+    }
+  }
+
+
+
+
+
+
+  @media (max-width: 500px){
+    .push{
+        font-size:14px;
+    }
+    .push .push-btn button{
+        font-size:16px;
+        padding:8px 5px 8px 5px;
+    }
+    .push-input{
+        width:120px;
+    }
+    .button_requestinputAccount{
+        width:100px;
+        font-size:12px;
+    }
+
+    .exchange .exchange-input p{
+        width:100%;
+        margin:0 auto;
+        text-align:center;
+    }
+    .exchange .exchange-input .one{
+        margin:0 auto;
+        width:100%;
+    }
+    .exchange .exchange-input .two{
+        width:100%;
+        margin-top:5px;
+    }
+    .exchange .exchange-input .three{
+        width:100%;
+    }
+    .exchange .exchange-input .four{
+        width:100%;
+    }
+    .exchange .exchange-input .five{
+        width:100%;
+    }
+
+    .exchange .exchange-input .exchange-btn li{
+     margin:0 2px 4px 2px;
+     padding:8px;
+     
+    }
+
+    .exchange .exchange-box{
+        font-size:14px;
+        line-height:1.2;
+    }
+
+    .exchange-btn{
+        font-size:16px;
+    
+    }
+    .btn-box{
+        padding:10px 5px 10px 5px;
+    }
+
+
+    .point .point-tap button{
+        font-size:14px;
+        padding:8px 1px;
+    }
+
+
+
+
+    .coupon{
+        width:100%;
+    }
+
+
+    .deposit-list{
+        width:100%;
+    }
+
+    .password{
+        width:100%;
+    }
+    .password-txt{
+        font-size:14px;
+    }
+
+    .input-one input{
+        width:138px;
+    }
+
+    .input-two{
+        width:138px;
+    }
+    .input-two input{
+        width:100%;
+    }
+
+    .input-three input{
+        width:138px;
+    }
+    .text-line{
+        font-size:11px;
+        line-height:18px;
+    }
+
+    .password-btn{
+        width:100%;
+        font-size:12px;
+    }
+    .num{
+        width:40px;
+    }
+    .menu-num{
+        margin-left:0;
+    }
+
+    header form{
+        width:90%;
+        
+    }
+    form input{
+        width:49%;
+        margin:0;
+    }
+
+    form button{
+        width:100%;
+        margin:5px 0;
+    }
+    .plugin{
+        width:90%;
+    }
+  }
+
+
+
+
+
+  @media (max-width: 420px){
+    
+
+    .mb-menu ul{
+        display:flex;
+        justify-content:center;
+    }
+    .mb-menu ul li{
+        width:25%;
+        padding:20px 30px;
+    }
+    .mb-menu ul li p{
+        display:none;
+    }
+    .mb-menu ul li div{
+        font-size:35px;
+    }
+  }
