@@ -162,6 +162,7 @@ export default class IUser{
 
         this.bReserveExit = false;
         this.bSpectator = true;
+        this.bHandCardTurn = false;
     }
 
     Initialize()
@@ -177,6 +178,8 @@ export default class IUser{
         this.bAbstentionWin = false;
         this.bBettingMode = false;
         this.bFold = false;
+
+        this.bHandCardTurn = false;
 
         this.iNumCards = 0;
         //this.listTempHandCard = [];
@@ -237,6 +240,19 @@ export default class IUser{
                 this.bFold = true;
                 this.listImages[2].Render(ctx);
                 this.listImagesBettingType[5].Render(ctx);
+            }
+            else if(this.bHandCardTurn == true)
+            {
+                for (let i in this.listHandCard) {
+                    const x = this.x + (i * 100) - 25;
+                    const y = this.y - 20;
+                    if (this.strDeckcode == 1) {
+                        this.listImagesCard[52].RenderLocation(ctx, x, y);
+                    }
+                    else {
+                        this.listImagesCard[53].RenderLocation(ctx, x, y);
+                    }
+                }
             }
             else
             {
@@ -771,6 +787,7 @@ export default class IUser{
     {
         console.log(`################################################################# AddHandCard ${iCard}`);
 
+        this.bHandCardTurn = true;
         // let iDefaultX = 180;
         // if ( this.iFxLocation == 7 || this.iFxLocation == 8 )
         //     iDefaultX = -170;
@@ -825,5 +842,18 @@ export default class IUser{
             }
         }
         console.log(this.listWinCards);
+    }
+    
+    OnMouseDown(mouse)
+    {
+        //console.log(`IUser OnMouseDown : ${mouse.x}, ${mouse.y}`);
+        if ( this.listHandCard.length > 0 )
+        {
+            for ( let i in this.listHandCard )
+            {
+                if(this.bTrunStart == true)
+                this.handleCardSelection(i,mouse);
+            }
         }
+    }
 }

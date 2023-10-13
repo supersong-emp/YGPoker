@@ -1275,6 +1275,13 @@ export default class IModeGame {
         this.bRaiseButton = true;
     }
 
+    SetPreFlop()
+    {
+        for (let i in this.listPlayers) {
+            this.listPlayers[i].bHandCardTurn = false;
+        }
+    }
+
     EnableBetting(objectData) {
         console.log(`IModeGame::EnableBetting ${objectData.iCallAmount}`);
 
@@ -1682,6 +1689,10 @@ export default class IModeGame {
     }
 
     OnMouseDown(mouse) {
+        for (let i in this.listPlayers) {
+            this.listPlayers[i].OnMouseDown(mouse);
+        }
+
         for (let i in this.listButtons) {
             this.listButtons[i].Down(mouse);
         }

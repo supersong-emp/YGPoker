@@ -818,6 +818,8 @@ class IGame
             {
                 if(this.bShowdown == true) this.SetMode(E.EGameMode.Flop);
                 else this.SetMode(E.EGameMode.BettingPreFlop);
+                for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+                        this.listUsers.GetSocket(i).emit('SM_Mode', {eMode:'PreFlop'});
             }
             break;
         case E.EGameMode.BettingPreFlop:
@@ -1680,7 +1682,7 @@ class IGame
         //     return;
         // }
         console.log(`------------------------------------------------------------------------------- StartBetting`);
-        this.eState = 'PREFLOP';
+        if(bPreFlopBetting == true) this.eState = 'PREFLOP';
         //  Test Console
         for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
         {
@@ -1717,7 +1719,6 @@ class IGame
             for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
             {
                 let tplay = this.listUsers.GetSocket(i);
-
                 if ( tplay.strID == player.strID )
                 {
                     this.iCurrentBettingID = tplay.strID;
