@@ -1,0 +1,25 @@
+@media (max-width: 600px){
+    .liclass{
+        padding-bottom:10px;
+    }
+    .one{
+       width:40%; 
+       font-size:14px;
+       line-height:24px;
+    }
+    .two{
+        width:25%;
+        font-size:14px;
+        line-height:24px;
+    }
+    .three{
+        width:33%;
+        font-size:14px;
+        margin-right:3px;
+        line-height:24px;
+    }
+    .four{
+        font-size:14px;
+    }
+
+}
