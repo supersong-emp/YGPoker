@@ -255,7 +255,12 @@ class IRobot{
 
     // Checks for pairs, 3-of-a-kind, 4-card flushes, and open-ended straights
     hasViableVision(holeCards, tableCards, eState) {
+
+        console.log(`##############################################################################################`);
+        console.log(tableCards);
         let allCards = holeCards.concat(tableCards);
+
+        console.log(allCards);
 
         // Convert card numbers to rank and suit
         allCards = allCards.map(cardNumber => {
@@ -647,6 +652,14 @@ class IRobot{
                             }
                             else if(objectData.eState == 'FLOP' )
                             {
+                                console.log(`##### FLOP`);
+                                console.log(holeCards);
+                                console.log(`##### FLOP2`);
+                                console.log(objectData.tableCards);
+                                console.log(`##### FLOP3`);
+                                console.log(objectData.eState);
+                                console.log(`##### FLOP4`);
+                                console.log(objectData);
                                 if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,3), objectData.eState)){
                                     if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
                                     {
@@ -679,6 +692,7 @@ class IRobot{
                             }
                             else if(objectData.eState == 'TURN')
                             {
+                                console.log(`##### TURN`);
                                 if(this.hasViableVision(holeCards, objectData.tableCards.slice(0,4), objectData.eState)){
                                     if(iCallAmount < objectData.iTotalBettingCoin * 0.3)
                                     {
@@ -710,6 +724,7 @@ class IRobot{
                             }
                             else if(objectData.eState == 'RIVER')
                             {
+                                console.log(`##### RIVER`);
                                 if(this.hasViableVision(holeCards, objectData.tableCards, objectData.eState)){
                                     if(iCallAmount > 0)
                                     {
