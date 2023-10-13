@@ -622,9 +622,4 @@ export default class IGameMain{
     {
         this.Game.OnTouchStart(mouse);
     }
-
-    OnTouchMove(mouse)
-    {
-        this.Game.OnTouchMove(mouse);
-    }
 }
