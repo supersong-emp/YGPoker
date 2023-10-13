@@ -75,66 +75,14 @@ table {
 
 
 
-
-/* left_container */
-.left_body{
+.logo{
+}
+.logo img{
   width:20%;
-  background-color:#0f0f13; 
 }
-
-.left_body .logo{
-  text-align:center;
-  margin:0 auto;
+.menu_list{
+  float:right;
 }
-.left_body .logo img{
-  width:80%;
-  margin:0 auto;
-}
-
-.left_body ul{
-  margin:50px 0;
-}
-
-.left_body ul li{
-  padding:8px 4px;
-  text-align:center;
-}
-.left_body ul li:hover{
-  color:#00ef89;
-}
-
-.left_body .jacpot_board{
-  width:240px;
-  height:260px;
-  margin:0 auto;
-  padding:5px;
-  
-}
-.left_body .jacpot_board .board_name{
-  background-color:#00ef89;
-  padding:8px 3px;
-  text-align:center;
-  font-weight:bold;
-}
-
-.left_body .board_list{
-  font-size:14px;
-  border:1px solid #3a3a3a;
-  border-top:0;
-  padding:10px;
-}
-.left_body .board_list p{
-  width:99%;
-  margin:0 auto;
-  color:#fff;
-  padding:10px 20px;
-  justify-content: space-between;
-  border-bottom:1px solid #3a3a3a;
-}
-.left_body .board_list .right_list{
-  color:#00ef89;
-}
-
 
 
 
@@ -1189,19 +1137,6 @@ table {
       width:50%;
       float:none;
     }
-
-    .mb-menu{
-      width:100%;
-      background-color:#000000;
-      border-radius: 4px 0 0 4px;;
-      position: fixed;
-      bottom:0;
-      background-image: url("../images/fb.png");
-      background-size:cover;
-      background-repeat: no-repeat;
-      background-position:center;
-    }
-
   }
 
 

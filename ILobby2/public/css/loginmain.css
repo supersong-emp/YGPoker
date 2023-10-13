@@ -1,0 +1,294 @@
+  .box1 {
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    height: 790px;
+    border-bottom: 1px solid #400e0e;
+    overflow: hidden;
+    background: linear-gradient(#0a0000, #000000);
+}
+
+.box {
+    width: auto;
+    height: auto;
+    position: relative;
+}
+.visual_light{
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    transform: translate(-50%);
+}
+
+.visual_entity{
+    position: absolute;
+    display: block;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%);
+    margin-left: 300px;
+}
+
+.centerbox{
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 1400px;
+    transform: translate(-50%);
+    text-align: left;
+}
+
+.wrapper{
+    display: grid;
+    grid-template-areas: 'overlap';
+    text-transform: uppercase;
+}
+.wrapper img{
+    height: 60px;
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+.centerbox .subtitle{
+    background: linear-gradient(135deg, #fffce8 20%, transparent 25%, transparent 50%, #c5a773 55%, #c5a773 70%, transparent 75%, transparent), #fffce8;
+    /* background: linear-gradient(135deg, #ffe8e8 20%, transparent 25%, transparent 50%, #c57373 55%, #c57373 70%, transparent 75%, transparent), #ffe8e8; */
+    background-size: 50rem 50rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: golden_effect_subtitle 3s linear infinite;
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.centerbox .btn_play_game{
+    margin-top: 15px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    height: 54px;
+    width: 210px;
+}
+.centerbox .btn_play_game .border{
+    /* background: #; */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    border:1px solid #3e3e3e;
+}
+
+.centerbox .btn_play_game .fill{
+    background: #000000;
+    position: absolute;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    top: 1px;
+}
+.centerbox .btn_play_game .fill:hover{
+    border:1px solid #9e9e9e;
+}
+.centerbox .btn_play_game span{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    color: #cccccc;
+    font-family: 'GmarketSans';
+}
+
+
+
+
+/* .box1:before,
+.box1:after,
+.box:after,
+.box:before {
+    transition: all 0.3s ease;
+    display: block;
+    content: '';
+    position: absolute;
+    background: #77c04a;
+    z-index: 100;
+} */
+
+.box1:before {
+    top: 0;
+    left: 0;
+    right: 100%;
+    height: 4px;
+}
+
+.box1:after {
+    top: 0;
+    right: 0;
+    bottom: 100%;
+    width: 4px;
+}
+
+.box:hover:after {
+    -webkit-transition-delay: 0.4s;
+    transition-delay: 0.4s;
+    left: 0;
+}
+
+.box:hover:before {
+    -webkit-transition-delay: 0.6s;
+    transition-delay: 0.6s;
+    top: 0;
+}
+
+.box1:hover:before {
+    -webkit-transition-delay: 0s;
+    transition-delay: 0s;
+    right: 0;
+}
+
+.box1:hover:after {
+    -webkit-transition-delay: 0.2s;
+    transition-delay: 0.2s;
+    bottom: 0;
+}
+
+.box:after {
+    bottom: 0;
+    right: 0;
+    left: 100%;
+    height: 4px;
+}
+
+.box:before {
+    bottom: 0;
+    left: 0;
+    top: 100%;
+    width: 4px;
+}
+
+.background-body{
+    background-image: url("../images/bg2_image.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    background-attachment: fixed;
+}
+
+.logo{
+    margin-top:20px;
+}
+
+.logo img{
+    width:100px;
+    clear:both;
+}
+
+.joker{
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    margin-bottom:20px;
+}
+.joker img{
+    width:600px;    
+}
+.main-box{
+    width:300px;
+    margin:0 auto;
+}
+
+.icon_line{
+    position:absolute;
+    right:1px;
+    top:8px;
+}
+.input-box{
+    width:300px;
+    padding-right:30px;
+    height:40px;
+}
+
+.input-text{
+    width:300px;
+    margin:0 auto;
+}
+
+
+/* 로그인버튼 */
+.login-btn{
+    width:300px;
+    margin:0 auto;
+}
+.login-btn button{
+    width:300px;
+}
+
+/* 애플 페이스북 버튼 */
+.button-top{
+    width:300px;
+    margin:0 auto;
+}
+.button-top button{
+    width:300px;
+}
+
+.button-top .apple i{
+    position:absolute;
+    top:8px;
+    font-size:20px;
+    left:10px;
+}
+.button-top .face-book i{
+    position:absolute;
+    top:8px;
+    font-size:20px;
+    left:10px;
+}
+
+
+
+@media (max-width:900px) {
+    .main-box{
+        width:250px;
+        margin:0 auto;
+        text-align:center;
+    }
+    .icon_line{
+        padding-top:2px;
+        position:absolute;
+        top:6px;
+        right:2px;
+    }
+    .input-box{
+        padding-right:40px;
+        width:250px;
+        height:40px;
+    }
+    .input-text{
+        width:250px;
+        margin-bottom:15px;
+    }
+/* 로그인버튼 */
+    .login-btn{
+        width:250px;
+        margin:0 auto;
+    }
+    .login-btn button{
+        width:250px;
+    }
+    
+    /* 애플 페이스북 버튼 */
+    .button-top{
+        width:250px;
+        margin:0 auto;
+    }
+    .button-box{
+        max-width:250px;
+    }
+
+    .button-top i{
+        font-size:23px;
+        position:absolute;
+        top:8px;
+    }
+    
+}

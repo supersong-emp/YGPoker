@@ -418,6 +418,8 @@ var canvasPosition = {
 //canvas.on('click', function(e) {
 if(IsMobile()){
     document.addEventListener('touchmove', function(e) {
+        console.log("touchmove!!!!!!!!!!!!!!!!!!!!");
+        console.log(e.touches.length);
         if (e.touches.length === 1) {
           var touch = {
             x: e.touches[0].clientX - canvasPosition.x,

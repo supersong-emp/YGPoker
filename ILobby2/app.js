@@ -86,7 +86,7 @@ let instanceApp = new Instance(io, '/');
 instanceApp.OnIO(io);
 // instanceGame.OnIO(io);
 
-const cPort = 7000;
+const cPort = 8000;
 
 app.get('/', (req, res) => {
     //res.render('login');
