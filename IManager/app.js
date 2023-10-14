@@ -1,3 +1,4 @@
+process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
 const express = require('express');
 const layout = require('express-ejs-layouts');
 const app = express();
@@ -51,8 +52,11 @@ const ITime = require('./utils/time');
 const db = require('./db');
 db.sequelize.sync();
 
-//global.strLobbyAddress = 'http://localhost:7000';
-global.strLobbyAddress = 'http://157.230.38.106:7000';
+if (process.env.NODE_ENV == 'production') {
+    global.strLobbyAddress = 'http://157.230.38.106:7000';
+} else if (process.env.NODE_ENV == 'development') {
+    global.strLobbyAddress = 'http://localhost:7000';
+}
 
 app.get('/', (req, res) => {
     if ( req.user == undefined ){
