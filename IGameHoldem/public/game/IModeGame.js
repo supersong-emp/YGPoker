@@ -804,11 +804,14 @@ export default class IModeGame {
             if(this.bMobileRaiseButton == true && this.bEnableBetting == true)
             {
                 this.listLabels[2].Render(ctx);
+                this.listLabels[i].Render(ctx);
             }
             else
             {
-                
-                this.listLabels[i].Render(ctx);
+                this.listLabels[3].UpdateCaption("1234567890");
+                this.listLabels[0].Render(ctx);
+                this.listLabels[1].Render(ctx);
+                this.listLabels[3].Render(ctx);
             }
         }
     }

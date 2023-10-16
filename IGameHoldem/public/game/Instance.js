@@ -333,7 +333,7 @@ let imagesGameDeck =
 let buttonSlider = new IUIButton(70, 70, 70, 70, null,imageSliderButton, 50, 50, "");
 let sliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 610, '',1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
     // new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
     new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
     new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
@@ -341,7 +341,7 @@ let sliderBar =
 
 let moblieSliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 610, '',1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
     new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
     new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
 ];
