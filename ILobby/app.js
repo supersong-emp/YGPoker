@@ -66,7 +66,7 @@ app.use('/announcement', require('./routes/announcement'));
 
 if (process.env.NODE_ENV == 'production') {
     //global.strGameAddress = 'https://ygpo888.net';
-    global.strGameAddress = 'https://bluem00.com';
+    global.strGameAddress = 'http://157.230.38.106:5555';
     global.strBig2Address = 'https://ygpokerbig2.net';
     global.strAddress = 'http://157.230.38.106:3000';
 } else if (process.env.NODE_ENV == 'development') {
