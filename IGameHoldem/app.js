@@ -26,7 +26,13 @@ db.Fees.findOne().then((fee) => {
     console.log(`fee : ${fee.fHoldem}`);
 
     global.fHoldemFee = fee.fHoldem;
+});
 
+db.Jackpots.findOne({where:{strGame:'Holdem'}}).then((jackpot) => {
+
+    console.log(`jackpot : ${jackpot.iJackpot}`);
+
+    global.iJackpot = jackpot.iJackpot;
 });
 
 
@@ -330,3 +336,10 @@ setInterval(async () => {
     //instanceGame.PrintLobbyUsers();
 
 }, 1000);
+
+
+setInterval(async () => {
+
+    await kGameManager.UpdateJackpot();
+
+}, 5000);

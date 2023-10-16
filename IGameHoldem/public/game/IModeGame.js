@@ -807,7 +807,7 @@ export default class IModeGame {
             }
             else
             {
-                this.listLabels[3].UpdateCaption("1234567890");
+                
                 this.listLabels[i].Render(ctx);
             }
         }
@@ -1230,6 +1230,11 @@ export default class IModeGame {
     UpdateCallCoin(iCoin) {
         this.iCallCoin = iCoin;
         this.listLabels[1].UpdateCaption(this.iCallCoin.toString());
+    }
+
+    UpdateJackpot(iJackpot) {
+        this.iJackpot = iJackpot;
+        this.listLabels[3].UpdateCaption(this.iJackpot.toString());
     }
 
     UpdateGameInfo(strGameName, iBlind) {
