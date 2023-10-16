@@ -28,7 +28,7 @@ export default class IModeGame {
             new IUILabel(1100,890 - 120,28, 35, 23,NumberImages4,150,150,this.iCallCoin.toString(),2),
             new IUILabel(1570, 860, 28, 35, 23, NumberImages0, 150, 180, this.iCallCoin.toString(),2),
 
-            new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
+            //new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
         ];
         this.listTexts = [
             new IUIText(370, 920, 20, "1000000", 2),
@@ -1237,7 +1237,7 @@ export default class IModeGame {
 
     UpdateJackpot(iJackpot) {
         this.iJackpot = iJackpot;
-        this.listLabels[3].UpdateCaption(this.iJackpot.toString());
+        //this.listLabels[3].UpdateCaption(this.iJackpot.toString());
     }
 
     UpdateGameInfo(strGameName, iBlind) {
