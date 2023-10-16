@@ -811,7 +811,7 @@ export default class IModeGame {
                 //this.listLabels[3].UpdateCaption("1234567890");
                 this.listLabels[0].Render(ctx);
                 this.listLabels[1].Render(ctx);
-                this.listLabels[3].Render(ctx);
+                //this.listLabels[3].Render(ctx);
             }
         }
     }
