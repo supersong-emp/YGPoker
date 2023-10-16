@@ -4,7 +4,8 @@ module.exports = {
     watch: '.'
   }, {
     script: './service-worker/',
-    watch: ['./service-worker']
+    watch: ['./service-worker'],
+	env: {'NODE_ENV': 'production'}
   }],
 
   deploy : {
