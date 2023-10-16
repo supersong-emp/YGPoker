@@ -1,6 +1,8 @@
 let IGame = require('./IGame');
 let E = require('./IEnum');
 
+let db = require('../db');
+
 class IGameManager
 {
     constructor(io)
@@ -257,6 +259,14 @@ class IGameManager
         {
             console.log(`Room : ${this.listGames[i].strGameName}, ${this.listGames[i].iDefaultCoin}`);
         }
+    }
+
+    async UpdateJackpot()
+    {
+        const jackpot = await db.Jackpots.findOne({where:{strGame:'Holdem'}});
+
+        for ( let i in this.listGames )
+            this.listGames[i].FullBroadcastJackpot(jackpot.iJackpot);
     }
 }
 module.exports = IGameManager;

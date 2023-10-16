@@ -49,6 +49,7 @@ const EnumDBType = Object.freeze({
     "Users":0, 
     "RecordBets":1,
     "RecodrdGames":2,
+    "RecordJackpot":3,
 });
 module.exports.EDBType = EnumDBType;
 

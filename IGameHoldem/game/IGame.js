@@ -372,62 +372,63 @@ class IGame
                     break;
                 }
                 break;
-                case E.EDBType.RecordBets:
-                    switch (element.iSubDB) {
-                        case E.ERecordBetDBType.Create:
+            case E.EDBType.RecordBets:
+                switch (element.iSubDB) {
+                    case E.ERecordBetDBType.Create:
+                        {
+                            let odds = await this.GetOdds(element.strID);
+
+                            const cRollingPAdmin = parseInt(odds.fPAdmin * element.iValidAmount * 0.01);
+                            const cRollingVAdmin = parseInt(odds.fVAdmin * element.iValidAmount * 0.01);
+                            const cRollingAgent = parseInt(odds.fAgent * element.iValidAmount * 0.01);
+                            const cRollingShop = parseInt(odds.fShop * element.iValidAmount * 0.01);
+
+                            if(odds.eUserType == 'JOKER')
                             {
-                                let odds = await this.GetOdds(element.strID);
-
-                                const cRollingPAdmin = parseInt(odds.fPAdmin * element.iValidAmount * 0.01);
-                                const cRollingVAdmin = parseInt(odds.fVAdmin * element.iValidAmount * 0.01);
-                                const cRollingAgent = parseInt(odds.fAgent * element.iValidAmount * 0.01);
-                                const cRollingShop = parseInt(odds.fShop * element.iValidAmount * 0.01);
-
-                                if(odds.eUserType == 'JOKER')
-                                {
-                                    await db.RecordBets.create({
-                                        strID: element.strID,
-                                        iClass: element.iClass,
-                                        strGroupID: element.strGroupID,
-                                        iAmount: element.iAmount,
-                                        strBet: element.strBetting,
-                                        iRollingAdmin: 0,
-                                        iRollingPAdmin: 0,
-                                        iRollingVAdmin: 0,
-                                        iRollingAgent: 0,
-                                        iRollingShop: 0,
-                                    });
-                                }
-                                else 
-                                {
-                                    await db.RecordBets.create({
-                                        strID: element.strID,
-                                        iClass: element.iClass,
-                                        strGroupID: element.strGroupID,
-                                        iAmount: element.iAmount,
-                                        strBet: element.strBetting,
-                                        iRollingAdmin: parseInt(odds.fAdmin * element.iValidAmount * 0.01),
-                                        iRollingPAdmin: cRollingShop,
-                                        iRollingVAdmin: cRollingVAdmin,
-                                        iRollingAgent: cRollingAgent,
-                                        iRollingShop: cRollingShop,
-                                    });
-
-                                    console.log(`########## Calculate Rolling`);
-                                    console.log(odds);
-
-                                    await db.Users.increment({ iRolling: cRollingPAdmin }, { where: { strID: odds.strPAdminID } });
-                                    await db.Users.increment({ iRolling: cRollingVAdmin }, { where: { strID: odds.strVAdminID } });
-                                    await db.Users.increment({ iRolling: cRollingAgent }, { where: { strID: odds.strAgentID } });
-                                    await db.Users.increment({ iRolling: cRollingShop }, { where: { strID: odds.strShopID } });
-                                }
-                                this.listDBUpdate.splice(i, 1);
-                                --i;
-                                break;
+                                await db.RecordBets.create({
+                                    strID: element.strID,
+                                    iClass: element.iClass,
+                                    strGroupID: element.strGroupID,
+                                    iAmount: element.iAmount,
+                                    strBet: element.strBetting,
+                                    iRollingAdmin: 0,
+                                    iRollingPAdmin: 0,
+                                    iRollingVAdmin: 0,
+                                    iRollingAgent: 0,
+                                    iRollingShop: 0,
+                                });
                             }
-                    }
-                    break;
+                            else 
+                            {
+                                await db.RecordBets.create({
+                                    strID: element.strID,
+                                    iClass: element.iClass,
+                                    strGroupID: element.strGroupID,
+                                    iAmount: element.iAmount,
+                                    strBet: element.strBetting,
+                                    iRollingAdmin: parseInt(odds.fAdmin * element.iValidAmount * 0.01),
+                                    iRollingPAdmin: cRollingShop,
+                                    iRollingVAdmin: cRollingVAdmin,
+                                    iRollingAgent: cRollingAgent,
+                                    iRollingShop: cRollingShop,
+                                });
 
+                                console.log(`########## Calculate Rolling`);
+                                console.log(odds);
+
+                                console.log(`iRollingPAdmin : ${cRollingPAdmin} strID : odds.strPAdminID`);
+
+                                await db.Users.increment({ iRolling: cRollingPAdmin }, { where: { strID: odds.strPAdminID } });
+                                await db.Users.increment({ iRolling: cRollingVAdmin }, { where: { strID: odds.strVAdminID } });
+                                await db.Users.increment({ iRolling: cRollingAgent }, { where: { strID: odds.strAgentID } });
+                                await db.Users.increment({ iRolling: cRollingShop }, { where: { strID: odds.strShopID } });
+                            }
+                            this.listDBUpdate.splice(i, 1);
+                            --i;
+                            break;
+                        }
+                }
+                break;
             case E.EDBType.RecodrdGames:
                 switch ( element.iSubDB )
                 {
@@ -438,6 +439,14 @@ class IGame
                         
                         -- i;
                         break;
+                }
+                break;
+            case E.EDBType.RecordJackpot:
+                {
+                    await db.Jackpots.increment({iJackpot:element.iAmount}, {where:{strGame:'Holdem'}});
+                    this.listDBUpdate.splice(i, 1);
+                        
+                    -- i;
                 }
                 break;
             }
@@ -598,7 +607,7 @@ class IGame
             
             this.AddUser(socket);
     
-            socket.emit('SM_JoinGame', listPlayers , this.cMaxPlayer);
+            socket.emit('SM_JoinGame', listPlayers , this.cMaxPlayer, global.iJackpot);
     
             this.BroadcastJoinUser(socket);
         }
@@ -1044,6 +1053,13 @@ class IGame
         this.FullBroadcast('SM_Focus', objectPlayer);
     }
 
+    FullBroadcastJackpot(iJackpot)
+    {
+        let objectData = {iJackpot:iJackpot};
+        
+        this.FullBroadcast('SM_Jackpot', objectData);
+    }
+
     FullBroadcastShowdown()
     {
         let listData = [];
@@ -1188,7 +1204,8 @@ class IGame
                                 iWinCoin:player.iWinCoin,
                                 iCoin:player.iCoin,
                                 iCash:player.iCash,
-                                strDescr:player.strDescr
+                                strDescr:player.strDescr,
+                                iJackpot:0,
                             };
 
             listResult.push(objectData);
@@ -2010,6 +2027,13 @@ class IGame
                 strBetting:this.listBet[i].strBetting, 
                 strGroupID:this.listBet[i].strGroupID, 
                 iClass:this.listBet[i].iClass});
+
+            //  Jackpot
+            const cJackpotInc = Math.floor(global.fHoldemFee * 0.01 * this.listBet[i].iAmount);
+            this.listDBUpdate.push({iDB:E.EDBType.RecordJackpot, iAmount:cJackpotInc});
+
+            //console.log(`################################################## Jackpot Amount : ${cJackpotInc}`);
+
         }
 
         this.listBet = [];

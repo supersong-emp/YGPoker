@@ -15,6 +15,8 @@ class ILobby
 
     GetAddress(eGameType)
     {
+        console.log("GetAddress_____________________________________________________________ : ");
+        console.log(global.strGameAddress);
         // if ( eGameType == 0 )
         // {
         //     return `${global.strGameAddress}/game`;

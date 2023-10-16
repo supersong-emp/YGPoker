@@ -28,7 +28,7 @@ export default class IModeGame {
             new IUILabel(1100,890 - 120,28, 35, 23,NumberImages4,150,150,this.iCallCoin.toString(),2),
             new IUILabel(1570, 860, 28, 35, 23, NumberImages0, 150, 180, this.iCallCoin.toString(),2),
 
-            new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
+            //new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
         ];
         this.listTexts = [
             new IUIText(370, 920, 20, "1000000", 2),
@@ -804,11 +804,14 @@ export default class IModeGame {
             if(this.bMobileRaiseButton == true && this.bEnableBetting == true)
             {
                 this.listLabels[2].Render(ctx);
+                this.listLabels[i].Render(ctx);
             }
             else
             {
                 this.listLabels[3].UpdateCaption("1234567890");
-                this.listLabels[i].Render(ctx);
+                this.listLabels[0].Render(ctx);
+                this.listLabels[1].Render(ctx);
+                this.listLabels[3].Render(ctx);
             }
         }
     }
@@ -1230,6 +1233,11 @@ export default class IModeGame {
     UpdateCallCoin(iCoin) {
         this.iCallCoin = iCoin;
         this.listLabels[1].UpdateCaption(this.iCallCoin.toString());
+    }
+
+    UpdateJackpot(iJackpot) {
+        this.iJackpot = iJackpot;
+        //this.listLabels[3].UpdateCaption(this.iJackpot.toString());
     }
 
     UpdateGameInfo(strGameName, iBlind) {
