@@ -179,7 +179,7 @@ export default class IModeGame {
         this.iCallCoin = 0;
         this.listLabels[0].UpdateCaption("0");
         this.listLabels[1].UpdateCaption("0");
-        this.listLabels[3].UpdateCaption("231320");
+        //this.listLabels[3].UpdateCaption("231320");
         this.bEnableBetting = false;
         //this.listButtons[1].bEnable = false;
         this.listButtons[0].bEnable = false;
@@ -808,7 +808,7 @@ export default class IModeGame {
             }
             else
             {
-                this.listLabels[3].UpdateCaption("1234567890");
+                //this.listLabels[3].UpdateCaption("1234567890");
                 this.listLabels[0].Render(ctx);
                 this.listLabels[1].Render(ctx);
                 this.listLabels[3].Render(ctx);
@@ -1699,6 +1699,12 @@ export default class IModeGame {
                     }
                 }
             }
+        }
+    }
+    OnTouchEnd()
+    {
+        if (this.isMobile == true) {
+
         }
     }
 
