@@ -41,6 +41,18 @@ let OnClickGamelog = (game) => {
     }
 }
 
+let OnClickShowCard = (game) => {
+
+    let player = game.FindUser(game.socket.strID);
+    let objectData = {  strID:player.strID, 
+        iCard1:player.listHandCard[0], 
+        iCard2:player.listHandCard[1],
+    };
+    game.socket.emit('CM_ShowCard', objectData);
+
+    soundClick.play();
+}
+
 let OnClickSettingOnGame = (game) => {
     
 }

@@ -189,15 +189,20 @@ configScreen.listDesktopLocationsH.push({x:50, y:800}); // Chat 버튼
 configScreen.listMobileLocationH.push({x:50, y:800});
 configScreen.listDesktopLocationsH.push({x:150, y:800}); // GameLog 버튼
 configScreen.listMobileLocationH.push({x:150, y:800});
-//configScreen.listDesktopLocationsH.push({x:960-128, y:-25}); // Jackpot
-//configScreen.listMobileLocationH.push({x:50, y:150});
+configScreen.listDesktopLocationsH.push({x:960-128, y:-25}); // Jackpot
+configScreen.listMobileLocationH.push({x:50, y:150});
+configScreen.listDesktopLocationsH.push({x:700, y:800}); // ShowCard
+configScreen.listMobileLocationH.push({x:700, y:800});
 
 configScreen.listDesktopLocationsV.push({x:50, y:1600}); // Chat 버튼
 configScreen.listMobileLocationV.push({x:50, y:1600});
 configScreen.listDesktopLocationsV.push({x:150, y:1600}); // GameLog 버튼
 configScreen.listMobileLocationV.push({x:150, y:1600});
-//configScreen.listDesktopLocationsV.push({x:50, y:150}); // Jackpot
-//configScreen.listMobileLocationV.push({x:50, y:150});
+configScreen.listDesktopLocationsV.push({x:50, y:150}); // Jackpot
+configScreen.listMobileLocationV.push({x:50, y:150});
+configScreen.listDesktopLocationsV.push({x:300, y:1600}); // ShowCard
+configScreen.listMobileLocationV.push({x:300, y:1600});
+
 
 let buttonsGame =
 [
@@ -205,7 +210,8 @@ let buttonsGame =
     //new IUIButton(960-120, 1040-150, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
     new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
     new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0)
+    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
+    //new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 278, 148, "보여주기")
 ];
 
 const cBettingButtonLocations = 
@@ -428,6 +434,12 @@ if(IsMobile()){
           GameMain.OnTouchMove(touch);
         }
       }, { passive: false });
+
+      document.addEventListener('touchend', function(e) {
+        console.log("touchend!!!!!!!!!!!!!!!!!!!!");
+
+        GameMain.OnTouchEnd(); // touchend가 발생했을 때 호출할 함수를 정의합니다.
+    }, false);
 }
 else 
 {

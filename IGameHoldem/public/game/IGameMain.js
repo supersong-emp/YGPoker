@@ -371,6 +371,16 @@ export default class IGameMain{
             soundGameStart.play();
         })
 
+        this.socket.on('SM_ShowCard', (objectData) => {
+            
+            console.log(`SM_ShowCard : objectDatacard : ${objectData.iCard1},${objectData.iCard2}`);
+
+            this.Game.ShowCard(objectData);
+
+            soundGameStart.play();
+        })
+        
+
         this.socket.on('SM_FullBroadcastPlayerType', (listData) => {
 
             console.log(`SM_FullBroadcastPlayerType`);
@@ -615,6 +625,11 @@ export default class IGameMain{
     OnTouchMove(touch)
     {
         this.Game.OnTouchMove(touch);
+    }
+
+    OnTouchEnd()
+    {
+        this.Game.OnTouchEnd();
     }
 
     OnMouseDown(mouse)

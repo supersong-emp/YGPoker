@@ -1,4 +1,3 @@
-import IUILabel from "../js/label.js";
 import IUIImage from "../js/image.js";
 import IUIText from "../js/text.js";
 import IUIProgressBar from "../js/progressbar.js";
@@ -114,6 +113,16 @@ export default class IUser{
         }
         this.listImageCardWinFrame = new IUIImage(this.iCurrentX+160, this.iCurrentY+50, 115, 150, imageCardFrames[0], 163, 227);
 
+        const cardImage = (strDeckcode == 1) ? imageCards[52] : imageCards[53];
+        this.listOpenCard1 = new IUIImage(this.iCurrentX+160, this.iCurrentY+50, 115, 150, cardImage, 167, 231);
+        this.listOpenCard2 = new IUIImage(this.iCurrentX+160, this.iCurrentY+50, 115, 150, cardImage, 167, 231);
+
+        this.renderCard1 = true;
+        this.renderCard2 = true;
+        this.isCardClicked = false;
+        this.selectedCardIndex = null; // 0: OpenCard1, 1: OpenCard2
+        this.mouse1Y = 0;
+        this.mouse2Y = 0;
         // this.listImagesHand = [];
         // for ( let i = 0; i < 9; ++ i )
         // {
@@ -131,7 +140,6 @@ export default class IUser{
             this.listImageAvatar.push(image);
         }
 
-        //this.labelCoin = new IUILabel(this.iCurrentX+ 80, this.iCurrentY + 130, 25, 25, 20, NumberImages, 124, 124, iGameCoin.toString(), 0);
         this.textlCoin = new IUIText(this.iCurrentX+ 80, this.iCurrentY + 155, 30, iGameCoin.toLocaleString(), 0);
         this.listProgressBar = [];
         for ( let i = 0; i < 3; ++ i )
@@ -139,7 +147,6 @@ export default class IUser{
             let progressBar = new IUIProgressBar(this.iCurrentX+5, this.iCurrentY+165, 160, 15, imageProgressBar[i], 200, 34, kTimer);
             this.listProgressBar.push(progressBar);
         }
-        //this.labelTime = new IUILabel(this.iCurrentX - 25, this.iCurrentY + 180, 30, 30, 15, NumberImages, 114, 114, this.iBettingTime.toString(), 0);
         //this.textName = new IUIText(this.iCurrentX + -80, this.iCurrentY + 200, 15, strID, 0);
         this.textName = new IUIText(this.iCurrentX+80, this.iCurrentY + 200, 30, strID, 0);
         this.textHand = new IUIText(this.iCurrentX+80, this.iCurrentY + 250, 20, '', 0);
@@ -163,6 +170,7 @@ export default class IUser{
         this.bReserveExit = false;
         this.bSpectator = true;
         this.bHandCardTurn = false;
+        this.bShowCard = false;
     }
 
     Initialize()
@@ -180,6 +188,7 @@ export default class IUser{
         this.bFold = false;
 
         this.bHandCardTurn = false;
+        this.bShowCard = false;
 
         this.iNumCards = 0;
         //this.listTempHandCard = [];
@@ -189,6 +198,13 @@ export default class IUser{
         this.textHand.UpdateCaption('');
         this.textCallCoin.UpdateCaption('');
         this.ibettingCallCoin = 0;
+
+        this.renderCard1 = true;
+        this.renderCard2 = true;
+        this.isCardClicked = false;
+        this.selectedCardIndex = null; // 0: OpenCard1, 1: OpenCard2
+        this.mouse1Y = 0;
+        this.mouse2Y = 0;
     }
 
     Render(ctx) 
@@ -245,12 +261,16 @@ export default class IUser{
             {
                 for (let i in this.listHandCard) {
                     const x = this.x + (i * 100) - 25;
-                    const y = this.y - 20;
-                    if (this.strDeckcode == 1) {
-                        this.listImagesCard[52].RenderLocation(ctx, x, y);
-                    }
-                    else {
-                        this.listImagesCard[53].RenderLocation(ctx, x, y);
+                    let y = this.y - 20;
+
+                    this.listImagesCard[this.listHandCard[i]].RenderLocation(ctx, x, y);
+
+                    if (i == 0 && this.renderCard1 == true) {
+                        if(this.mouse1Y) y = this.mouse1Y;
+                        this.listOpenCard1.RenderLocation(ctx, x, y);
+                    } else if (i == 1 && this.renderCard2 == true) {
+                        if(this.mouse2Y) y = this.mouse2Y;
+                        this.listOpenCard2.RenderLocation(ctx, x, y);
                     }
                 }
             }
@@ -273,7 +293,7 @@ export default class IUser{
                                 this.listImageCardWinFrame.RenderLocation(ctx, x, y);
                         }
                     }
-                    else if(this.bAbstentionWin == true && this.iFxLocation != 0)
+                    else if(this.bAbstentionWin == true && this.iFxLocation != 0 && this.bShowCard == false)
                     {
                         if(this.strDeckcode == 1)
                         {
@@ -563,6 +583,8 @@ export default class IUser{
 
         this.listImageCardWinFrame.OnSize(fHR, fVR);
 
+        this.listOpenCard1.OnSize(fHR, fVR);
+        this.listOpenCard2.OnSize(fHR, fVR);
         // for ( let i in this.listImagesHand )
         // {
         //     this.listImagesHand[i].OnSize(fHR, fVR);
@@ -654,8 +676,6 @@ export default class IUser{
         {
             this.listImageAvatar[i].SetLocation(this.iCurrentX, this.iCurrentY);
         }
-        // this.labelCoin = new IUILabel(this.iCurrentX+ 80, this.iCurrentY + 130, 30, 30, 15, NumberImages, 114, 114, iGameCoin.toString(), 0);
-        // this.textName = new IUIText(this.iCurrentX + -80, this.iCurrentY + 200, 15, this.strID, 0);
         for ( let i in this.listProgressBar )
         {
             this.listProgressBar[i].SetLocation(this.iCurrentX+5, this.iCurrentY+165);
@@ -844,16 +864,89 @@ export default class IUser{
         console.log(this.listWinCards);
     }
     
-    OnMouseDown(mouse)
-    {
-        //console.log(`IUser OnMouseDown : ${mouse.x}, ${mouse.y}`);
-        if ( this.listHandCard.length > 0 )
-        {
-            for ( let i in this.listHandCard )
-            {
-                if(this.bTrunStart == true)
-                this.handleCardSelection(i,mouse);
+    Down(mouse) {  
+        if(this.bHandCardTurn == true) {
+            if(this.renderCard1 == true || this.renderCard2 == true) {
+                this.selectCard(mouse);
+                this.initialMouseY = mouse.y;  // 마우스의 초기 Y 좌표 저장
             }
+        }
+    }
+    
+    Over(mouse) {
+        if (this.isCardClicked) {
+            const yOffset = mouse.y - this.initialMouseY;  // 움직인 거리 계산
+    
+            // yOffset이 양수일 경우에만 위치를 업데이트
+            if (yOffset > 0) {
+                if (this.selectedCardIndex == 0) {
+                    this.mouse1Y = this.y + yOffset;  
+                } else if (this.selectedCardIndex == 1) {
+                    this.mouse2Y = this.y + yOffset;
+                }
+            }
+        }
+    }
+    
+    Up() {
+        if (this.isCardClicked) {
+            if (this.selectedCardIndex == 0) {
+                this.renderCard1 = false;
+            } else if (this.selectedCardIndex == 1) {
+                this.renderCard2 = false;
+            }
+        }
+        
+        this.isCardClicked = false; // 플래그 초기화
+        this.selectedCardIndex = null; // 선택된 카드 초기화
+    }
+
+    getCardBounds(i) {
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        if (i == 0 && this.mouse1Y > 0) {
+            offsetY = this.mouse1Y - this.y;  // Y 변화량 계산
+        } else if (i == 1 && this.mouse2Y > 0) {
+            offsetY = this.mouse2Y - this.y;  // Y 변화량 계산
+        }
+    
+        const x = ((this.x - 25 + (i * 100)) + offsetX) * this.m_fHR;
+        const y = ((this.y - 20) + offsetY) * this.m_fVR;
+        const width = (this.x - 25 + (i * 100) + 100) * this.m_fHR;
+        const height = (this.y - 20 + 100) * this.m_fVR;
+    
+        return {
+            x: x,
+            y: y,
+            width: width,
+            height: height
+        };
+    }
+
+    isInsideBounds(mouse, bounds) {
+    
+        return mouse.x > bounds.x && 
+               mouse.x < bounds.width && 
+               mouse.y > bounds.y && 
+               mouse.y < bounds.height;
+    }
+    
+    selectCard(mouse) {
+        console.log(`IUser selectCard : ${mouse.x}, ${mouse.y}`);
+        const bounds1 = this.getCardBounds(0);
+        const bounds2 = this.getCardBounds(1);
+        
+        if (this.isInsideBounds(mouse, bounds1)) {
+            this.selectedCardIndex = 0;
+            this.isCardClicked = true;
+            this.renderCard1 = true;
+        } else if (this.isInsideBounds(mouse, bounds2)) {
+            this.selectedCardIndex = 1;
+            this.isCardClicked = true;
+            this.renderCard2 = true;
+        } else {
+            this.isCardClicked = false;
         }
     }
 }

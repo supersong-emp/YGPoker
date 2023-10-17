@@ -228,4 +228,5 @@ const ELocationIndex = Object.freeze({
     "GameLog":61,
 
     "Jackpot":62,
+    "ShowCard":63,
 });

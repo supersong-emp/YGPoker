@@ -506,6 +506,7 @@ export default class IModeGame {
         if(this.kMainUser != null)
         {
             for (let i in this.listButtons) {
+                if(i==3 && (!this.bwin || !this.kMainUser.bAbstentionWin)) continue;
                 this.listButtons[i].Render(ctx);
             }
         }
@@ -1396,6 +1397,21 @@ export default class IModeGame {
         //this.kMainUser.textHand.UpdateCaption(strHand);
     }
 
+    ShowCard(objectData)
+    {
+        console.log(objectData.iCard1);
+        console.log(objectData.iCard2);
+        let player = this.FindUser(objectData.strID);
+        if (null != player) {
+            console.log(
+                `player Location : ${player.iLocation}, ID : ${player.strID}`
+            );
+            player.listHandCard[0] = objectData.iCard1;
+            player.listHandCard[1] = objectData.iCard2;
+            player.bShowCard = true;
+        }
+    }
+
     SetTableCard(listCard)
     {
         this.listTableCard = listCard;
@@ -1452,7 +1468,7 @@ export default class IModeGame {
                     //player.SetWinCards(listWinCards);
                 }
                 if (cPlayingUser > 1 && this.bAbstentionWin == false) {
-                    player.listHandCard[0] = listResult[i].iCard1;
+                    player.listHandCard[0]= listResult[i].iCard1;
                     player.listHandCard[1] = listResult[i].iCard2;
                     player.strHand = listResult[i].strHand;
                     player.SetWinCards(listWinCards);
@@ -1624,6 +1640,10 @@ export default class IModeGame {
 
     OnMouseMove(mouse) {
         if (this.isMobile == false) {
+            for (let i in this.listPlayers) {
+                this.listPlayers[i].Over(mouse);
+            }
+
             for (let i in this.listButtons) {
                 this.listButtons[i].Over(mouse);
             }
@@ -1710,7 +1730,7 @@ export default class IModeGame {
 
     OnMouseDown(mouse) {
         for (let i in this.listPlayers) {
-            this.listPlayers[i].OnMouseDown(mouse);
+            this.listPlayers[i].Down(mouse);
         }
 
         for (let i in this.listButtons) {
@@ -1763,6 +1783,10 @@ export default class IModeGame {
     }
 
     OnMouseUp(mouse) {
+        for (let i in this.listPlayers) {
+            this.listPlayers[i].Up(mouse);
+        }
+
         for (let i in this.listButtons) {
             this.listButtons[i].Up(mouse);
         }

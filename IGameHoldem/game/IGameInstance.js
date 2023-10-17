@@ -322,7 +322,6 @@ class IGameInstance
             });
 
             socket.on('CM_StartGame', () => {
-
                 console.log(`CM_StartGame : lUnique(${socket.lUnique})`);
 
                 let ret = this.GameManager.StartGame(socket.lUnique);
@@ -337,6 +336,15 @@ class IGameInstance
                 for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
                 {
                     this.listUsers.GetSocket(i).emit('SM_StartGame', {eResult:ret, listUser:list});
+                }
+            });
+
+            socket.on('CM_ShowCard', (objectData) => {
+                console.log(`CM_ShowCard : objectData(${objectData})`);
+
+                for ( let i = 0; i < this.listUsers.GetLength(); ++ i )
+                {
+                    this.listUsers.GetSocket(i).emit('SM_ShowCard', objectData);
                 }
             });
 
