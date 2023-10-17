@@ -25,5 +25,7 @@ const ResultHoldems = require('./models/resultHoldem')(sequelize, Sequelize);
 db.ResultHoldems = ResultHoldems;
 const Inouts = require('./models/inout')(sequelize, Sequelize);
 db.Inouts = Inouts;
+const Jackpots = require('./models/jackpot')(sequelize, Sequelize);
+db.Jackpots = Jackpots;
 
 module.exports = db;

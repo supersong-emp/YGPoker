@@ -21,10 +21,14 @@ export default class IModeGame {
         this.iTotalBettingCoin = 0;
         this.iCallCoin = 0;
         
+        //  Jackpot
+
         this.listLabels = [
-            new IUILabel(1100,820 - 120,28,35,23,NumberImages3,163,227,this.iTotalBettingCoin.toString(),2),
-            new IUILabel(1100,890 - 120,28, 35, 23,NumberImages3,163,227,this.iCallCoin.toString(),2),
-            new IUILabel(1570, 860, 28, 35, 23, NumberImages3, 163, 227, this.iCallCoin.toString(),2),
+            new IUILabel(1100,820 - 120,28,35,23,NumberImages4,150,150,this.iTotalBettingCoin.toString(),2),
+            new IUILabel(1100,890 - 120,28, 35, 23,NumberImages4,150,150,this.iCallCoin.toString(),2),
+            new IUILabel(1570, 860, 28, 35, 23, NumberImages0, 150, 180, this.iCallCoin.toString(),2),
+
+            //new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
         ];
         this.listTexts = [
             new IUIText(370, 920, 20, "1000000", 2),
@@ -175,6 +179,7 @@ export default class IModeGame {
         this.iCallCoin = 0;
         this.listLabels[0].UpdateCaption("0");
         this.listLabels[1].UpdateCaption("0");
+        //this.listLabels[3].UpdateCaption("231320");
         this.bEnableBetting = false;
         //this.listButtons[1].bEnable = false;
         this.listButtons[0].bEnable = false;
@@ -799,10 +804,14 @@ export default class IModeGame {
             if(this.bMobileRaiseButton == true && this.bEnableBetting == true)
             {
                 this.listLabels[2].Render(ctx);
+                this.listLabels[i].Render(ctx);
             }
             else
             {
-                this.listLabels[i].Render(ctx);
+                //this.listLabels[3].UpdateCaption("1234567890");
+                this.listLabels[0].Render(ctx);
+                this.listLabels[1].Render(ctx);
+                //this.listLabels[3].Render(ctx);
             }
         }
     }
@@ -1224,6 +1233,11 @@ export default class IModeGame {
     UpdateCallCoin(iCoin) {
         this.iCallCoin = iCoin;
         this.listLabels[1].UpdateCaption(this.iCallCoin.toString());
+    }
+
+    UpdateJackpot(iJackpot) {
+        this.iJackpot = iJackpot;
+        //this.listLabels[3].UpdateCaption(this.iJackpot.toString());
     }
 
     UpdateGameInfo(strGameName, iBlind) {
@@ -1685,6 +1699,12 @@ export default class IModeGame {
                     }
                 }
             }
+        }
+    }
+    OnTouchEnd()
+    {
+        if (this.isMobile == true) {
+
         }
     }
 

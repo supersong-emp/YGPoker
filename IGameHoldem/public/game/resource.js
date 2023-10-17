@@ -34,6 +34,11 @@ imageShowdown.onload = ()=> {
 }
 imageShowdown.src = "img/showdown.png";
 
+var imageJackpot = new Image();
+imageJackpot.onload = ()=> {
+}
+imageJackpot.src = "img/jackpot.png";
+
 var NumberImages = [];
 for ( var i = 0; i < 10; ++i)
 {
@@ -46,6 +51,27 @@ for ( var i = 0; i < 10; ++i)
 {
     NumberImages3.push(new Image());
     NumberImages3[i].src = `img/numbers/n03${zeroPad(i, 10)}.png`;
+}
+
+var NumberImages4 = [];
+for ( var i = 0; i < 10; ++i)
+{
+    NumberImages4.push(new Image());
+    NumberImages4[i].src = `img/numbers/n04${zeroPad(i, 10)}.png`;
+}
+
+var NumberImages5 = [];
+for ( var i = 0; i < 10; ++i)
+{
+    NumberImages5.push(new Image());
+    NumberImages5[i].src = `img/numbers/n05${zeroPad(i, 10)}.png`;
+}
+
+var NumberImages0 = [];
+for ( var i = 0; i < 10; ++i)
+{
+    NumberImages0.push(new Image());
+    NumberImages0[i].src = `img/numbers/n00${zeroPad(i, 10)}.png`;
 }
 // var ButtonImages = [];
 // for ( var i = 0; i < 2; ++i)

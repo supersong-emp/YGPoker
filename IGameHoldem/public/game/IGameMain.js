@@ -231,7 +231,7 @@ export default class IGameMain{
 
         });
 
-        this.socket.on('SM_JoinGame', (listPlayers, iMaxPlayer) => {
+        this.socket.on('SM_JoinGame', (listPlayers, iMaxPlayer, iJackpot) => {
 
             console.log(`SM_JoinGame`);
             console.log(listPlayers);
@@ -239,6 +239,8 @@ export default class IGameMain{
             //console.log(this.Game);
             this.Game.SetMaxPlayer(iMaxPlayer);
             this.Game.ProcessLocation(listPlayers);
+
+            this.Game.UpdateJackpot(iJackpot);
         });
 
         //  Game
@@ -590,6 +592,13 @@ export default class IGameMain{
 
         });
 
+        this.socket.on('SM_Jackpot', (objectData) => {
+
+            console.log(`SM_Jackpot`);
+            console.log(objectData);
+            this.Game.UpdateJackpot(objectData.iJackpot);
+        });
+
         
     }
 
@@ -621,10 +630,5 @@ export default class IGameMain{
     OnTouchStart(mouse)
     {
         this.Game.OnTouchStart(mouse);
-    }
-
-    OnTouchMove(mouse)
-    {
-        this.Game.OnTouchMove(mouse);
     }
 }

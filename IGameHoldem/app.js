@@ -1,3 +1,4 @@
+process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
 var express = require('express');
 const app = express();
 var path = require('path');
@@ -25,7 +26,13 @@ db.Fees.findOne().then((fee) => {
     console.log(`fee : ${fee.fHoldem}`);
 
     global.fHoldemFee = fee.fHoldem;
+});
 
+db.Jackpots.findOne({where:{strGame:'Holdem'}}).then((jackpot) => {
+
+    console.log(`jackpot : ${jackpot.iJackpot}`);
+
+    global.iJackpot = jackpot.iJackpot;
 });
 
 
@@ -37,8 +44,11 @@ let instanceGame = new Instance(io, '/game', kGameManager);
 
 instanceGame.OnIO(io);
 
-global.strLobbyAddress = 'http://localhost:7000';
-//global.strLobbyAddress = 'http://157.230.38.106:7000';
+if (process.env.NODE_ENV == 'production') {
+    global.strLobbyAddress = 'http://157.230.38.106:7000';
+} else if (process.env.NODE_ENV == 'development') {
+    global.strLobbyAddress = 'http://localhost:7000';
+}
 
 app.get('/', (req, res) => {
     res.send('welcome');
@@ -326,3 +336,10 @@ setInterval(async () => {
     //instanceGame.PrintLobbyUsers();
 
 }, 1000);
+
+
+setInterval(async () => {
+
+    await kGameManager.UpdateJackpot();
+
+}, 5000);

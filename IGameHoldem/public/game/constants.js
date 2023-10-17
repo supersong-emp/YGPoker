@@ -225,5 +225,7 @@ const ELocationIndex = Object.freeze({
     "MobileRaiseBar":59,
 
     "Chat":60,
-    "GameLog":61
+    "GameLog":61,
+
+    "Jackpot":62,
 });

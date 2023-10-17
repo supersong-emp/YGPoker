@@ -1,3 +1,4 @@
+process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
 var createError = require('http-errors');
 var express = require('express');
 const app = express();
@@ -63,16 +64,18 @@ db.sequelize.sync();
 app.use('/account', require('./routes/account'));
 app.use('/announcement', require('./routes/announcement'));
 
+if (process.env.NODE_ENV == 'production') {
+    //global.strGameAddress = 'https://ygpo888.net';
+    global.strGameAddress = 'https://bluem00.com';
+    global.strBig2Address = 'https://ygpokerbig2.net';
+    global.strAddress = 'http://157.230.38.106:3000';
+} else if (process.env.NODE_ENV == 'development') {
+    global.strGameAddress = 'http://localhost:5555';
+    global.strBig2Address = 'http://localhost:5556';
+    global.strAddress = 'http://localhost:3000';
+}
 
-global.strGameAddress = 'http://localhost:5555';
 //global.strGameAddress = 'http://157.230.38.106:5555';
-//global.strGameAddress = 'https://ygpo888.net';
-
-//global.strBig2Address = 'http://localhost:5556';
-global.strBig2Address = 'https://ygpokerbig2.net';
-
-//global.strAddress = 'http://localhost:3000';
-global.strAddress = 'http://157.230.38.106:3000';
 
 let Instance = require('./game/ILobby');
 const { get } = require('http');
