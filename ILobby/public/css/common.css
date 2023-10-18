@@ -174,6 +174,122 @@ table {
 
 
 
+/* bottom-section */
+.bottom-section{
+  border-top:1px solid #2b2b2b;
+  overflow:hidden;
+  padding-bottom:30px;
+}
+.bottom-section .bottom-board{
+  margin-top:30px;
+  height:auto;
+}
+
+.bottom-section .bottom-board .list-b{
+  height:auto;
+  background-color:#181818;
+  border:1px solid #393939;
+  border-radius:8px;
+}
+.bottom-section .bottom-board .list-b h1{
+  cursor:pointer;
+  font-size:18px;
+  width:100%;
+  margin-left:5px;
+  margin-bottom:15px;
+}
+
+.bottom-section .bottom-board .list-b h1 span:first-child{
+  color:#d1383b;
+  font-weight:bold;
+  text-align:center;
+  width:80px;
+  margin-right:5px;
+  display:inline-block;
+}
+.bottom-section .bottom-board .list-b h1 span{
+  color:#ff7800;
+  font-weight:400;
+  border:none;
+}
+.bottom-section .bottom-board .list-b table{
+  border-collapse: collapse;
+  font-size:14px;
+  color:#fff;
+  width:100%;
+}
+.bottom-section .bottom-board .list-b table td{
+  text-indent:5px;
+}
+.bottom-section .bottom-board .list-b table td:first-child{
+  width:60%;
+}
+.bottom-section .bottom-board .list-b table tr{
+  border-bottom:1px solid #373737;
+  transition-duration: .3s;
+  height:40px;
+}
+.bottom-section .bottom-board .list-b table tr:hover{
+  background-color:#202020;
+  color:#fc363a;
+}
+
+/* list-c */
+.bottom-section .bottom-board .list-c{
+  height:auto;
+  background-color:#181818;
+  border:1px solid #393939;
+  border-radius:8px;
+}
+.bottom-section .bottom-board .list-c h1{
+  cursor:pointer;
+  font-size:18px;
+  width:100%;
+  margin-left:5px;
+  margin-bottom:15px;
+}
+
+.bottom-section .bottom-board .list-c h1 span:first-child{
+  color:#d1383b;
+  font-weight:bold;
+  text-align:center;
+  width:80px;
+  margin-right:5px;
+  display:inline-block;
+}
+.bottom-section .bottom-board .list-c h1 span{
+  color:#00bff3;
+  font-weight:400;
+  border:none;
+}
+.bottom-section .bottom-board .list-c table{
+  border-collapse: collapse;
+  font-size:14px;
+  color:#fff;
+  width:100%;
+}
+.bottom-section .bottom-board .list-c table td{
+  text-indent:5px;
+}
+.bottom-section .bottom-board .list-c table td:first-child{
+  width:60%;
+}
+.bottom-section .bottom-board .list-c table tr{
+  border-bottom:1px solid #373737;
+  transition-duration: .3s;
+  height:40px;
+}
+.bottom-section .bottom-board .list-c table tr:hover{
+  background-color:#202020;
+  color:#00bff3;
+}
+
+
+
+
+
+
+
 /* ---------------------- head top --------------------- */
 .header-wrap { margin: 5px 0 0 0; }
 .header-wrap .head-top { height: 140px; }
@@ -1266,10 +1382,10 @@ table {
     display:block;
   }
 
- .bg-img{
+ /* .bg-img{
   margin-bottom:0;
   width:100%;
- }
+ } */
 
  .background{
   background-position:center;
