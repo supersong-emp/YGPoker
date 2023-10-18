@@ -211,7 +211,7 @@ let buttonsGame =
     new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
     new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
     new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
-    //new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 278, 148, "보여주기")
+    new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 495.75, 250, "보여주기")
 ];
 
 const cBettingButtonLocations = 
@@ -230,19 +230,19 @@ const cBettingButtonLocations =
 
 let buttonsGameBetting =
 [
-    new IUIButton(cBettingButtonLocations[0].x, cBettingButtonLocations[0].y, 140, 80, OnClickQuater, imageBetButtons[0], 278, 148, "쿼터"),
-    new IUIButton(cBettingButtonLocations[1].x, cBettingButtonLocations[1].y, 140, 80, OnClickHalf, imageBetButtons[0], 278, 148, "하프"),
-    new IUIButton(cBettingButtonLocations[2].x, cBettingButtonLocations[2].y, 140, 80, OnClickFull, imageBetButtons[0], 278, 148, "풀"),
+    new IUIButton(cBettingButtonLocations[0].x, cBettingButtonLocations[0].y, 140, 80, OnClickQuater, imageBetButtons[0], 495.75, 250, "쿼터"),
+    new IUIButton(cBettingButtonLocations[1].x, cBettingButtonLocations[1].y, 140, 80, OnClickHalf, imageBetButtons[0], 495.75, 250, "하프"),
+    new IUIButton(cBettingButtonLocations[2].x, cBettingButtonLocations[2].y, 140, 80, OnClickFull, imageBetButtons[0], 495.75, 250, "풀"),
 
     //new IUIButton(1213 + 150 * 2 + 10, 1023 + 5 + 60-150, 150, 60, OnClickAllin, imageBettingButton, 150, 80, "올인"),
 
-    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 180, 100, OnClickCall, imageBetButtons[1], 278, 148, "콜"),
-    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 180, 100, OnClickFold, imageBetButtons[1], 278, 148, "폴드"),
-    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 180, 100, OnClickCheck, imageBetButtons[1], 278, 148, "체크"),
-    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnclickMobileRaise, imageBetButtons[1], 278, 148, "레이스"),
+    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 180, 100, OnClickCall, imageBetButtons[0], 495.75, 250, "콜"),
+    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 180, 100, OnClickFold, imageBetButtons[0], 495.75, 250, "폴드"),
+    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 180, 100, OnClickCheck, imageBetButtons[0], 495.75, 250, "체크"),
+    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnclickMobileRaise, imageBetButtons[0], 495.75, 250, "레이스"),
 
-    // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
-    // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
+    // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
+    // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
 let mobilebuttonsGameBetting =
@@ -341,15 +341,15 @@ let sliderBar =
 [
     new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
     // new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
-    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
-    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
 let moblieSliderBar = 
 [
     new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
-    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 278, 148, "+"),
-    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 278, 148, "-"),
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
 let Timer = new ITimer();

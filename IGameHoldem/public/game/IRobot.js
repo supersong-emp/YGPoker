@@ -227,7 +227,7 @@ class IRobot{
 
     async RequestMakeGame()
     {
-        let strDefaultRoomName = ['YG포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
+        let strDefaultRoomName = ['포커 홀덤~!', '스피드 진행!!!', '매너게임 부탁!'];
         let index = Math.floor(Math.random()*3);
         let strRoomName = strDefaultRoomName[index];
         let data = {

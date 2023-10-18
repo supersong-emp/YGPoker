@@ -377,7 +377,7 @@ export default class IGameMain{
 
             this.Game.ShowCard(objectData);
 
-            soundGameStart.play();
+            soundClick.play();
         })
         
 

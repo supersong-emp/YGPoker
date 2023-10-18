@@ -10,7 +10,7 @@ export default class IUIText{
 
         //this.strFont = `$bold ${iFontSize}px Georgia`;
         //this.strFont = `'${iFontSize}px Georgia'`;
-        this.strFont = iFontSize.toString()+'px Noto Sans KR';
+        this.strFont = `bold ${iFontSize}px Nanum Gothic`;
         //alert(this.strFont);
         
 
@@ -28,7 +28,7 @@ export default class IUIText{
         this.iCurrentY = this.y * fVR;
 
         this.iFontSize = this.OriginFontSize * fHR;
-        this.strFont = this.iFontSize.toString()+'px Noto Sans KR';
+        this.strFont = `bold ${this.iFontSize}px Nanum Gothic`;
 
         console.log(`this.iFontSize : ${this.iFontSize}`);
     }
