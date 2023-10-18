@@ -100,7 +100,7 @@ table {
   text-align:center;
 }
 .left_body ul li:hover{
-  color:#00ef89;
+  color:#d1383b;
 }
 
 .left_body .jacpot_board{
@@ -111,10 +111,11 @@ table {
   
 }
 .left_body .jacpot_board .board_name{
-  background-color:#00ef89;
+  background-color:#d1383b;
   padding:8px 3px;
   text-align:center;
   font-weight:bold;
+  color:#fff;
 }
 
 .left_body .board_list{
@@ -132,9 +133,36 @@ table {
   border-bottom:1px solid #3a3a3a;
 }
 .left_body .board_list .right_list{
-  color:#00ef89;
+  color:#ff4b4e;
 }
 
+
+
+
+/* 유저정보 금액 */
+
+.font_1{
+    background:radial-gradient(circle farthest-corner at 20% 20%, #ff393d, #ffa4a4);
+    color:transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-weight: 700;
+    font-size: 23px;
+    font-family: Arial; 
+    /* letter-spacing: -1pt; */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
+.font_2{
+    background:radial-gradient(circle farthest-corner at 20% 20%, #dda817, #d4b652);
+    color:transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-weight: 700;
+    font-size: 23px;
+    font-family: Arial; 
+    /* letter-spacing: -1pt; */
+    text-shadow: 2px 1px 2px rgba(255, 255, 255, 0.2);
+}
 
 
 

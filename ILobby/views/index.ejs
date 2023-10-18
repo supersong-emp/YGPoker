@@ -92,10 +92,10 @@
                 <div>
                     <img src="images/logo_main.png" alt="" class="logo_image">
                     <div class="mx-auto text-right pt-5 pr-5 pl-5 pb-5 flex justify-end relative">
-                        <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
-                        <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
+                        <span class="t-2 mr-2 font_1"><%=user.strID%>님.</span>
+                        <span class="t-2 mr-2 ml-2 font_2">* 보유머니 : <%=user.iCash.toLocaleString()%></span>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
-                        <button class="rounded-full bg-[#00ef89] py-1.5 px-4 " onclick="location.href='/account/logout'">Logout</button>
+                        <button class="rounded-md bg-[#d1383b] py-1.5 px-4 text-white text-bold" onclick="location.href='/account/logout'">Logout</button>
                     </div>
                 </div>
                 
@@ -1544,7 +1544,7 @@
                     <div class="w-[410px] cursor-pointer box-border box1 mx-1 my-1 bg-black">
                         <div class="box">
                             <a href="#" onclick="openLobby('IHoldemLobby'); return false;"><img src="/images/visual_entity_casino.png"></a>
-                            <p class="px-3 py-2 gamebox_text ">CASINO</p>
+                            <p class="px-3 py-2 gamebox_text ">HOLDEM</p>
                         </div>
                     </div>              
                     <div class="w-[410px] cursor-pointer box-border box1 mx-1 my-1 bg-black">
