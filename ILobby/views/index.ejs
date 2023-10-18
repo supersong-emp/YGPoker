@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- <script defer src="js/main.js"></script> -->
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" href="/img/favicon.ico">
+    <!-- <link rel="icon" href="/img/favicon.ico"> -->
     <!-- ios홈화면추가시 상단 주소창 제거 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="/img/favicon.ico"> 
@@ -25,11 +25,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.css" />
-    <link rel="icon" href="./favicon.png">
+    <!-- <link rel="icon" href="./favicon.png"> -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    <title>☆YGPoker</title>
+
+    <link href="/css/slider.css" rel="stylesheet" type="text/css" />
+    <script src="/js/bxslider.js"></script>
+    <title>☆Poker</title>
 </head>
 
 <body style="background-image: url(images/background2.jpg)">
@@ -102,7 +105,7 @@
                 <div class="p-2">
                     <div id="marqueeContainer" class="w-full h-auto bg-[#0f0f0f] rounded-lg">
                     <div class="material-icons text-gray-500 leading-9 ml-2 inline-block float-left">campaign</div>
-                    <marquee id="NewsMarquee" onmouseover="stop()" onmouseout="start()" class="text-[#00ef89] text-sm leading-7" style="display: inline-block; width:calc(100% - 34px); height:32px; margin:0px;" scrolldelay="1" direction="left">YG포커에 오신 것을 환영합니다.
+                    <marquee id="NewsMarquee" onmouseover="stop()" onmouseout="start()" class="text-[#00ef89] text-sm leading-7" style="display: inline-block; width:calc(100% - 34px); height:32px; margin:0px;" scrolldelay="1" direction="left">포커에 오신 것을 환영합니다.
                     </marquee> 
                     </div>
                 </div>   
@@ -1535,11 +1538,26 @@
         <!-- section 영역 (배너) -->
             <section class="w-full bg-[#222222] background">
                 
-                <div class="w-10/12 mx-auto pt-5 bg-img">
+                <!-- <div class="w-10/12 mx-auto pt-5 bg-img">
                     <div class="h-auto shadow-lg mx-auto bg-cover">
                         <img src="images/back3.png" class="mx-auto object-cover">
                     </div>
+                </div> -->
+                <div style="width:100%; overflow: hidden;">
+                    <ul class="bxslider">
+                        <li><img src="images/slider_01.jpg" /></li>
+                        <li><img src="images/slider_02.jpg" /></li>
+                        <li><img src="images/slider_03.jpg" /></li>
+                    </ul>
                 </div>
+                <script src="/js/jquery.cycle2.js"></script>
+                <script src="/js/bxslider.js"></script>
+                <script>
+                    $(document).ready(function(){
+                        $('.bxslider').bxSlider({auto: true,
+                            autoControls: true,pager:true,});
+                    });
+                </script>
                 <div class="w-full mx-auto flex flex-wrap justify-center mt-3" >
                     <div class="w-[410px] cursor-pointer box-border box1 mx-1 my-1 bg-black">
                         <div class="box">
