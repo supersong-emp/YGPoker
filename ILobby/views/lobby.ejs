@@ -968,10 +968,12 @@
         });
 
         socket.on('SM_LeaveGame', () => {
-
             alert('Leave');
-
         });
+
+        setInterval(() => {
+            socket.emit('CM_RoomGameList', {eGameType:eGameType});
+        }, 5000);  // 5초마다 방 목록을 요청
 
         //socket.emit('CM_RoomList');
 

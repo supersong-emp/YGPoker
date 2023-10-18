@@ -224,7 +224,7 @@ export default class IUIButton{
         }
 
         //ctx.font = '20px Spoqa Han Sans Neo';
-        ctx.font = '20px Hahmlet';
+        ctx.font = '30px Gothic A1';
         
         //ctx.font = '20px Consolas';
         

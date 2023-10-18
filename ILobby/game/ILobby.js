@@ -84,7 +84,8 @@ class ILobby
                 console.log(objectData);
 
                 //let listRooms = this.listRooms;
-                let listRooms = this.FindRoomList(objectData.reiBlind, objectData.eGameType);
+                //let listRooms = this.FindRoomList(objectData.reiBlind, objectData.eGameType);
+                let listRooms = this.FindRoomList(objectData.eGameType);
 
                 socket.emit('SM_RoomList', listRooms);
             });
@@ -149,7 +150,7 @@ class ILobby
                     }
                     socket.emit('SM_Error', {error:request.error});
                 }
-            })
+            });
 
             socket.on('CM_JoinRoom', async (objectData) => {
 

@@ -30,10 +30,12 @@ export default class IModeGame {
 
             //new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
         ];
+
+        20,20
+        20,850
         this.listTexts = [
-            new IUIText(370, 920, 20, "1000000", 2),
-            new IUIText(370, 957, 20, "RoomName", 2),
-            new IUIText(370, 994, 20, "B", 2),
+            new IUIText(380, 88, 25, "B", 2),
+            new IUIText(380, 148, 25, "1000000", 2),
         ];
         this.listDot = [
             new IUIImage(1120, 455, 10, 9, imageModeStandbyDot, 105, 90),
@@ -158,7 +160,7 @@ export default class IModeGame {
             this.listLabels[2].SetLocation(930,1730);
             this.listTexts[0].SetLocation(370,1570);
             this.listTexts[1].SetLocation(370,1607);
-            this.listTexts[2].SetLocation(370,1644);
+            //this.listTexts[2].SetLocation(370,1644);
             this.listDot[0].SetLocation(700,775);
             this.listDot[1].SetLocation(715,775);
             this.listDot[2].SetLocation(730,775);
@@ -490,9 +492,9 @@ export default class IModeGame {
 
         for (let i in this.listImages) {
             //if ( i == 5 && this.kMainUser.iLocation != -1 )
-            if (i == 2 && this.bPlaying == true && this.kMainUser != null && this.kMainUser.iLocation == -1) continue;
-            if (i == 2 && this.kMainUser == null) continue;
-            if (i == 2 && this.bPlaying == true) continue;
+            if (i == 1 && this.bPlaying == true && this.kMainUser != null && this.kMainUser.iLocation == -1) continue;
+            if (i == 1 && this.kMainUser == null) continue;
+            if (i == 1 && this.bPlaying == true) continue;
             if(i == 0 && this.isMobile == true) continue;
             this.listImages[i].Render(ctx);
         }
@@ -1243,15 +1245,15 @@ export default class IModeGame {
 
     UpdateGameInfo(strGameName, iBlind) {
         //this.listTexts[1].UpdateCaption(`${strGameName}   ${parseInt(iBlind)/1000}K / ${parseInt(iBlind)*2/1000}K`);
-        this.listTexts[1].UpdateCaption(strGameName);
-        this.listTexts[2].UpdateCaption(
+        //this.listTexts[1].UpdateCaption(strGameName);
+        this.listTexts[0].UpdateCaption(
             `${parseInt(iBlind) / 1000}K / ${(parseInt(iBlind) * 2) / 1000}K`
         );
         this.iBlind = parseInt(iBlind);
     }
 
     UpdatePoint(iPoint) {
-        this.listTexts[0].UpdateCaption(iPoint.toLocaleString());
+        this.listTexts[1].UpdateCaption(iPoint.toLocaleString());
     }
 
     UpdateStrHandName() {

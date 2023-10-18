@@ -10,7 +10,8 @@ export default class IUIText{
 
         //this.strFont = `$bold ${iFontSize}px Georgia`;
         //this.strFont = `'${iFontSize}px Georgia'`;
-        this.strFont = `bold ${iFontSize}px Nanum Gothic`;
+        //this.strFont ='bold '+ iFontSize.toString()+'px Gothic A1';
+        this.strFont = iFontSize.toString()+'px Gothic A1';
         //alert(this.strFont);
         
 
@@ -28,9 +29,11 @@ export default class IUIText{
         this.iCurrentY = this.y * fVR;
 
         this.iFontSize = this.OriginFontSize * fHR;
-        this.strFont = `bold ${this.iFontSize}px Nanum Gothic`;
+        // this.strFont ='bold '+ this.iFontSize.toString()+'px Gothic A1';
+        this.strFont = this.iFontSize.toString()+'px Gothic A1';
 
         console.log(`this.iFontSize : ${this.iFontSize}`);
+        console.log(this.strFont);
     }
 
     SetLocation(x, y)

@@ -99,28 +99,28 @@ configScreen.listDesktopLocationsV.push({x:390, y:1070});
 configScreen.listMobileLocationV.push({x:390, y:1000});
 configScreen.listMobileLocationV.push({x:390, y:1070});
 
-configScreen.listDesktopLocationsH.push({x:20, y:850});    //  ELocationIndex.MyInfo
+configScreen.listDesktopLocationsH.push({x:20, y:10});    //  ELocationIndex.MyInfo 850
 configScreen.listDesktopLocationsH.push({x:50, y:50});    //  ELocationIndex.Logo
 configScreen.listDesktopLocationsH.push({x:660, y:380});    //  ELocationIndex.DialogStandby
 configScreen.listDesktopLocationsH.push({x:905, y:265});    //  ELocationIndex.CardDeck
 
 configScreen.listDesktopLocationsH.push({x:960-120, y:1040-150});    //  ELocationIndex.StartButton
 
-configScreen.listMobileLocationH.push({x:20, y:850});    //  ELocationIndex.MyInfo
+configScreen.listMobileLocationH.push({x:20, y:10});    //  ELocationIndex.MyInfo
 configScreen.listMobileLocationH.push({x:50, y:50});    //  ELocationIndex.Logo
 configScreen.listMobileLocationH.push({x:660, y:380});    //  ELocationIndex.DialogStandby
 configScreen.listMobileLocationH.push({x:905, y:265});    //  ELocationIndex.CardDeck
 
 configScreen.listMobileLocationH.push({x:960-120, y:1040-150});    //  ELocationIndex.StartButton
 
-configScreen.listMobileLocationV.push({x:20, y:1500});    //  ELocationIndex.MyInfo
+configScreen.listMobileLocationV.push({x:20, y:10});    //  ELocationIndex.MyInfo
 configScreen.listMobileLocationV.push({x:50, y:50});    //  ELocationIndex.Logo
 configScreen.listMobileLocationV.push({x:240, y:700});    //  ELocationIndex.DialogStandby
 configScreen.listMobileLocationV.push({x:480, y:230});    //  ELocationIndex.CardDeck
 
 configScreen.listMobileLocationV.push({x:525, y:1800});    //  ELocationIndex.StartButton
 
-configScreen.listDesktopLocationsV.push({x:20, y:1500});    //  ELocationIndex.MyInfo
+configScreen.listDesktopLocationsV.push({x:20, y:10});    //  ELocationIndex.MyInfo 1500
 configScreen.listDesktopLocationsV.push({x:50, y:50});    //  ELocationIndex.Logo
 configScreen.listDesktopLocationsV.push({x:240, y:700});    //  ELocationIndex.DialogStandby
 configScreen.listDesktopLocationsV.push({x:480, y:230});    //  ELocationIndex.CardDeck
@@ -322,8 +322,8 @@ let imageTablePanel =
 
 let imagesGame =
 [
-    new IUIImage(configScreen.GetLocation(ELocationIndex.MyInfo).x, configScreen.GetLocation(ELocationIndex.MyInfo).y, 400, 200, imageMyInfo, 400, 200),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.Logo).x, configScreen.GetLocation(ELocationIndex.Logo).y, 150, 50, imageLogo, 150, 50),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.MyInfo).x, configScreen.GetLocation(ELocationIndex.MyInfo).y, 400, 200, imageMyInfo, 400, 200),// 위치만 일단 logo 위치로 잡아둔거임.
+    //new IUIImage(configScreen.GetLocation(ELocationIndex.Logo).x, configScreen.GetLocation(ELocationIndex.Logo).y, 150, 50, imageLogo, 150, 50),
     new IUIImage(configScreen.GetLocation(ELocationIndex.DialogStandby).x, configScreen.GetLocation(ELocationIndex.DialogStandby).y, 600, 200, imageModeStandby, 600, 200),
     //new IUIImage(configScreen.GetLocation(ELocationIndex.Jackpot).x, configScreen.GetLocation(ELocationIndex.Jackpot).y, 256, 176, imageJackpot, 256, 176),
     //new IUIImage(660, 380, 30, 25, imageModeStandbyDot, 105, 90)
