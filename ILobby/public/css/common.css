@@ -26,14 +26,14 @@ body,td,th {
     -webkit-tap-highlight-color:transparent;
 }
 
-body {
+/* body {
 	margin:0;
   background-image:url("../images/background2.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center ;
   background-size:cover;
-}
+} */
 
 table { 
     border-spacing: 0px;
@@ -62,6 +62,12 @@ table {
   background-position:center;
   background-size:cover;
 }
+.pc-header{
+  background-image:url('../images/ptpt.jpg');
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+}
 .wrap { position:relative; width:95%; height:100%; padding:0; margin:0 auto;}
 
 
@@ -80,6 +86,8 @@ table {
 .left_body{
   width:20%;
   background-color:#0f0f13; 
+  background-image: url("../images/ptpt.jpg");
+  background-position:center;
 }
 
 .left_body .logo{
@@ -142,28 +150,27 @@ table {
 /* 유저정보 금액 */
 
 .font_1{
-    background:radial-gradient(circle farthest-corner at 20% 20%, #ff393d, #ffa4a4);
-    color:transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
     font-weight: 700;
     font-size: 23px;
+    color:#00bff3;
     font-family: Arial; 
     /* letter-spacing: -1pt; */
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+    text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.1);
 }
 .font_2{
-    background:radial-gradient(circle farthest-corner at 20% 20%, #dda817, #d4b652);
+    background:radial-gradient(circle farthest-corner at 20% 20%, #fcc040, #ffe07a);
     color:transparent;
     background-clip: text;
     -webkit-background-clip: text;
     font-weight: 700;
-    font-size: 23px;
+    font-size: 24px;
     font-family: Arial; 
     /* letter-spacing: -1pt; */
     text-shadow: 2px 1px 2px rgba(255, 255, 255, 0.2);
 }
-
+.font_2 span{
+  font-size:16px;
+}
 
 
 
@@ -438,10 +445,7 @@ table {
   }
 
   .background{
-    background-image:url('../images/content_bg2.jpg')
-    ,url('../images/vegas-g1a62b1f25_1920.jpg');
-    background-repeat:no-repeat,no-repeat;
-    background-position:center top, center bottom;
+    background-color:#0f0f11;
   }
   
 

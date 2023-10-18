@@ -4,6 +4,12 @@
     background-position:center;
     background-size:cover;
 }
+.pc-header{
+    background-image:url('../images/ptpt.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+}
 
 .inner-bg{
     background-image:url('../images/bg2.jpg');

@@ -34,8 +34,8 @@
     <script src="/js/bxslider.js"></script>
     <title>☆Poker</title>
 </head>
-
-<body style="background-image: url(images/background2.jpg)">
+<!-- background-image: url(images/background2.jpg) -->
+<body>
     <div class="container_body flex">
         <div class="left_body">
             <div class="py-3">
@@ -90,13 +90,13 @@
         </div>
         <!-- pc용 header -->
         <div>
-            <header class="w-full pc-header pt-back hidden md:block">
+            <header class="w-full pc-header hidden md:block">
                 
                 <div>
                     <img src="images/logo_main.png" alt="" class="logo_image">
                     <div class="mx-auto text-right pt-5 pr-5 pl-5 pb-5 flex justify-end relative">
-                        <span class="t-2 mr-2 font_1"><%=user.strID%>님.</span>
-                        <span class="t-2 mr-2 ml-2 font_2">* 보유머니 : <%=user.iCash.toLocaleString()%></span>
+                        <span class="t-2 mr-2 font_1"><%=user.strID%></span>
+                        <span class="t-2 mr-2 ml-2 font_2"><span class="log_name">보유머니</span> <%=user.iCash.toLocaleString()%></span>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
                         <button class="rounded-md bg-[#d1383b] py-1.5 px-4 text-white text-bold" onclick="location.href='/account/logout'">Logout</button>
                     </div>
@@ -1536,7 +1536,7 @@
                     </div>
 
         <!-- section 영역 (배너) -->
-            <section class="w-full bg-[#222222] background">
+            <section class="w-full background">
                 
                 <!-- <div class="w-10/12 mx-auto pt-5 bg-img">
                     <div class="h-auto shadow-lg mx-auto bg-cover">
