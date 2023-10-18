@@ -9,7 +9,6 @@
     padding: 0;
     zoom: 1;
     margin-top: -20px;
-    height:200px;
     -ms-touch-action: pan-y;
     touch-action: pan-y;
   }
@@ -88,8 +87,8 @@
   .bx-wrapper .bx-controls-auto .bx-controls-auto-item {
     display: inline-block;
     vertical-align: bottom;
-    *zoom: 1;
-    *display: inline;
+    zoom: 1;
+    display: inline;
   }
   .bx-wrapper .bx-pager-item {
     font-size: 0;
