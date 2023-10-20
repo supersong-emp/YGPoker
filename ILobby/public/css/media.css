@@ -172,7 +172,7 @@
     }
   }
   
-  @media(max-width:1179px) and (min-width:50px){
+  @media(max-width:1179px){
     .left_body{
       display:none;
     }
@@ -676,13 +676,22 @@
         width:50%;
         float:none;
       }
-  
+      
+      .mb-menu ul .child_03{
+        background-color:#ff0e0e;
+      }
+      .mb-menu ul li a div{
+        color:#ff0e0e;
+      }
+      .mb-menu ul li a .main_material{
+        color:#fff;
+      }
       .mb-menu{
         width:100%;
-        background-color:#000000;
         border-radius: 4px 0 0 4px;;
         position: fixed;
         bottom:0;
+        border-top:2px solid #967777;
         background-image: url("../images/fb.png");
         background-size:cover;
         background-repeat: no-repeat;
@@ -786,6 +795,9 @@
         .bx-wrapper .bx-pager {
             position: absolute;
             top: 14vh !important;
+        }
+        .bx-wrapper .bx-pager{
+            font-size:.3em !important;
         }
     }
   
@@ -1171,6 +1183,20 @@
     width:100%;
   }
   
+
+
+/* mb 450 size */
+  .mb-menu{
+    padding:4px;
+  }
+  .mb-menu ul li{
+    color:#fff;
+  }
+  .mb-menu ul li a{
+    color:#d1383b;
+  }
+
+
   
     }
   
@@ -1334,12 +1360,12 @@
             margin-bottom: 10px;
         }
     }
+   
+
+
     
-    @media screen and (max-width:320px) {
-    }
-    
-    
-    /* m-login */
-    @media screen and (max-width: 900px) {
-    
+    @media screen and (max-width: 420px){
+        .mb-menu ul li{
+            padding:4px;
+        }
     }
