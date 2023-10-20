@@ -151,7 +151,7 @@ for ( var i = 0; i < 6; ++i)
 }
 
 var imageButtons = [];
-for ( var i = 0; i < 7; ++i)
+for ( var i = 0; i < 10; ++i)
 {
     imageButtons.push(new Image());
     imageButtons[i].src = `img/game/button_${zeroPad(i, 2)}.png`;
@@ -420,6 +420,11 @@ var RaiseSlider = new Image();
 RaiseSlider.onload = ()=> {
 }
 RaiseSlider.src = "img/game/raiseslider.png";
+
+var RaisebarCredit = new Image();
+RaisebarCredit.onload = ()=> {
+}
+RaisebarCredit.src = "img/game/raisebarcredit.png";
 
 let soundPlaceCard = new Audio('sounds/placecard.mp3');
 

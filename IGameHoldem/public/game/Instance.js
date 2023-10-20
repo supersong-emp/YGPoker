@@ -163,14 +163,14 @@ for (let i in cChipVerticalLocations)
     configScreen.listMobileLocationV.push({ x: cChipVerticalLocations[i].x, y: cChipVerticalLocations[i].y });    //  ELocationIndex.TableChip1
 for (let i in cChipCallVerticalTexts)
     configScreen.listMobileLocationV.push({ x: cChipCallVerticalTexts[i].x, y: cChipCallVerticalTexts[i].y });    //  ELocationIndex.TableCoin1
-configScreen.listDesktopLocationsH.push({x:1410, y:650});
-configScreen.listDesktopLocationsH.push({x:1410, y:750}); // plus, minus button
-configScreen.listDesktopLocationsH.push({x:1630, y:860}); // sliderbar
-configScreen.listMobileLocationH.push({x:1410, y:650});
-configScreen.listMobileLocationH.push({x:1410, y:750});// plus, minus button
+configScreen.listDesktopLocationsH.push({x:1790, y:715});
+configScreen.listDesktopLocationsH.push({x:1790, y:815}); // plus, minus button
+configScreen.listDesktopLocationsH.push({x:1630, y:815}); // sliderbar
+configScreen.listMobileLocationH.push({x:1800, y:650});
+configScreen.listMobileLocationH.push({x:1800, y:750});// plus, minus button
 configScreen.listMobileLocationH.push({x:1630, y:860}); // sliderbar
-configScreen.listDesktopLocationsH.push({x:1600, y:260}); //mobile sliderbar
-configScreen.listDesktopLocationsH.push({x:1400, y:200}); // MobileRaiseBar
+configScreen.listDesktopLocationsH.push({x:1670, y:345}); //mobile sliderbar
+configScreen.listDesktopLocationsH.push({x:1060, y:195}); // MobileRaiseBar
 configScreen.listMobileLocationH.push({x:1400, y:200});// mobile sliderbar
 configScreen.listMobileLocationH.push({x:1400, y:200}); // MobileRaiseBar
 
@@ -181,7 +181,7 @@ configScreen.listMobileLocationV.push({x:570, y:1690});
 configScreen.listMobileLocationV.push({x:570, y:1590});// plus, minus button
 configScreen.listMobileLocationV.push({x:1630, y:860}); // sliderbar
 configScreen.listDesktopLocationsV.push({x:1700, y:300}); //mobile sliderbar
-configScreen.listDesktopLocationsV.push({x:1400, y:200}); // MobileRaiseBar
+configScreen.listDesktopLocationsV.push({x:500, y:200}); // MobileRaiseBar
 configScreen.listMobileLocationV.push({x:760, y:1120});// mobile sliderbar
 configScreen.listMobileLocationV.push({x:560, y:1100}); // MobileRaiseBar
 
@@ -191,8 +191,8 @@ configScreen.listDesktopLocationsH.push({x:150, y:800}); // GameLog 버튼
 configScreen.listMobileLocationH.push({x:150, y:800});
 configScreen.listDesktopLocationsH.push({x:960-128, y:-25}); // Jackpot
 configScreen.listMobileLocationH.push({x:50, y:150});
-configScreen.listDesktopLocationsH.push({x:700, y:800}); // ShowCard
-configScreen.listMobileLocationH.push({x:700, y:800});
+configScreen.listDesktopLocationsH.push({x:730, y:800}); // ShowCard
+configScreen.listMobileLocationH.push({x:730, y:800});
 
 configScreen.listDesktopLocationsV.push({x:50, y:1600}); // Chat 버튼
 configScreen.listMobileLocationV.push({x:50, y:1600});
@@ -203,6 +203,23 @@ configScreen.listMobileLocationV.push({x:50, y:150});
 configScreen.listDesktopLocationsV.push({x:300, y:1600}); // ShowCard
 configScreen.listMobileLocationV.push({x:300, y:1600});
 
+configScreen.listDesktopLocationsH.push({x:1790, y:615}); // RaiseButton1
+configScreen.listMobileLocationH.push({x:1800, y:550});
+configScreen.listDesktopLocationsH.push({x:1790, y:515}); // RaiseButton2
+configScreen.listMobileLocationH.push({x:1800, y:450});
+configScreen.listDesktopLocationsH.push({x:1790, y:415}); // RaiseButton3
+configScreen.listMobileLocationH.push({x:1800, y:350});
+configScreen.listDesktopLocationsH.push({x:1790, y:315}); // RaiseButton4
+configScreen.listMobileLocationH.push({x:1800, y:250});
+
+configScreen.listDesktopLocationsV.push({x:50, y:150}); // RaiseButton1
+configScreen.listMobileLocationV.push({x:50, y:150});
+configScreen.listDesktopLocationsV.push({x:300, y:1600}); // RaiseButton2
+configScreen.listMobileLocationV.push({x:300, y:1600});
+configScreen.listDesktopLocationsV.push({x:50, y:150}); // RaiseButton3
+configScreen.listMobileLocationV.push({x:50, y:150});
+configScreen.listDesktopLocationsV.push({x:300, y:1600}); // RaiseButton4
+configScreen.listMobileLocationV.push({x:300, y:1600});
 
 let buttonsGame =
 [
@@ -226,6 +243,10 @@ const cBettingButtonLocations =
     {x:configScreen.GetLocation(ELocationIndex.plusButton).x, y:configScreen.GetLocation(ELocationIndex.plusButton).y},    //  plus
     {x:configScreen.GetLocation(ELocationIndex.minusButton).x, y:configScreen.GetLocation(ELocationIndex.minusButton).y},    //  minus
     {x:configScreen.GetLocation(ELocationIndex.sliderBar).x, y:configScreen.GetLocation(ELocationIndex.sliderBar).y},    //  slider
+    {x:configScreen.GetLocation(ELocationIndex.RaiseButton1).x, y:configScreen.GetLocation(ELocationIndex.RaiseButton1).y},    //  RaiseButton1
+    {x:configScreen.GetLocation(ELocationIndex.RaiseButton2).x, y:configScreen.GetLocation(ELocationIndex.RaiseButton2).y},    //  RaiseButton2
+    {x:configScreen.GetLocation(ELocationIndex.RaiseButton3).x, y:configScreen.GetLocation(ELocationIndex.RaiseButton3).y},    //  RaiseButton3
+    {x:configScreen.GetLocation(ELocationIndex.RaiseButton4).x, y:configScreen.GetLocation(ELocationIndex.RaiseButton4).y},    //  RaiseButton4
 ];
 
 let buttonsGameBetting =
@@ -336,20 +357,32 @@ let imagesGameDeck =
     new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[2], 351, 136),
     new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[3], 351, 136),//red card
 ];
-let buttonSlider = new IUIButton(70, 70, 70, 70, null,imageSliderButton, 50, 50, "");
+let buttonSlider = new IUIButton(50, 80, 50, 80, null,imageButtons[6], 50, 80, "");
 let sliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
-    // new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
-    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
-    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
+    //new IUIImage(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 300, 500, imageSliderMobile, 300, 500),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 400, RaiseSlider, 27, 200, buttonSlider,1),
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageButtons[9], 50, 50, ""),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageButtons[8], 50, 50, ""),
+    new IUIButton(cBettingButtonLocations[10].x, cBettingButtonLocations[10].y, 80, 80, OnClickAllin, imageButtons[7], 50, 50, "올인"),
+    new IUIButton(cBettingButtonLocations[11].x, cBettingButtonLocations[11].y, 80, 80, OnClickFull, imageButtons[7], 50, 50, "풀"),
+    new IUIButton(cBettingButtonLocations[12].x, cBettingButtonLocations[12].y, 80, 80, OnClickHalf, imageButtons[7], 50, 50, "하프"),
+    new IUIButton(cBettingButtonLocations[13].x, cBettingButtonLocations[13].y, 80, 80, OnClickQuater, imageButtons[7], 50, 50, "쿼터"),
 ];
 
 let moblieSliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
-    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
-    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
+    //new IUIImage(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 300, 500, imageSliderMobile, 300, 500),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 400, RaiseSlider, 27, 200, buttonSlider,1),
+];
+
+let sliderButton = [
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 80, 80, OnClickPlus, imageButtons[9], 50, 50, ""),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 80, 80, OnClickMinus, imageButtons[8], 50, 50, ""),
+    new IUIButton(cBettingButtonLocations[10].x, cBettingButtonLocations[10].y, 80, 80, OnClickAllin, imageButtons[7], 50, 50, "올인"),
+    new IUIButton(cBettingButtonLocations[11].x, cBettingButtonLocations[11].y, 80, 80, OnClickFull, imageButtons[7], 50, 50, "풀"),
+    new IUIButton(cBettingButtonLocations[12].x, cBettingButtonLocations[12].y, 80, 80, OnClickHalf, imageButtons[7], 50, 50, "하프"),
+    new IUIButton(cBettingButtonLocations[13].x, cBettingButtonLocations[13].y, 80, 80, OnClickQuater, imageButtons[7], 50, 50, "쿼터"),
 ];
 
 let Timer = new ITimer();
@@ -361,7 +394,7 @@ let GameMain = new IGameMain(Game, socket, configScreen, Timer);
 
 Game.SetBg(account.strOptionCode[2]);
 Game.SetDeck(account.strOptionCode[3], imagesGameDeck);
-Game.SetSliderBar(moblieSliderBar);
+Game.SetSliderBar(moblieSliderBar,sliderButton);
 if(IsMobile()){
     Game.SetBettingButtons(mobilebuttonsGameBetting);
 }

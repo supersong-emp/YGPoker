@@ -154,7 +154,7 @@ let OnClickQuater = (game) => {
     let player = game.FindUser(game.socket.strID);
     let iAmount = Math.floor(game.iCallCoin+((game.iCallCoin + game.iTotalBettingCoin) / 4));
     console.log(`##### Quater iAmount ${iAmount} player.iGameCoin : ${player.iGameCoin}`);
-    if(player.iGameCoin < iAmount) iAmount = player.iGameCoin;
+    if(player.iGameCoin < iAmount) return;
     game.SetRaiseButton();
     game.CheckBettingCoin(iAmount);
     //  Test
@@ -174,44 +174,23 @@ let OnClickQuater = (game) => {
         }        
     }    
 
-    // let player = game.FindUser(game.socket.strID);
+    let objectBetting = {strBetting:'Quater', iAmount:iAmount};
 
-    // let objectBetting = {strBetting:'Quater', iAmount:iAmount};
+    game.socket.emit('CM_Betting', objectBetting);
 
-    // console.log(`OnClickQuater : ${player.strID}, coin : ${player.iGameCoin}`);
-    // if ( player != null )
-    // {
-    //     console.log(`Found`);
-    //     if ( player.iGameCoin < iAmount )
-    //     {
-    //         console.log(`player : ${player.iCoin}, raise : ${iAmount}`);
-    //         objectBetting.iAmount = player.iGameCoin;
-    //         objectBetting.strBetting = 'Allin';
-    //     }        
-    // }
-
-    // game.socket.emit('CM_Betting', objectBetting);
-
-    // game.bEnableBetting = false;
+    game.bEnableBetting = false;
 
     soundClick.play();
 }
 
 let OnClickHalf = (game) => {
 
-    // let iAmount = (game.iCallCoin + (game.iCallCoin + game.iTotalBettingCoin)) / 2;
-
-    // let objectBetting = {strBetting:'Half', iAmount:iAmount};
-
-    // game.socket.emit('CM_Betting', objectBetting);
-
-    // game.bEnableBetting = false;
     console.log(`##### Call ${game.iCallCoin}, Total : ${game.iTotalBettingCoin}`);
     let player = game.FindUser(game.socket.strID);
     let iAmount = Math.floor(game.iCallCoin+((game.iCallCoin + game.iTotalBettingCoin) / 2));
 
     console.log(`##### Half iAmount ${iAmount} player.iGameCoin : ${player.iGameCoin}`);
-    if(player.iGameCoin < iAmount) iAmount = player.iGameCoin;
+    if(player.iGameCoin < iAmount) return;
     game.SetRaiseButton();
     game.CheckBettingCoin(iAmount);
     //
@@ -232,22 +211,22 @@ let OnClickHalf = (game) => {
         }        
     }
 
+    let objectBetting = {strBetting:'Half', iAmount:iAmount};
+
+    game.socket.emit('CM_Betting', objectBetting);
+
+    game.bEnableBetting = false;
+
+
     soundClick.play();
 }
 
 let OnClickFull = (game) => {
 
-    // let iAmount = (game.iCallCoin + (game.iCallCoin + game.iTotalBettingCoin));
-
-    // let objectBetting = {strBetting:'Full', iAmount:iAmount};
-
-    // game.socket.emit('CM_Betting', objectBetting);
-
-    // game.bEnableBetting = false;
     console.log(`##### Call ${game.iCallCoin}, Total : ${game.iTotalBettingCoin}`);
     let player = game.FindUser(game.socket.strID);
     let iAmount = Math.floor(game.iCallCoin+(game.iCallCoin + game.iTotalBettingCoin));
-    if(player.iGameCoin < iAmount) iAmount = player.iGameCoin;
+    if(player.iGameCoin < iAmount) return;
     
     console.log(`##### Full iAmount ${iAmount} player.icoin : ${player.iGameCoin}`);
     
@@ -269,23 +248,30 @@ let OnClickFull = (game) => {
             game.slider[0].UpdateCurrentLocation();
         }        
     }
+
+    let objectBetting = {strBetting:'Full', iAmount:iAmount};
+
+    game.socket.emit('CM_Betting', objectBetting);
+
+    game.bEnableBetting = false;
+
     soundClick.play();
 }
 
 let OnClickAllin = (game) => {
 
-    // console.log(`Allin : ${game.socket.strID}`);
+    console.log(`Allin : ${game.socket.strID}`);
 
-    // let player = game.FindUser(game.socket.strID);
+    let player = game.FindUser(game.socket.strID);
 
-    // console.log(`${player.strID}`);
-    // console.log(player);
+    console.log(`${player.strID}`);
+    console.log(player);
 
-    // let objectBetting = {strBetting:'Allin', iAmount:player.iGameCoin};
+    let objectBetting = {strBetting:'Allin', iAmount:player.iGameCoin};
 
-    // game.socket.emit('CM_Betting', objectBetting);
+    game.socket.emit('CM_Betting', objectBetting);
 
-    // game.bEnableBetting = false;
+    game.bEnableBetting = false;
 }
 
 let OnClickCall = (game) => {
@@ -363,7 +349,7 @@ let OnClickRaise = (game) => {
 
     let objectBetting = {strBetting:'Raise', iAmount:iAmount};
 
-    console.log(`OnClickQuater : ${player.strID}, coin : ${player.iGameCoin}`);
+    console.log(`OnClickRaise : ${player.strID}, coin : ${player.iGameCoin}`);
     if ( player != null )
     {
         console.log(`Found`);
