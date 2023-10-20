@@ -322,7 +322,7 @@ section.background{
 
 /* mem-profile */
 .header-wrap .head-top .mem-profile { width: 650px; float: right; margin-top:40px;}
-.header-wrap .head-top .mem-profile .mem-img { width: 68px; margin-top:12px; float: left; border:2px solid #bdbdbd; border-radius:100%;}
+.header-wrap .head-top .mem-profile .mem-img { width: 68px; margin-top:-8px; float: left; border:2px solid #bdbdbd; border-radius:100%;}
 .header-wrap .head-top .mem-profile .mem-img img { width: 67px; }
 
 .header-wrap .head-top .mem-profile .mem-info { color: #fff; width: 250px; height: 65px; margin-left: 20px; line-height:65px; padding: 0 10px;  display: inline-block; }

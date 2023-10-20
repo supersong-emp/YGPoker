@@ -28,7 +28,7 @@
   .header-wrap .head-top .top-title { width: 300px;}
   
   /* mem-profile */
-  .header-wrap .head-top .mem-profile { width: 600px; }
+  .header-wrap .head-top .mem-profile { width: 700px; }
   
   
   
@@ -188,7 +188,8 @@
   }
   @media(max-width:1280px){
     .header-wrap .head-top .mem-profile .mem-info{
-        width:210px;
+        width:315px;
+        
     }
   }
   @media(max-width:1200px) and (min-width:1001px){
