@@ -80,12 +80,27 @@ table {
 
 
 
+section.background{
 
-
+}
 /* left_container */
 .left_body{
-  width:20%;
-  background-color:#0f0f13; 
+  background-color: #131313;
+    box-shadow: 0em 1em 1em #0c0c0c;
+    display: flex;
+    -moz-flex-direction: column;
+    flex-direction: column;
+    -moz-justify-content: flex-start;
+    -ms-justify-content: flex-start;
+    justify-content: flex-start;
+    padding: 0px 15px 10px;
+    width:300px;
+    z-index: 14;
+    top: 0px;
+    float: left;
+    position: fixed;
+    bottom: 0;
+    overflow-y: auto;
   background-image: url("../images/ptpt.jpg");
   background-position:center;
 }
@@ -145,7 +160,12 @@ table {
 }
 
 
-
+.right_container{
+  width:calc(100% - 300px);
+  height:auto;
+  float:right;
+  position:relative;
+}
 
 /* 유저정보 금액 */
 
@@ -848,11 +868,19 @@ table {
 
 }
 
-
+@media(max-width:1179px) and (min-width:768px){
+  .logo_image{
+    width:200px;
+  }
+}
 
 @media(max-width:1179px) and (min-width:50px){
   .left_body{
     display:none;
+  }
+  .right_container{
+    float:none;
+    width:100%;
   }
   .logo_image{
     padding:20px;
@@ -1329,7 +1357,16 @@ table {
 
   }
 
+  @media(max-width:835px) {
+    .bx-wrapper{
+      margin-bottom:0 !important;
+    }
+    .bx-viewport{
+      height:0 !important;
+    }
 
+
+  }
   
 
   @media(max-width:767px){
@@ -1350,10 +1387,19 @@ table {
       background-position:center;
     }
 
+    .right_container .pc-header{
+      display:none;
+    }
   }
 
 
-
+  @media(max-width:730px){
+    .bx-wrapper{
+      background-color:transparent !important;
+    }
+  }
+  @media(max-width:710px){
+  }
 @media(max-width:700px){
 /* 뉴 로비 */
 /* new-lobby */

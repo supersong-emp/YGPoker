@@ -81,7 +81,7 @@ ul.bxslider {
 .bx-wrapper .bx-pager.bx-default-pager a:hover,
 .bx-wrapper .bx-pager.bx-default-pager a.active,
 .bx-wrapper .bx-pager.bx-default-pager a:focus {
-  background: #00bff3;
+  background: #ff324d;
   transition-duration: 0.3s;
 }
 .bx-wrapper .bx-pager-item,

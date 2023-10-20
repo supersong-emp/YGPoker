@@ -349,7 +349,7 @@ let OnSize = () =>
     let tag2 = '';
     let tag = `
     <div id="popup_setting" class="setting-wrap" style="position: absolute; z-index: 12; top:50%; left:50%; transform:translate(-50%, -50%); text-align: center; opacity:0.95;">
-    <div class="close"><a href="javascript:OnClickSettingClose();"><img src="images/close_menu.svg"></a></div>
+    <div class="close"><a href="javascript:OnClickSettingClose();"><img src="images/close.svg"></a></div>
     <div class="setting-form">
         <div class="title">설정</div>
         <div class="form">
@@ -381,7 +381,7 @@ let OnSize = () =>
         <div class="head-top"> 
                 <span class="user-nav">
                     <ul>
-                        <li><a href="javascript:OnClickClose();"><img src="images/close_menu.svg"></a></li>
+                        <li><a href="javascript:OnClickClose();"><img src="images/close.svg"></a></li>
                         <li>나가기</li>
                     </ul>
 
@@ -409,7 +409,7 @@ let OnSize = () =>
                         <li>설정</li>
                     </ul>
                     <ul>
-                        <li><a href="javascript:OnClickClose();"><img src="images/close_menu.svg"></a></li>
+                        <li><a href="javascript:OnClickClose();"><img src="images/close.svg"></a></li>
                         <li>나가기</li>
                     </ul>
                 </span>
