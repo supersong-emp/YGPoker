@@ -53,13 +53,18 @@
                     <div class="mem-profile">
                         <span class="mem-img"><img id="iMainAvatar" src="images/avatars/avatar00.png"></span>
                         <span class="mem-info">
-                            <ul><%=user.strID%>
-                                <!-- <button onclick="pointChange();">포인트전환</button> -->
-                            </ul>
                             
-                            <ul>cash<span>
-                                    <num id="MainCash"><%=user.iCash.toLocaleString()%></num>P
-                                </span></ul>
+                                <!-- <button onclick="pointChange();">포인트전환</button> -->
+                            
+                            
+                            
+                            <div class="mx-auto text-right relative">
+                                <span class="t-2 mr-2 font_1 "><%=user.strID%></span>&nbsp;&nbsp;
+                                <span class="t-2 mr-2 ml-2 font_2 ">
+                                    <span class="log_name">cash</span> 
+                                    <%=user.iCash.toLocaleString()%>P
+                                </span>
+                            </div>
                         </span>
                         <span class="user-nav">
                             <!-- <ul>

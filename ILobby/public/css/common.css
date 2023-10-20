@@ -321,10 +321,14 @@ section.background{
 .header-wrap .head-top .top-title { font-size: 26px; font-weight: 600; color: #e4bf67; width: 500px; text-align: center; display: inline-block; margin-left: 30px; line-height:140px;}
 
 /* mem-profile */
-.header-wrap .head-top .mem-profile { width: 600px; float: right; margin-top:40px;}
-.header-wrap .head-top .mem-profile .mem-img { width: 52px; float: left; }
+.header-wrap .head-top .mem-profile { width: 650px; float: right; margin-top:40px;}
+.header-wrap .head-top .mem-profile .mem-img { width: 68px; margin-top:12px; float: left; border:2px solid #bdbdbd; border-radius:100%;}
 .header-wrap .head-top .mem-profile .mem-img img { width: 67px; }
-.header-wrap .head-top .mem-profile .mem-info { color: #fff; width: 150px; height: 65px; margin-left: 20px; padding: 0 10px; border: 1px solid #fff; border-radius: 3px; display: inline-block; }
+
+.header-wrap .head-top .mem-profile .mem-info { color: #fff; width: 250px; height: 65px; margin-left: 20px; line-height:65px; padding: 0 10px;  display: inline-block; }
+.header-wrap .head-top .mem-profile .mem-info>div{
+  line-height:85px;
+}
 .header-wrap .head-top .mem-profile .mem-info ul { padding: 8px 0; }
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(1) { padding: 9px 0; border-bottom: 1px solid #fff; }
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(2) span { float: right; }
@@ -332,7 +336,7 @@ section.background{
 .header-wrap .head-top .mem-profile .mem-info button { width: 80px; height: 25px; color: #fff; background: #e73838; border: 1px solid #fff; border-radius: 50px; float: right; margin-top: -6px; cursor: pointer; }
 
 /* user setting */
-.header-wrap .head-top .user-nav { width: 350px; float: right; color: #fff; font-weight:bold; text-align: center; margin-top: 10px; margin-left: 5px;}
+.header-wrap .head-top .user-nav { float: right; color: #fff; font-weight:bold; text-align: center; margin-top: 10px; margin-left: 5px;}
 .header-wrap .head-top .user-nav ul { float: left; padding: 10px 0; width:65px; cursor: pointer; }
 .header-wrap .head-top .user-nav ul li {font-size:12px;}
 .header-wrap .head-top .user-nav ul li:nth-child(1) img { width: 30px; }
