@@ -134,7 +134,7 @@ section.background{
   
 }
 .left_body .jacpot_board .board_name{
-  background-color:#d1383b;
+  background-color:#ff0e0e;
   padding:8px 3px;
   text-align:center;
   font-weight:bold;
@@ -578,7 +578,7 @@ section.background{
 
   .mb-menu{
     display:none;
-    border-top:2px; solid #fff;
+    
   }
 
   .background{
