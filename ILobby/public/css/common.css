@@ -220,7 +220,7 @@ section.background{
 }
 
 .bottom-section .bottom-board .list-b h1 span:first-child{
-  color:#d1383b;
+  color:#ff1c1f;
   font-weight:bold;
   text-align:center;
   width:80px;
@@ -228,7 +228,7 @@ section.background{
   display:inline-block;
 }
 .bottom-section .bottom-board .list-b h1 span{
-  color:#ff7800;
+  color:#ffd000;
   font-weight:400;
   border:none;
 }
@@ -270,7 +270,7 @@ section.background{
 }
 
 .bottom-section .bottom-board .list-c h1 span:first-child{
-  color:#d1383b;
+  color:#fc363a;
   font-weight:bold;
   text-align:center;
   width:80px;
@@ -278,7 +278,7 @@ section.background{
   display:inline-block;
 }
 .bottom-section .bottom-board .list-c h1 span{
-  color:#00bff3;
+  color:#00eeff;
   font-weight:400;
   border:none;
 }
