@@ -354,6 +354,7 @@ section.background{
 .header-wrap .main-gnb ul li { width: calc(31% - 0px); float: left; background-color:#ff0e0e; margin-left: 4px; height: 50px; line-height: 50px; cursor: pointer; color:#f8faff}
 .header-wrap .main-gnb ul li:first-child{
   background-color:#ff0e0e;
+  margin-top:1px;
 }
 .header-wrap .main-gnb ul li:nth-child(2){
   background-color:#0a60ff;
@@ -375,6 +376,8 @@ section.background{
 .header-wrap .sub-gnb { color: #fff; font-size: 14px; font-weight: bold; margin-top:5px; }
 .header-wrap .sub-gnb ul li:hover { font-size:20px; transition:.7s;}
 .header-wrap .sub-gnb ul li:nth-child(1) { margin-left: 0px; }
+.header-wrap .sub-gnb ul li:nth-child(1) { background-color:rgba(0, 207, 28, 0.8);  color:#fff; }
+.header-wrap .sub-gnb ul li:nth-child(3) { background-color:rgba(222, 226, 0, 0.8);  color:#fff; }
 
 /* -------------------container------------------------- */
 .container { height: 600px;  margin-top: 3px; padding-bottom:20px;}
