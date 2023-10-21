@@ -1473,9 +1473,21 @@
         }
 
         window.onload = function(){
-                var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-                $(document).on('click', '.openFullscreen', (e) => {
-                    var elem = document.documentElement;
+            // /var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+            $(document).on('click', '.openFullscreen', (e) => {
+                var elem = document.documentElement;
+                
+                // 이미 풀스크린 모드라면 풀스크린 모드를 종료합니다.
+                if (document.fullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) { /* Safari */
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { /* IE11 */
+                        document.msExitFullscreen();
+                    }
+                } else {
+                    // 풀스크린 모드가 아니라면 풀스크린 모드로 전환합니다.
                     if (elem.requestFullscreen) {
                         elem.requestFullscreen();
                     } else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -1483,14 +1495,15 @@
                     } else if (elem.msRequestFullscreen) { /* IE11 */
                         elem.msRequestFullscreen();
                     }
-                });
-                // 전체화면 모드가 아닐 때는 팝업창 크기를 고정합니다.
-                window.addEventListener(resizeEvent, function() {
-                    if (!window.document.fullscreenElement) {
-                        window.resizeTo(1310, 768);
-                    }
-                });
-            }
+                }
+            });
+            // 전체화면 모드가 아닐 때는 팝업창 크기를 고정합니다.
+            // window.addEventListener(resizeEvent, function() {
+            //     if (!window.document.fullscreenElement) {
+            //         window.resizeTo(1310, 768);
+            //     }
+            // });
+        }
     </script>
 
 </body>
