@@ -49,9 +49,9 @@ ctx.lineWidth = 7;
 configScreen.listDesktopLocationsH.push({x:1030, y:828});
 configScreen.listDesktopLocationsH.push({x:1175, y:828});
 configScreen.listDesktopLocationsH.push({x:1325, y:828});
-configScreen.listDesktopLocationsH.push({x:1100, y:910});
-configScreen.listDesktopLocationsH.push({x:1300-15, y:910});
 configScreen.listDesktopLocationsH.push({x:1500-30, y:910});
+configScreen.listDesktopLocationsH.push({x:1300-15, y:910});
+configScreen.listDesktopLocationsH.push({x:1100, y:910});
 configScreen.listDesktopLocationsH.push({x:1700-45, y:910}); // bet button
 configScreen.listMobileLocationH.push({x:1030, y:828});
 configScreen.listMobileLocationH.push({x:1175, y:828});
@@ -191,7 +191,7 @@ configScreen.listDesktopLocationsH.push({x:150, y:800}); // GameLog 버튼
 configScreen.listMobileLocationH.push({x:150, y:800});
 configScreen.listDesktopLocationsH.push({x:960-128, y:-25}); // Jackpot
 configScreen.listMobileLocationH.push({x:50, y:150});
-configScreen.listDesktopLocationsH.push({x:730, y:800}); // ShowCard
+configScreen.listDesktopLocationsH.push({x:730, y:900}); // ShowCard
 configScreen.listMobileLocationH.push({x:730, y:800});
 
 configScreen.listDesktopLocationsV.push({x:50, y:1600}); // Chat 버튼
@@ -257,10 +257,10 @@ let buttonsGameBetting =
 
     //new IUIButton(1213 + 150 * 2 + 10, 1023 + 5 + 60-150, 150, 60, OnClickAllin, imageBettingButton, 150, 80, "올인"),
 
-    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 180, 100, OnClickCall, imageBetButtons[0], 495.75, 250, "콜"),
-    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 180, 100, OnClickFold, imageBetButtons[0], 495.75, 250, "폴드"),
-    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 180, 100, OnClickCheck, imageBetButtons[0], 495.75, 250, "체크"),
-    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnclickMobileRaise, imageBetButtons[0], 495.75, 250, "레이스"),
+    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 180, 100, OnClickCall, imageBetButtons[0], 495.75, 250, "콜",'blue'),
+    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 180, 100, OnClickFold, imageBetButtons[0], 495.75, 250, "폴드",'gray'),
+    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 180, 100, OnClickCheck, imageBetButtons[0], 495.75, 250, "체크",'yellow'),
+    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 180, 100, OnclickMobileRaise, imageBetButtons[0], 495.75, 250, "레이스",'red'),
 
     // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
     // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
@@ -274,10 +274,10 @@ let mobilebuttonsGameBetting =
 
     //new IUIButton(1213 + 150 * 2 + 10, 1023 + 5 + 60-150, 150, 60, OnClickAllin, imageBettingButton, 150, 80, "올인"),
 
-    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 350, 100, OnClickMobileCall, imageBetButtons[4], 278, 78, "CALL"),
-    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 350, 100, OnClickMobileFold, imageBetButtons[3], 278, 78, "FOLD"),
-    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 350, 100, OnClickMobileCheck, imageBetButtons[4], 278, 78, "CHECK"),
-    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 350, 100, OnclickMobileRaise, imageBetButtons[2], 278, 78, "RAISE"),
+    new IUIButton(cBettingButtonLocations[3].x, cBettingButtonLocations[3].y, 350, 100, OnClickMobileCall, imageBetButtons[4], 278, 78,"콜",'blue'),
+    new IUIButton(cBettingButtonLocations[4].x, cBettingButtonLocations[4].y, 350, 100, OnClickMobileFold, imageBetButtons[3], 278, 78, "폴드",'gray'),
+    new IUIButton(cBettingButtonLocations[5].x, cBettingButtonLocations[5].y, 350, 100, OnClickMobileCheck, imageBetButtons[4], 278, 78, "체크",'yellow'),
+    new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 350, 100, OnclickMobileRaise, imageBetButtons[2], 278, 78, "레이스",'red'),
 ];
 
 let buttonsGameLocation =

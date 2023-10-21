@@ -1638,6 +1638,8 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Click(mouse, this);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Click(mouse,this);
         }
 
         if (true == this.bEnableLocation) {
@@ -1645,10 +1647,6 @@ export default class IModeGame {
                 if (true == this.IsEnableLocation(i))
                     this.listLocationButtons[i].Click(mouse, this);
             }
-        }
-
-        for (let i in this.sliderButton){
-            this.sliderButton[i].Click(mouse,this);
         }
     }
 
@@ -1665,6 +1663,8 @@ export default class IModeGame {
             if (true == this.bEnableBetting) {
                 for (let i in this.listBettingButtons)
                     this.listBettingButtons[i].Over(mouse);
+                for (let i in this.sliderButton)
+                    this.sliderButton[i].Over(mouse);
             }
 
             if (true == this.bEnableLocation) {
@@ -1672,9 +1672,8 @@ export default class IModeGame {
                     this.listLocationButtons[i].Over(mouse);
                 }
             }
-
-            for (let i in this.sliderButton){
-                this.sliderButton[i].Over(mouse);
+            if (true == this.bEnableBetting) {
+                
             }
             
             if (true == this.slider[0].Over(mouse)) {
@@ -1759,15 +1758,14 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Down(mouse);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Down(mouse);
         }
 
         if (true == this.bEnableLocation) {
             for (let i in this.listLocationButtons) {
                 this.listLocationButtons[i].Down(mouse);
             }
-        }
-        for (let i in this.sliderButton){
-            this.sliderButton[i].Down(mouse);
         }
         //this.slider.Down(mouse);
         if (true == this.slider[0].Down(mouse) && this.bRaiseButton == false) {
@@ -1816,6 +1814,8 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Up(mouse);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Up(mouse);
         }
 
         if (true == this.bEnableLocation) {
@@ -1823,9 +1823,7 @@ export default class IModeGame {
                 this.listLocationButtons[i].Up(mouse);
             }
         }
-        for (let i in this.sliderButton){
-            this.sliderButton[i].Up(mouse);
-        }
+
         this.slider[0].Up(mouse);
     }
 

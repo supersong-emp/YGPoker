@@ -1471,16 +1471,26 @@
 
             $('#popup_requestoutput').show();
         }
-        $(document).on('click', '.openFullscreen', (e) => {
-            var elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
+
+        window.onload = function(){
+                var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+                $(document).on('click', '.openFullscreen', (e) => {
+                    var elem = document.documentElement;
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Safari */
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE11 */
+                        elem.msRequestFullscreen();
+                    }
+                });
+                // 전체화면 모드가 아닐 때는 팝업창 크기를 고정합니다.
+                window.addEventListener(resizeEvent, function() {
+                    if (!window.document.fullscreenElement) {
+                        window.resizeTo(1310, 768);
+                    }
+                });
             }
-        });
     </script>
 
 </body>
