@@ -182,6 +182,11 @@ imageModeStandbyDot.onload = ()=> {
 }
 imageModeStandbyDot.src = "img/modestandbydot.png";
 
+var cardOpenButton = new Image();
+cardOpenButton.onload = ()=> {
+}
+cardOpenButton.src = "img/cardopen.png"; //  400 x 45
+
 //  Chips
 var imageChips = [];
 for ( var i = 0; i < 13; ++i)

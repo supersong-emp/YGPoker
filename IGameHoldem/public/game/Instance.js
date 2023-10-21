@@ -191,7 +191,7 @@ configScreen.listDesktopLocationsH.push({x:150, y:800}); // GameLog 버튼
 configScreen.listMobileLocationH.push({x:150, y:800});
 configScreen.listDesktopLocationsH.push({x:960-128, y:-25}); // Jackpot
 configScreen.listMobileLocationH.push({x:50, y:150});
-configScreen.listDesktopLocationsH.push({x:730, y:900}); // ShowCard
+configScreen.listDesktopLocationsH.push({x:730, y:950}); // ShowCard
 configScreen.listMobileLocationH.push({x:730, y:800});
 
 configScreen.listDesktopLocationsV.push({x:50, y:1600}); // Chat 버튼
@@ -226,9 +226,9 @@ let buttonsGame =
     //new IUIButton(1920-250, 0, 90, 80, OnClickLeave, imageButtons[7], 90, 80, ""),  //  나가기
     //new IUIButton(960-120, 1040-150, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
     new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 495.75, 250, "보여주기")
+    new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 74, OnClickGameChat, imageChat, 100, 74, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 74, OnClickGamelog, imageGamelog, 100, 74, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 200, 90, OnClickShowCard, cardOpenButton, 100, 45, "")
 ];
 
 const cBettingButtonLocations = 
@@ -666,10 +666,10 @@ let OnSize = () =>
 //     let tag4 =`<section id="chatting" class="w-full bg-[#070419] h-2/4 absolute top-[50%] bg-opacity-90">
 //     <div class="flex pt-3 pb-5">
 //     <div class="w-1/20 mr-1 ml-2">
-//     <a href="javascript:OnClickChat();"><img src="img/chat.png" alt="" class="cursor-pointer " width = "80" height = "36"></a>
+//     <a href="javascript:OnClickChat();"><img src="img/chatbutton.png" alt="" class="cursor-pointer " width = "80" height = "36"></a>
 //         </div>
 //         <div class="w-1/20 relative">
-//             <a href="javascript:OnClickLog();"><img src="img/gamelog.png" alt="" class="cursor-pointer" width = "80" height = "36"></a>
+//             <a href="javascript:OnClickLog();"><img src="img/gamelogbutton.png" alt="" class="cursor-pointer" width = "80" height = "36"></a>
 //             <p class="absolute top-0 right-2 text-white font-bold" ></p>
 //         </div>
 //             <a href="javascript:OnClickChatClose();" class="close-button"></a>
@@ -687,10 +687,10 @@ let OnSize = () =>
 // let tag5 =`<section id="game_log" class="w-full bg-[#070419] h-2/4 absolute top-[50%] bg-opacity-90">
 //     <div class="flex pt-3 pb-5">
 //         <div class="w-1/20 mr-1 ml-2">
-//             <a href="javascript:OnClickChat();"><img src="img/chat.png" alt="" class="cursor-pointer " width = "80" height = "36"></a>
+//             <a href="javascript:OnClickChat();"><img src="img/chatbutton.png" alt="" class="cursor-pointer " width = "80" height = "36"></a>
 //         </div>
 //         <div class="w-1/20 relative">
-//             <a href="javascript:OnClickLog();"><img src="img/gamelog.png" alt="" class="cursor-pointer" width = "80" height = "36"></a>
+//             <a href="javascript:OnClickLog();"><img src="img/gamelogbutton.png" alt="" class="cursor-pointer" width = "80" height = "36"></a>
 //             <p class="absolute top-0 right-2 text-white font-bold" ></p>
 //         </div>
 //             <a href="javascript:OnClickLogClose();" class="close-button"></a>
