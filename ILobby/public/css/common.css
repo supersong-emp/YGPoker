@@ -167,6 +167,11 @@ section.background{
   position:relative;
 }
 
+header .logout{
+  background-color:#fd1010 !important;
+}
+
+
 /* 유저정보 금액 */
 
 .font_1{
@@ -321,7 +326,7 @@ section.background{
 .header-wrap .head-top .top-title { font-size: 26px; font-weight: 600; color: #e4bf67; width: 500px; text-align: center; display: inline-block; margin-left: 30px; line-height:140px;}
 
 /* mem-profile */
-.header-wrap .head-top .mem-profile { width: 650px; float: right; margin-top:40px;}
+.header-wrap .head-top .mem-profile { width: 700px; float: right; margin-top:40px;}
 .header-wrap .head-top .mem-profile .mem-img { width: 68px; margin-top:-8px; float: left; border:2px solid #bdbdbd; border-radius:100%;}
 .header-wrap .head-top .mem-profile .mem-img img { width: 67px; }
 
@@ -349,9 +354,9 @@ section.background{
 .header-wrap .notice span{width:100%; height:20px; vertical-align: bottom; line-height:20px; font-weight:bold; color:#fff;}
 
 /* main gnb */
-.header-wrap .main-gnb { color: #f8faff;font-size: 16px; font-weight: bold; margin-top:3px; margin-bottom:8px; text-align: center;}
+.header-wrap .main-gnb { color: #f8faff;font-size: 16px; font-weight: bold; margin-top:5px; margin-bottom:8px; text-align: center;}
 .header-wrap .main-gnb ul{display:flex; justify-content: center;}
-.header-wrap .main-gnb ul li { width: calc(31% - 0px); float: left; background-color:#ff0e0e; margin-left: 4px; height: 50px; line-height: 50px; cursor: pointer; color:#f8faff}
+.header-wrap .main-gnb ul li { width: calc(33%); float: left; background-color:#ff0e0e; margin-left: 4px; height: 50px; line-height: 50px; cursor: pointer; color:#f8faff}
 .header-wrap .main-gnb ul li:first-child{
   background-color:#ff0e0e;
   margin-top:1px;

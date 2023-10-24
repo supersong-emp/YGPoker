@@ -184,7 +184,6 @@
 }
 @media(max-width:1280px){
   .header-wrap .head-top .mem-profile .mem-info{
-      width:315px;
       
   }
 }
@@ -201,7 +200,14 @@
 
 
 }
+@media(max-width:1179px){
 
+}
+@media(max-width:1000px){
+  .mem-profile{
+    width:67%;
+  }
+}
   
   @media(max-width:1000px) and (min-width:900px){
 
@@ -214,10 +220,10 @@
 .header-wrap .head-top .top-title { font-size: 14px; color: #e4bf67; width: 15%; display: inline-block; text-align:center;}
 
 /* mem-profile */
-.header-wrap .head-top .mem-profile { width: 60%; float: right; margin-top:10px; margin-left:3px;}
-.header-wrap .head-top .mem-profile .mem-img { width: 13%; display:inline-block; margin-left:5px; margin-top:15px;}
+.header-wrap .head-top .mem-profile { float: right; margin-top:10px; margin-left:3px;}
+.header-wrap .head-top .mem-profile .mem-img { width: 10%; display:inline-block; margin-left:5px; margin-top:15px;}
 .header-wrap .head-top .mem-profile .mem-img img { width: 100%;}
-.header-wrap .head-top .mem-profile .mem-info { width: 30%; height: 72%; margin-left: 5px; padding: 0 7px;}
+.header-wrap .head-top .mem-profile .mem-info {margin-left: 5px; margin-top:23px; padding: 0 7px;}
 .header-wrap .head-top .mem-profile .mem-info ul { padding: 4px 0; font-size:16px;}
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(1) { padding: 6px 0 13px 0;  font-size:80%; line-height:15px; font-size:13px;}
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(3) num { margin-right: 5px;}
@@ -225,7 +231,7 @@
 .header-wrap .head-top .mem-profile .mem-info button { width: 40%; height: 27%; color: #fff; background: #cf2029;  border-radius: 8px;  font-size:40%; margin-top:-2px;}
 
 /* user setting */
-.header-wrap .head-top .user-nav { width: 50%; margin-top:18px; margin-left: 5px; display:flex; justify-content: space-around;}
+.header-wrap .head-top .user-nav { width: 40%; margin-top:18px; margin-left: 5px; display:flex; justify-content: space-around;}
 .header-wrap .head-top .user-nav ul { padding: 6px 0; width:50%; cursor: pointer; }
 .header-wrap .head-top .user-nav ul li {font-size:14px;}
 .header-wrap .head-top .user-nav ul li:nth-child(1) img { width: 35px; }
@@ -240,8 +246,7 @@
 /* main gnb */
 .header-wrap .main-gnb { width:100%; text-align: center; }
 .header-wrap .main-gnb ul{display:flex; justify-content: center;}
-.header-wrap .main-gnb ul li { width: calc(31% - 0px); float: left; background: #811725; margin-left: 5px; height: 50px; line-height: 50px; border-radius: 3px; cursor: pointer; }
-.header-wrap .main-gnb ul li:hover { background: #a81f32; }
+.header-wrap .main-gnb ul li { width: 32%; float: left; background: #811725; margin-left: 5px; height: 50px; line-height: 50px; cursor: pointer; }
 .header-wrap .main-gnb ul li:nth-child(1) { margin-left: 0px; }
 .header-wrap .main-gnb ul li:nth-child(3) { width: calc(33% + 2px) }
 
@@ -470,14 +475,14 @@
       text-align:center;
       display:inline-block;
     }
-.header-wrap .head-top .logo img{ width: 100%; margin-left:15px; margin-top:30px;}
+.header-wrap .head-top .logo img{width:20%; margin-left:15px; margin-top:30px;}
 .header-wrap .head-top .top-title {width: 20%; font-size: 14px; margin-left:1%; }
 
 /* mem-profile */
-.header-wrap .head-top .mem-profile { width: 70%; margin-top:10px; margin-left:3px; line-height:20px; align-items: center;}
-.header-wrap .head-top .mem-profile .mem-img { width: 15%; display:inline-block; margin-left:15px; vertical-align: middle;}
+.header-wrap .head-top .mem-profile { width: 75%; margin-top:10px; margin-left:3px; line-height:20px; align-items: center;}
+.header-wrap .head-top .mem-profile .mem-img { display:inline-block; margin-left:5px; vertical-align: middle;}
 .header-wrap .head-top .mem-profile .mem-img img { width: 100%; }
-.header-wrap .head-top .mem-profile .mem-info { width: 25%; height: 60%; margin-left: 5px; padding: 5px 0 8px 0; box-sizing: border-box; vertical-align: middle; line-height:20px; margin-top:5px;}
+.header-wrap .head-top .mem-profile .mem-info { width: 48%; height: 60%; margin-left: 5px; padding: 5px 0 8px 0; box-sizing: border-box; vertical-align: middle; line-height:20px; margin-top:5px;}
 .header-wrap .head-top .mem-profile .mem-info ul { padding: 0 4px; }
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(1) { padding: 3px 0 8px 3px;  font-size:16px; line-height:15px; font-size:11px;}
 .header-wrap .head-top .mem-profile .mem-info ul:nth-child(3) num { margin-left: 3px; margin-right:0;}
@@ -489,7 +494,7 @@
   margin-top:15px;
 }
 /* user setting */
-.header-wrap .head-top .user-nav { width: 55%; margin-left: 5px; display:flex; justify-content: space-around; align-items: center; margin-top:0; vertical-align: middle;}
+.header-wrap .head-top .user-nav { width: 28%; margin-left: 5px; display:flex; justify-content: space-around; align-items: center; margin-top:0; vertical-align: middle;}
 .header-wrap .head-top .user-nav ul { padding: 6px 0; width:50%; cursor: pointer;  }
 .header-wrap .head-top .user-nav ul li {font-size:9px; align-items: center;}
 .header-wrap .head-top .user-nav ul li:nth-child(1) img { width: 27px; }
@@ -784,6 +789,26 @@
 }
 
 @media(min-width:601px) and (max-width:699px){
+  .header-wrap .head-top .logo img{
+    width:20%;
+  }
+  .header-wrap .head-top .mem-profile {
+    width:531px;
+    margin-top:10px;
+  }
+  .header-wrap .head-top .mem-profile .mem-info{
+    margin-left:0;
+    padding:0;
+  }
+  .header-wrap .head-top .mem-profile .mem-info div span:last-child{
+    
+  }
+  .header-wrap .head-top .user-nav{
+    width:38%;
+  }
+  .header-wrap .head-top .user-nav ul{
+    width:23%;
+  }
   .container .right-nav { display:none;}
   .container .room-wrap{
     width:98%;
