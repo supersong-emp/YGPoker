@@ -305,6 +305,7 @@ let imageBG = [];
 let imageTablePanel = [];
 let imagesGame = [];
 let imagesGameDeck = [];
+let buttonSlider = null;
 let sliderBar = [];
 let moblieSliderBar = [];
 let sliderButton = [];
@@ -520,12 +521,12 @@ imagesGameDeck =
 
 
 ];
-
+buttonSlider = new IUIButton(50, 80, 50, 80, null,imageButtons[6], 50, 80, "");
 sliderBar =
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, imageSliderBar, 230, 620, '',1),
-    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
-    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 400, imageSliderBar, 27, 200, buttonSlider,1),
+    new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageButtons[9], 50, 50, ""),
+    new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageButtons[8], 50, 50, ""),
     new IUIButton(cBettingButtonLocations[10].x, cBettingButtonLocations[10].y, 80, 80, OnClickAllin, imageButtons[7], 50, 50, "올인"),
     new IUIButton(cBettingButtonLocations[11].x, cBettingButtonLocations[11].y, 80, 80, OnClickFull, imageButtons[7], 50, 50, "풀"),
     new IUIButton(cBettingButtonLocations[12].x, cBettingButtonLocations[12].y, 80, 80, OnClickHalf, imageButtons[7], 50, 50, "하프"),
@@ -535,7 +536,7 @@ sliderBar =
 
 moblieSliderBar =
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, imageSliderBar, 230, 620, '',1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, imageMobileSliderBar, 230, 620, '',1),
     // new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
     // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
