@@ -230,3 +230,22 @@ const ELocationIndex = Object.freeze({
     "Jackpot":62,
     "ShowCard":63,
 });
+
+const EImageIndex = Object.freeze({
+    "BG01":0,
+    "BG02":1,
+    "BG03":2,
+    "BG04":3,
+    "BGText01":4,
+    "BGText02":5,
+    "BGText03":6,
+    "BGText04":7,
+    "BGTableTotalPanel01":8,
+    "BGTableCallPanel01":9,
+    "BGTableTotalPanel02":10,
+    "BGTableCallPanel02":11,
+    "BGTableDeck01":12,
+    "BGTableDeck02":13,
+    "BGTableDeck03":14,
+    "BGTableDeck04":15,
+});

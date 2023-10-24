@@ -2,6 +2,7 @@ import IGameMain from "../game/IGameMain.js";
 import IModeGame from "../game/IModeGame.js";
 
 import IScreenConfig from "../js/screenconfig.js";
+import IResourceManager from "../js/resourcemanager.js";
 import IUILabel from "../js/label.js";
 import IUISlider from "../js/slider.js";
 import IUIButton from "../js/button.js";
@@ -33,6 +34,8 @@ else
     configScreen = new IScreenConfig(0, 0, 1920, 1080, window.innerWidth, window.innerHeight);
 }
 
+let ResourceManager = new IResourceManager();
+
 var cScreenWidth = configScreen.m_iCurrentWidth;
 var cScreenHeight = configScreen.m_iCurrentHeight;
 
@@ -44,6 +47,52 @@ ctx.font = 'bold 24px georgia';
 ctx.shadowColor = "black";
 ctx.shadowBlur = 10;
 ctx.lineWidth = 7;
+
+/*
+*/
+// let reader = new FileReader();
+
+//         reader.onload = (event) => {
+
+//             const str = event.target.result;
+//             const array = str.split('\r\n');
+
+//             for ( let i in array )
+//             {
+//                 console.log(`${i}, ${array[i]}~)`);
+//             }
+//         }
+
+//         let ReadINI = (file) => {
+//             reader.readAsText(file);
+
+//         }
+//         const urlfile = 'http://localhost:5555/location.ini';
+//         var xhr = new XMLHttpRequest();
+//             xhr.open("GET", urlfile, true);
+//             xhr.responseType = "blob";
+//             // 파일이 로드될 때 실행되는 이벤트 핸들러
+//             xhr.onload = function() {
+//                 if (xhr.status === 200) {
+//                 // 파일이 성공적으로 가져와진 경우
+//                 var fileBlob = xhr.response;
+//                 ReadINI(fileBlob);
+//                 }
+//             };
+//             xhr.send();
+//$(document).on('ready', async () => {
+
+let iNumLoadCount = 0;
+
+    await configScreen.LoadLocation('location.ini', configScreen.ProcessLocation);
+    ResourceManager.LoadResource('resource.ini', ResourceManager.ProcessResource, ResourceManager.listImages, ResourceManager.listLoads);
+
+//})
+    //configScreen.LoadLocation('location.ini', configScreen.ProcessLocation);
+    //ResourceManager.LoadResource('resource.ini', ResourceManager.ProcessResource, ResourceManager.listImages);
+
+/*
+*/
 
 
 configScreen.listDesktopLocationsH.push({x:1030, y:828});
@@ -204,15 +253,15 @@ configScreen.listDesktopLocationsV.push({x:300, y:1600}); // ShowCard
 configScreen.listMobileLocationV.push({x:300, y:1600});
 
 
-let buttonsGame =
-[
-    //new IUIButton(1920-250, 0, 90, 80, OnClickLeave, imageButtons[7], 90, 80, ""),  //  나가기
-    //new IUIButton(960-120, 1040-150, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
-    new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 495.75, 250, "보여주기")
-];
+let buttonsGame = [];
+// [
+//     //new IUIButton(1920-250, 0, 90, 80, OnClickLeave, imageButtons[7], 90, 80, ""),  //  나가기
+//     //new IUIButton(960-120, 1040-150, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
+//     new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
+//     new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
+//     new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
+//     new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 495.75, 250, "보여주기")
+// ];
 
 const cBettingButtonLocations = 
 [
@@ -228,7 +277,103 @@ const cBettingButtonLocations =
     {x:configScreen.GetLocation(ELocationIndex.sliderBar).x, y:configScreen.GetLocation(ELocationIndex.sliderBar).y},    //  slider
 ];
 
-let buttonsGameBetting =
+let buttonsGameBetting = [];
+let mobilebuttonsGameBetting = [];
+let buttonsGameLocation = [];
+let imageBG = [];
+let imageTablePanel = [];
+let imagesGame = [];
+let imagesGameDeck = [];
+let sliderBar = [];
+let moblieSliderBar = [];
+
+let Timer = new ITimer();
+let Game = null;
+let GameMain = null;
+
+
+
+let bInit = false;
+let bLoaded = false;
+
+$(window).load( ()=> {
+    //alert();
+
+    //Init();
+
+    //GameMain.bRenderLoadingScreen   = false;
+
+    bLoaded = true;
+
+    //bInit = true;
+  })
+
+let Loop = () => {
+
+    Timer.UpdateEnd();
+
+    console.log();
+    if ( bInit == false && ResourceManager.bComplete == false )
+    {
+        console.log(`ResourceManager.listLoads.length : ${ResourceManager.listLoads.length}, ResourceManager.listImages.length : ${ResourceManager.listImages.length}, ${iNumLoadCount}`);
+
+        if ( ResourceManager.listImages.length != 0 && ResourceManager.listLoads.length == ResourceManager.listImages.length )
+        {
+            Init();
+
+            GameMain.bRenderLoadingScreen   = false;
+
+            bInit = true;
+
+            ResourceManager.bComplete = true;
+
+            console.log(`### LoadComplete!`);
+
+        }
+        
+    }
+
+    if ( bInit == true )
+    {
+        GameMain.Update();
+        GameMain.Render(ctx);
+    
+        if ( false == bLoaded )
+        {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0,0,1920, 1080);
+    
+            ctx.drawImage(
+            imageLogo, 
+            0, 
+            0, 
+            305, 
+            114, 
+            100, 
+            100, 
+            305, 
+            114);
+        }
+    }
+
+
+    Timer.UpdateStart();
+}
+
+let Init = async () => {
+
+    
+buttonsGame =
+[
+    //new IUIButton(1920-250, 0, 90, 80, OnClickLeave, imageButtons[7], 90, 80, ""),  //  나가기
+    //new IUIButton(960-120, 1040-150, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.StartButton).x, configScreen.GetLocation(ELocationIndex.StartButton).y, 230, 90, OnClickGameStart, imageButtons[3], 189, 71, ""),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.Chat).x, configScreen.GetLocation(ELocationIndex.Chat).y, 100, 60, OnClickGameChat, imageChat, 244, 162, "",0),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.GameLog).x, configScreen.GetLocation(ELocationIndex.GameLog).y, 100, 60, OnClickGamelog, imageGamelog, 244, 156, "",0),
+    new IUIButton(configScreen.GetLocation(ELocationIndex.ShowCard).x, configScreen.GetLocation(ELocationIndex.ShowCard).y, 140, 80, OnClickShowCard, imageBetButtons[0], 495.75, 250, "보여주기")
+];
+
+buttonsGameBetting =
 [
     new IUIButton(cBettingButtonLocations[0].x, cBettingButtonLocations[0].y, 140, 80, OnClickQuater, imageBetButtons[0], 495.75, 250, "쿼터"),
     new IUIButton(cBettingButtonLocations[1].x, cBettingButtonLocations[1].y, 140, 80, OnClickHalf, imageBetButtons[0], 495.75, 250, "하프"),
@@ -245,7 +390,7 @@ let buttonsGameBetting =
     // new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
-let mobilebuttonsGameBetting =
+mobilebuttonsGameBetting =
 [
     new IUIButton(cBettingButtonLocations[0].x, cBettingButtonLocations[0].y, 140, 80, OnClickMobileQuater, imageBetButtons[2], 278, 78, "QUARTER"),
     new IUIButton(cBettingButtonLocations[1].x, cBettingButtonLocations[1].y, 140, 80, OnClickMobileHalf, imageBetButtons[2], 278, 78, "HALF"),
@@ -259,7 +404,7 @@ let mobilebuttonsGameBetting =
     new IUIButton(cBettingButtonLocations[6].x, cBettingButtonLocations[6].y, 350, 100, OnclickMobileRaise, imageBetButtons[2], 278, 78, "RAISE"),
 ];
 
-let buttonsGameLocation =
+buttonsGameLocation =
 [
     new IUIButton(configScreen.GetLocation(ELocationIndex.P1Table).x, configScreen.GetLocation(ELocationIndex.P1Table).y, 150, 150, OnClickLocation1, imageButtons[5], 180, 184, ""),
     new IUIButton(configScreen.GetLocation(ELocationIndex.P2Table).x, configScreen.GetLocation(ELocationIndex.P2Table).y, 150, 150, OnClickLocation2, imageButtons[5], 180, 184, ""),
@@ -283,44 +428,48 @@ let buttonsGameLocation =
 
 ];
 
-// let imageGameLocationArrow =
-// [
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P1Table).x+25, configScreen.GetLocation(ELocationIndex.P1Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P2Table).x+25, configScreen.GetLocation(ELocationIndex.P2Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P3Table).x+25, configScreen.GetLocation(ELocationIndex.P3Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P4Table).x+25, configScreen.GetLocation(ELocationIndex.P4Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P5Table).x+25, configScreen.GetLocation(ELocationIndex.P5Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P6Table).x+25, configScreen.GetLocation(ELocationIndex.P6Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P7Table).x+25, configScreen.GetLocation(ELocationIndex.P7Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P8Table).x+25, configScreen.GetLocation(ELocationIndex.P8Table).y+45, 125, 125, imageArrow, 130, 130),
-//     new IUIImage(configScreen.GetLocation(ELocationIndex.P9Table).x+25, configScreen.GetLocation(ELocationIndex.P9Table).y+45, 125, 125, imageArrow, 130, 130),
-// ];
-//imgtextbg0~3 9 person, 4~7 6 person
-let imageBG = 
+imageBG = 
 [
-    new IUIImage(0, 0, 1920, 1080, imageGameBG[1], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageGameBG[2], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[0], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[1], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[2], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[3], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[4], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[5], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[6], 1920, 1080),
-    new IUIImage(0, 0, 1920, 1080, imageTextBG[7], 1920, 1080),
-    new IUIImage(0, 0, 1080, 1920, imageGameBG[3], 768, 1365),
-    new IUIImage(0, 0, 1080, 1920, imageGameBG[4], 768, 1365),
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BG01).image, 1920, 1080),
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BG02).image, 1920, 1080),
+    new IUIImage(0, 0, 1080, 1920, ResourceManager.GetImage(EImageIndex.BG03).image, 768, 1365),
+    new IUIImage(0, 0, 1080, 1920, ResourceManager.GetImage(EImageIndex.BG04).image, 768, 1365),
+
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BGText01).image, 1920, 1080),
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BGText02).image, 1920, 1080),
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BGText03).image, 1920, 1080),
+    new IUIImage(0, 0, 1920, 1080, ResourceManager.GetImage(EImageIndex.BGText04).image, 1920, 1080),
+
+
+    //new IUIImage(0, 0, 1920, 1080, imageGameBG[1], 1920, 1080),
+    //new IUIImage(0, 0, 1920, 1080, imageGameBG[2], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[0], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[1], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[2], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[3], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[4], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[5], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[6], 1920, 1080),
+    // new IUIImage(0, 0, 1920, 1080, imageTextBG[7], 1920, 1080),
+    // new IUIImage(0, 0, 1080, 1920, imageGameBG[3], 768, 1365),
+    // new IUIImage(0, 0, 1080, 1920, imageGameBG[4], 768, 1365),
 ];
 
-let imageTablePanel = 
+imageTablePanel = 
 [
-    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, imageTableTotalPanel[0], 308, 57),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, imageTableCallPanel[0], 308, 57),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, imageTableTotalPanel[1], 308, 57),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, imageTableCallPanel[1], 308, 57),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, imageTableTotalPanel[0], 308, 57),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, imageTableCallPanel[0], 308, 57),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, imageTableTotalPanel[1], 308, 57),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, imageTableCallPanel[1], 308, 57),
+
+    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, ResourceManager.GetImage(EImageIndex.BGTableTotalPanel01).image, 308, 57),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, ResourceManager.GetImage(EImageIndex.BGTableCallPanel01).image, 308, 57),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelCall).x, configScreen.GetLocation(ELocationIndex.PanelCall).y, 308, 57, ResourceManager.GetImage(EImageIndex.BGTableTotalPanel02).image, 308, 57),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.PanelTotal).x, configScreen.GetLocation(ELocationIndex.PanelTotal).y, 308, 57, ResourceManager.GetImage(EImageIndex.BGTableCallPanel02).image, 308, 57),
+
 ];
 
-let imagesGame =
+imagesGame =
 [
     new IUIImage(configScreen.GetLocation(ELocationIndex.MyInfo).x, configScreen.GetLocation(ELocationIndex.MyInfo).y, 400, 200, imageMyInfo, 400, 200),// 위치만 일단 logo 위치로 잡아둔거임.
     //new IUIImage(configScreen.GetLocation(ELocationIndex.Logo).x, configScreen.GetLocation(ELocationIndex.Logo).y, 150, 50, imageLogo, 150, 50),
@@ -329,35 +478,37 @@ let imagesGame =
     //new IUIImage(660, 380, 30, 25, imageModeStandbyDot, 105, 90)
 ];
 
-let imagesGameDeck = 
+imagesGameDeck = 
 [
-    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[0], 351, 136),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[1], 351, 136),//blue card
-    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[2], 351, 136),
-    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[3], 351, 136),//red card
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[0], 351, 136),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[1], 351, 136),//blue card
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[2], 351, 136),
+    // new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, imageGameDeck[3], 351, 136),//red card
+
+    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, ResourceManager.GetImage(EImageIndex.BGTableDeck01).image, 351, 136),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, ResourceManager.GetImage(EImageIndex.BGTableDeck02).image, 351, 136),//blue card
+    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, ResourceManager.GetImage(EImageIndex.BGTableDeck03).image, 351, 136),
+    new IUIImage(configScreen.GetLocation(ELocationIndex.CardDeck).x, configScreen.GetLocation(ELocationIndex.CardDeck).y, 120, 40, ResourceManager.GetImage(EImageIndex.BGTableDeck04).image, 351, 136),//red card
+
+
 ];
-let buttonSlider = new IUIButton(70, 70, 70, 70, null,imageSliderButton, 50, 50, "");
-let sliderBar = 
+
+sliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
-    // new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 50, 500, imageSliderMobile, 50, 200, buttonSlider,1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, imageSliderBar, 230, 620, '',1),
     new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
     new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
-let moblieSliderBar = 
+moblieSliderBar = 
 [
-    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, RaiseSlider, 230, 620, '',1),
+    new IUISlider(configScreen.GetLocation(ELocationIndex.MobileSliderBar).x, configScreen.GetLocation(ELocationIndex.MobileSliderBar).y, 230, 620, imageSliderBar, 230, 620, '',1),
     new IUIButton(cBettingButtonLocations[7].x, cBettingButtonLocations[7].y, 140, 80, OnClickPlus, imageBetButtons[0], 495.75, 250, "+"),
     new IUIButton(cBettingButtonLocations[8].x, cBettingButtonLocations[8].y, 140, 80, OnClickMinus, imageBetButtons[0], 495.75, 250, "-"),
 ];
 
-let Timer = new ITimer();
-
-//let Game = new IModeGame(socket, buttonsGame, imageBG, imagesGame, configScreen, Timer, IsMobile());
-//test (모바일 아닌데 테스트 하려고)
-let Game = new IModeGame(socket, buttonsGame, imageBG, imagesGame, configScreen, Timer, IsMobile());
-let GameMain = new IGameMain(Game, socket, configScreen, Timer);
+Game = new IModeGame(socket, buttonsGame, imageBG, imagesGame, configScreen, Timer, IsMobile());
+GameMain = new IGameMain(Game, socket, configScreen, Timer);
 
 Game.SetBg(account.strOptionCode[2]);
 Game.SetDeck(account.strOptionCode[3], imagesGameDeck);
@@ -378,41 +529,9 @@ GameMain.JoinGame();
 
 await GameMain.OnIO();
 
-let bLoaded = false;
-
-$(window).load( ()=> {
-    //alert();
-    GameMain.bRenderLoadingScreen   = false;
-
-    bLoaded = true;
-  })
-
-let Loop = () => {
-
-    Timer.UpdateEnd();
-
-    GameMain.Update();
-    GameMain.Render(ctx);
-
-    if ( false == bLoaded )
-    {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0,0,1920, 1080);
-
-        ctx.drawImage(
-        imageLogo, 
-        0, 
-        0, 
-        305, 
-        114, 
-        100, 
-        100, 
-        305, 
-        114);
-    }
-
-    Timer.UpdateStart();
+GameMain.OnSize(configScreen.m_fWidthRate, configScreen.m_fHeightRate);
 }
+
 
 let MainLoop = setInterval(Loop, 16);
 
@@ -450,6 +569,8 @@ else
             x: e.clientX - canvasPosition.x,
             y: e.clientY - canvasPosition.y + window.pageYOffset
           };
+
+        if ( bInit == true )
         GameMain.OnMouseMove(mouse);
     });
     
@@ -459,6 +580,7 @@ $(document).on('click', '#stage', (e) => {
         x: e.clientX - canvasPosition.x,
         y: e.clientY - canvasPosition.y + window.pageYOffset
     };
+    if ( bInit == true )
     GameMain.OnClick(mouse);
 });
 
@@ -469,6 +591,7 @@ $(document).on('mousedown', '#stage', (e) => {
         x: e.clientX - canvasPosition.x,
         y: e.clientY - canvasPosition.y + window.pageYOffset
       };
+      if ( bInit == true )
     GameMain.OnMouseDown(mouse);
 });
 
@@ -482,6 +605,7 @@ $(document).on('mouseup', '#stage', (e) => {
     //     x: e.pageX - canvasPosition.x,
     //     y: e.pageY - canvasPosition.y
     // }
+    if ( bInit == true )
     GameMain.OnMouseUp(mouse);
 });
 //가로세로 바뀌였을때 좌표 다시 잡아주는건데 세로 고정으로 하기로함.
@@ -533,6 +657,7 @@ let OnSize = () =>
 
     //console.log(`OnSize width : ${cScreenWidth}, height : ${cScreenHeight}`);
 
+    if ( GameMain != null )
     GameMain.OnSize(configScreen.m_fWidthRate, configScreen.m_fHeightRate);
     
 

@@ -14,7 +14,7 @@ export default class IModeGame {
         this.listImages = listImages;
 
         this.listPlayers = [];
-        this.strOptioncode = 0;
+        this.strOptionCode = 0;
         this.strDeckcode = 0;
         this.cMaxPlayer = 0;
 
@@ -99,12 +99,8 @@ export default class IModeGame {
         this.listCardDealer = [];
         this.iNumCards = 0;
 
-        // this.ptDealerLocation = { x: cDealerLocation.x, y: cDealerLocation.y };
-
-        // this.buttonSlider = new IUIButton(70, 70, 70, 70, null,imageSliderButton, 50, 50, "");
-        // this.slider = new IUISlider(1630, 850, 200, 50, imageSlider, 200, 50, this.buttonSlider);
         this.slider = [];
-        this.mobileSliderBG = new IUIImage(kSC.GetLocation(ELocationIndex.MobileRaiseBar).x, kSC.GetLocation(ELocationIndex.MobileRaiseBar).y, 500, 700, mobileRaiseBar, 500, 700);
+        this.mobileSliderBG = new IUIImage(kSC.GetLocation(ELocationIndex.MobileRaiseBar).x, kSC.GetLocation(ELocationIndex.MobileRaiseBar).y, 500, 700, imageMobileSliderBar, 500, 700);
 
         this.listPotManager = [];
         this.listTempPot = [];
@@ -286,12 +282,12 @@ export default class IModeGame {
     }
 
     SetLocationButtons(buttons) {
-        if (this.strOptioncode == 1) {
+        if (this.strOptionCode == 1) {
             for (var i = 0; i < 9; ++i) {
                 this.listLocationButtons.push(buttons[i]);
             }
         }
-        else if (this.strOptioncode == 2) {
+        else if (this.strOptionCode == 2) {
             for (var i = 9; i < 18; ++i) {
                 this.listLocationButtons.push(buttons[i]);
             }
@@ -307,7 +303,7 @@ export default class IModeGame {
     }
 
     SetBg(optioncode) {
-        this.strOptioncode = optioncode;
+        this.strOptionCode = optioncode;
     }
 
     SetDeck(deckcode, image) {
@@ -443,14 +439,17 @@ export default class IModeGame {
         }
     }
 
-    Render(ctx) {
-        // ctx.fillStyle = "black";
-        // ctx.fillRect(0, 0, 1920, 1080);
+    RenderBG(ctx)
+    {
+        const cOptionCode = parseInt(this.strOptionCode);
+        console.log(`cOptionCode : ${cOptionCode}, ${this.listBgs.length}`);
 
-        if (parseInt(this.strOptioncode) == 1) {
+        switch ( cOptionCode )
+        {
+        case 1:
             if(this.isMobile == true)
             {
-                this.listBgs[10].Render(ctx);
+                this.listBgs[2].Render(ctx);
             }
             else
             {
@@ -458,10 +457,19 @@ export default class IModeGame {
             }
             this.listTablePanel[0].Render(ctx);
             this.listTablePanel[1].Render(ctx);
-        } else if (parseInt(this.strOptioncode) == 2) {
+            if ( this.cMaxPlayer == 6 )
+            {
+                this.listBgs[6].Render(ctx);
+            }
+            else
+            {
+                this.listBgs[4].Render(ctx);
+            }
+            break;
+        case 2:
             if(this.isMobile == true)
             {
-                this.listBgs[11].Render(ctx);
+                this.listBgs[3].Render(ctx);
             }
             else
             {
@@ -469,26 +477,28 @@ export default class IModeGame {
             }
             this.listTablePanel[2].Render(ctx);
             this.listTablePanel[3].Render(ctx);
+            if ( this.cMaxPlayer == 6 )
+            {
+                this.listBgs[7].Render(ctx);    
+            }
+            else
+            {
+                this.listBgs[5].Render(ctx);
+            }
+            break;
         }
-        if (parseInt(this.strOptioncode) == 1 && this.cMaxPlayer == 6) {
-            this.listBgs[6].Render(ctx);
-            this.listBgs[7].Render(ctx);
-        }
-        else if (parseInt(this.strOptioncode) == 2 && this.cMaxPlayer == 6) {
-            this.listBgs[8].Render(ctx);
-            this.listBgs[9].Render(ctx);
-        }
-        else if (parseInt(this.strOptioncode) == 1 && this.cMaxPlayer == 9) {
-            this.listBgs[2].Render(ctx);
-            this.listBgs[3].Render(ctx);
-        }
-        else if (parseInt(this.strOptioncode) == 2 && this.cMaxPlayer == 9) {
-            this.listBgs[4].Render(ctx);
-            this.listBgs[5].Render(ctx);
-        }
+
         for (let i in this.listCardDeck) {
             this.listCardDeck[i].Render(ctx)
         }
+    }
+
+    Render(ctx) {
+        // ctx.fillStyle = "black";
+        // ctx.fillRect(0, 0, 1920, 1080);
+
+        this.RenderBG(ctx);
+        
 
         for (let i in this.listImages) {
             //if ( i == 5 && this.kMainUser.iLocation != -1 )

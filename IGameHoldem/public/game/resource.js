@@ -1,3 +1,25 @@
+// let reader = new FileReader();
+// const urlfile = 'http://localhost:5555/resource.ini';
+// var xhr = new XMLHttpRequest();
+// xhr.open("GET", urlfile, true);
+// xhr.responseType = "blob";
+// xhr.onload = function() {
+//     if (xhr.status === 200) {
+//         var fileBlob = xhr.response;
+//         reader.readAsText(fileBlob);
+//         reader.onload = (event) => {
+
+//             const str = event.target.result;
+//             const array = str.split('\r\n');
+//             for ( let i in array )
+//             {
+//                 console.log(`${i}, ${array[i]}~)`);
+//             }
+//         }
+//     }
+// };
+// xhr.send();
+
 function zeroPad(nr,base){
     var  len = (String(base).length - String(nr).length)+1;
     return len > 0? new Array(len).join('0')+nr : nr;
@@ -14,7 +36,7 @@ var imageProgressBar = [];
 for ( var i = 0; i < 3; ++i)
 {
     imageProgressBar.push(new Image());
-    imageProgressBar[i].src = `img/progressbar${zeroPad(i, 2)}.png`;  //  200 X 34
+    imageProgressBar[i].src = `img/control/progressbar${zeroPad(i, 2)}.png`;  //  200 X 34
 }
 
 // arrow
@@ -87,90 +109,68 @@ for ( var i = 0; i < 10; ++i)
 //     SliderImages[i].src = `img/slider${i.toString()}.png`;    
 // }
 
-//  Lobby
-var imageLobbyBG = new Image();
-    imageLobbyBG.onload = ()=> {
-}
-imageLobbyBG.src = "img/lobby/bg.png";
+// //  Lobby
+// var imageLobbyBG = new Image();
+//     imageLobbyBG.onload = ()=> {
+// }
+// imageLobbyBG.src = "img/lobby/bg.png";
 
-//  BG
-var imageGameBG = [];
-for ( var i = 0; i < 5; ++i)
-{
-    imageGameBG.push(new Image());
-    imageGameBG[i].src = `img/game/bg0${i.toString()}.png`;
-}
-// bgtext00~03 9 person, bgtext04~07 6 person
-var imageTextBG = [];
-for ( var i = 0; i < 8; ++i)
-{
-    imageTextBG.push(new Image());
-    imageTextBG[i].src = `img/game/bgtext0${i.toString()}.png`;
-}
+// //  BG
+// var imageGameBG = [];
+// for ( var i = 0; i < 4; ++i)
+// {
+//     imageGameBG.push(new Image());
+//     imageGameBG[i].src = `img/game/bg0${i.toString()}.png`;
+// }
+// // bgtext00~03 9 person, bgtext04~07 6 person
+// var imageTextBG = [];
+// for ( var i = 0; i < 4; ++i)
+// {
+//     imageTextBG.push(new Image());
+//     imageTextBG[i].src = `img/game/bgtext0${i.toString()}.png`;
+// }
 
 //card deck
-var imageGameDeck = [];
-for ( var i = 0; i < 4; ++i)
-{
-    imageGameDeck.push(new Image());
-    imageGameDeck[i].src = `img/game/deck0${i.toString()}.png`;
-}
-
-// var imageBGHoldem = new Image();
-//     imageBGHoldem.onload = ()=> {
+// var imageGameDeck = [];
+// for ( var i = 0; i < 4; ++i)
+// {
+//     imageGameDeck.push(new Image());
+//     imageGameDeck[i].src = `img/game/deck0${i.toString()}.png`;
 // }
-// imageBGHoldem.src = "img/holdem_gamebg.png";
 
-// var imageTable = new Image();
-// imageTable.onload = ()=> {
+// var imageLobbyRoomBar = new Image();
+// imageLobbyRoomBar.onload = ()=> {
 // }
-// imageTable.src = "img/holdem_table.png"; //  1544 x 770
-
-// //  Betting Panel
-// var imageBettingPanel = new Image();
-// imageBettingPanel.onload = ()=> {
-// }
-// imageBettingPanel.src = "img/bettingpanel.png"; //  731 x 230
-
-//  Betting Button
-// var imageBettingButton = new Image();
-// imageBettingButton.onload = ()=> {
-// }
-// imageBettingButton.src = "img/game/button_bet.png"; //  731 x 230
-
-var imageLobbyRoomBar = new Image();
-imageLobbyRoomBar.onload = ()=> {
-}
-imageLobbyRoomBar.src = "img/lobby/roombar.png"; //  1533 x 102
+// imageLobbyRoomBar.src = "img/lobby/roombar.png"; //  1533 x 102
 
 var imageBetButtons = [];
 for ( var i = 0; i < 6; ++i)
 {
     imageBetButtons.push(new Image());
-    imageBetButtons[i].src = `img/game/button_bet${zeroPad(i, 2)}.png`;
+    imageBetButtons[i].src = `img/control/button_bet${zeroPad(i, 2)}.png`;
 }
 
 var imageButtons = [];
 for ( var i = 0; i < 7; ++i)
 {
     imageButtons.push(new Image());
-    imageButtons[i].src = `img/game/button_${zeroPad(i, 2)}.png`;
+    imageButtons[i].src = `img/control/button_${zeroPad(i, 2)}.png`;
 }
 
-var imageSliderButton = new Image();
-imageSliderButton.onload = ()=> {
-}
-imageSliderButton.src = "img/sliderbutton.png"; //  200 x 50
+// var imageSliderButton = new Image();
+// imageSliderButton.onload = ()=> {
+// }
+// imageSliderButton.src = "img/sliderbutton.png"; //  200 x 50
 
-var imageSlider = new Image();
-imageSlider.onload = ()=> {
-}
-imageSlider.src = "img/slider.png"; //  200 x 6
+// var imageSlider = new Image();
+// imageSlider.onload = ()=> {
+// }
+// imageSlider.src = "img/slider.png"; //  200 x 6
 
-var imageSliderMobile = new Image();
-imageSliderMobile.onload = ()=> {
-}
-imageSliderMobile.src = "img/slider_mobile.png"; //  200 x 6
+// var imageSliderMobile = new Image();
+// imageSliderMobile.onload = ()=> {
+// }
+// imageSliderMobile.src = "img/slider_mobile.png"; //  200 x 6
 
 var imageModeStandby = new Image();
 imageModeStandby.onload = ()=> {
@@ -201,22 +201,22 @@ for ( var i = 0; i < 3; ++i)
     imageTableCardPanel[i].src = `img/tablecardpanel_${zeroPad(i, 1)}.png`;
 }
 
-//  Total
-var imageTableTotalPanel = [];
-for ( var i = 0; i < 2; ++i)
-{
-    imageTableTotalPanel.push(new Image());
-    imageTableTotalPanel[i].src = `img/tabletotalpanel${zeroPad(i, 10)}.png`; //  308 x 57
-}
+// //  Total
+// var imageTableTotalPanel = [];
+// for ( var i = 0; i < 2; ++i)
+// {
+//     imageTableTotalPanel.push(new Image());
+//     imageTableTotalPanel[i].src = `img/tabletotalpanel${zeroPad(i, 10)}.png`; //  308 x 57
+// }
 
 
-//  Call
-var imageTableCallPanel = [];
-for ( var i = 0; i < 2; ++i)
-{
-    imageTableCallPanel.push(new Image());
-    imageTableCallPanel[i].src = `img/tablecallpanel${zeroPad(i, 10)}.png`; //  308 x 57
-}
+// //  Call
+// var imageTableCallPanel = [];
+// for ( var i = 0; i < 2; ++i)
+// {
+//     imageTableCallPanel.push(new Image());
+//     imageTableCallPanel[i].src = `img/tablecallpanel${zeroPad(i, 10)}.png`; //  308 x 57
+// }
 
 var imageMyInfo = new Image();
 imageMyInfo.onload = ()=> {
@@ -411,15 +411,15 @@ AndroidverticalImg.onload = ()=> {
 }
 AndroidverticalImg.src = "img/game/adroid_vertical.png";
 
-var mobileRaiseBar = new Image();
-mobileRaiseBar.onload = ()=> {
+var imageMobileSliderBar = new Image();
+imageMobileSliderBar.onload = ()=> {
 }
-mobileRaiseBar.src = "img/game/raisebar.png";
+imageMobileSliderBar.src = "img/control/slider_m.png";
 
-var RaiseSlider = new Image();
-RaiseSlider.onload = ()=> {
+var imageSliderBar = new Image();
+imageSliderBar.onload = ()=> {
 }
-RaiseSlider.src = "img/game/raiseslider.png";
+imageSliderBar.src = "img/control/slider.png";
 
 let soundPlaceCard = new Audio('sounds/placecard.mp3');
 

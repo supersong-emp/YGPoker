@@ -79,4 +79,73 @@
             return this.listDesktopLocationsH[index];
         }
     }
+
+    async RequestFile(strFilename, callback)
+    {     
+        const urlfile = `http://localhost:5555/${strFilename}`;
+        console.log(`##### ufl = ${urlfile}`);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", urlfile, true);
+        xhr.responseType = "blob";
+        xhr.send();
+        xhr.onload = async function() 
+        {
+            if (xhr.status === 200) 
+            {
+                var fileBlob = xhr.response;
+
+                const reader = new FileReader();
+
+                reader.readAsText(fileBlob);
+                reader.onload = (event) => {
+                    return callback(event.target.result);
+                }
+            }
+        };
+    }
+
+    ProcessLocation(result)
+    {
+        console.log(`AAA ################################################ ${result}`);
+        const listLine = result.split('\r\n');
+        let eType = 'DesktopH';
+        for ( let i in listLine )
+        {
+            console.log(`listLine : ${i}`);
+            if ( listLine[i] == '#DesktopH' || listLine[i] == '#DesktopV' || listLine[i] == '#MobileH' || listLine[i] == '#MobileV' )
+            {
+                eType = listLine[i].replace(/#/g, '');
+
+                console.log(eType);
+            }
+            else
+            {
+                const temp = listLine[i].replace(/ /g, '');
+                const listElement = temp.split(',');
+                //console.log(listElement);
+                switch(eType)
+                {
+                case 'DesktopH':
+                    console.log(`DesktopH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    break;
+                case 'DesktopV':
+                    console.log(`DesktopV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    break;
+                case 'MobileH':
+                    console.log(`MobileH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    break;
+                case 'MobileV':
+                    console.log(`MobileV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    break;                        
+                }
+            }
+        }
+    }
+
+    async LoadLocation(strFilename, func)
+    {
+        const result = await this.RequestFile(strFilename, func);
+        console.log(`################################################ ${result}`);
+        console.log(result);
+    }
 };
