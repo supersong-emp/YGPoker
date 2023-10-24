@@ -26,7 +26,7 @@ export default class IModeGame {
         this.listLabels = [
             new IUILabel(1100,820 - 120,28,35,23,NumberImages4,150,150,this.iTotalBettingCoin.toString(),2),
             new IUILabel(1100,890 - 120,28, 35, 23,NumberImages4,150,150,this.iCallCoin.toString(),2),
-            new IUILabel(1570, 860, 28, 35, 23, NumberImages0, 150, 180, this.iCallCoin.toString(),2),
+            new IUILabel(1770, 825, 28, 35, 23, NumberImages0, 150, 180, this.iCallCoin.toString(),2),
 
             //new IUILabel(960, 100, 50, 50, 35, NumberImages5, 150, 160, this.iCallCoin.toString(),0),
         ];
@@ -273,8 +273,9 @@ export default class IModeGame {
         this.listBettingButtons = buttons;
     }
 
-    SetSliderBar(slider) {
+    SetSliderBar(slider, sliderButton) {
         this.slider = slider;
+        this.sliderButton = sliderButton;
     }
 
     SetMaxPlayer(maxplayer) {
@@ -807,6 +808,9 @@ export default class IModeGame {
                 for (let i in this.slider) {
                     this.slider[i].Render(ctx);
                 }
+                for (let i in this.sliderButton){
+                    this.sliderButton[i].Render(ctx);
+                }
             }
             for (let i in this.listBettingButtons) {
                 this.listBettingButtons[i].Render(ctx);
@@ -1328,13 +1332,13 @@ export default class IModeGame {
         for (let i in objectData.listEnableBettingType) {
             switch (objectData.listEnableBettingType[i]) {
                 case "Quater":
-                    this.listBettingButtons[0].bEnable = true;
+                    this.listBettingButtons[0].bEnable = false;
                     break;
                 case "Half":
-                    this.listBettingButtons[1].bEnable = true;
+                    this.listBettingButtons[1].bEnable = false;
                     break;
                 case "Full":
-                    this.listBettingButtons[2].bEnable = true;
+                    this.listBettingButtons[2].bEnable = false;
                     break;
                 case "Allin":
                     //this.listBettingButtons[3].bEnable = true;
@@ -1563,9 +1567,12 @@ export default class IModeGame {
 
         //this.ptDealerLocation.x = cDealerLocation.x * fHR;
         //this.ptDealerLocation.y = cDealerLocation.y * fVR;
-        this.mobileSliderBG.OnSize(fHR, fVR);
+        //this.mobileSliderBG.OnSize(fHR, fVR);
         for (let i in this.slider) {
             this.slider[i].OnSize(fHR, fVR);
+        }
+        for (let i in this.sliderButton) {
+            this.sliderButton[i].OnSize(fHR, fVR);
         }
         for (let i in this.listBgs) {
             this.listBgs[i].OnSize(fHR, fVR);
@@ -1640,6 +1647,8 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Click(mouse, this);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Click(mouse,this);
         }
 
         if (true == this.bEnableLocation) {
@@ -1663,6 +1672,8 @@ export default class IModeGame {
             if (true == this.bEnableBetting) {
                 for (let i in this.listBettingButtons)
                     this.listBettingButtons[i].Over(mouse);
+                for (let i in this.sliderButton)
+                    this.sliderButton[i].Over(mouse);
             }
 
             if (true == this.bEnableLocation) {
@@ -1670,6 +1681,10 @@ export default class IModeGame {
                     this.listLocationButtons[i].Over(mouse);
                 }
             }
+            if (true == this.bEnableBetting) {
+                
+            }
+            
             if (true == this.slider[0].Over(mouse)) {
                 //console.log(this.slider.iCurrentBar);
                 console.log(this.slider.iCurrentLocation);
@@ -1752,6 +1767,8 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Down(mouse);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Down(mouse);
         }
 
         if (true == this.bEnableLocation) {
@@ -1806,6 +1823,8 @@ export default class IModeGame {
         if (true == this.bEnableBetting) {
             for (let i in this.listBettingButtons)
                 this.listBettingButtons[i].Up(mouse);
+            for (let i in this.sliderButton)
+                this.sliderButton[i].Up(mouse);
         }
 
         if (true == this.bEnableLocation) {

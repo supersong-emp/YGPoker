@@ -151,7 +151,7 @@ for ( var i = 0; i < 6; ++i)
 }
 
 var imageButtons = [];
-for ( var i = 0; i < 7; ++i)
+for ( var i = 0; i < 10; ++i)
 {
     imageButtons.push(new Image());
     imageButtons[i].src = `img/control/button_${zeroPad(i, 2)}.png`;
@@ -181,6 +181,11 @@ var imageModeStandbyDot = new Image();
 imageModeStandbyDot.onload = ()=> {
 }
 imageModeStandbyDot.src = "img/modestandbydot.png";
+
+var cardOpenButton = new Image();
+cardOpenButton.onload = ()=> {
+}
+cardOpenButton.src = "img/cardopen.png"; //  400 x 45
 
 //  Chips
 var imageChips = [];
@@ -420,6 +425,11 @@ var imageSliderBar = new Image();
 imageSliderBar.onload = ()=> {
 }
 imageSliderBar.src = "img/control/slider.png";
+
+var RaisebarCredit = new Image();
+RaisebarCredit.onload = ()=> {
+}
+RaisebarCredit.src = "img/game/raisebarcredit.png";
 
 let soundPlaceCard = new Audio('sounds/placecard.mp3');
 

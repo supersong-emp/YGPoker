@@ -1,7 +1,7 @@
 var EButtonActionType = Object.freeze({"None":0, "Over":1, "Down":2, "Disable":3});
 
 export default class IUIButton{
-    constructor(x, y, width, height, click_handler, sprite, cSpriteWidth, cSpriteHeight, strCaption)
+    constructor(x, y, width, height, click_handler, sprite, cSpriteWidth, cSpriteHeight, strCaption, strColor)
     {
         this.x = x;
         this.y = y;
@@ -27,7 +27,7 @@ export default class IUIButton{
         this.iElapsedTime = 0;
 
         this.bEnable = true;
-
+        this.strColor = strColor;
         //console.log(this);
     }
 
@@ -188,7 +188,7 @@ export default class IUIButton{
             //ctx.drawImage(this.sprite, 0, this.iSpriteHeight, this.iSpriteWidth, this.iSpriteHeight, this.x, this.y, this.width, this.height);
             ctx.drawImage(this.sprite, this.iSpriteWidth, 0, this.iSpriteWidth, this.iSpriteHeight, this.iCurrentX, this.iCurrentY, this.iCurrentWidth, this.iCurrentHeight);
 
-            ctx.fillStyle = "red";
+            ctx.fillStyle = this.strColor;
         }
         else if ( this.eButtonState == EButtonActionType.Down )
         {

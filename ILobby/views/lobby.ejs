@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="/img/favicon.ico"> 
     <link href="css/common.css" rel="stylesheet" />
+    <link href="css/media.css" rel="stylesheet" />
     <!-- <link href="css/top.css" rel="stylesheet" /> -->
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -31,7 +32,7 @@
     <title>poker</title>
 </head>
 
-<body style="background-image:url('images/background2.jpg');">
+<body style="background-color:#000;">
     
     <div class="wrap">
             <div class="header-wrap">
@@ -48,17 +49,21 @@
                     </ul>
                     
                     <div class="logo"><img src="images/logo_main.png" class="mt-5"></div>
-                    <div class="top-title">WELCOME POKER</div>
                     <div class="mem-profile">
                         <span class="mem-img"><img id="iMainAvatar" src="images/avatars/avatar00.png"></span>
                         <span class="mem-info">
-                            <ul><%=user.strID%>
-                                <!-- <button onclick="pointChange();">포인트전환</button> -->
-                            </ul>
                             
-                            <ul>cash<span>
-                                    <num id="MainCash"><%=user.iCash.toLocaleString()%></num>P
-                                </span></ul>
+                                <!-- <button onclick="pointChange();">포인트전환</button> -->
+                            
+                            
+                            
+                            <div class="mx-auto text-right relative">
+                                <span class="t-2 mr-2 font_1 "><%=user.strID%>.</span>&nbsp;&nbsp;
+                                <span class="t-2 mr-2 ml-2 font_2 ">
+                                    <span class="log_name">보유머니</span> 
+                                    <%=user.iCash.toLocaleString()%>
+                                </span>
+                            </div>
                         </span>
                         <span class="user-nav">
                             <!-- <ul>
@@ -82,7 +87,7 @@
                                 <li>설정</li>
                             </ul>
                             <ul>
-                                <li><a href="javascript:OnClickWindowClose();"><img src="images/close_icon.svg"></a></li>
+                                <li><a href="javascript:OnClickWindowClose();"><img src="images/close.svg"></a></li>
                                 <li>나가기</li>
                             </ul>
                         </span>
@@ -96,14 +101,12 @@
                     	<li id="eGameType" value="ALL">전체</li>
                         <li id="eGameType" value="HOLDEM">홀덤</li>
                         <li id="eGameType" value="SITANDGO">싯고</li>
-                        <li id="eGameType" value="TOURNAMENT">토너먼트</li>
-                        <li id="eGameType" value="BIG2">빅2</li>
                     </ul>
                 </div>
                 <div class="sub-gnb">
                     <ul>
                     <li><a href="javascript:OnClickMakeRoom();"><img src="images/room_make.svg">방만들기</a></li>
-                    <li><a href="javascript:OnClickQuickJoin();"><img src="images/room_in.svg">바로입장</a></li>
+                    <li><a href="javascript:OnClickQuickJoin();"></a></li>
                     <li><a href="javascript:OnClickRefresh();"><img src="images/reload.svg">새로고침</a></li>
                     </ul>
                 </div>
@@ -1466,16 +1469,39 @@
 
             $('#popup_requestoutput').show();
         }
-        $(document).on('click', '.openFullscreen', (e) => {
-            var elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
-            }
-        });
+
+        window.onload = function(){
+            // /var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+            $(document).on('click', '.openFullscreen', (e) => {
+                var elem = document.documentElement;
+                
+                // 이미 풀스크린 모드라면 풀스크린 모드를 종료합니다.
+                if (document.fullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) { /* Safari */
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { /* IE11 */
+                        document.msExitFullscreen();
+                    }
+                } else {
+                    // 풀스크린 모드가 아니라면 풀스크린 모드로 전환합니다.
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Safari */
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE11 */
+                        elem.msRequestFullscreen();
+                    }
+                }
+            });
+            // 전체화면 모드가 아닐 때는 팝업창 크기를 고정합니다.
+            // window.addEventListener(resizeEvent, function() {
+            //     if (!window.document.fullscreenElement) {
+            //         window.resizeTo(1310, 768);
+            //     }
+            // });
+        }
     </script>
 
 </body>

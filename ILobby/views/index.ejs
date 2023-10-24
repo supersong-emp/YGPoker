@@ -3,12 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollToPlugin.min.js" integrity="sha512-tQFq+nb/TSS648SDzWbSj0A67t4I1PFzR0U6Oi/yEYFyUbAIwg74SOCbr7t2X1Rn+iln7sYwfh8y+z7p0gddOw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollToPlugin.min.js" integrity="sha512-tQFq+nb/TSS648SDzWbSj0A67t4I1PFzR0U6Oi/yEYFyUbAIwg74SOCbr7t2X1Rn+iln7sYwfh8y+z7p0gddOw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <!-- <script src="js/youtube.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <!-- <script defer src="js/main.js"></script> -->
     <meta name="mobile-web-app-capable" content="yes">
     <!-- <link rel="icon" href="/img/favicon.ico"> -->
@@ -18,26 +17,28 @@
     <link href="css/loginmain.css" rel="stylesheet" />
     <link href="css/common.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
+    <link href="css/media.css" rel="stylesheet" />
+    <!-- <link href="css/media-q.css" rel="stylesheet" /> -->
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://unpkg.com/swiper@6.8.4/swiper-bundle.min.css" />
     <!-- <link rel="icon" href="./favicon.png"> -->
 
-    <link href="/css/styles.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 
-    <link href="/css/slider.css" rel="stylesheet" type="text/css" />
-    <script src="/js/bxslider.js"></script>
+    <link href="css/slider.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery.cycle2.js"></script>
+    <script src="js/bxslider.js"></script>
     <title>☆Poker</title>
 </head>
 <!-- background-image: url(images/background2.jpg) -->
 <body>
-    <div class="container_body flex">
+    <div class="container_body">
         <div class="left_body">
             <div class="py-3">
                 <div class="w-11/12 mx-auto">
@@ -89,17 +90,18 @@
 
             </div>
         </div>
+        
         <!-- pc용 header -->
-        <div>
-            <header class="w-full pc-header hidden md:block">
+        <div class="right_container">
+            <header class="w-full pc-header md:block">
                 
                 <div>
                     <img src="images/logo_main.png" alt="" class="logo_image">
                     <div class="mx-auto text-right pt-5 pr-5 pl-5 pb-5 flex justify-end relative">
-                        <span class="t-2 mr-2 font_1"><%=user.strID%></span>
+                        <span class="t-2 mr-2 font_1"><%=user.strID%>.</span>
                         <span class="t-2 mr-2 ml-2 font_2"><span class="log_name">보유머니</span> <%=user.iCash.toLocaleString()%></span>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
-                        <button class="rounded-md bg-[#d1383b] py-1.5 px-4 text-white text-bold" onclick="location.href='/account/logout'">Logout</button>
+                        <button class="rounded-md py-1.5 px-4 text-white text-bold logout" onclick="location.href='/account/logout'">Logout</button>
                     </div>
                 </div>
                 
@@ -109,7 +111,7 @@
                     <marquee id="NewsMarquee" onmouseover="stop()" onmouseout="start()" class="text-[#00ef89] text-sm leading-7" style="display: inline-block; width:calc(100% - 34px); height:32px; margin:0px;" scrolldelay="1" direction="left">포커에 오신 것을 환영합니다.
                     </marquee> 
                     </div>
-                </div>   
+                </div> 
             </header>
 
 
@@ -120,10 +122,10 @@
                 </div>
                 <div class="w-full flex">
                     <div class="mx-auto text-right pt-5 pb-5 flex justify-end flex-wrap relative right">
-                        <label class="text-white mt-2 mr-2"><%=user.strID%>님.</label>
-                        <label class="text-white mt-2 mr-2 ml-2">* 보유머니 : <%=user.iCash.toLocaleString()%></label>
+                        <span class="t-2 mr-2 font_1"><%=user.strID%>.</span>
+                        <span class="t-2 mr-2 ml-2 font_2"><span class="log_name">보유머니</span> <%=user.iCash.toLocaleString()%></span>
                         <!-- <label class="text-white mt-2 mr-2 ml-2">* 포인트 : <%=user.iPoint.toLocaleString()%></label> -->
-                        <button class="rounded-md bg-[#d1383b] py-1.5 px-4 text-white text-bold" onclick="location.href='/account/logout'">Logout</button>
+                        <button class="rounded-md logout py-1.5 px-4 text-white text-bold" onclick="location.href='/account/logout'">Logout</button>
                     </div>
                 </div>  
             </header>
@@ -1535,7 +1537,6 @@
                             </div>
                         </div>
                     </div>
-
         <!-- section 영역 (배너) -->
             <section class="w-full background">
                 
@@ -1544,24 +1545,13 @@
                         <img src="images/back3.png" class="mx-auto object-cover">
                     </div>
                 </div> -->
-                <div class="mx-auto pt-5 bg-img" >
-                    <ul class="bxslider object-cover">
+                <div style="width: 100%; overflow: hidden;">
+                    <ul class="bxslider">
                         <li><img src="images/slider_01.jpg" /></li>
                         <li><img src="images/slider_02.jpg" /></li>
                         <li><img src="images/slider_03.jpg" /></li>
                     </ul>
                 </div>
-                <script src="/js/jquery.cycle2.js"></script>
-                <script src="/js/bxslider.js"></script>
-                <script>
-                    $(document).ready(function(){
-                        $('.slider').bxSlider({
-                            auto: true,
-                            autoControls: true,
-                            pager:true,
-                        });
-                    });
-                </script>
                 <div class="w-full mx-auto flex flex-wrap justify-center mt-3" >
                     <div class="w-[410px] cursor-pointer box-border box1 mx-1 my-1 bg-black">
                         <div class="box">
@@ -1736,31 +1726,31 @@
                 <ul class="mx-auto text-center">
                     <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
                         <a href="#" id="announcement">
-                            <div class="material-icons text-2xl text-[#00ef89]">speaker_notes</div>
+                            <div class="material-icons text-2xl ">speaker_notes</div>
                             <p class="text-base text-white">공지사항</p>
                         </a>
                     </li>
                     <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
                         <a href="#" id="input">
-                            <div class="material-icons text-2xl text-[#00ef89]">monetization_on</div>
+                            <div class="material-icons text-2xl ">monetization_on</div>
                             <p class="text-base text-white">입금신청</p>
                         </a>
                     </li>
-                    <li class="w-2/12 mx-1 text-center p-3 font-semibold bg-[#00ef89] rounded-full inline-block bottom_home">
+                    <li class="w-2/12 mx-1 text-center p-3 child_03 font-semibold rounded-full inline-block bottom_home">
                         <a href="#" id="home">
-                            <div class="material-icons text-2xl text-[#000000]">home</div>
-                            <p class="text-base text-[0a0a0a]">홈</p>
+                            <div class="material-icons main_material text-2xl" style="color:#ffffff;">home</div>
+                            <p class="text-base" style="color:#ffffff;">홈</p>
                         </a>
                     </li>
                     <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
                         <a href="#" id="output">
-                            <div class="material-icons text-2xl text-[#00ef89]">currency_exchange</div>
+                            <div class="material-icons text-2xl ">currency_exchange</div>
                             <p class="text-base text-white">출금신청</p>
                         </a>
                     </li>
                     <li class="w-2/12 mx-1 text-center p-3 font-semibold inline-block">
                         <a href="#" id="myinfo">
-                            <div class="material-icons text-2xl text-[#00ef89]">person_pin_circle</div>
+                            <div class="material-icons text-2xl ">person_pin_circle</div>
                             <p class="text-base text-white">마이페이지</p>
                         </a>
                     </li>
@@ -2175,6 +2165,12 @@
         $('#popup_myinfo').show();
     })
     $(document).on('ready', ()=> {
+        $('.bxslider').bxSlider({
+            auto: true,
+            autoControls: true,
+            pager:true,
+            responsive:true
+        });
         $('.popup_all').hide();
         $('#popup_output').hide();
         $('#popup_input').hide();
@@ -2231,7 +2227,7 @@
         }
 
         // 새 창을 열고, 해당 창을 게임 로비로 설정
-        window.open('', lobbyName, 'width=1280, height=720, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+        window.open('', lobbyName, 'width=1282, height=720, top=100, left=100, fullscreen=no, menubar=no, status=no, resizable=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
 
         // 폼을 생성하고 제출하여 게임 로비를 로드
         var $form = $('<form></form>');
