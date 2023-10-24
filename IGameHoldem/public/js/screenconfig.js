@@ -1,6 +1,6 @@
  export default class IScreenConfig{
 
-    constructor(x, y, default_width, default_height, width, height)
+    constructor(x, y, default_width, default_height, width, height, strPlatform)
     {
         this.x = x;
         this.y = y;
@@ -17,16 +17,30 @@
         this.listDesktopLocationsV = [];
         this.listMobileLocationH = [];
         this.listMobileLocationV = [];
-        this.landscape = false;
-        this.vertical = false;
+        // this.landscape = false;
+        // this.vertical = false;
+
+        this.eScreenMode = ""
+        this.ePlatform = strPlatform;
+
         if(height > width)
         {
-            this.vertical = true;
+            //this.vertical = true;
+            this.eScreenMode = "Vertical";
         }
         else
         {
-            this.landscape = true;
+            //this.landscape = true;
+            this.eScreenMode = "Horizontal";
         }
+
+        // New
+        this.listDH = [];
+        this.listDV = [];
+        this.listMH = [];
+        this.listMV = [];
+
+        this.listCurrent = null;
     }
 
     OnSize(width, height)
@@ -48,16 +62,27 @@
         //this.m_fHeightRate = this.m_iCurrentWidth / this.m_iDefaultWidth;
         this.m_fHeightRate = this.m_iCurrentHeight / this.m_iDefaultHeight;
 
+        // if(height > width)
+        // {
+        //     this.vertical = true;
+        //     this.landscape = false;
+        // }
+        // else
+        // {
+        //     this.landscape = true;
+        //     this.vertical = false;
+        // }
         if(height > width)
         {
-            this.vertical = true;
-            this.landscape = false;
+            //this.vertical = true;
+            this.eScreenMode = "Vertical";
         }
         else
         {
-            this.landscape = true;
-            this.vertical = false;
+            //this.landscape = true;
+            this.eScreenMode = "Horizontal";
         }
+
     }
 
     IsMobile()
@@ -80,7 +105,7 @@
         }
     }
 
-    async RequestFile(strFilename, callback)
+    RequestFile(strFilename, callback, listDH, listDV, listMH, listMV)
     {     
         const urlfile = `http://localhost:5555/${strFilename}`;
         console.log(`##### ufl = ${urlfile}`);
@@ -88,7 +113,7 @@
         xhr.open("GET", urlfile, true);
         xhr.responseType = "blob";
         xhr.send();
-        xhr.onload = async function() 
+        xhr.onload = function() 
         {
             if (xhr.status === 200) 
             {
@@ -98,20 +123,20 @@
 
                 reader.readAsText(fileBlob);
                 reader.onload = (event) => {
-                    return callback(event.target.result);
+                    return callback(event.target.result, listDH, listDV, listMH, listMV);
                 }
             }
         };
     }
 
-    ProcessLocation(result)
+    ProcessLocation(result, listDH, listDV, listMH, listMV)
     {
         console.log(`AAA ################################################ ${result}`);
         const listLine = result.split('\r\n');
         let eType = 'DesktopH';
         for ( let i in listLine )
         {
-            console.log(`listLine : ${i}`);
+            //console.log(`listLine : ${i}`);
             if ( listLine[i] == '#DesktopH' || listLine[i] == '#DesktopV' || listLine[i] == '#MobileH' || listLine[i] == '#MobileV' )
             {
                 eType = listLine[i].replace(/#/g, '');
@@ -126,26 +151,71 @@
                 switch(eType)
                 {
                 case 'DesktopH':
-                    console.log(`DesktopH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    {
+                        //console.log(`DesktopH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                        const obj = {x:parseInt(listElement[0]), y:parseInt(listElement[1]), strName:listElement[2]};
+                        listDH.push(obj);
+                    }
                     break;
                 case 'DesktopV':
-                    console.log(`DesktopV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    {
+                        //console.log(`DesktopV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                        const obj = {x:parseInt(listElement[0]), y:parseInt(listElement[1]), strName:listElement[2]};
+                        listDV.push(obj);
+                    }
                     break;
                 case 'MobileH':
-                    console.log(`MobileH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    {
+                        //console.log(`MobileH : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                        const obj = {x:parseInt(listElement[0]), y:parseInt(listElement[1]), strName:listElement[2]};
+                        listMH.push(obj);
+                    }
                     break;
                 case 'MobileV':
-                    console.log(`MobileV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                    {
+                        //console.log(`MobileV : ${listElement[0]}, ${listElement[1]}, ${listElement[2]}`);
+                        const obj = {x:parseInt(listElement[0]), y:parseInt(listElement[1]), strName:listElement[2]};
+                        listMV.push(obj);
+                    }
                     break;                        
                 }
             }
         }
     }
 
-    async LoadLocation(strFilename, func)
+    LoadLocation(strFilename, callback, listDH, listDV, listMH, listMV)
     {
-        const result = await this.RequestFile(strFilename, func);
+        const result = this.RequestFile(strFilename, callback, listDH, listDV, listMH, listMV);
         console.log(`################################################ ${result}`);
         console.log(result);
+    }
+
+    GetPosition(index)
+    {
+        console.log(this.listDH);
+        console.log(`screen : ${this.eScreenMode}, platform : ${this.ePlatform}`);
+
+        if ( this.ePlatform == 'Desktop' )
+        {
+            if ( this.eScreenMode == 'Horizontal' )
+            {
+                return this.listDH[index];
+            }
+            else
+            {
+                return this.listDV[index];
+            }
+        }
+        else 
+        {
+            if ( this.eScreenMode == 'Vertical' )
+            {
+                return this.listMH[index];
+            }
+            else
+            {
+                return this.listMV[index];
+            }
+        }
     }
 };

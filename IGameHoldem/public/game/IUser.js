@@ -57,14 +57,18 @@ export default class IUser{
         this.kSC = kSC;
         this.isMobile = isMobile;
 
-        // this.x = cPlayerLocations[iFxLocation].x;
-        // this.y = cPlayerLocations[iFxLocation].y;
+        // // this.x = cPlayerLocations[iFxLocation].x;
+        // // this.y = cPlayerLocations[iFxLocation].y;
 
-        this.x = kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).x;
-        this.y = kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).y;
+        // this.x = kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x;
+        // this.y = kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y;
 
-        // this.x = this.ptLocations[iFxLocation].x;
-        // this.y = this.ptLocations[iFxLocation].y;
+        // // this.x = this.ptLocations[iFxLocation].x;
+        // // this.y = this.ptLocations[iFxLocation].y;
+
+        this.x = kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x;
+        this.y = kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y;
+
         this.iCurrentX = this.x;
         this.iCurrentY = this.y;
 
@@ -83,15 +87,19 @@ export default class IUser{
 
         this.listImagesPlayerType = 
         [
-            // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[0], 137, 137),
-            // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[1], 137, 137),
-            // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[2], 137, 137),
-            new IUIImage(kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).x, kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).y, 50, 50, imagePlayerType[0], 137, 137),
-            new IUIImage(kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).x, kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).y, 50, 50, imagePlayerType[1], 137, 137),
-            new IUIImage(kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).x, kSC.GetLocation(ELocationIndex.P1Type+iFxLocation).y, 50, 50, imagePlayerType[2], 137, 137),
-            //new IUIImage(0, 0, 75, 75, imagePlayerType[0], 137, 137),
-            //new IUIImage(0, 0, 75, 75, imagePlayerType[1], 137, 137),
-            //new IUIImage(0, 0, 75, 75, imagePlayerType[2], 137, 137),
+            // // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[0], 137, 137),
+            // // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[1], 137, 137),
+            // // new IUIImage(this.iCurrentX+160, this.iCurrentY+150, 75, 75, imagePlayerType[2], 137, 137),
+            // new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x, kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[0], 137, 137),
+            // new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x, kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[1], 137, 137),
+            // new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x, kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[2], 137, 137),
+            // //new IUIImage(0, 0, 75, 75, imagePlayerType[0], 137, 137),
+            // //new IUIImage(0, 0, 75, 75, imagePlayerType[1], 137, 137),
+            // //new IUIImage(0, 0, 75, 75, imagePlayerType[2], 137, 137),
+
+            new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation), kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[0], 137, 137),
+            new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation), kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[1], 137, 137),
+            new IUIImage(kSC.GetPosition(EPositionIndex.Player1+iFxLocation), kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 50, 50, imagePlayerType[2], 137, 137),
 
         ];
 
@@ -150,7 +158,7 @@ export default class IUser{
         //this.textName = new IUIText(this.iCurrentX + -80, this.iCurrentY + 200, 15, strID, 0);
         this.textName = new IUIText(this.iCurrentX+80, this.iCurrentY + 200, 30, strID, 0);
         this.textHand = new IUIText(this.iCurrentX+80, this.iCurrentY + 250, 20, '', 0);
-        this.textCallCoin = new IUIText(kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).x, kSC.GetLocation(ELocationIndex.TableCoin1+iFxLocation).y, 20, '', 0);
+        this.textCallCoin = new IUIText(kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x, kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y, 20, '', 0);
         
         this.m_fVR = 1;
         this.m_fHR = 1;
@@ -624,8 +632,8 @@ export default class IUser{
 
         // this.x = this.ptLocations[iFxLocation].x;
         // this.y = this.ptLocations[iFxLocation].y;
-        this.x = this.kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).x;
-        this.y = this.kSC.GetLocation(ELocationIndex.P1Table+iFxLocation).y;
+        this.x = this.kSC.GetPosition(EPositionIndex.Player1+iFxLocation).x;
+        this.y = this.kSC.GetPosition(EPositionIndex.Player1+iFxLocation).y;
 
         this.iCurrentX = this.x;
         this.iCurrentY = this.y;
@@ -745,8 +753,8 @@ export default class IUser{
 
             // let x = cChipLocations[this.iFxLocation].x;
             // let y = cChipLocations[this.iFxLocation].y;
-            let x = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).x;
-            let y = this.kSC.GetLocation(ELocationIndex.TableChip1+this.iFxLocation).y;
+            let x = this.kSC.GetPosition(EPositionIndex.Player1+this.iFxLocation).x;
+            let y = this.kSC.GetPosition(EPositionIndex.Player1+this.iFxLocation).y;
 
             // let x = 760;
             // let y = 600;

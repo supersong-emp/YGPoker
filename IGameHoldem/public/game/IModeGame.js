@@ -100,7 +100,7 @@ export default class IModeGame {
         this.iNumCards = 0;
 
         this.slider = [];
-        this.mobileSliderBG = new IUIImage(kSC.GetLocation(ELocationIndex.MobileRaiseBar).x, kSC.GetLocation(ELocationIndex.MobileRaiseBar).y, 500, 700, imageMobileSliderBar, 500, 700);
+        this.mobileSliderBG = new IUIImage(kSC.GetPosition(EPositionIndex.MobileRaiseBar).x, kSC.GetPosition(EPositionIndex.MobileRaiseBar).y, 500, 700, imageMobileSliderBar, 500, 700);
 
         this.listPotManager = [];
         this.listTempPot = [];
@@ -242,7 +242,7 @@ export default class IModeGame {
     //     this.gameWinCeremony.SetLocation(343,130);
     //     this.gameAbstentionWin.SetLocation(490,90);
     //     this.gamewinMadePanel.SetLocation(243,121);
-    //     this.mobileSliderBG.SetLocation(kSC.GetLocation(ELocationIndex.MobileRaiseBar).x, kSC.GetLocation(ELocationIndex.MobileRaiseBar).y);
+    //     this.mobileSliderBG.SetLocation(kSC.GetPosition(EPositionIndex.MobileRaiseBar).x, kSC.GetPosition(EPositionIndex.MobileRaiseBar).y);
     //     this.resultpot.SetLocation(965,630);
     // }
 
@@ -261,7 +261,7 @@ export default class IModeGame {
     //     this.gameWinCeremony.SetLocation(343,130);
     //     this.gameAbstentionWin.SetLocation(490,90);
     //     this.gamewinMadePanel.SetLocation(243,121);
-    //     this.mobileSliderBG.SetLocation(kSC.GetLocation(ELocationIndex.MobileRaiseBar).x, kSC.GetLocation(ELocationIndex.MobileRaiseBar).y);
+    //     this.mobileSliderBG.SetLocation(kSC.GetPosition(EPositionIndex.MobileRaiseBar).x, kSC.GetPosition(EPositionIndex.MobileRaiseBar).y);
     //     this.resultpot.SetLocation(965,630);
     // }
 
@@ -589,24 +589,24 @@ export default class IModeGame {
             for (let i in this.listTableCard) {
                 // if(this.kSC.vertical == true)
                 // {
-                //     this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
+                //     this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
 
                 //     if (this.listWinCards[i] == true && this.bAbstentionWin == false) {
-                //         this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,);
+                //         this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,);
                 //     }
                 // }
                 // else if(this.kSC.landscape == true)
                 // {
-                //     this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
+                //     this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
 
                 //     if (this.listWinCards[i] == true && this.bAbstentionWin == false) {
-                //         this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,);
+                //         this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,);
                 //     }
                 // }
-                this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
+                this.listImagesCard[this.listTableCard[i]].CardRenderTurn(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,this.kTimer,i,this.strDeckcode);
 
                     if (this.listWinCards[i] == true && this.bAbstentionWin == false) {
-                        this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + parseInt(i)).y,);
+                        this.listImagesCardFrame.RenderLocation(ctx,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + parseInt(i)).y,);
                     }
             }
         }
@@ -933,11 +933,11 @@ export default class IModeGame {
                         let dealer = '';
                         if(this.isMobile == true)
                         {
-                            dealer = new ICardDealer(cDealerVerticalLocation.x,cDealerVerticalLocation.y,this.kSC.GetLocation(ELocationIndex.TableCard1 + this.iNumCards).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + this.iNumCards).y,this.kSC.m_fWidthRate,this.kSC.m_fHeightRate,this.kTimer,130,170, this.listTableCardTemp[0], this.strDeckcode);
+                            dealer = new ICardDealer(cDealerVerticalLocation.x,cDealerVerticalLocation.y,this.kSC.GetPosition(EPositionIndex.TableCard1 + this.iNumCards).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + this.iNumCards).y,this.kSC.m_fWidthRate,this.kSC.m_fHeightRate,this.kTimer,130,170, this.listTableCardTemp[0], this.strDeckcode);
                         }
                         else
                         {
-                            dealer = new ICardDealer(cDealerLocation.x,cDealerLocation.y,this.kSC.GetLocation(ELocationIndex.TableCard1 + this.iNumCards).x,this.kSC.GetLocation(ELocationIndex.TableCard1 + this.iNumCards).y,this.kSC.m_fWidthRate,this.kSC.m_fHeightRate,this.kTimer,130,170, this.listTableCardTemp[0], this.strDeckcode);
+                            dealer = new ICardDealer(cDealerLocation.x,cDealerLocation.y,this.kSC.GetPosition(EPositionIndex.TableCard1 + this.iNumCards).x,this.kSC.GetPosition(EPositionIndex.TableCard1 + this.iNumCards).y,this.kSC.m_fWidthRate,this.kSC.m_fHeightRate,this.kTimer,130,170, this.listTableCardTemp[0], this.strDeckcode);
                         } 
                         //let dealer = new ICardTurnAnim(cDealerLocation.x, cDealerLocation.y, cTableCardLocations[this.iNumCards].x, cTableCardLocations[this.iNumCards].y, this.kSC.m_fWidthRate, this.kSC.m_fHeightRate, this.kTimer, 130, 170, this.listTableCardTemp[0]);
                         this.listCardDealer.push(dealer);
